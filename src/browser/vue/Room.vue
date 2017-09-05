@@ -1,6 +1,12 @@
 <template lang="pug">
   .room(v-if="room")
-    v-navigation-drawer(absolute, light, v-model="navOpen", overflow)
+    v-navigation-drawer(
+      absolute
+      light
+      overflow
+      temporary
+      v-model="navOpen"
+    )
       v-toolbar.transparent(flat)
         v-list.pa-0
           v-list-tile
