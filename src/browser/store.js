@@ -69,6 +69,23 @@ const actions = {
       createdAt: Date.now(),
     });
   },
+  async createCharacter(context, character) {
+    await backend.createCharacter({
+      icon: null,
+      portrait: {
+        default: null,
+      },
+      x: 0,
+      y: 0,
+      ...character,
+    });
+  },
+  async updateCharacter(context, { id, key, value }) {
+    await backend.updateCharacter(id, key, value);
+  },
+  async removeCharacter(context, id) {
+    await backend.removeCharacter(id);
+  },
 };
 const mutations = {
   clearRoom(state) {
@@ -80,6 +97,12 @@ const mutations = {
 
   'characters:add': (state, character) => {
     state.characters.push(character);
+  },
+  'characters:change': (state, character) => {
+    state.characters = state.characters.map(c => (c.id === character.id ? character : c));
+  },
+  'characters:remove': (state, id) => {
+    state.characters = state.characters.filter(c => c.id !== id);
   },
   'map:update': (state, map) => {
     state.map = map;
@@ -103,6 +126,12 @@ const mutations = {
       ...state.portraits.filter(p => p !== portrait),
     ];
   },
+  'messages:change': (state, message) => {
+    state.message = state.message.map(m => (m.id === message.id ? message : m));
+  },
+  'messages:remove': (state, id) => {
+    state.message = state.message.filter(m => m.id !== id);
+  },
   'room:update': (state, room) => {
     state.room = room;
   },
@@ -114,6 +143,12 @@ const mutations = {
       room,
       ...state.rooms,
     ];
+  },
+  'rooms:change': (state, room) => {
+    state.rooms = state.rooms.map(r => (r.id === room.id ? room : r));
+  },
+  'rooms:remove': (state, id) => {
+    state.rooms = state.rooms.filter(r => r.id !== id);
   },
   'shapes:add': (state, shape) => {
     state.shapes.push(shape);

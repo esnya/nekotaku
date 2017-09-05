@@ -22,8 +22,7 @@ export default {
     styles() {
       return this.portraits.map((url, i) => ({
         backgroundImage: `url(${url})`,
-        marginBottom: `-${i * 10}px`,
-        marginRight: `-${i * 40}px`,
+        transform: `translate(${i * 40}px, ${i * 10}px)`,
         opacity: i === 0 ? 1.0 : 0.5,
       }));
     },
@@ -55,7 +54,8 @@ export default {
       width: 50%;
       background-position: bottom right;
       background-size: contain;
-    
+      transition: all 0.4s ease-in-out;
+
     .portrait-open
       position: absolute;
       bottom: 16px;

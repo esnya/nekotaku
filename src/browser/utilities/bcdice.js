@@ -2,10 +2,15 @@ import BCDice, { DiceBotLoader, DiceBotResolver } from 'bcdice-js';
 
 DiceBotResolver.setCustomLoader(filename => import(`bcdice-js/lib/diceBot/${filename}`), true);
 
-const GameTypes = DiceBotLoader.collectDiceBotDescriptions().map(([gameType]) => gameType);
+const DiceBotDescs = DiceBotLoader.collectDiceBotDescriptions()
+  .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName }));
 
-export function getGameTypes() {
-  return GameTypes;
+export function getDiceBotDescs() {
+  return DiceBotDescs;
+}
+
+export function getDiceBotDescByFilename(filename) {
+  return DiceBotDescs.find(d => d.filename === filename);
 }
 
 const bcdice = new BCDice();

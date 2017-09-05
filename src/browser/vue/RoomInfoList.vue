@@ -2,7 +2,7 @@
   div.room-list-info
     v-chip.pl-0.mr-0.indigo(small)
       v-icon.mx-1(dark) mdi-dice-multiple
-      span.white--text {{room.dice}}
+      span.white--text {{dice || room.dice}}
     v-chip.pl-0.mr-0.light-blue(small)
       v-icon.mx-1(dark) mdi-account-multiple
       span.white--text  {{room.players}}
@@ -13,9 +13,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      dice: null,
+    };
+  },
   props: [
     'room',
   ],
+  created() {
+    import('../utilities/bcdice').then(({ getDiceBotDescByFilename }) => {
+      const desc = getDiceBotDescByFilename(this.room.dice);
+      if (desc) this.dice = desc.gameType;
+    });
+  },
 };
 </script>
 

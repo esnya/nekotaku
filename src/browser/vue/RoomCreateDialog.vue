@@ -14,9 +14,12 @@
             required
           )
           v-select(
-            label="ダイス"
-            :items="diceNames"
-            v-model="data.dice"
+          autocomplete
+          label="ダイス"
+          item-text="gameType"
+          item-value="filename"
+          :items="diceBotDescs"
+          v-model="data.dice"
           )
           v-text-field(
             label="キャラクター属性"
@@ -36,7 +39,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      diceNames: ['DiceBot'],
+      diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       open: false,
       valid: false,
       titleRules: [
@@ -71,8 +74,8 @@ export default {
     },
   },
   created() {
-    import('../utilities/bcdice').then(({ getGameTypes }) => {
-      this.diceNames = getGameTypes();
+    import('../utilities/bcdice').then(({ getDiceBotDescs }) => {
+      this.diceBotDescs = getDiceBotDescs();
     });
   },
 };

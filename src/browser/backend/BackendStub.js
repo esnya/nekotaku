@@ -28,6 +28,12 @@ class ArrayData extends ObjectData {
     super((value || []).map(item => (
       (item instanceof ObjectData) ? item : new ObjectData({ id: shortid(), ...item })
     )));
+
+    this.value.forEach((item) => {
+      item.on('update', (newValue) => {
+        this.emit('child_changed', newValue);
+      }, true);
+    });
   }
 
   on(event, handler) {
@@ -50,7 +56,12 @@ class ArrayData extends ObjectData {
     this.emit('child_added', item.value);
     item.on('update', (newValue) => {
       this.emit('child_changed', newValue);
-    });
+    }, true);
+  }
+
+  remove(id) {
+    this.value = this.value.filter(item => item.id !== id);
+    this.emit('child_removed', id);
   }
 }
 
@@ -62,6 +73,8 @@ class RoomChildren {
   filter(event) {
     return {
       child_added: key => (this.children[key] instanceof ArrayData),
+      child_changed: key => (this.children[key] instanceof ArrayData),
+      child_removed: key => (this.children[key] instanceof ArrayData),
       update: key => !(this.children[key] instanceof ArrayData),
     }[event] || (() => true);
   }
@@ -150,6 +163,8 @@ export default class BackendStub extends Backend {
 
     room.on('update', value => handler('room:update', value));
     room.children.on('child_added', 'add', handler);
+    room.children.on('child_changed', 'change', handler);
+    room.children.on('child_removed', 'remove', handler);
     room.children.on('update', 'update', handler);
   }
 
@@ -162,6 +177,8 @@ export default class BackendStub extends Backend {
     this.roomId = null;
     room.removeListener('update');
     room.children.removeListener('child_added');
+    room.children.removeListener('child_changed');
+    room.children.removeListener('child_removed');
   }
 
   async updateRoom(key, value) {
@@ -182,6 +199,39 @@ export default class BackendStub extends Backend {
     const room = this.findRoom(this.roomId);
     if (!room) return;
 
-    room.messages.push(new ObjectData(message));
+    room.messages.push(message);
+  }
+
+  async createCharacter(character) {
+    console.log('createCharacter', character);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    room.characters.push(character);
+  }
+
+  async updateCharacter(id, key, value) {
+    console.log('updateCharacter', id, key, value);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.value.find(c => c.value.id === id);
+    if (!character) return;
+
+    character.update({
+      ...character.value,
+      [key]: value,
+    });
+  }
+
+  async removeCharacter(id) {
+    console.log('removeCharacter', id);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    room.characters.remove(id);
   }
 }

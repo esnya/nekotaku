@@ -11,8 +11,11 @@
           required
         )
         v-select(
+          autocomplete
           label="ダイス"
-          :items="diceNames"
+          item-text="gameType"
+          item-value="filename"
+          :items="diceBotDescs"
           v-model="dice"
         )
         v-text-field(
@@ -48,7 +51,7 @@ export default {
   },
   data() {
     return {
-      diceNames: ['DiceBot'],
+      diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       valid: true,
       titleRules: [
         v => Boolean(v) || 'タイトルを入力して下さい',
@@ -93,8 +96,8 @@ export default {
     'onRequestChangeState',
   ],
   created() {
-    import('../utilities/bcdice').then(({ getGameTypes }) => {
-      this.diceNames = getGameTypes();
+    import('../utilities/bcdice').then(({ getDiceBotDescs }) => {
+      this.diceBotDescs = getDiceBotDescs();
     });
   },
 };

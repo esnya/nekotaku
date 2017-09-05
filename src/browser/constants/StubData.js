@@ -151,7 +151,7 @@ export default {
         },
         {
           type: 'dice',
-          dice: 'SwordWorld2.0',
+          dice: 'SwordWorld2_0',
           text: '(2D6+3>=8) ＞ 12[6,6]+3 ＞ 15 ＞ 自動的成功',
         },
       ],
@@ -162,7 +162,7 @@ export default {
     {
       id: 'room01',
       title: '部屋01',
-      dice: 'DiceBot',
+      dice: 'SwordWorld2_0',
       players: 3,
       visitors: 1,
       characterAttributes: ['HP', 'MP'],
@@ -170,7 +170,7 @@ export default {
     {
       id: 'room02',
       title: '部屋02',
-      dice: 'SwordWorld2.0',
+      dice: 'SwordWorld2_0',
       players: 3,
       visitors: 0,
       characterAttributes: ['HP', 'MP'],
