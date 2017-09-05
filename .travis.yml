@@ -6,3 +6,13 @@ before_script:
   - cp config/config.stub.json config/config.json
 script: yarn build
 after_success: cat ./coverage/lcov.info | coveralls
+before_deploy:
+  - cp public/index.html public/404.html
+  - echo $CNAME > public/CNAME
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: public
+  on:
+    branch: master
