@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - node
+  - lts/*
+before_script:
+  - cp config/config.stub.json config/config.json
+script: yarn build
+after_success: cat ./coverage/lcov.info | coveralls
