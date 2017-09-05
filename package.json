@@ -2,6 +2,7 @@
   "name": "nekotaku",
   "version": "0.0.0",
   "description": "ねこたく",
+  "private": true,
   "main": "index.js",
   "repository": "https://github.com/ukatama/nekotaku.git",
   "author": "ukatama <dev.ukatama@gmail.com>",
