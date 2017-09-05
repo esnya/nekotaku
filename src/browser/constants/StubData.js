@@ -4,7 +4,7 @@ export default {
       id: '01',
       name: 'ありす',
       portrait: {
-        default: '/tmp/p2a.png',
+        default: '/sample/p2a.png',
       },
       attributes: [
         '12/12',
@@ -33,9 +33,9 @@ export default {
       id: '03',
       name: 'しゃーりー',
       portrait: {
-        default: '/tmp/p1a.png',
+        default: '/sample/p1a.png',
       },
-      icon: '/tmp/i1.png',
+      icon: '/sample/i1.png',
       attributes: [
         '6/12',
         '3/3',
@@ -60,7 +60,7 @@ export default {
   map: {
     width: 10,
     height: 10,
-    backgroundImage: '/tmp/feeld001.gif',
+    backgroundImage: 'https://raw.githubusercontent.com/torgtaitai/DodontoF/master/image/defaultImageSet/feeld001.gif',
   },
   messages: [
     {
