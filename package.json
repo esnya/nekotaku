@@ -17,6 +17,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",
+    "babel-plugin-dynamic-import-webpack": "^1.0.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-3": "^6.24.1",
@@ -42,6 +43,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "bcdice-js": "^0.3.2",
     "eventemitter3": "^2.0.3",
     "lodash": "^4.17.4",
     "mdi": "^2.0.46",

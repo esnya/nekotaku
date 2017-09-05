@@ -15,7 +15,7 @@
           )
           v-select(
             label="ダイス"
-            :items="['DiceBot','Cthulhu7th','SwordWorld2.0']"
+            :items="diceNames"
             v-model="data.dice"
           )
           v-text-field(
@@ -36,6 +36,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
+      diceNames: ['DiceBot'],
       open: false,
       valid: false,
       titleRules: [
@@ -68,6 +69,11 @@ export default {
         router: this.$router,
       });
     },
+  },
+  created() {
+    import('../utilities/bcdice').then(({ getGameTypes }) => {
+      this.diceNames = getGameTypes();
+    });
   },
 };
 </script>

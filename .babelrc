@@ -4,4 +4,7 @@
     'stage-3',
     'flow',
   ],
+  plugins: [
+    'dynamic-import-webpack',
+  ],
 }

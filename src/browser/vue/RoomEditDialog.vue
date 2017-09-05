@@ -12,7 +12,7 @@
         )
         v-select(
           label="ダイス"
-          :items="['DiceBot','Cthulhu7th','SwordWorld2.0']"
+          :items="diceNames"
           v-model="dice"
         )
         v-text-field(
@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      diceNames: ['DiceBot'],
       valid: true,
       titleRules: [
         v => Boolean(v) || 'タイトルを入力して下さい',
@@ -91,6 +92,11 @@ export default {
     'value',
     'onRequestChangeState',
   ],
+  created() {
+    import('../utilities/bcdice').then(({ getGameTypes }) => {
+      this.diceNames = getGameTypes();
+    });
+  },
 };
 </script>
 

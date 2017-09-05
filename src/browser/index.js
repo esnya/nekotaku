@@ -6,16 +6,25 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import { sync } from 'vuex-router-sync';
 import App from './vue/App.vue';
+import Loading from './vue/Loading.vue';
 import router from './router';
 import store from './store';
 
-moment.locale('ja');
+async function main() {
+  moment.locale('ja');
 
-Vue.use(Vuetify);
-sync(store, router);
+  Vue.use(Vuetify);
+  const loading = new Vue(Loading).$mount('#static-loading');
 
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app');
+  await import('./utilities/bcdice');
+
+  sync(store, router);
+
+  loading.$destroy();
+  new Vue({
+    router,
+    store,
+    render: h => h(App),
+  }).$mount('#app');
+}
+main();

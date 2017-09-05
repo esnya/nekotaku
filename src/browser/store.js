@@ -35,17 +35,37 @@ const actions = {
     await backend.leaveRoom();
     commit('room:update', null);
   },
-  async updateRoom(store, { key, value }) {
+  async updateRoom(context, { key, value }) {
     await backend.updateRoom(key, value);
   },
-  async sendMessage(store, message) {
+  async sendMessage(context, message) {
     const {
       body,
     } = message;
 
+    const {
+      dice,
+    } = context.state.room;
+
+    const {
+      executeDice,
+    } = await import('./utilities/bcdice');
+
+    const {
+      result,
+      diceResults,
+    } = executeDice(body, dice);
+
+    const parsedBody = body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
+      type: 'dice',
+      dice,
+      text: result.replace(/^: /, ''),
+      diceResults,
+    }]);
+
     await backend.sendMessage({
       ...message,
-      body: body.split(/\n/g).map(text => ({ type: 'text', text })),
+      body: parsedBody,
       createdAt: Date.now(),
     });
   },

@@ -146,13 +146,13 @@ export default {
           text: '2D6+3>=8',
         },
         {
+          type: 'text',
+          text: 'メッセージ05',
+        },
+        {
           type: 'dice',
           dice: 'SwordWorld2.0',
           text: '(2D6+3>=8) ＞ 12[6,6]+3 ＞ 15 ＞ 自動的成功',
-        },
-        {
-          type: 'text',
-          text: 'メッセージ05',
         },
       ],
       createdAt: Date.now(),

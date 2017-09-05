@@ -1,7 +1,7 @@
 <template lang="pug">
   .loading-container
     v-progress-circular.primary--text(indeterminate, :size="50")
-    div なう、ろーでぃんぐ。
+    div.py-2 なう、ろーでぃんぐ。
 </template>
 
 <style lang="stylus" scoped>
