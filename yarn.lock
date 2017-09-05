@@ -823,9 +823,9 @@ batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
 
-bcdice-js@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/bcdice-js/-/bcdice-js-0.3.2.tgz#e521db913670d43bdfc51494004ee64a72b08e21"
+bcdice-js@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/bcdice-js/-/bcdice-js-0.4.0.tgz#0ee9fd16470c5882cb5e5f640d485681804d21f4"
 
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"

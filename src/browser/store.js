@@ -54,7 +54,7 @@ const actions = {
     const {
       result,
       diceResults,
-    } = executeDice(body, dice);
+    } = await executeDice(body, dice);
 
     const parsedBody = body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
       type: 'dice',
