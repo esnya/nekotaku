@@ -15,9 +15,11 @@ export function getDiceBotDescByFilename(filename) {
 
 const bcdice = new BCDice();
 bcdice.setCollectRandResult(true);
+let currentDice = null;
 
 export async function executeDice(line, dice) {
-  if (bcdice.getGameType() !== dice) {
+  if (currentDice !== dice) {
+    currentDice = dice;
     await bcdice.setGameByTitle(dice);
   }
 
