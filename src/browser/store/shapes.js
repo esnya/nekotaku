@@ -21,12 +21,13 @@ export default {
       const { width, height } = state.map;
       await backend.moveShape(id, limit(x, width), limit(y, height), Date.now());
     },
-    async createShape({ commit }, shape) {
+    async createShape({ commit }, { offset, ...shape }) {
       const id = await backend.createShape(shape);
 
       commit('selectEntity', {
         id,
         type: 'entity',
+        offset,
       });
     },
     async updateShape(context, { id, ...data }) {

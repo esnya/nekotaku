@@ -4,7 +4,7 @@
       v-icon edit
     v-card
       v-card-title
-        .heading {{character.name}}
+        .headline {{character.name}}
       v-card-text
         v-form(v-model="valid", @submit.prevent="submit")
           v-text-field(
@@ -32,7 +32,7 @@
           v-btn.red.mr-0(dark, slot="activator", @click="open = false") 削除
           v-card
             v-card-title
-              .heading {{character.name}}の削除
+              .headline {{character.name}}の削除
             v-card-text {{character.name}}を削除しますか？
             v-card-actions
               v-spacer

@@ -11,26 +11,15 @@
           :v-key="y"
         )
           div.tile.text-xs-center(v-for="x in map.width", :v-key="x") {{x}}-{{y}}
-      div.layer
-        svg.shape(
+      svg(:width="map.width * 50", :height="map.width * 50")
+        g(
           v-for="shape in shapes"
-          :width="shape.bw"
-          :height="shape.bh"
-          :style="shape.style"
+          :key="shape.id"
           @mousedown="e => entitySelect(e, shape, 'shape')"
           @touchstart="e => entitySelect(e, shape, 'shape')"
         )
-          circle(
-            v-if="shape.type === 'circle'"
-            :cx="shape.radius * 50"
-            :cy="shape.radius * 50"
-            :r="shape.radius * 50"
-          )
-          rect(
-            v-if="shape.type === 'rect'"
-            :width="shape.width * 50"
-            :height="shape.height * 50"
-          )
+          shape-entity(:shape="shape")
+          shape-entity(v-if="mapControl.mode === 'move'", :shape="shape", holder)
       div.layer
         div.character.elevation-2(
           v-for="character in characters"
@@ -46,16 +35,20 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 import Vec2 from '../utilities/Vec2';
 import { align } from '../utilities/entity';
+import ShapeEntity from './ShapeEntity.vue';
 
 export default {
+  components: {
+    ShapeEntity,
+  },
   computed: {
     ...mapState([
       'map',
       'mapControl',
     ]),
     ...mapState({
-      shapesState: 'shapes',
       charactersState: 'characters',
+      shapeState: 'shapes',
     }),
     scale() {
       return 2 ** this.mapControl.zoom;
@@ -90,34 +83,7 @@ export default {
       }).sort((a, b) => a.z > b.z);
     },
     shapes() {
-      return this.shapesState.map((shape) => {
-        const {
-          x, y,
-          type,
-          fill,
-          stroke,
-          strokeWidth,
-        } = shape;
-
-        const bbHandlers = {
-          circle: ({ radius }) => [radius * 2, radius * 2],
-          rect: ({ width, height }) => [width, height],
-        };
-        const bbHandler = bbHandlers[type];
-        const [bw, bh] = bbHandler(shape).map(a => a * 50);
-
-        return {
-          ...shape,
-          bw,
-          bh,
-          style: {
-            transform: `translate(${(x * 50) - (bw / 2)}px, ${(y * 50) - (bh / 2)}px)`,
-            fill: fill || 'none',
-            stroke: stroke || 'none',
-            strokeWidth: strokeWidth || null,
-          },
-        };
-      }).sort((a, b) => a.z > b.z);
+      return this.shapeState.slice().sort((a, b) => a.z > b.z);
     },
   },
   methods: {
@@ -189,22 +155,34 @@ export default {
 
       e.preventDefault();
 
-      const aligngedPos = pos.map(a => align(a, 0.5)).toObject();
+      const offset = pos.map(a => align(a, 0.5));
+      const alignedPos = offset.toObject();
 
       if (mode === 'circle') {
         this.createShape({
           ...style,
-          ...aligngedPos,
-          type: 'circle',
+          ...alignedPos,
+          type: mode,
           radius: 0.5,
+          offset,
+        });
+      } else if (mode === 'line') {
+        this.createShape({
+          ...style,
+          ...alignedPos,
+          type: mode,
+          rx: 0,
+          ry: 0,
+          offset,
         });
       } else if (mode === 'rect') {
         this.createShape({
           ...style,
-          ...aligngedPos,
-          type: 'rect',
-          w: 1,
-          h: 1,
+          ...alignedPos,
+          type: mode,
+          width: 1,
+          height: 1,
+          offset,
         });
       }
     },
@@ -236,7 +214,7 @@ export default {
           });
         }
       } else {
-        const { id } = selected;
+        const { id, offset } = selected;
         const shape = this.shapes.find(s => s.id === id);
         if (!shape) return;
         if (mode === 'circle') {
@@ -244,13 +222,26 @@ export default {
           const radius = Math.max(align(this.page2map(e).sub(new Vec2(x, y)).len()), 0.5);
 
           this.updateShape({ id, radius });
-        } else if (mode === 'rect') {
-          const { x, y } = shape;
-          const [width, height] = this.page2map(e)
-            .sub(new Vec2(x, y))
-            .map(a => Math.max(align(Math.abs(a) + 1, 1), 1)).v;
+        } else if (mode === 'line') {
+          const size = this.page2map(e).sub(offset).map(a => align(a, 1));
+          const pos = offset.add(size.div(2));
+          const [rx, ry] = size.v;
 
-          this.updateShape({ id, width, height });
+          this.updateShape({
+            ...pos.toObject(),
+            rx,
+            ry,
+            id,
+          });
+        } else if (mode === 'rect') {
+          const size = this.page2map(e).sub(offset).map(a => Math.max(align(Math.abs(a, 1)), 1));
+          const pos = offset.add(size.div(2));
+
+          this.updateShape({
+            ...size.toSizeObject(),
+            ...pos.toObject(),
+            id,
+          });
         }
       }
     },
@@ -326,11 +317,11 @@ export default {
     display inline-block
     width 50px
     height 50px
-    border 1px solid black
+    border 1px solid rgba(0, 0, 0, 0.5)
     text-align center
 
-  .shape
-    position absolute
+  svg
+    position absolute;
     top 100px
     left 100px
 

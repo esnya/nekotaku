@@ -24,8 +24,8 @@ export default {
     mode: 'move',
     selected: null,
     style: {
-      stroke: 'black',
-      strokeWidth: 1,
+      stroke: 'red',
+      strokeWidth: 2,
       fill: 'none',
     },
   },

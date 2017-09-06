@@ -18,18 +18,19 @@
     map-mode-button(mode="circle", :currentMode="mapControl.mode", :onSetMode="setMapMode")
       circle(cx="0", cy="0", r="12")
     div.vertical-divider
-    v-btn(icon)
-      v-icon palette
     v-spacer
+    map-style-dialog
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import MapModeButton from './MapModeButton.vue';
+import MapStyleDialog from './MapStyleDialog.vue';
 
 export default {
   components: {
     MapModeButton,
+    MapStyleDialog,
   },
   computed: {
     ...mapState([

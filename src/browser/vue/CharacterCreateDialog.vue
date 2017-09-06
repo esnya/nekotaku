@@ -4,7 +4,7 @@
       v-icon add
     v-card
       v-card-title
-        .heading キャラクター追加
+        .headline キャラクター追加
       v-card-text
         v-form(v-model="valid", @submit.prevent="submit")
           v-text-field(

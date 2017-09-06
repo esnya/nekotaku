@@ -74,6 +74,10 @@ export default class Vec2 {
     const [x, y] = this.v;
     return { x, y };
   }
+  toSizeObject() {
+    const [width, height] = this.v;
+    return { width, height };
+  }
   toString() {
     return `Vec2(${this.v.join(',')})`;
   }
