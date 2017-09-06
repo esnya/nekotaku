@@ -1,4 +1,4 @@
-import alignEntity from '../utilities/alignEntity';
+import { align, limit } from '../utilities/entity';
 import backend from '../backend';
 import listStore from './listStore';
 
@@ -10,10 +10,16 @@ export default {
       if (!shape) return;
 
       const { x, y } = shape;
-      await backend.moveShape(id, alignEntity(x), alignEntity(y), Date.now());
+      await backend.moveShape(
+        id,
+        align(x),
+        align(y),
+        Date.now(),
+      );
     },
-    async moveShape(context, { id, x, y }) {
-      await backend.moveShape(id, x, y, Date.now());
+    async moveShape({ state }, { id, x, y }) {
+      const { width, height } = state.map;
+      await backend.moveShape(id, limit(x, width), limit(y, height), Date.now());
     },
   },
 };

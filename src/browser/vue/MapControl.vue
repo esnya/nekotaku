@@ -1,9 +1,9 @@
 <template lang="pug">
   v-card.neko-flex-row.neko-scroll
     v-spacer
-    v-btn(icon, @click="addMapZoom(0.1)")
+    v-btn(icon, @click="addMapZoom(0.2)")
       v-icon zoom_in
-    v-btn(icon, @click="addMapZoom(-0.1)")
+    v-btn(icon, @click="addMapZoom(-0.2)")
       v-icon zoom_out
     v-btn(icon, @click="resetMapZoom")
       v-icon zoom_out_map
@@ -45,9 +45,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-// .neko-container
-//   overflow auto
-
 .vertical-divider
   position relative
   top 8px

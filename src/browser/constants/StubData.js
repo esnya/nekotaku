@@ -26,8 +26,8 @@ export default {
         '2/2',
       ],
       initiative: 3,
-      x: 0,
-      y: 0,
+      x: 0.5,
+      y: 0.5,
     },
     {
       id: '03',

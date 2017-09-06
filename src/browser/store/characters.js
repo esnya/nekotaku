@@ -1,4 +1,4 @@
-import alignEntity from '../utilities/alignEntity';
+import { align, limit } from '../utilities/entity';
 import backend from '../backend';
 import listStore from './listStore';
 
@@ -11,8 +11,8 @@ export default {
         portrait: {
           default: null,
         },
-        x: 0,
-        y: 0,
+        x: 0.5,
+        y: 0.5,
         ...character,
       });
     },
@@ -27,10 +27,16 @@ export default {
       if (!characters) return;
 
       const { x, y } = characters;
-      await backend.moveCharacter(id, alignEntity(x), alignEntity(y), Date.now());
+      await backend.moveCharacter(
+        id,
+        align(x),
+        align(y),
+        Date.now(),
+      );
     },
-    async moveCharacter(context, { id, x, y }) {
-      await backend.moveCharacter(id, x, y, Date.now());
+    async moveCharacter({ state }, { id, x, y }) {
+      const { width, height } = state.map;
+      await backend.moveCharacter(id, limit(x, width), limit(y, height), Date.now());
     },
   },
 };

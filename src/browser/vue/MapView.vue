@@ -10,8 +10,8 @@
           :width="shape.width"
           :height="shape.height"
           :style="shape.style"
-          @mousedown.prevent="e => entitySelect(e, shape, 'shape')"
-          @touchstart.prevent="e => entitySelect(e, shape, 'shape')"
+          @mousedown="e => entitySelect(e, shape, 'shape')"
+          @touchstart="e => entitySelect(e, shape, 'shape')"
         )
           circle(
             v-if="shape.type === 'circle'"
@@ -24,8 +24,8 @@
           v-for="character in characters"
           v-tooltip:bottom="{html:character.name}"
           :style="character.style"
-          @mousedown.prevent="e => entitySelect(e, character, 'character')"
-          @touchstart.prevent="e => entitySelect(e, character, 'character')"
+          @mousedown="e => entitySelect(e, character, 'character')"
+          @touchstart="e => entitySelect(e, character, 'character')"
         )
           div.name.text-xs-center.caption {{character.name}}
 </template>
@@ -67,7 +67,7 @@ export default {
         return {
           ...character,
           style: {
-            transform: `translate(${x * 50}px, ${y * 50}px)`,
+            transform: `translate(${(x * 50) - 25}px, ${(y * 50) - 25}px)`,
             backgroundImage: iconUrl ? `url(${iconUrl})` : null,
           },
         };
@@ -94,7 +94,7 @@ export default {
           width,
           height,
           style: {
-            transform: `translate(${x * 50}px, ${y * 50}px)`,
+            transform: `translate(${(x * 50) - (width / 2)}px, ${(y * 50) - (height / 2)}px)`,
             fill: fill || 'none',
             stroke: stroke || 'none',
             strokeWidth: strokeWidth || null,
@@ -102,11 +102,6 @@ export default {
         };
       }).sort((a, b) => a.z > b.z);
     },
-  },
-  data() {
-    return {
-      zoom: 0,
-    };
   },
   methods: {
     ...mapActions([
@@ -128,10 +123,13 @@ export default {
       return Vec2.getScreen(e)
         .sub(offset)
         .div(50)
+        .div(2 ** this.mapControl.zoom)
         .add(startPos);
     },
     entitySelect(e, entity, type) {
       if (this.mapControl.mode !== 'move') return;
+
+      e.preventDefault();
 
       const {
         id,
@@ -145,7 +143,7 @@ export default {
         startPos: new Vec2(x, y),
       });
     },
-    shapeMove(e) {
+    move(e) {
       const {
         mode,
         selected,
@@ -172,7 +170,7 @@ export default {
         }
       }
     },
-    shapeDeselect() {
+    end() {
       const {
         mode,
         selected,
@@ -206,10 +204,10 @@ export default {
 
     this.unsibscribe = () => unsubscribers.forEach(f => f());
 
-    subscribe('mousemove', this.shapeMove);
-    subscribe('touchmove', this.shapeMove);
-    subscribe('mouseup', this.shapeDeselect);
-    subscribe('touchend', this.shapeDeselect);
+    subscribe('mousemove', this.move);
+    subscribe('touchmove', this.move);
+    subscribe('mouseup', this.end);
+    subscribe('touchend', this.end);
   },
   destroyed() {
     this.unsibscribe();
@@ -224,6 +222,7 @@ export default {
   height 100%
 
 .map
+  user-select none
   position absolute
   transition transform 0.4s ease-in-out
 
@@ -231,10 +230,8 @@ export default {
     background-origin content-box
     background-size 100% 100%
     padding 100px
-    position absolute
     top 0
     left 0
-    z-index 0
 
   .row
     white-space nowrap
