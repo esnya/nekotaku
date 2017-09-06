@@ -29,18 +29,31 @@ class ArrayData extends ObjectData {
       (item instanceof ObjectData) ? item : new ObjectData({ id: shortid(), ...item })
     )));
 
-    this.value.forEach((item) => {
+    this.forEach((item) => {
       item.on('update', (newValue) => {
         this.emit('child_changed', newValue);
       }, true);
     });
   }
 
+  map(...args) {
+    return this.value.map(...args);
+  }
+  filter(...args) {
+    return this.value.filter(...args);
+  }
+  find(...args) {
+    return this.value.find(...args);
+  }
+  forEach(...args) {
+    return this.value.forEach(...args);
+  }
+
   on(event, handler) {
     const result = super.on(event, handler);
     if (event === 'child_added') {
       setTimeout(() => {
-        this.value.forEach(item => handler(item.value));
+        this.forEach(item => handler(item.value));
       });
     }
     return result;
@@ -60,7 +73,7 @@ class ArrayData extends ObjectData {
   }
 
   remove(id) {
-    this.value = this.value.filter(item => item.id !== id);
+    this.value = this.filter(item => item.id !== id);
     this.emit('child_removed', id);
   }
 }
@@ -125,7 +138,7 @@ export default class BackendStub extends Backend {
   }
 
   findRoom(id: string) {
-    return this.rooms.value.find(room => room.value.id === id);
+    return this.rooms.find(room => room.value.id === id);
   }
 
   async joinLobby(handler) {
@@ -217,7 +230,7 @@ export default class BackendStub extends Backend {
     const room = this.findRoom(this.roomId);
     if (!room) return;
 
-    const character = room.characters.value.find(c => c.value.id === id);
+    const character = room.characters.find(c => c.value.id === id);
     if (!character) return;
 
     character.update({
@@ -233,5 +246,39 @@ export default class BackendStub extends Backend {
     if (!room) return;
 
     room.characters.remove(id);
+  }
+
+  async moveCharacter(id: string, x: number, y: number, z: number) {
+    console.log('moveCharacter', id); // , x, y);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.find(c => c.value.id === id);
+    if (!character) return;
+
+    character.update({
+      ...character.value,
+      x,
+      y,
+      z,
+    });
+  }
+
+  async moveShape(id: string, x: number, y: number, z: number) {
+    console.log('moveShape', id); // , x, y);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const shape = room.shapes.find(s => s.value.id === id);
+    if (!shape) return;
+
+    shape.update({
+      ...shape.value,
+      x,
+      y,
+      z,
+    });
   }
 }

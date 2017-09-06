@@ -2,6 +2,7 @@
 import { merge } from 'lodash';
 import Vue from 'vue';
 import Vuex from 'vuex';
+import mapControl from './modules/mapControl';
 import characters from './characters';
 import map from './map';
 import messages from './messages';
@@ -20,4 +21,9 @@ export default new Vuex.Store(merge(
   rooms,
   portraits,
   shapes,
+  {
+    modules: {
+      mapControl,
+    },
+  },
 ));
