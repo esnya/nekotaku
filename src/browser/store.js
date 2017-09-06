@@ -49,6 +49,7 @@ const actions = {
 
     const {
       executeDice,
+      getDiceBotDescByFilename,
     } = await import('./utilities/bcdice');
 
     const {
@@ -56,9 +57,11 @@ const actions = {
       diceResults,
     } = await executeDice(body, dice);
 
+    const diceBotDesc = getDiceBotDescByFilename(dice);
+
     const parsedBody = body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
       type: 'dice',
-      dice,
+      dice: diceBotDesc ? diceBotDesc.gameType : dice,
       text: result.replace(/^: /, ''),
       diceResults,
     }]);

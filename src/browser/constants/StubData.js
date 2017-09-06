@@ -151,7 +151,7 @@ export default {
         },
         {
           type: 'dice',
-          dice: 'SwordWorld2_0',
+          dice: 'SwordWorld2.0',
           text: '(2D6+3>=8) ＞ 12[6,6]+3 ＞ 15 ＞ 自動的成功',
         },
       ],
