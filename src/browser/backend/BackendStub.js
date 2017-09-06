@@ -63,13 +63,17 @@ class ArrayData extends ObjectData {
     const id = shortid();
     const item = (value instanceof ObjectData)
       ? value : new ObjectData({ id, ...value });
-    // eslint-disable-next-line
-    if (value instanceof ObjectData) value.id = id;
+
+      // eslint-disable-next-line
+    if (value instanceof ObjectData) item.value.id = id;
+
     this.value.push(item);
     this.emit('child_added', item.value);
     item.on('update', (newValue) => {
       this.emit('child_changed', newValue);
     }, true);
+
+    return id;
   }
 
   remove(id) {
@@ -279,6 +283,34 @@ export default class BackendStub extends Backend {
       x,
       y,
       z,
+    });
+  }
+
+  async createShape(shape) {
+    console.log('createShape', shape);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return null;
+
+    const id = room.shapes.push(shape);
+
+    await timeout(50);
+
+    return id;
+  }
+
+  async updateShape(id, data) {
+    console.log('updateShape', id);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const shape = room.shapes.find(s => s.value.id === id);
+    if (!shape) return;
+
+    shape.update({
+      ...shape.value,
+      ...data,
     });
   }
 }

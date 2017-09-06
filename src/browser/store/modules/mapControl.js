@@ -23,5 +23,10 @@ export default {
     zoom: 0,
     mode: 'move',
     selected: null,
+    style: {
+      stroke: 'black',
+      strokeWidth: 1,
+      fill: 'none',
+    },
   },
 };

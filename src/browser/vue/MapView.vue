@@ -1,14 +1,21 @@
 <template lang="pug">
-  div.map-container
+  div.map-container(
+    ref="container"
+    @mousedown="entityCreate"
+    @touchstart="entityCreate"
+  )
     div.map(:style="styles.map")
-      div.layer(:style="styles.background")
-        div.row(v-for="y in map.height", :v-key="y")
+      div.background(:style="styles.background")
+        div.row(
+          v-for="y in map.height"
+          :v-key="y"
+        )
           div.tile.text-xs-center(v-for="x in map.width", :v-key="x") {{x}}-{{y}}
       div.layer
         svg.shape(
           v-for="shape in shapes"
-          :width="shape.width"
-          :height="shape.height"
+          :width="shape.bw"
+          :height="shape.bh"
           :style="shape.style"
           @mousedown="e => entitySelect(e, shape, 'shape')"
           @touchstart="e => entitySelect(e, shape, 'shape')"
@@ -18,6 +25,11 @@
             :cx="shape.radius * 50"
             :cy="shape.radius * 50"
             :r="shape.radius * 50"
+          )
+          rect(
+            v-if="shape.type === 'rect'"
+            :width="shape.width * 50"
+            :height="shape.height * 50"
           )
       div.layer
         div.character.elevation-2(
@@ -33,6 +45,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import Vec2 from '../utilities/Vec2';
+import { align } from '../utilities/entity';
 
 export default {
   computed: {
@@ -44,10 +57,13 @@ export default {
       shapesState: 'shapes',
       charactersState: 'characters',
     }),
+    scale() {
+      return 2 ** this.mapControl.zoom;
+    },
     styles() {
       return {
         map: {
-          transform: `scale(${2 ** this.mapControl.zoom})`,
+          transform: `scale(${this.scale})`,
         },
         background: {
           backgroundImage: `url(${this.map.backgroundImage})`,
@@ -84,17 +100,18 @@ export default {
         } = shape;
 
         const bbHandlers = {
-          circle: ({ radius }) => [radius * 100, radius * 100],
+          circle: ({ radius }) => [radius * 2, radius * 2],
+          rect: ({ width, height }) => [width, height],
         };
         const bbHandler = bbHandlers[type];
-        const [width, height] = bbHandler(shape);
+        const [bw, bh] = bbHandler(shape).map(a => a * 50);
 
         return {
           ...shape,
-          width,
-          height,
+          bw,
+          bh,
           style: {
-            transform: `translate(${(x * 50) - (width / 2)}px, ${(y * 50) - (height / 2)}px)`,
+            transform: `translate(${(x * 50) - (bw / 2)}px, ${(y * 50) - (bh / 2)}px)`,
             fill: fill || 'none',
             stroke: stroke || 'none',
             strokeWidth: strokeWidth || null,
@@ -107,24 +124,36 @@ export default {
     ...mapActions([
       'alignCharacter',
       'alignShape',
+      'createShape',
       'moveCharacter',
       'moveShape',
+      'updateShape',
     ]),
     ...mapMutations([
       'selectEntity',
       'deselectEntity',
     ]),
-    getEntityPos(e) {
+    page2map(e) {
       const {
-        offset,
-        startPos,
-      } = this.mapControl.selected;
+        touches,
+      } = e;
 
-      return Vec2.getScreen(e)
-        .sub(offset)
-        .div(50)
-        .div(2 ** this.mapControl.zoom)
-        .add(startPos);
+      if (touches && touches[0]) return this.page2map(touches[0]);
+
+      const {
+        pageX,
+        pageY,
+      } = e;
+      const {
+        scrollLeft,
+        scrollTop,
+      } = this.$refs.container;
+
+      const s = this.scale * 50;
+      return new Vec2(
+        ((pageX + scrollLeft) / s) - 2,
+        ((pageY + (scrollTop - 56)) / s) - 2, // 56 = titlebar height
+      );
     },
     entitySelect(e, entity, type) {
       if (this.mapControl.mode !== 'move') return;
@@ -132,16 +161,52 @@ export default {
       e.preventDefault();
 
       const {
-        id,
-        x, y,
+        id, x, y,
       } = entity;
 
       this.selectEntity({
         id,
         type,
-        offset: Vec2.getScreen(e),
-        startPos: new Vec2(x, y),
+        offset: this.page2map(e).sub(new Vec2(x, y)),
       });
+    },
+    entityCreate(e) {
+      const {
+        mode,
+        style,
+      } = this.mapControl;
+      if (mode === 'move') return;
+
+      const pos = this.page2map(e);
+
+      const {
+        width,
+        height,
+      } = this.map;
+      if (pos[0] < 0 || pos[1] < 0 || pos[0] >= width || pos[1] >= height) {
+        return;
+      }
+
+      e.preventDefault();
+
+      const aligngedPos = pos.map(a => align(a, 0.5)).toObject();
+
+      if (mode === 'circle') {
+        this.createShape({
+          ...style,
+          ...aligngedPos,
+          type: 'circle',
+          radius: 0.5,
+        });
+      } else if (mode === 'rect') {
+        this.createShape({
+          ...style,
+          ...aligngedPos,
+          type: 'rect',
+          w: 1,
+          h: 1,
+        });
+      }
     },
     move(e) {
       const {
@@ -154,9 +219,11 @@ export default {
         const {
           id,
           type,
+          offset,
         } = selected;
 
-        const pos = this.getEntityPos(e).toObject();
+        const pos = this.page2map(e).sub(offset).toObject();
+
         if (type === 'shape') {
           this.moveShape({
             ...pos,
@@ -167,6 +234,23 @@ export default {
             ...pos,
             id,
           });
+        }
+      } else {
+        const { id } = selected;
+        const shape = this.shapes.find(s => s.id === id);
+        if (!shape) return;
+        if (mode === 'circle') {
+          const { x, y } = shape;
+          const radius = Math.max(align(this.page2map(e).sub(new Vec2(x, y)).len()), 0.5);
+
+          this.updateShape({ id, radius });
+        } else if (mode === 'rect') {
+          const { x, y } = shape;
+          const [width, height] = this.page2map(e)
+            .sub(new Vec2(x, y))
+            .map(a => Math.max(align(Math.abs(a) + 1, 1), 1)).v;
+
+          this.updateShape({ id, width, height });
         }
       }
     },
@@ -188,9 +272,9 @@ export default {
         } else if (type === 'character') {
           this.alignCharacter(id);
         }
-
-        this.deselectEntity();
       }
+
+      this.deselectEntity();
     },
   },
   created() {
@@ -225,8 +309,9 @@ export default {
   user-select none
   position absolute
   transition transform 0.4s ease-in-out
+  transform-origin top left
 
-  .layer
+  .background
     background-origin content-box
     background-size 100% 100%
     padding 100px
@@ -268,4 +353,11 @@ export default {
       text-overflow ellipsis
       white-space nowrap
       overflow hidden
+
+  .editor
+    position absolute
+    top 100px
+    left 100px
+    right 100px
+    bottom 100px
 </style>

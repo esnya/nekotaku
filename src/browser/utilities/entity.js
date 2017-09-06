@@ -1,5 +1,5 @@
-export function align(n) {
-  return Math.round(n * 2) / 2;
+export function align(n, step = 0.5) {
+  return Math.round(n / step) * step;
 }
 
 export function limit(n, max) {

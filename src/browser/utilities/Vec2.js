@@ -16,12 +16,39 @@ export default class Vec2 {
     );
   }
 
+  static getLayer(e) {
+    const {
+      touches,
+      layerX,
+      layerY,
+    } = e;
+
+    if (touches && touches.length >= 1) {
+      return Vec2.getLayer(touches[0]);
+    }
+
+    return new Vec2(
+      layerX,
+      layerY,
+    );
+  }
+
+  static getOffset(e: HTMLElement) {
+    return new Vec2(
+      e.offsetLeft,
+      e.offsetTop,
+    );
+  }
+
   constructor(x, y) {
     this.v = [x, y];
   }
 
   map(handler) {
     return new Vec2(...this.v.map(handler));
+  }
+  reduce(...args) {
+    return this.v.reduce(...args);
   }
   add(v) {
     if (!(v instanceof Vec2)) return this.add(new Vec2(v, v));
@@ -38,6 +65,9 @@ export default class Vec2 {
   div(v) {
     if (!(v instanceof Vec2)) return this.div(new Vec2(v, v));
     return this.map((a, i) => a / v.v[i]);
+  }
+  len() {
+    return Math.sqrt(this.reduce((a, b) => a + (b ** 2), 0));
   }
 
   toObject() {
