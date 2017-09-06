@@ -6,7 +6,7 @@
           v-for="(c, name) in palette"
           :key="name"
           :outline="color !== name"
-          :style="{ backgroundColor: colorValue, borderColor: colorValue }"
+          :style="{ backgroundColor: get(name), borderColor: get(name) }"
           @click="updateColor(name)"
         )
     v-divider(:style="{ backgroundColor: colorValue, boxShadow }")
