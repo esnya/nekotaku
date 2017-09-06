@@ -1,3 +1,5 @@
+import Palette from 'google-material-color';
+
 export default {
   characters: [
     {
@@ -52,9 +54,10 @@ export default {
       x: 2,
       y: 2,
       radius: 1.5,
-      fill: 'rgba(255, 0, 0, 0.25)',
+      fill: Palette.get('Red'),
+      fillOpacity: 0.25,
       strokeWidth: 2,
-      stroke: 'red',
+      stroke: Palette.get('Red'),
     },
   ],
   map: {
@@ -65,7 +68,7 @@ export default {
   messages: [
     {
       id: '01',
-      color: 'blue',
+      color: Palette.get('Blue'),
       name: 'ありす',
       face: 'default',
       body: [
@@ -78,7 +81,7 @@ export default {
     },
     {
       id: '02',
-      color: 'pink',
+      color: Palette.get('Pink'),
       name: 'ぼぶ',
       face: 'default',
       body: [

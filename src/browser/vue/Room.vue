@@ -13,13 +13,13 @@
       :class="{ 'neko-flat': roomTab !== '1' }"
       :value="true"
     )
-      v-btn.teal--text(flat, value="0")
+      v-btn(flat, primary, value="0")
         span チャット
         v-icon mdi-forum
-      v-btn.teal--text(flat, value="1")
+      v-btn(flat, primary, value="1")
         span キャラクター
         v-icon mdi-account-multiple
-      v-btn.teal--text(flat, value="2")
+      v-btn(flat, primary, value="2")
         span マップ
         v-icon mdi-map-marker-radius
   loading(v-else)

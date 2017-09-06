@@ -18,15 +18,23 @@ export default {
     deselectEntity(state) {
       state.selected = null;
     },
+    updateMapStyle(state, { key, value }) {
+      state.style = {
+        ...state.style,
+        [key]: value,
+      };
+    },
   },
   state: {
     zoom: 0,
     mode: 'move',
     selected: null,
     style: {
-      stroke: 'red',
+      stroke: ['Red', '500'],
+      strokeOpacity: 1.0,
       strokeWidth: 2,
-      fill: 'none',
+      fill: ['Red', '500'],
+      fillOpacity: 0.5,
     },
   },
 };

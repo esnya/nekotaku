@@ -5,52 +5,68 @@
         v-btn.neko-fixed-width(
           v-for="(c, name) in palette"
           :key="name"
-          :outline="colorName !== name"
-          :style="{ backgroundColor: c['500'], borderColor: c['500'] }"
-          @click="colorName = name;"
+          :outline="color !== name"
+          :style="{ backgroundColor: colorValue, borderColor: colorValue }"
+          @click="updateColor(name)"
         )
-    v-divider(:style="{ backgroundColor: color, boxShadow }")
+    v-divider(:style="{ backgroundColor: colorValue, boxShadow }")
     .neko-flex-row.neko-scroll
       div
         v-btn.neko-fixed-width(
-          :outline="brightness !== '500'"
-          :style="{ backgroundColor: color500, borderColor: color500 }"
-          @click="brightness = '500'"
+          :outline="shade !== '500'"
+          :style="{ backgroundColor: colorValue500, borderColor: colorValue500 }"
+          @click="updateShade('500')"
         )
         v-btn.neko-fixed-width(
-          v-for="(value, name) in palette[colorName]"
+          v-for="(value, name) in palette[color]"
           :key="name"
-          :outline="brightness !== name"
+          :outline="shade !== name"
           :style="{ backgroundColor: value, borderColor: value }"
-          @click="brightness = name"
+          @click="updateShade(name)"
         )
 </template>
 
 <script>
-import { palette } from 'google-material-color';
+import Palette from 'google-material-color';
 
 export default {
   computed: {
     color() {
-      return palette[this.colorName][this.brightness];
+      return this.value[0];
     },
-    color500() {
-      return palette[this.colorName]['500'];
+    shade() {
+      return this.value[1];
+    },
+    colorValue() {
+      return this.get(...this.value);
+    },
+    colorValue500() {
+      return this.get(this.color);
     },
     border() {
-      return `1px solid ${this.color}`;
+      return `1px solid ${this.colorValue}`;
     },
     boxShadow() {
-      return `0 0 2px 0px ${this.color}`;
+      return `0 0 2px 0px ${this.colorValue}`;
     },
   },
   data() {
     return {
-      palette,
-      brightness: '500',
-      colorName: 'Red',
+      palette: Palette.palette,
     };
   },
+  methods: {
+    get: Palette.get.bind(Palette),
+    updateColor(color) {
+      this.$emit('input', [color, this.value[1]]);
+    },
+    updateShade(shade) {
+      this.$emit('input', [this.value[0], shade]);
+    },
+  },
+  props: [
+    'value',
+  ],
 };
 </script>
 

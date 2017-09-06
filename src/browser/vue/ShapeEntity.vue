@@ -29,7 +29,9 @@ export default {
       const {
         x, y,
         fill,
+        fillOpacity,
         stroke,
+        strokeOpacity,
         strokeWidth,
       } = this.shape;
 
@@ -40,7 +42,9 @@ export default {
           strokeWidth: 8,
         } : {
           fill: fill || 'none',
+          fillOpacity,
           stroke: stroke || 'none',
+          strokeOpacity,
           strokeWidth: strokeWidth || null,
         }),
         transform: `translate(${x * 50}px, ${y * 50}px)`,

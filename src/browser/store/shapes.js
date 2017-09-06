@@ -1,3 +1,4 @@
+import Palette from 'google-material-color';
 import { align, limit } from '../utilities/entity';
 import backend from '../backend';
 import listStore from './listStore';
@@ -21,8 +22,12 @@ export default {
       const { width, height } = state.map;
       await backend.moveShape(id, limit(x, width), limit(y, height), Date.now());
     },
-    async createShape({ commit }, { offset, ...shape }) {
-      const id = await backend.createShape(shape);
+    async createShape({ commit }, { offset, stroke, fill, ...shape }) {
+      const id = await backend.createShape({
+        ...shape,
+        stroke: stroke && Palette.get(...stroke),
+        fill: fill && Palette.get(...fill),
+      });
 
       commit('selectEntity', {
         id,
