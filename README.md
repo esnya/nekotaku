@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/travis/ukatama/nekotaku/master.svg?style=flat-square)](https://travis-ci.org/ukatama/nekotaku)
 [![Coverage Status](https://img.shields.io/coveralls/ukatama/nekotaku.svg?style=flat-square)](https://coveralls.io/github/ukatama/nekotaku)
 [![Dependencies](https://img.shields.io/david/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku)
-[![DevDependencies](https://img.shields.io/david/dev/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku#info=devDependencies&view=list)
+[![DevDependencies](https://img.shields.io/david/dev/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku?type=dev)
 
 **!!WIP!!** モバイルフレンドリーなオンラインセッションつーる開発中。
 
