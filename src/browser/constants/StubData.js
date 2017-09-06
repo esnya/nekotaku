@@ -164,7 +164,7 @@ export default {
   rooms: [
     {
       id: '-room01',
-      title: '部屋01',
+      title: '卓01',
       dice: 'SwordWorld2_0',
       players: 3,
       visitors: 1,
@@ -172,7 +172,7 @@ export default {
     },
     {
       id: '-room02',
-      title: '部屋02',
+      title: '卓02',
       dice: 'SwordWorld2_0',
       players: 3,
       visitors: 0,
@@ -180,7 +180,7 @@ export default {
     },
     {
       id: '-room03',
-      title: '部屋03',
+      title: '卓03',
       dice: 'Cthulhu7th',
       players: 3,
       visitors: 0,
