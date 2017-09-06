@@ -1,7 +1,7 @@
 <template lang="pug">
   .chat
     .chat-flex(data-scrollable)
-      v-container.pt-2.pb-0
+      v-container.pt-2.chat-container
         message-list
     portrait-panel
     chat-control
@@ -34,4 +34,7 @@ export default {
   .chat-flex
     flex: 1 1 0;
     overflow: auto;
+
+    .chat-container
+      padding-bottom: 50%;
 </style>

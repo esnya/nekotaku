@@ -113,7 +113,7 @@ export default {
 
 <style lang="stylus" scoped>
 .room
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -142,6 +142,5 @@ export default {
 
   .chat-container
     height: 100%;
-    width: 100vw;
+    width: 100%;
 </style>
-

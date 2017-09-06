@@ -1,5 +1,6 @@
 <template lang="pug">
   v-card.map-control
+    v-spacer
     v-btn(icon, @click="addMapZoom(0.1)")
       v-icon zoom_in
     v-btn(icon, @click="addMapZoom(-0.1)")
@@ -19,6 +20,7 @@
     div.vertical-divider
     v-btn(icon)
       v-icon palette
+    v-spacer
 </template>
 
 <script>
@@ -47,7 +49,6 @@ export default {
   overflow: auto;
   white-space: nowrap;
   display: flex;
-  justify-content: center;
 
   > *
     flex: 0 0 auto;

@@ -1,9 +1,10 @@
 <template lang="pug">
-  div
+  div.lobby
     v-toolbar.primary(dark)
       img(src="/img/nekokoro32.png")
       v-toolbar-title ねこたく
-    room-list
+    .lobby-flex
+      room-list
     room-create-dialog
 </template>
 
@@ -29,3 +30,19 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus" scoped>
+.lobby
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  > *
+    flex: 0 0 auto;
+
+  .lobby-flex
+    flex: 1 1 0;
+    overflow: auto;
+</style>
