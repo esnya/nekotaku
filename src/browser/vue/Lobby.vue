@@ -1,11 +1,11 @@
 <template lang="pug">
-  div.lobby
+  div.neko-flex-container
     v-toolbar.primary(dark)
       img(src="/img/nekokoro32.png")
       v-toolbar-title ねこたく
-    .lobby-flex
-      room-list
-    room-create-dialog
+    .neko-flex
+        room-list
+    room-create-dialog.neko-fab
 </template>
 
 <script>

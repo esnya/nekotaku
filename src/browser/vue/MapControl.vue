@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.map-control
+  v-card.neko-flex-row.neko-scroll
     v-spacer
     v-btn(icon, @click="addMapZoom(0.1)")
       v-icon zoom_in
@@ -45,18 +45,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.map-control
-  overflow: auto;
-  white-space: nowrap;
-  display: flex;
-
-  > *
-    flex: 0 0 auto;
+// .neko-container
+//   overflow auto
 
 .vertical-divider
-  position: relative;
-  top: 8px;
-  height: 24px;
-  display: inline-block;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  position relative
+  top 8px
+  height 24px
+  display inline-block
+  border-right 1px solid rgba(0, 0, 0, 0.12)
 </style>

@@ -1,10 +1,10 @@
 <template lang="pug">
-  .chat
-    .chat-flex(data-scrollable)
-      v-container.pt-2.chat-container
-        message-list
+  .neko-flex-container
+    .neko-flex
+      .neko-scroll
+        message-list.message-list
     portrait-panel
-    chat-control
+    chat-control.control
 </template>
 
 <script>
@@ -22,19 +22,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.chat
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: 100%;
+  .message-list
+    padding-top: 42px;
+    padding-bottom: 50vw;
 
-  > *
-    flex: 0 0 auto;
-
-  .chat-flex
-    flex: 1 1 0;
-    overflow: auto;
-
-    .chat-container
-      padding-bottom: 50%;
+  .control
+    z-index 5
 </style>

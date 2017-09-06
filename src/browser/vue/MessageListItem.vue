@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { inOutSign } from 'ease-component';
+import scroll from 'scroll';
 import FromNow from './FromNow.vue';
 import MessageBody from './MessageBody.vue';
 
@@ -32,8 +34,16 @@ export default {
   ],
   mounted() {
     const item = this.$refs.root;
-    const scrollable = item.closest('[data-scrollable]');
-    scrollable.scrollTop += item.offsetHeight + 8;
+    const scrollable = item.closest('.neko-scroll');
+    const prev = item.previousElementSibling;
+
+    if (prev && prev.offsetTop < scrollable.scrollTop + scrollable.offsetHeight) {
+      const scrollTo = (item.offsetTop + item.offsetHeight + 8) - scrollable.offsetHeight;
+
+      if (scrollTo > scrollable.scrollTop) {
+        scroll.top(scrollable, scrollTo, { duration: 400, ease: inOutSign });
+      }
+    }
   },
 };
 </script>

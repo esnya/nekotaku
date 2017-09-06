@@ -1,18 +1,18 @@
 <template lang="pug">
-  div.character-list-container
-    .character-table-container.mt-5.pb-5
+  .neko-container
+    .neko-scroll.neko-fill
       v-data-table(
         :headers="headers"
         :items="characters"
         hide-actions
-      ).character-table.elevation-1
+      ).mt-5.mb-6.elevation-1
         template(slot="items", scope="props")
             td.pa-0.td-edit
               character-edit-dialog(:character="props.item")
             td {{props.item.name}}
             td.text-xs-center {{props.item.initiative}}
             td.text-xs-center(v-for="(attribute, index) in room.characterAttributes") {{props.item.attributes[index]}}
-    .character-add
+    .neko-fab
       character-create-dialog
 </template>
 
@@ -71,24 +71,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.character-list-container
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .character-table-container
-    flex: 1 1 0;
-    overflow: auto;
-
-  .character-add
-    flex: 0 0 0;
-    position: relative;
+.mb-6
+  margin-bottom 96px
 
 .td-edit
-  width: 32px;
+  width 32px
 
   button
-    margin-right: 0;
+    margin-right 0
 </style>

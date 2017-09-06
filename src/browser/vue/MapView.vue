@@ -10,8 +10,8 @@
           :width="shape.width"
           :height="shape.height"
           :style="shape.style"
-          @mousedown.stop.prevent="e => entitySelect(e, shape, 'shape')"
-          @touchstart.stop.prevent="e => entitySelect(e, shape, 'shape')"
+          @mousedown.prevent="e => entitySelect(e, shape, 'shape')"
+          @touchstart.prevent="e => entitySelect(e, shape, 'shape')"
         )
           circle(
             v-if="shape.type === 'circle'"
@@ -24,65 +24,15 @@
           v-for="character in characters"
           v-tooltip:bottom="{html:character.name}"
           :style="character.style"
-          @mousedown.stop.prevent="e => entitySelect(e, character, 'character')"
-          @touchstart.stop.prevent="e => entitySelect(e, character, 'character')"
+          @mousedown.prevent="e => entitySelect(e, character, 'character')"
+          @touchstart.prevent="e => entitySelect(e, character, 'character')"
         )
           div.name.text-xs-center.caption {{character.name}}
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-
-class Vec2 {
-  static getScreen(e) {
-    const {
-      touches,
-      screenX,
-      screenY,
-    } = e;
-
-    if (touches && touches.length >= 1) {
-      return Vec2.getScreen(touches[0]);
-    }
-
-    return new Vec2(
-      screenX,
-      screenY,
-    );
-  }
-
-  constructor(x, y) {
-    this.v = [x, y];
-  }
-
-  map(handler) {
-    return new Vec2(...this.v.map(handler));
-  }
-  add(v) {
-    if (!(v instanceof Vec2)) return this.add(new Vec2(v, v));
-    return this.map((a, i) => a + v.v[i]);
-  }
-  sub(v) {
-    if (!(v instanceof Vec2)) return this.sub(new Vec2(v, v));
-    return this.map((a, i) => a - v.v[i]);
-  }
-  mul(v) {
-    if (!(v instanceof Vec2)) return this.mul(new Vec2(v, v));
-    return this.map((a, i) => a * v.v[i]);
-  }
-  div(v) {
-    if (!(v instanceof Vec2)) return this.div(new Vec2(v, v));
-    return this.map((a, i) => a / v.v[i]);
-  }
-
-  toObject() {
-    const [x, y] = this.v;
-    return { x, y };
-  }
-  toString() {
-    return `Vec2(${this.v.join(',')})`;
-  }
-}
+import Vec2 from '../utilities/Vec2';
 
 export default {
   computed: {
@@ -269,56 +219,56 @@ export default {
 
 <style lang="stylus" scoped>
 .map-container
-  overflow: scroll;
-  position: relative;
-  height: 100%;
+  overflow scroll
+  position relative
+  height 100%
 
 .map
-  position: absolute;
-  transition: transform 0.4s ease-in-out;
+  position absolute
+  transition transform 0.4s ease-in-out
 
   .layer
-    background-origin: content-box;
-    background-size: 100% 100%;
-    padding: 100px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
+    background-origin content-box
+    background-size 100% 100%
+    padding 100px
+    position absolute
+    top 0
+    left 0
+    z-index 0
 
   .row
-    white-space: nowrap;
-    height: 50px;
+    white-space nowrap
+    height 50px
 
   .tile
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
-    text-align: center;
+    display inline-block
+    width 50px
+    height 50px
+    border 1px solid black
+    text-align center
 
   .shape
-    position: absolute;
-    top: 100px;
-    left: 100px;
+    position absolute
+    top 100px
+    left 100px
 
   .character
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.5);
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content flex-end;
-    border: 1px solid black;
+    position absolute
+    top 100px
+    left 100px
+    width 50px
+    height 50px
+    background-color rgba(255, 255, 255, 0.5)
+    background-size cover
+    display flex
+    flex-direction column
+    align-items stretch
+    justify-content flex-end
+    border 1px solid black
 
     .name
-      background-color: rgba(255, 255, 255, 0.5);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      background-color rgba(255, 255, 255, 0.5)
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
 </style>

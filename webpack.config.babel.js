@@ -38,8 +38,19 @@ export default {
         ],
       },
       {
+        test: /\.styl$/,
+        loader: [
+          'style-loader',
+          'css-loader',
+          'stylus-loader',
+        ],
+      },
+      {
         test: /\.js$/,
-        loader: 'babel-loader!eslint-loader',
+        loader: [
+          'babel-loader',
+          'eslint-loader',
+        ],
         exclude: /node_modules/,
       },
       {
@@ -47,7 +58,10 @@ export default {
         loader: 'vue-loader',
         options: {
           loaders: {
-            js: 'babel-loader!eslint-loader',
+            js: [
+              'babel-loader',
+              'eslint-loader',
+            ],
           },
         },
       },

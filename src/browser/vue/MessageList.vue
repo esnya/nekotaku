@@ -1,7 +1,10 @@
 <template lang="pug">
-  div.pt-4
-    div(v-for="message in messages", :key="message.id")
-      message-list-item(:message="message")
+  v-container
+    message-list-item(
+      v-for="message in messages",
+      :key="message.id"
+      :message="message"
+    )
 </template>
 
 <script>

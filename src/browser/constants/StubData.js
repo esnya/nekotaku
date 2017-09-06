@@ -160,7 +160,7 @@ export default {
   ],
   rooms: [
     {
-      id: 'room01',
+      id: '-room01',
       title: '部屋01',
       dice: 'SwordWorld2_0',
       players: 3,
@@ -168,7 +168,7 @@ export default {
       characterAttributes: ['HP', 'MP'],
     },
     {
-      id: 'room02',
+      id: '-room02',
       title: '部屋02',
       dice: 'SwordWorld2_0',
       players: 3,
@@ -176,7 +176,7 @@ export default {
       characterAttributes: ['HP', 'MP'],
     },
     {
-      id: 'room03',
+      id: '-room03',
       title: '部屋03',
       dice: 'Cthulhu7th',
       players: 3,

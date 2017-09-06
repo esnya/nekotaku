@@ -10,6 +10,8 @@ import Loading from './vue/Loading.vue';
 import router from './router';
 import store from './store';
 
+import './style.styl';
+
 async function main() {
   moment.locale('ja');
 

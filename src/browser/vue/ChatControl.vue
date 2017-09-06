@@ -1,28 +1,27 @@
 <template lang="pug">
   v-card
     v-divider
-    v-card-text.py-1
-      form.chat-form(@submit.prevent="submit")
-        v-menu
-          v-btn.my-0(icon,slot="activator")
-            v-icon keyboard_arrow_up
-          v-list
-            v-list-tile
-              v-list-tile-title ありす
-            v-list-tile
-              v-list-tile-title ぼぶ
-            v-list-tile
-              v-list-tile-title ちゃーりー
-        v-text-field.chat-message(
-          multi-line
-          v-model="body"
-          :label="name"
-          :hide-details="true"
-          :rows="bodyRows"
-          @keypress.enter="enter"
-        )
-        v-btn.my-0.pl-1(icon,primary,dark, @click="submit")
-          v-icon send
+    v-card-text.py-0.neko-flex-row.align-end
+      v-menu
+        v-btn.my-0(icon,slot="activator")
+          v-icon keyboard_arrow_up
+        v-list
+          v-list-tile
+            v-list-tile-title ありす
+          v-list-tile
+            v-list-tile-title ぼぶ
+          v-list-tile
+            v-list-tile-title ちゃーりー
+      v-text-field.neko-flex(
+        multi-line
+        v-model="body"
+        :label="name"
+        :hide-details="true"
+        :rows="bodyRows"
+        @keypress.enter="enter"
+      )
+      v-btn.my-0.pl-1(icon,primary,dark, @click="submit")
+        v-icon send
 </template>
 
 <script>
@@ -66,13 +65,3 @@ export default {
   },
 };
 </script>
-
-
-<style lang="stylus" scoped>
-  .chat-form
-    display: flex;
-    align-items: flex-end;
-
-    .chat-form
-      flex: 1 1 auto;
-</style>

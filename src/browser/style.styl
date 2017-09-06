@@ -1,0 +1,67 @@
+.neko-flex-container
+  width 100%
+  height 100%
+  display flex
+  flex-direction column
+
+  > *
+    flex 0 0 auto
+    position initial  
+
+  > .neko-flex
+    flex 1 1 0
+    overflow hidden
+
+.neko-flex-row
+  display flex
+  flex-direction row
+
+  > *
+    flex 0 0 auto
+
+  > .neko-flex
+    flex 1 1 0
+    overflow hidden
+
+  &.align-end
+    align-items flex-end
+
+.neko-floating
+  position relative
+  height 0
+  z-index 1
+
+.neko-fab
+  position relative
+  height 0
+
+  > *
+    position absolute
+    right 0
+    bottom 0
+
+.neko-relative
+  position relative
+  width 100%
+  height 100%
+
+.neko-scroll
+  max-height 100%
+  overflow auto
+  -webkit-overflow-scrolling touch
+
+  &.neko-fill
+    height 100%
+
+.neko-slide-enter-active, .neko-slide-leave-active
+  transition transform 0.4s ease-in-out
+  position absolute
+  top 0
+  left 0
+  max-width 100vh
+  overflow hidden
+
+.neko-slide-enter
+  transform translate(100%, 0)
+.neko-slide-leave-to
+  transform translate(-100%, 0)

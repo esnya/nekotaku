@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Lobby from './vue/Lobby.vue';
 import Room from './vue/Room.vue';
-import JoinRoom from './vue/JoinRoom.vue';
 
 Vue.use(VueRouter);
 
@@ -16,12 +15,7 @@ export default new VueRouter({
       component: Lobby,
     },
     {
-      path: '/rooms/:id/join',
-      name: 'join-room',
-      component: JoinRoom,
-    },
-    {
-      path: '/rooms/:id',
+      path: '/:id',
       name: 'room',
       component: Room,
     },
