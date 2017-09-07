@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="value")
+  v-dialog(:value="value", @input="v => $emit('input', v)")
     v-card
       v-card-title
         span.headline マップ設定
@@ -19,7 +19,7 @@
           @input="v => updateMap({ key: 'height', value: Number(v) })"
         )
         .neko-flex-row
-          file-input.success(accept="image/*", @input="updateMapBackgroundImage") 背景画像
+          file-input.success(accept="image/*", @input="updateMapBackgroundImage") 背景変更
           v-btn.warning(@click="clearMapBackgroundImage") 背景クリア
       v-card-actions
         v-spacer

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="value")
+  v-dialog(:value="value", @input="v => $emit('input', v)")
     v-card.neko-card(v-if="map")
       v-card-title
         span.headline 描画設定
@@ -23,7 +23,7 @@
         v-slider(v-model="fillOpacity")
       v-card-actions
         v-spacer
-        v-btn.primary(@click="$emit('input', false)") 閉じる
+        v-btn(@click="$emit('input', false)") 閉じる
 </template>
 
 <script>

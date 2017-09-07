@@ -25,7 +25,7 @@
         )
       v-card-actions
         v-spacer
-        v-btn.primary(@click="open = false") 閉じる
+        v-btn(@click="open = false") 閉じる
     v-card(v-else)
       loading
 </template>

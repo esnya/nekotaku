@@ -106,10 +106,3 @@ export default {
   ],
 };
 </script>
-
-<style lang="stylus" scoped>
-.neko-shape
-  .neko-text
-    transform-origin 50% 50%
-</style>
-

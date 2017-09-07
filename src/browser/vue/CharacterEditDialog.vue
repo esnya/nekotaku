@@ -40,7 +40,7 @@
                 v-btn(@click="rdOpen = false") キャンセル
       v-card-actions
         v-spacer
-        v-btn.primary(@click="open = false") 閉じる
+        v-btn(@click="open = false") 閉じる
 </template>
 
 <script>
