@@ -15,6 +15,7 @@ export default {
       initiative: 0,
       x: 2,
       y: 2,
+      z: 0,
     },
     {
       id: '02',
@@ -30,6 +31,7 @@ export default {
       initiative: 3,
       x: 0.5,
       y: 0.5,
+      z: 0,
     },
     {
       id: '03',
@@ -45,6 +47,7 @@ export default {
       initiative: 1,
       x: 3.5,
       y: 3.5,
+      z: 0,
     },
   ],
   shapes: [

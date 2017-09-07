@@ -19,7 +19,7 @@
           @touchstart="e => entitySelect(e, shape, 'shape')"
         )
           shape-entity(:shape="shape")
-          shape-entity(v-if="mapControl.mode === 'move'", :shape="shape", holder)
+          shape-entity(v-if="showHolder", :shape="shape", holder)
       div.layer
         div.character.elevation-2(
           v-for="character in characters"
@@ -85,6 +85,13 @@ export default {
     shapes() {
       return this.shapeState.slice().sort((a, b) => a.z > b.z);
     },
+    showHolder() {
+      const {
+        mode,
+      } = this.mapControl;
+
+      return mode === 'move';
+    },
   },
   methods: {
     ...mapActions([
@@ -140,8 +147,10 @@ export default {
       const {
         mode,
         style,
+        shapeType,
       } = this.mapControl;
-      if (mode === 'move') return;
+
+      if (mode !== 'create') return;
 
       const pos = this.page2map(e);
 
@@ -158,28 +167,28 @@ export default {
       const offset = pos.map(a => align(a, 0.5));
       const alignedPos = offset.toObject();
 
-      if (mode === 'circle') {
+      if (shapeType === 'circle') {
         this.createShape({
           ...style,
           ...alignedPos,
-          type: mode,
+          type: shapeType,
           radius: 0.5,
           offset,
         });
-      } else if (mode === 'line') {
+      } else if (shapeType === 'line') {
         this.createShape({
           ...style,
           ...alignedPos,
-          type: mode,
+          type: shapeType,
           rx: 0,
           ry: 0,
           offset,
         });
-      } else if (mode === 'rect') {
+      } else if (shapeType === 'rect') {
         this.createShape({
           ...style,
-          ...alignedPos,
-          type: mode,
+          ...offset.add(0.5).toObject(),
+          type: shapeType,
           width: 1,
           height: 1,
           offset,
@@ -189,6 +198,7 @@ export default {
     move(e) {
       const {
         mode,
+        shapeType,
         selected,
       } = this.mapControl;
       if (!selected) return;
@@ -213,16 +223,16 @@ export default {
             id,
           });
         }
-      } else {
+      } else if (mode === 'create') {
         const { id, offset } = selected;
         const shape = this.shapes.find(s => s.id === id);
         if (!shape) return;
-        if (mode === 'circle') {
+        if (shapeType === 'circle') {
           const { x, y } = shape;
           const radius = Math.max(align(this.page2map(e).sub(new Vec2(x, y)).len()), 0.5);
 
           this.updateShape({ id, radius });
-        } else if (mode === 'line') {
+        } else if (shapeType === 'line') {
           const size = this.page2map(e).sub(offset).map(a => align(a, 1));
           const pos = offset.add(size.div(2));
           const [rx, ry] = size.v;
@@ -233,8 +243,8 @@ export default {
             ry,
             id,
           });
-        } else if (mode === 'rect') {
-          const size = this.page2map(e).sub(offset).map(a => Math.max(align(Math.abs(a, 1)), 1));
+        } else if (shapeType === 'rect') {
+          const size = this.page2map(e).sub(offset).map(a => Math.max(align(Math.abs(a), 1), 1));
           const pos = offset.add(size.div(2));
 
           this.updateShape({

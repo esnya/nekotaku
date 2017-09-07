@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card
+  v-card.pb-2
     v-divider
     v-card-text.py-0.neko-flex-row.align-end
       v-menu

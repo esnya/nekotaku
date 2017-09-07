@@ -1,55 +1,86 @@
 <template lang="pug">
-  v-card.neko-flex-row.neko-scroll
-    v-spacer
-    v-btn(icon, @click="addMapZoom(0.2)")
-      v-icon zoom_in
-    v-btn(icon, @click="addMapZoom(-0.2)")
-      v-icon zoom_out
-    v-btn(icon, @click="resetMapZoom")
-      v-icon zoom_out_map
-    div.vertical-divider
-    v-btn(icon, @click="setMapMode('move')")
-      v-icon(:primary="mapControl.mode === 'move'") mdi-arrow-all
-    div.vertical-divider
-    map-mode-button(mode="line", :currentMode="mapControl.mode", :onSetMode="setMapMode")
-      line(x1="-12", y1="12", x2="12", y2="-12")
-    map-mode-button(mode="rect", :currentMode="mapControl.mode", :onSetMode="setMapMode")
-      rect(x="-12", y="-12", width="24", height="24")
-    map-mode-button(mode="circle", :currentMode="mapControl.mode", :onSetMode="setMapMode")
-      circle(cx="0", cy="0", r="12")
-    div.vertical-divider
-    v-spacer
-    map-style-dialog
+  v-card.px-0.py-1.neko-flex-row.neko-scroll
+    map-style-dialog(v-model="msdOpen")
+    button-group
+      v-btn(icon, @click="addMapZoom(0.2)")
+        v-icon zoom_in
+      v-btn(icon, @click="addMapZoom(-0.2)")
+        v-icon zoom_out
+      v-btn(icon, @click="resetMapZoom")
+        v-icon zoom_out_map
+    .vertical-divider
+    button-group(toggle, v-model="mode")
+      v-btn(icon, value="move")
+        v-icon mdi-arrow-all
+    .vertical-divider
+    button-group(toggle, v-model="shapeType")
+      v-btn(icon, value="line")
+        svg-icon
+          line(x1="-10", y1="10", x2="10", y2="-10")
+      v-btn(icon, value="rect")
+        svg-icon
+          rect(x="-10", y="-10", width="20", height="20")
+      v-btn(icon, value="circle")
+        svg-icon
+          circle(cx="0", cy="0", r="10")
+    .vertical-divider
+    button-group
+      v-btn(icon, @click.stop="msdOpen = true")
+        v-icon palette
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import MapModeButton from './MapModeButton.vue';
+import ButtonGroup from './ButtonGroup.vue';
 import MapStyleDialog from './MapStyleDialog.vue';
+import SvgIcon from './SvgIcon.vue';
 
 export default {
   components: {
-    MapModeButton,
+    ButtonGroup,
     MapStyleDialog,
+    SvgIcon,
   },
   computed: {
     ...mapState([
       'mapControl',
     ]),
+    mode: {
+      get() {
+        return this.mapControl.mode;
+      },
+      set(mode) {
+        this.setMapMode({ mode, shapeType: null });
+      },
+    },
+    shapeType: {
+      get() {
+        return this.mode === 'create' ? this.mapControl.shapeType : null;
+      },
+      set(shapeType) {
+        this.setMapMode({ mode: 'create', shapeType });
+      },
+    },
   },
   methods: mapMutations([
     'addMapZoom',
     'resetMapZoom',
     'setMapMode',
   ]),
+  data() {
+    return {
+      msdOpen: false,
+    };
+  },
 };
 </script>
 
 <style lang="stylus" scoped>
 .vertical-divider
+  margin 0 8px
   position relative
-  top 8px
-  height 24px
+  top 4px
+  height 28px
   display inline-block
-  border-right 1px solid rgba(0, 0, 0, 0.12)
+  border-right 1px solid rgba(0, 0, 0, 0.45)
 </style>

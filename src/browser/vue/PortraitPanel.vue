@@ -52,7 +52,6 @@ export default {
     background-size: contain;
     transition: all 0.4s ease-in-out;
 
-
 .btn-panel
   position: relative;
   height: 0;

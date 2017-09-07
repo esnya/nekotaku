@@ -8,8 +8,9 @@ export default {
     resetMapZoom(state) {
       state.zoom = 0;
     },
-    setMapMode(state, mode) {
+    setMapMode(state, { mode, shapeType }) {
       state.mode = mode;
+      state.shapeType = shapeType;
       state.selected = null;
     },
     selectEntity(state, selection) {
@@ -28,6 +29,7 @@ export default {
   state: {
     zoom: 0,
     mode: 'move',
+    shapeType: null,
     selected: null,
     style: {
       stroke: ['Red', '500'],

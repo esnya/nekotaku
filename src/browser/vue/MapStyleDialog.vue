@@ -1,7 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="open")
-    v-btn(icon, slot="activator")
-      v-icon palette
+  v-dialog(v-model="value")
     v-card.neko-card(v-if="map")
       v-card-title
         span.headline 描画設定
@@ -25,7 +23,7 @@
         v-slider(v-model="fillOpacity")
       v-card-actions
         v-spacer
-        v-btn.primary(@click="open = false") 閉じる
+        v-btn.primary(@click="$emit('input', false)") 閉じる
 </template>
 
 <script>
@@ -61,12 +59,14 @@ export default {
   data() {
     return {
       map: {},
-      open: false,
     };
   },
   methods: mapMutations([
     'updateMapStyle',
   ]),
+  props: [
+    'value',
+  ],
 };
 </script>
 

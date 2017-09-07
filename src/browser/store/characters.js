@@ -13,6 +13,7 @@ export default {
         },
         x: 0.5,
         y: 0.5,
+        z: Date.now(),
         ...character,
       });
     },
