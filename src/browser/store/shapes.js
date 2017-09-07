@@ -38,5 +38,8 @@ export default {
     async updateShape(context, { id, ...data }) {
       await backend.updateShape(id, data);
     },
+    async removeShape(context, id) {
+      await backend.removeShape(id);
+    },
   },
 };

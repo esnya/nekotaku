@@ -12,6 +12,8 @@
     button-group(toggle, v-model="mode")
       v-btn(icon, value="move")
         v-icon mdi-arrow-all
+      v-btn(icon, value="erase")
+        v-icon mdi-eraser
     .vertical-divider
     button-group(toggle, v-model="shapeType")
       v-btn(icon, value="line")

@@ -90,7 +90,7 @@ export default {
         mode,
       } = this.mapControl;
 
-      return mode === 'move';
+      return mode === 'move' || mode === 'erase';
     },
   },
   methods: {
@@ -100,6 +100,7 @@ export default {
       'createShape',
       'moveCharacter',
       'moveShape',
+      'removeShape',
       'updateShape',
     ]),
     ...mapMutations([
@@ -129,19 +130,27 @@ export default {
       );
     },
     entitySelect(e, entity, type) {
-      if (this.mapControl.mode !== 'move') return;
-
-      e.preventDefault();
-
       const {
-        id, x, y,
-      } = entity;
+        mode,
+      } = this.mapControl;
 
-      this.selectEntity({
-        id,
-        type,
-        offset: this.page2map(e).sub(new Vec2(x, y)),
-      });
+      if (mode === 'move') {
+        e.preventDefault();
+
+        const {
+          id, x, y,
+        } = entity;
+
+        this.selectEntity({
+          id,
+          type,
+          offset: this.page2map(e).sub(new Vec2(x, y)),
+        });
+      } else if (mode === 'erase' && type === 'shape') {
+        e.preventDefault();
+
+        this.removeShape(entity.id);
+      }
     },
     entityCreate(e) {
       const {

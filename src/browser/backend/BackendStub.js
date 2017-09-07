@@ -313,4 +313,13 @@ export default class BackendStub extends Backend {
       ...data,
     });
   }
+
+  async removeShape(id) {
+    console.log('removeShape', id);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    room.shapes.remove(id);
+  }
 }
