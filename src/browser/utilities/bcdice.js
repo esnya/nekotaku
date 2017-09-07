@@ -13,6 +13,11 @@ export function getDiceBotDescByFilename(filename) {
   return DiceBotDescs.find(d => d.filename === filename);
 }
 
+export async function getHelpMessage(dice) {
+  const diceBot = await DiceBotLoader.loadUnknownGame(dice);
+  return diceBot && diceBot.getHelpMessage();
+}
+
 const bcdice = new BCDice();
 bcdice.setCollectRandResult(true);
 let currentDice = null;

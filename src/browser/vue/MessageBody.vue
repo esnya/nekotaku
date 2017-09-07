@@ -13,8 +13,8 @@ export default {
     nodeWithColors() {
       function getColorOpts(node) {
         if (node.type === 'dice') {
-          if (node.text.match(/成功/)) return { classNames: { green: true }, dark: true };
-          else if (node.text.match(/失敗/)) return { classNames: { red: true }, dark: true };
+          if (node.text.match(/成功$/)) return { classNames: { green: true }, dark: true };
+          else if (node.text.match(/失敗$/)) return { classNames: { red: true }, dark: true };
         }
 
         return {};
