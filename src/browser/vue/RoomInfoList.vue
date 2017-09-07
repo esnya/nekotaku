@@ -6,9 +6,9 @@
     v-chip.pl-0.mr-0.light-blue(small)
       v-icon.mx-1(dark) mdi-account-multiple
       span.white--text  {{room.players}}
-    v-chip.pl-0.green(small)
-      v-icon.mx-1(dark) mdi-binoculars
-      span.white--text  {{room.visitors}}
+    //- v-chip.pl-0.green(small)
+    //-   v-icon.mx-1(dark) mdi-binoculars
+    //-   span.white--text  {{room.visitors}}
 </template>
 
 <script>

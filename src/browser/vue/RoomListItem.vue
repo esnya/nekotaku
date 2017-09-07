@@ -8,7 +8,7 @@
       v-spacer
       router-link(:to="{ name: 'room', params: { id: room.id }}")
         v-btn(primary) 参加
-      v-btn(secondary) 見学
+      //- v-btn(secondary) 見学
 </template>
 
 <script>
