@@ -243,6 +243,60 @@ export default class BackendStub extends Backend {
     });
   }
 
+  async updateCharacterIcon(id, file) {
+    console.log('updateCharacterIcon', id);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.find(c => c.value.id === id);
+    if (!character) return;
+
+    this.updateCharacter(id, 'icon', URL.createObjectURL(file));
+  }
+
+  async updateCharacterPortrait(id, key, file) {
+    console.log('updateCharacterPortrait', id, key);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.find(c => c.value.id === id);
+    if (!character) return;
+
+    this.updateCharacter(id, 'portrait', {
+      ...character.value.portrait,
+      [key]: { url: URL.createObjectURL(file) },
+    });
+  }
+
+  async clearCharacterIcon(id) {
+    console.log('clearCharacterIcon', id);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.find(c => c.value.id === id);
+    if (!character) return;
+
+    this.updateCharacter(id, 'icon', null);
+  }
+
+  async clearCharacterPortrait(id, key) {
+    console.log('clearCharacterPoitrait', id, key);
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const character = room.characters.find(c => c.value.id === id);
+    if (!character) return;
+
+    this.updateCharacter(id, 'portrait', {
+      ...character.value.portrait,
+      [key]: null,
+    });
+  }
+
   async removeCharacter(id) {
     console.log('removeCharacter', id);
 

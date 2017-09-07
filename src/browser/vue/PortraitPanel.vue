@@ -21,7 +21,7 @@ export default {
       'portraits',
     ]),
     styles() {
-      return this.portraits.map((url, i) => ({
+      return this.portraits.map(({ url }, i) => ({
         backgroundImage: `url(${url})`,
         transform: `translate(${i * 40}px, ${i * 10}px)`,
         opacity: i === 0 ? 1.0 : 0.5,

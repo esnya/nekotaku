@@ -71,7 +71,7 @@ export default {
           portrait,
         } = character;
 
-        const iconUrl = character ? (icon || portrait.default) : null;
+        const iconUrl = character ? (icon || (portrait.default && portrait.default.url)) : null;
 
         return {
           ...character,

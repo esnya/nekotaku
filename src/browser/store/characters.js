@@ -20,6 +20,18 @@ export default {
     async updateCharacter(context, { id, key, value }) {
       await backend.updateCharacter(id, key, value);
     },
+    async updateCharacterIcon(context, { id, file }) {
+      await backend.updateCharacterIcon(id, file);
+    },
+    async updateCharacterPortrait(context, { id, key, file }) {
+      await backend.updateCharacterPortrait(id, key, file);
+    },
+    async clearCharacterIcon(context, id) {
+      await backend.clearCharacterIcon(id);
+    },
+    async clearCharacterPortrait(context, { id, key }) {
+      await backend.clearCharacterPortrait(id, key);
+    },
     async removeCharacter(context, id) {
       await backend.removeCharacter(id);
     },

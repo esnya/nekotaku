@@ -4,47 +4,88 @@
       v-icon edit
     v-card
       v-card-title
-        .headline {{character.name}}
-      v-card-text
-        v-form(v-model="valid", @submit.prevent="submit")
-          v-text-field(
-            label="名前"
-            v-model="name"
-            required
-          )
-          v-text-field(
-            label="イニシアチブ"
-            type="number"
-            v-model="initiative"
-            required
-          )
-          v-text-field(
-            v-if="room"
-            v-for="(attr, index) in room.characterAttributes"
-            :value="attributes[index]"
-            :key="index"
-            :label="attr"
-            @input="value => updateAttribute(index, value)"
-          )
-      v-card-actions
-        v-spacer
-        v-dialog(v-model="rdOpen")
-          v-btn.red.mr-0(dark, slot="activator", @click="open = false") 削除
-          v-card
+        span.headline {{character.name}}
+      v-divider
+      v-tabs(centered, icons, light, v-model="tab")
+        v-tabs-bar.white
+          v-tabs-slider.primary
+          v-tabs-item(href="#basis")
+            v-icon format_list_bulleted
+            div 基本データ
+          v-tabs-item(href="#icon")
+            v-icon portrait
+            div アイコン
+          v-tabs-item(href="#portrait")
+            v-icon person
+            div 立ち絵
+          v-tabs-item(href="#remove")
+            v-icon(error) delete
+            div.error--text 削除
+        v-divider
+        v-tabs-items
+          v-tabs-content(id="basis")
+            v-card-text
+              v-form(v-model="valid", @submit.prevent="submit")
+                v-text-field(
+                  label="名前"
+                  v-model="name"
+                  required
+                )
+                v-text-field(
+                  label="イニシアチブ"
+                  type="number"
+                  v-model="initiative"
+                  required
+                )
+                v-text-field(
+                  v-if="room"
+                  v-for="(attr, index) in room.characterAttributes"
+                  :value="attributes[index]"
+                  :key="index"
+                  :label="attr"
+                  @input="value => updateAttribute(index, value)"
+                )
+          v-tabs-content(id="icon")
             v-card-title
-              .headline {{character.name}}の削除
-            v-card-text {{character.name}}を削除しますか？
+              span.headline アイコン
+            v-card-media(v-if="character.icon")
+              div
+                img(:src="character.icon")
             v-card-actions
               v-spacer
-                v-btn.red(dark, @click="() => { rdOpen = false; removeCharacter(character.id); }") 削除
-                v-btn(@click="rdOpen = false") キャンセル
-      v-card-actions
-        v-spacer
-        v-btn(@click="open = false") 閉じる
+              file-input.success(@input="file => updateCharacterIcon({ id, file })")
+                span(v-if="character.icon") 変更
+                span(v-else) 登録
+              v-btn.warning(@click="clearCharacterIcon(id)") クリア
+              v-spacer
+          v-tabs-content(id="portrait")
+            v-card-title
+              span.headline 立ち絵
+            v-card-media(v-if="character.portrait.default")
+              div
+                img(:src="character.portrait.default && character.portrait.default.url")
+            v-card-actions
+              v-spacer
+              file-input.success(@input="file => updateCharacterPortrait({ id, key: 'default', file })")
+                span(v-if="character.portrait.default") 変更
+                span(v-else) 登録
+              v-btn.warning(@click="clearCharacterPortrait({ id, key: 'default' })") クリア
+              v-spacer
+          v-tabs-content(id="remove")
+            v-card-text.text-xs-center {{character.name}}を削除しますか？
+            v-card-actions
+              v-spacer
+              v-btn(error, @click="() => { open = false; removeCharacter(character.id); }") 削除
+              v-spacer
+        v-divider
+        v-card-actions
+          v-spacer
+          v-btn(@click="open = false") 閉じる
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import FileInput from './FileInput.vue';
 
 function inputValue(key) {
   return {
@@ -62,10 +103,16 @@ function inputValue(key) {
 }
 
 export default {
+  components: {
+    FileInput,
+  },
   computed: {
     ...mapState([
       'room',
     ]),
+    id() {
+      return this.character.id;
+    },
     name: inputValue('name'),
     initiative: inputValue('initiative'),
     attributes: inputValue('attributes'),
@@ -75,11 +122,16 @@ export default {
       open: false,
       rdOpen: false,
       valid: true,
+      tab: 'basis',
     };
   },
   methods: {
     ...mapActions([
+      'clearCharacterIcon',
+      'clearCharacterPortrait',
       'updateCharacter',
+      'updateCharacterIcon',
+      'updateCharacterPortrait',
       'removeCharacter',
     ]),
     updateAttribute(index, newValue) {

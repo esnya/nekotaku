@@ -54,15 +54,21 @@ export default merge(
           face,
         } = message;
 
-        const character = state.characters.find(c => c.name === name);
-        if (!character) return;
+        const fitered = state.portraits.filter(p => p.name !== name);
 
-        const portrait = character.portrait && character.portrait[face];
-        if (!portrait) return;
+        const character = state.characters.find(c => c.name === name);
+        const portrait = character && character.portrait && character.portrait[face];
+        if (!portrait) {
+          state.portratis = fitered;
+          return;
+        }
 
         state.portraits = [
-          portrait,
-          ...state.portraits.filter(p => p !== portrait),
+          {
+            url: portrait.url,
+            name,
+          },
+          ...fitered,
         ];
       },
     },

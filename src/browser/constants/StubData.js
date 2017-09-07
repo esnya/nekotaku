@@ -6,7 +6,7 @@ export default {
       id: '01',
       name: 'ありす',
       portrait: {
-        default: '/sample/p2a.png',
+        default: { url: '/sample/p2a.png' },
       },
       attributes: [
         '12/12',
@@ -37,7 +37,7 @@ export default {
       id: '03',
       name: 'しゃーりー',
       portrait: {
-        default: '/sample/p1a.png',
+        default: { url: '/sample/p1a.png' },
       },
       icon: '/sample/i1.png',
       attributes: [
