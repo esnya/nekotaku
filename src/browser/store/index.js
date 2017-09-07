@@ -2,6 +2,7 @@
 import { merge } from 'lodash';
 import Vue from 'vue';
 import Vuex from 'vuex';
+import chatControl from './modules/chatControl';
 import mapControl from './modules/mapControl';
 import characters from './characters';
 import map from './map';
@@ -23,6 +24,7 @@ export default new Vuex.Store(merge(
   shapes,
   {
     modules: {
+      chatControl,
       mapControl,
     },
   },
