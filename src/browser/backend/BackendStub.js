@@ -322,4 +322,27 @@ export default class BackendStub extends Backend {
 
     room.shapes.remove(id);
   }
+
+  async updateMap(key, value) {
+    console.log('updateMap', { [key]: value });
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    const map = room.map;
+    map.update({
+      ...map.value,
+      [key]: value,
+    });
+  }
+
+  async updateMapBackgroundImage(image) {
+    console.log('updateMapBackgroundImage');
+    this.updateMap('backgroundImage', URL.createObjectURL(image));
+  }
+
+  async clearMapBackgroundImage() {
+    console.log('clearMapBackgroundImage');
+    this.updateMap('backgroundImage', null);
+  }
 }

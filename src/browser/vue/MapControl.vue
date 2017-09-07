@@ -1,6 +1,7 @@
 <template lang="pug">
   v-card.px-0.py-1.neko-flex-row.neko-scroll
     map-style-dialog(v-model="msdOpen")
+    map-edit-dialog(v-model="medOpen")
     button-group
       v-btn(icon, @click="addMapZoom(0.2)")
         v-icon zoom_in
@@ -31,17 +32,21 @@
     button-group
       v-btn(icon, @click.stop="msdOpen = true")
         v-icon palette
+      v-btn(icon, @click.stop="medOpen = true")
+        v-icon settings
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import ButtonGroup from './ButtonGroup.vue';
+import MapEditDialog from './MapEditDialog.vue';
 import MapStyleDialog from './MapStyleDialog.vue';
 import SvgIcon from './SvgIcon.vue';
 
 export default {
   components: {
     ButtonGroup,
+    MapEditDialog,
     MapStyleDialog,
     SvgIcon,
   },
@@ -74,6 +79,7 @@ export default {
   data() {
     return {
       msdOpen: false,
+      medOpen: false,
     };
   },
 };
