@@ -25,6 +25,8 @@
       v-btn(icon, value="circle")
         svg-icon
           circle(cx="0", cy="0", r="10")
+      v-btn(icon, value="ruler")
+        v-icon mdi-ruler
     .vertical-divider
     button-group
       v-btn(icon, @click.stop="msdOpen = true")

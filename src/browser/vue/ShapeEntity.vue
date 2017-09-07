@@ -1,5 +1,5 @@
 <template lang="pug">
-  g(:style="style")
+  g.neko-shape(:style="style")
     circle(
       v-if="shape.type === 'circle'"
       cx="0"
@@ -20,11 +20,60 @@
       :width="shape.width * 50"
       :height="shape.height * 50"
     )
+    g.neko-text(
+      v-else-if="shape.type === 'ruler'"
+      :style="ruler.gStyle"
+    )
+      text(
+        alignment-baseline="bottom"
+        text-anchor="middle"
+        y="-4"
+        :style="ruler.textStyle"
+      ) {{ruler.length}}
+      line(
+        :x1="-ruler.length * 25"
+        :x2="ruler.length * 25"
+      )
+      line(
+        :x1="-ruler.length * 25"
+        y1="-8"
+        :x2="-ruler.length * 25"
+        y2="8"
+      )
+      line(
+        :x1="ruler.length * 25"
+        y1="-8"
+        :x2="ruler.length * 25"
+        y2="8"
+      )
 </template>
 
 <script>
 export default {
   computed: {
+    ruler() {
+      const {
+        type,
+        rx, ry,
+        stroke,
+        strokeOpacity,
+      } = this.shape;
+
+      if (type !== 'ruler') return {};
+
+      return {
+        gStyle: {
+          transform: `rotate(${-Math.atan2(-ry, rx)}rad)`,
+        },
+        textStyle: {
+          fill: this.holder ? 'none' : stroke,
+          fillOpacity: strokeOpacity,
+          stroke: 'none',
+          strokeWidth: 0,
+        },
+        length: Math.round(Math.sqrt((rx ** 2) + (ry ** 2)) * 100) / 100,
+      };
+    },
     style() {
       const {
         x, y,
@@ -57,3 +106,10 @@ export default {
   ],
 };
 </script>
+
+<style lang="stylus" scoped>
+.neko-shape
+  .neko-text
+    transform-origin 50% 50%
+</style>
+

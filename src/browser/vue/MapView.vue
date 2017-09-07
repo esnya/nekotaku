@@ -184,7 +184,7 @@ export default {
           radius: 0.5,
           offset,
         });
-      } else if (shapeType === 'line') {
+      } else if (shapeType === 'line' || shapeType === 'ruler') {
         this.createShape({
           ...style,
           ...alignedPos,
@@ -241,7 +241,7 @@ export default {
           const radius = Math.max(align(this.page2map(e).sub(new Vec2(x, y)).len()), 0.5);
 
           this.updateShape({ id, radius });
-        } else if (shapeType === 'line') {
+        } else if (shapeType === 'line' || shapeType === 'ruler') {
           const size = this.page2map(e).sub(offset).map(a => align(a, 1));
           const pos = offset.add(size.div(2));
           const [rx, ry] = size.v;
