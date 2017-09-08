@@ -128,10 +128,13 @@ export default class FirebaseBackend extends Backend {
 
     const roomRef = this.rooms.push();
 
+    const now = Date.now();
     await roomRef.set({
       title,
       dice,
       characterAttributes,
+      createdAt: now,
+      updatedAt: now,
     });
 
     await this.ref(`member/${roomRef.key}/${user.uid}`).set(Date.now());
