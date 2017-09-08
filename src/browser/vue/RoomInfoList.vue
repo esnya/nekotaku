@@ -12,10 +12,10 @@
     v-chip.pl-0.mr-0.indigo(small, @click.stop="getHelpMessage")
       v-icon.mx-1(dark) mdi-dice-multiple
       span.white--text {{dice || room.dice}}
-    v-chip.pl-0.mr-0.light-blue(small)
+    v-chip.pl-0.mr-0.green(small)
       v-icon.mx-1(dark) mdi-account-multiple
       span.white--text  {{room.players}}
-    //- v-chip.pl-0.green(small)
+    //- v-chip.pl-0.orange(small)
     //-   v-icon.mx-1(dark) mdi-binoculars
     //-   span.white--text  {{room.visitors}}
 </template>

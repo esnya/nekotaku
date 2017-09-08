@@ -34,7 +34,7 @@ export default {
     headers() {
       const {
         characterAttributes,
-      } = this.room;
+      } = this.room || {};
 
       return [
         {
@@ -53,7 +53,7 @@ export default {
           value: 'initiative',
         },
       ].concat(
-        characterAttributes.map(attribute => ({
+        (characterAttributes || []).map(attribute => ({
           text: attribute,
           align: 'center',
           sortable: false,

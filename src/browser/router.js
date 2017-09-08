@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import * as RouteNames from './constants/route';
 import Lobby from './vue/Lobby.vue';
 import Room from './vue/Room.vue';
 
@@ -11,12 +12,12 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'lobby',
+      name: RouteNames.Lobby,
       component: Lobby,
     },
     {
       path: '/:id',
-      name: 'room',
+      name: RouteNames.Room,
       component: Room,
     },
   ],

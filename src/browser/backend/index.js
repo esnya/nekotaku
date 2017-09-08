@@ -1,5 +1,6 @@
 import config from '../config';
 import stub from './BackendStub';
+import * as JR from './JoinResult';
 
 const {
   backend,
@@ -8,3 +9,5 @@ const {
 export default new ({
   stub,
 })[backend.type](backend);
+
+export const JoinResult = JR;

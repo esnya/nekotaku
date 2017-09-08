@@ -1,28 +1,30 @@
 <template lang="pug">
-  .neko-flex-container(v-if="room")
-    room-title-bar
-    .neko-floating
-      room-info-list.room-info-list(:room="room")
-    .neko-flex
-      .slide(:style="slideStyle")
-          chat-tab
-          character-list
-          map-tab
-    v-bottom-nav.white(
-      :active.sync="roomTab"
-      :class="{ 'neko-flat': roomTab !== '1' }"
-      :value="true"
-    )
-      v-btn(flat, primary, value="0")
-        span チャット
-        v-icon mdi-forum
-      v-btn(flat, primary, value="1")
-        span キャラクター
-        v-icon mdi-account-multiple
-      v-btn(flat, primary, value="2")
-        span マップ
-        v-icon mdi-map-marker-radius
-  loading(v-else)
+  .neko-flex-container
+    room-password-dialog
+    .neko-flex-container(v-if="room")
+      room-title-bar
+      .neko-floating
+        room-info-list.room-info-list(v-if="room", :room="room")
+      .neko-flex
+        .slide(:style="slideStyle")
+            chat-tab
+            character-list
+            map-tab
+      v-bottom-nav.white(
+        :active.sync="roomTab"
+        :class="{ 'neko-flat': roomTab !== '1' }"
+        :value="true"
+      )
+        v-btn(flat, primary, value="0")
+          span チャット
+          v-icon mdi-forum
+        v-btn(flat, primary, value="1")
+          span キャラクター
+          v-icon mdi-account-multiple
+        v-btn(flat, primary, value="2")
+          span マップ
+          v-icon mdi-map-marker-radius
+    loading(v-else)
 </template>
 
 <script>
@@ -32,6 +34,7 @@ import CharacterList from './CharacterList.vue';
 import Loading from './Loading.vue';
 import MapTab from './MapTab.vue';
 import RoomInfoList from './RoomInfoList.vue';
+import RoomPasswordDialog from './RoomPasswordDialog.vue';
 import RoomTitleBar from './RoomTitleBar.vue';
 
 export default {
@@ -41,6 +44,7 @@ export default {
     Loading,
     MapTab,
     RoomInfoList,
+    RoomPasswordDialog,
     RoomTitleBar,
   },
   data() {
@@ -51,11 +55,18 @@ export default {
   computed: {
     ...mapState([
       'room',
+      'roomJoinInfo',
     ]),
+    id() {
+      return this.$route.params.id;
+    },
     slideStyle() {
       return {
         transform: `translate(-${this.roomTab}00%, 0)`,
       };
+    },
+    joinInfo() {
+      return this.roomJoinInfo[this.id];
     },
   },
   methods: mapActions([

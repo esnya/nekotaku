@@ -4,6 +4,7 @@ import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import Backend from './Backend';
+import * as JoinResult from './JoinResult';
 
 class ObjectData extends EventEmitter {
   constructor(value) {
@@ -134,6 +135,18 @@ async function timeout(t, value) {
   });
 }
 
+function roomFilter(room) {
+  const {
+    password,
+    ...others
+  } = room;
+
+  return {
+    ...others,
+    isLocked: Boolean(password),
+  };
+}
+
 export default class BackendStub extends Backend {
   constructor(config) {
     super(config);
@@ -147,7 +160,7 @@ export default class BackendStub extends Backend {
 
   async joinLobby(handler) {
     console.log('joinLobby');
-    this.rooms.on('child_added', value => handler('rooms:add', value));
+    this.rooms.on('child_added', value => handler('rooms:add', roomFilter(value)));
   }
 
   async leaveLobby() {
@@ -171,22 +184,34 @@ export default class BackendStub extends Backend {
     return room.id;
   }
 
-  async joinRoom(id: string, handler) {
+  async joinRoom(id: string, password: ?string, handler) {
     console.log('joinRoom', id);
 
     const room = this.findRoom(id);
-    if (!room) return;
+    if (!room) return { result: JoinResult.NotFound };
+
+    const { title } = room.value;
+    if (room.value.password) {
+      if (!password) {
+        return { result: JoinResult.PasswordRequired, title };
+      } else if (room.value.password !== password) {
+        return { result: JoinResult.IncorrectPassword, title };
+      }
+    }
+
     this.roomId = id;
 
-    room.on('update', value => handler('room:update', value));
+    room.on('update', value => handler('room:update', roomFilter(value)));
     room.children.on('child_added', 'add', handler);
     room.children.on('child_changed', 'change', handler);
     room.children.on('child_removed', 'remove', handler);
     room.children.on('update', 'update', handler);
+
+    return { result: JoinResult.OK, title };
   }
 
   async leaveRoom() {
-    console.log('reaveRoom', this.roomId || null);
+    console.log('leaveRoom', this.roomId || null);
 
     const room = this.findRoom(this.roomId);
     if (!room) return;

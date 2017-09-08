@@ -167,11 +167,12 @@ export default {
   rooms: [
     {
       id: '-room01',
-      title: '卓01',
+      title: '卓01 (パスワード:pass)',
       dice: 'SwordWorld2_0',
       players: 3,
       visitors: 1,
       characterAttributes: ['HP', 'MP'],
+      password: 'pass',
     },
     {
       id: '-room02',

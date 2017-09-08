@@ -9,6 +9,7 @@ import map from './map';
 import messages from './messages';
 import room from './room';
 import rooms from './rooms';
+import roomJoinInfo from './roomJoinInfo';
 import portraits from './portraits';
 import shapes from './shapes';
 
@@ -20,6 +21,7 @@ export default new Vuex.Store(merge(
   messages,
   room,
   rooms,
+  roomJoinInfo,
   portraits,
   shapes,
   {

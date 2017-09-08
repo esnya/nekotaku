@@ -1,4 +1,5 @@
 import backend from '../backend';
+import * as RouteNames from '../constants/route';
 import listStore from './listStore';
 
 export default {
@@ -21,7 +22,7 @@ export default {
       },
     ) {
       const id = await backend.createRoom(title, dice, characterAttributes);
-      router.push({ name: 'room', params: { id } });
+      router.push({ name: RouteNames.Room, params: { id } });
     },
   },
 };

@@ -2,7 +2,10 @@
   div
     v-toolbar.primary.app-bar(dark)
       v-toolbar-side-icon(@click.stop="navOpen = !navOpen")
-      v-toolbar-title {{room.title}}
+      v-toolbar-title.neko-flex-row.neko-title(:class="{ 'ml-0': room.isLocked }")
+        v-avatar.mr-1(v-if="room.isLocked" size="24px")
+          v-icon(dark) lock_outline
+        div {{room.title}}
     v-navigation-drawer(
       absolute
       light
@@ -34,6 +37,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import * as RouteNames from '../constants/route';
 import RoomEditDialog from './RoomEditDialog.vue';
 
 export default {
@@ -51,7 +55,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push({ name: 'lobby' });
+      this.$router.push({ name: RouteNames.Lobby });
     },
     openRoomEditDialog() {
       this.navOpen = false;
@@ -60,3 +64,8 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus" scoped>
+.neko-title
+  align-items center
+</style>
