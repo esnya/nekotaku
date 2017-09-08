@@ -7,12 +7,15 @@ before_script:
 script: yarn build
 after_success: cat ./coverage/lcov.info | coveralls
 before_deploy:
+  - rm -rf public/assets
   - cp public/index.html public/404.html
   - echo $CNAME > public/CNAME
+  - node scripts/genFirebaseConfig.js
+  - NODE_ENV=producion yarn build
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: public
   on:
-    branch: master
+    branch: feature/firebase-deploy
