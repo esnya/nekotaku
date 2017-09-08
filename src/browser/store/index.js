@@ -6,6 +6,7 @@ import chatControl from './modules/chatControl';
 import mapControl from './modules/mapControl';
 import characters from './characters';
 import map from './map';
+import member from './member';
 import messages from './messages';
 import room from './room';
 import rooms from './rooms';
@@ -17,6 +18,7 @@ Vue.use(Vuex);
 export default new Vuex.Store(merge(
   characters,
   map,
+  member,
   messages,
   room,
   rooms,

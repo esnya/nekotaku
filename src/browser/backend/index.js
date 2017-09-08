@@ -1,5 +1,6 @@
 import config from '../config';
 import stub from './BackendStub';
+import firebase from './FirebaseBackend';
 import * as JR from './JoinResult';
 
 const {
@@ -7,6 +8,7 @@ const {
 } = config;
 
 export default new ({
+  firebase,
   stub,
 })[backend.type](backend);
 

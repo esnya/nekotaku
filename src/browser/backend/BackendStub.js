@@ -74,12 +74,12 @@ class ArrayData extends ObjectData {
       this.emit('child_changed', newValue);
     }, true);
 
-    return id;
+    return item;
   }
 
   remove(id) {
     this.value = this.filter(item => item.id !== id);
-    this.emit('child_removed', id);
+    this.emit('child_removed', { id });
   }
 }
 
@@ -168,20 +168,31 @@ export default class BackendStub extends Backend {
     this.rooms.off('child_added');
   }
 
-  async createRoom(title: string, dice: ?string, characterAttributes: string[]) {
+  async createRoom(
+    title: string,
+    dice: string,
+    characterAttributes: string[],
+    mapWidth: number,
+    mapHeight: number,
+  ) {
     console.log('createRoom', title, dice, characterAttributes);
 
-    const room = {
-      id: shortid(),
+    const id = shortid();
+    const room = this.rooms.push(new Room({
+      id,
       title,
-      dice: dice || 'DiceBot',
+      dice,
       characterAttributes: characterAttributes || [],
-    };
-    this.rooms.push(new Room(room));
+    }));
+
+    room.update({
+      width: mapWidth,
+      height: mapHeight,
+    });
 
     await timeout(50);
 
-    return room.id;
+    return id;
   }
 
   async joinRoom(id: string, password: ?string, handler) {
@@ -387,7 +398,7 @@ export default class BackendStub extends Backend {
     const room = this.findRoom(this.roomId);
     if (!room) return null;
 
-    const id = room.shapes.push(shape);
+    const { id } = room.shapes.push(shape);
 
     await timeout(50);
 

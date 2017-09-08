@@ -5,16 +5,14 @@ import listStore from './listStore';
 export default {
   ...listStore('characters'),
   actions: {
-    async createCharacter(context, character) {
+    async createCharacter(context, { name, initiative, attributes }) {
       await backend.createCharacter({
-        icon: null,
-        portrait: {
-          default: null,
-        },
         x: 0.5,
         y: 0.5,
         z: Date.now(),
-        ...character,
+        name,
+        initiative,
+        attributes,
       });
     },
     async updateCharacter(context, { id, key, value }) {

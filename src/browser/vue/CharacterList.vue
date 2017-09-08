@@ -11,7 +11,10 @@
               character-edit-dialog(:character="props.item")
             td {{props.item.name}}
             td.text-xs-center {{props.item.initiative}}
-            td.text-xs-center(v-for="(attribute, index) in room.characterAttributes") {{props.item.attributes[index]}}
+            td.text-xs-center(
+              v-if="room.characterAttributes"
+              v-for="(attribute, index) in room.characterAttributes"
+            ) {{props.item.attributes && props.item.attributes[index]}}
     .neko-fab
       character-create-dialog
 </template>

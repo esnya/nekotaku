@@ -68,10 +68,9 @@ export default {
         const {
           x, y,
           icon,
-          portrait,
         } = character;
 
-        const iconUrl = character ? (icon || (portrait.default && portrait.default.url)) : null;
+        const iconUrl = character ? icon : null;
 
         return {
           ...character,

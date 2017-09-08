@@ -19,15 +19,7 @@ export default {
     },
     upload() {
       const [file] = this.$refs.input.files;
-      if (!file) {
-        this.$emit('input', null);
-      } else {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.$emit('input', new Blob([reader.result], file));
-        };
-        reader.readAsArrayBuffer(file);
-      }
+      this.$emit('input', file);
     },
   },
   props: [

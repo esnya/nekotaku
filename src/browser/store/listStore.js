@@ -20,7 +20,7 @@ export default function listStore(key: string, reverse: boolean = false) {
       [`${key}:change`]: function change(state, item) {
         state[key] = state[key].map(a => (a.id === item.id ? item : a));
       },
-      [`${key}:remove`]: function remove(state, id) {
+      [`${key}:remove`]: function remove(state, { id }) {
         state[key] = state[key].filter(a => a.id !== id);
       },
     },

@@ -21,7 +21,13 @@ export default {
         router,
       },
     ) {
-      const id = await backend.createRoom(title, dice, characterAttributes);
+      const id = await backend.createRoom(
+        title,
+        dice,
+        characterAttributes,
+        10,
+        10,
+      );
       router.push({ name: RouteNames.Room, params: { id } });
     },
   },

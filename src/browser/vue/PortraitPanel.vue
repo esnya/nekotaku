@@ -26,9 +26,7 @@ export default {
       const characterPortraits =
         _(this.characters)
           .map((c) => {
-            const url = c.portrait.default
-              ? c.portrait.default.url
-              : c.portrait.icon;
+            const url = c.portrait && c.portrait.default && c.portrait.default.url;
 
             return [c.name, url];
           })

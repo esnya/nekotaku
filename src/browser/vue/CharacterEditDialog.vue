@@ -38,9 +38,9 @@
                   required
                 )
                 v-text-field(
-                  v-if="room"
+                  v-if="room && room.characterAttributes"
                   v-for="(attr, index) in room.characterAttributes"
-                  :value="attributes[index]"
+                  :value="attributes && attributes[index]"
                   :key="index"
                   :label="attr"
                   @input="value => updateAttribute(index, value)"
@@ -61,13 +61,13 @@
           v-tabs-content(id="portrait")
             v-card-title
               span.headline 立ち絵
-            v-card-media(v-if="character.portrait.default")
+            v-card-media(v-if="character.portrait && character.portrait.default")
               div
-                img(:src="character.portrait.default && character.portrait.default.url")
+                img(:src="character.portrait && character.portrait.default && character.portrait.default.url")
             v-card-actions
               v-spacer
               file-input.success(@input="file => updateCharacterPortrait({ id, key: 'default', file })")
-                span(v-if="character.portrait.default") 変更
+                span(v-if="character.portrait && character.portrait.default") 変更
                 span(v-else) 登録
               v-btn.warning(@click="clearCharacterPortrait({ id, key: 'default' })") クリア
               v-spacer
@@ -137,7 +137,7 @@ export default {
     updateAttribute(index, newValue) {
       if ((typeof newValue) !== 'string') return;
 
-      const attributes = this.attributes.slice();
+      const attributes = (this.attributes || []).slice();
       attributes[index] = newValue;
 
       this.updateCharacter({
