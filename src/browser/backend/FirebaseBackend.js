@@ -124,15 +124,19 @@ export default class FirebaseBackend extends Backend {
     mapWidth: number,
     mapHeight: number,
   ) {
+    const user = await this.getUser();
+
     const roomRef = this.rooms.push();
 
-    roomRef.set({
+    await roomRef.set({
       title,
       dice,
       characterAttributes,
     });
 
-    this.ref(`map/${roomRef.key}`).set({
+    await this.ref(`member/${roomRef.key}/${user.uid}`).set(Date.now());
+
+    await this.ref(`map/${roomRef.key}`).set({
       width: mapWidth,
       height: mapHeight,
     });
