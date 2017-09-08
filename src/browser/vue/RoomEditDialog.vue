@@ -71,7 +71,7 @@ export default {
         return this.value;
       },
       set(newValue) {
-        this.onRequestChangeState(newValue);
+        this.$emit('input', newValue);
       },
     },
     title: genInputValue('title'),
@@ -93,7 +93,6 @@ export default {
   ]),
   props: [
     'value',
-    'onRequestChangeState',
   ],
   created() {
     import('../utilities/bcdice').then(({ getDiceBotDescs }) => {

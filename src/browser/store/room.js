@@ -44,5 +44,11 @@ export default {
     async updateRoom(context, { key, value }) {
       await backend.updateRoom(key, value);
     },
+    async clearRoomPassword() {
+      await backend.clearRoomPassword();
+    },
+    async updateRoomPassword(context, password) {
+      await backend.updateRoomPassword(password);
+    },
   },
 };

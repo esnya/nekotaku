@@ -235,6 +235,22 @@ export default class BackendStub extends Backend {
     });
   }
 
+  async clearRoomPassword() {
+    this.updateRoomPassword(null);
+  }
+
+  async updateRoomPassword(password) {
+    console.log('upadteRoomPassword');
+
+    const room = this.findRoom(this.roomId);
+    if (!room) return;
+
+    room.update({
+      ...room.value,
+      password,
+    });
+  }
+
   async sendMessage(message) {
     console.log('sendMessage', message);
 
