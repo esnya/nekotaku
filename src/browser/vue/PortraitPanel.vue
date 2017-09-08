@@ -13,15 +13,40 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { mapState } from 'vuex';
 
 export default {
   computed: {
     ...mapState([
-      'portraits',
+      'characters',
+      'messages',
     ]),
+    portraits() {
+      const characterPortraits =
+        _(this.characters)
+          .map((c) => {
+            const url = c.portrait.default
+              ? c.portrait.default.url
+              : c.portrait.icon;
+
+            return [c.name, url];
+          })
+          .filter(p => p[1])
+          .fromPairs()
+          .value();
+
+      return _(this.messages.slice())
+        .reverse()
+        .map(m => m.name)
+        .filter(n => n && (n in characterPortraits))
+        .map(n => characterPortraits[n])
+        .uniq()
+        .take(3)
+        .value();
+    },
     styles() {
-      return this.portraits.map(({ url }, i) => ({
+      return this.portraits.map((url, i) => ({
         backgroundImage: `url(${url})`,
         transform: `translate(${i * 40}px, ${i * 10}px)`,
         opacity: i === 0 ? 1.0 : 0.5,

@@ -10,7 +10,6 @@ export default {
         'characters',
         'map',
         'messages',
-        'portraits',
         'shapes',
       ].forEach(key => commit(`${key}:clear`));
 
