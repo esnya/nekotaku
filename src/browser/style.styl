@@ -69,3 +69,13 @@
 
   &-leave-to
     transform translate(-100%, 0)
+
+.neko-field
+  &-enter-active
+  &-leave-active
+    transition transform 0.4s ease-in-out, opacity 0.4s ease-in-out
+
+  &-enter
+  &-leave-to
+    transform translate(100%, 0)
+    opacity 0

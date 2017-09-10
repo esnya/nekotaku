@@ -9,8 +9,8 @@
         v-form(v-model="valid", @submit.prevent="submit")
           v-text-field(
             label="タイトル"
-            v-model="data.title"
-            :rules="[requiredRule]"
+            v-model="title"
+            :rules="[notEmpty]"
             required
           )
           v-select(
@@ -19,19 +19,34 @@
             item-text="gameType"
             item-value="filename"
             :items="diceBotDescs"
-            :rules="[requiredRule]"
-            v-model="data.dice"
+            :rules="[notEmpty]"
+            v-model="dice"
             required
           )
         form(@submit.prevent="submit")
           v-text-field(
+            label="パスワード"
+            placeholder="空欄で公開卓"
+            type="password"
+            v-model="password"
+          )
+          transition(name="neko-field")
+            v-text-field(
+              required
+              label="パスワード確認"
+              type="password"
+              :rules="[notEmpty, passwordConfirmRule]"
+              v-if="password"
+              v-model="passwordConfirm"
+            )
+          v-text-field(
             label="キャラクター属性"
             placeholder="例: HP,MP,SP"
-            v-model="data.characterAttributes"
+            v-model="characterAttributes"
           )
       v-card-actions
         v-spacer
-        v-btn.primary(:disabled="!valid",@click="submit") 作成
+        v-btn.primary(:disabled="!canSubmit",@click="submit") 作成
         v-btn(@click.native="open = false") キャンセル
 </template>
 
@@ -39,38 +54,50 @@
 import { mapActions } from 'vuex';
 
 export default {
+  computed: {
+    canSubmit() {
+      return this.valid && (!this.password || this.password === this.passwordConfirm);
+    },
+  },
   data() {
     return {
       diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       open: false,
       valid: false,
-      data: {
-        title: null,
-        dice: null,
-        characterAttributes: null,
-      },
+      title: null,
+      dice: null,
+      characterAttributes: null,
+      password: null,
+      passwordConfirm: null,
     };
   },
   methods: {
     ...mapActions([
       'createRoom',
     ]),
-    requiredRule(v) {
+    notEmpty(v) {
       return v ? true : '入力して下さい。';
     },
+    passwordConfirmRule(v) {
+      if (!this.password) return true;
+
+      return this.password === v ? true : '確認パスワードが一致しません。';
+    },
     submit() {
-      if (!this.valid) return;
+      if (!this.canSubmit) return;
 
       const {
         title,
         dice,
         characterAttributes,
-      } = this.data;
+        password,
+      } = this;
 
       this.createRoom({
         title,
         dice,
         characterAttributes: characterAttributes ? characterAttributes.split(',') : [],
+        password,
         router: this.$router,
       });
     },
