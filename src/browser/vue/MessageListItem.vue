@@ -12,6 +12,7 @@
 <script>
 import { inOutSign } from 'ease-component';
 import scroll from 'scroll';
+import playNoticeSound from '../utilities/noticeSound';
 import FromNow from './FromNow.vue';
 import MessageBody from './MessageBody.vue';
 
@@ -32,6 +33,11 @@ export default {
   props: [
     'message',
   ],
+  created() {
+    if (Date.now() - this.message.createdAt < 1000) {
+      playNoticeSound();
+    }
+  },
   mounted() {
     const item = this.$refs.root;
     const scrollable = item.closest('.neko-scroll');
