@@ -1,0 +1,49 @@
+{
+  "rules": {
+    "passwords": {
+      "$roomId": {
+        "$uid": {
+          ".write": "auth.uid === $uid && root.child('rooms/' + $roomId).exists()"
+				}
+			}
+		},
+    "members": {
+      "$roomId": {
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        "$uid": {
+          ".write": "auth.uid === $uid && root.child('rooms/' + $roomId).exists() && (!root.child('rooms/' + $roomId + '/passwords').exists() || root.child('rooms/' + $roomId + '/passwords').val() === root.child('passwords/' + $roomId + '/' + $uid).val())"
+        }
+			}
+    },
+    "rooms": {
+      ".read": "auth.uid !== null",
+      "$roomId": {
+        ".write": "auth.uid !== null && (root.child('members/' + $roomId + '/' + auth.uid).exists() || !data.exists())"
+			}
+		},
+    "maps": {
+      "$roomId": {
+        ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
+			}
+		},
+    "characters": {
+      "$roomId": {
+        ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
+			}
+		},
+    "messages": {
+      "$roomId": {
+        ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
+			}
+		},
+    "shapes": {
+      "$roomId": {
+        ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
+			}
+		}
+  }
+}

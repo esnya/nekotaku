@@ -19,3 +19,6 @@ deploy:
   local_dir: public
   on:
     branch: master
+    condition: $TRAVIS_NODE_VERSION = node
+after_deploy:
+  - firebase deploy --project prod --token $FIREBASE_CI_TOKEN

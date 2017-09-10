@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "firebase:deploy": "firebase deploy",
     "flow": "flow check",
     "lint": "eslint src",
     "start": "webpack-dev-server"
@@ -32,6 +33,7 @@
     "eslint-plugin-react": "7.1.0",
     "eslint-plugin-vue-libs": "^1.2.1",
     "file-loader": "^0.11.2",
+    "firebase-tools": "^3.10.1",
     "flow-bin": "^0.54.0",
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
