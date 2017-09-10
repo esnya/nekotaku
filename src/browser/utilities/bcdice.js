@@ -19,7 +19,6 @@ export async function getHelpMessage(dice) {
 }
 
 const bcdice = new BCDice();
-bcdice.setCollectRandResult(true);
 let currentDice = null;
 
 export async function executeDice(line, dice) {
@@ -28,6 +27,7 @@ export async function executeDice(line, dice) {
     await bcdice.setGameByTitle(dice);
   }
 
+  bcdice.setCollectRandResult(true);
   bcdice.setMessage(line);
 
   const [result, secret] = bcdice.diceCommand();
