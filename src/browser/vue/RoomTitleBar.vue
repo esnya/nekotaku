@@ -37,14 +37,21 @@
             v-icon lock_open
           v-list-tile-content
             v-list-tile-title パスワード解除
+        v-list-tile(@click.stop="() => { navOpen = false; rrdOpen = true; }")
+          v-list-tile-action
+            v-icon mdi-settings
+          v-list-tile-content
+            v-list-tile-title 卓削除
+        v-divider
         v-list-tile(@click="logout")
           v-list-tile-action
-            v-icon mdi-logout
+            v-icon title
           v-list-tile-content
             v-list-tile-title ログアウト
     room-edit-dialog(v-model="redOpen")
     room-password-clear-dialog(v-model="rpcdOpen")
     room-password-edit-dialog(v-model="rpedOpen")
+    room-remove-dialog(v-model="rrdOpen")
 </template>
 
 <script>
@@ -53,12 +60,14 @@ import * as RouteNames from '../constants/route';
 import RoomEditDialog from './RoomEditDialog.vue';
 import RoomPasswordClearDialog from './RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from './RoomPasswordEditDialog.vue';
+import RoomRemoveDialog from './RoomRemoveDialog.vue';
 
 export default {
   components: {
     RoomEditDialog,
     RoomPasswordClearDialog,
     RoomPasswordEditDialog,
+    RoomRemoveDialog,
   },
   computed: mapState([
     'room',
@@ -69,15 +78,12 @@ export default {
       redOpen: false,
       rpedOpen: false,
       rpcdOpen: false,
+      rrdOpen: false,
     };
   },
   methods: {
     logout() {
       this.$router.push({ name: RouteNames.Lobby });
-    },
-    openRoomEditDialog() {
-      this.navOpen = false;
-      this.redOpen = true;
     },
   },
 };

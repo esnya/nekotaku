@@ -73,4 +73,7 @@ export default class BackendStrategy {
   async loginRoom(roomId: string, password: ?string): Promise<boolean> {
     throw new Error('Abstract method called');
   }
+  async removeRoom(roomId: string): Promise<void> {
+    throw new Error('Abstract method called');
+  }
 }

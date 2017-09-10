@@ -148,6 +148,9 @@ export default class StubStrategy extends BackendStrategy {
     });
     this.emit(`${type}:update`, this.getObject(type, roomId));
   }
+  async remove(type: string, roomId: string) {
+    this.data[type][roomId] = null;
+  }
   async addChild(type: string, roomId: string, value: any) {
     const id = shortid();
 
@@ -185,8 +188,12 @@ export default class StubStrategy extends BackendStrategy {
     return url;
   }
   async deleteFile(roomId: string, path: string) {
-    const url = this.files[`${roomId}/${path}`];
-    if (url) URL.revokeObjectURL(url);
+    const key = `${roomId}/${path}`;
+    const url = this.files[key];
+
+    this.files[key] = null;
+
+    URL.revokeObjectURL(url);
   }
 
   async createRoom(room: Object) {
@@ -231,5 +238,11 @@ export default class StubStrategy extends BackendStrategy {
     await this.updateRoom(roomId, { players: 1 });
 
     return true;
+  }
+  async removeRoom(roomId: string) {
+    const room = this.findRoom(roomId);
+    this.data.rooms = this.data.rooms.filter(r => r.id !== roomId);
+    this.remove('members', roomId);
+    this.emit('rooms:remove', room);
   }
 }

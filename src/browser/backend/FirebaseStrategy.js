@@ -95,8 +95,8 @@ export default class FirebaseStrategy extends BackendStrategy {
     const dataSnapshot = await this.roomRef(roomId).once('value');
     return dataSnapshot;
   }
-  storageRef(roomId: string, type: string, childId: string): firebase.storeage.Reference {
-    return this.storage.ref(`${roomId}/${type}/${childId}`);
+  storageRef(roomId: string, path: string): firebase.storeage.Reference {
+    return this.storage.ref(`${roomId}/${path}`);
   }
   async getUser(): Promise<firebase.auth.UserCredential> {
     if (this.user) return this.user;
@@ -150,6 +150,10 @@ export default class FirebaseStrategy extends BackendStrategy {
   async update(type: string, roomId: string, value: Object) {
     const ref = this.childRef(type, roomId);
     await ref.update(value);
+  }
+  async remove(type: string, roomId: string) {
+    const ref = this.childRef(type, roomId);
+    await ref.remove();
   }
   async addChild(type: string, roomId: string, value: string) {
     const ref = this.childRef(type, roomId).push();
@@ -211,5 +215,13 @@ export default class FirebaseStrategy extends BackendStrategy {
     } catch (e) {
       return false;
     }
+  }
+  async removeRoom(roomId: string) {
+    const ref = this.roomRef(roomId);
+    await ref.set({ canRemove: true });
+
+    await this.remove('members', roomId);
+    await this.remove('passwords', roomId);
+    await this.remove('rooms', roomId);
   }
 }

@@ -50,5 +50,9 @@ export default {
     async updateRoomPassword(context, password) {
       await backend.updateRoomPassword(password);
     },
+    async removeRoom({ state }, router) {
+      await backend.removeRoom(state.map, state.characters);
+      router.push({ name: RouteNames.Lobby });
+    },
   },
 };

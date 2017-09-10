@@ -66,6 +66,10 @@ export default class Backend {
     const roomId = this.enforceInRoom();
     await this.strategy.update(type, roomId, value);
   }
+  async remove(type: string): Promise<void> {
+    const roomId = this.enforceInRoom();
+    await this.strategy.remove(type, roomId);
+  }
   async addChild(type: string, value: Object): Promise<string> {
     const roomId = this.enforceInRoom();
     const childId = await this.strategy.addChild(type, roomId, value);
@@ -92,6 +96,13 @@ export default class Backend {
   async deleteFile(path: string): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.deleteFile(roomId, path);
+  }
+
+  async clearCharacterFiles(id: string): Promise<void> {
+    await Promise.all([
+      this.clearCharacterIcon(id),
+      this.clearCharacterPortrait(id, 'default'),
+    ]);
   }
 
   /* API Adapters */
@@ -161,6 +172,23 @@ export default class Backend {
 
     return roomId;
   }
+  async removeRoom(map: { backgroundImage: ?string }, characters: { id: string }[]): Promise<void> {
+    const roomId = await this.enforceInRoom();
+
+    await Promise.all([
+      this.deleteFile(FileKeys.mapBackgroundImage),
+      Promise.all(characters.map(({ id }) => this.clearCharacterFiles(id))),
+    ]);
+
+    await Promise.all(
+      [
+        ...Lists,
+        ...Objects,
+      ].filter(type => type !== 'members').map(type => this.remove(type)),
+    );
+
+    await this.strategy.removeRoom(roomId);
+  }
   async updateRoom(key, value): Promise<void> {
     const roomId = await this.enforceInRoom();
     await this.strategy.updateRoom(roomId, { [key]: value });
@@ -197,10 +225,7 @@ export default class Backend {
     await this.changeChild(DataKeys.characters, id, { [key]: value });
   }
   async removeCharacter(id): Promise<void> {
-    await Promise.all([
-      this.clearCharacterIcon(id),
-      this.clearCharacterPortrait(id, 'default'),
-    ]);
+    await this.clearCharacterFiles(id);
     await this.removeChild(DataKeys.characters, id);
   }
   async moveCharacter(id, x, y, z): Promise<void> {
