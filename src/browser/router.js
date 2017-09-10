@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import * as RouteNames from './constants/route';
-import Lobby from './vue/Lobby.vue';
-import Room from './vue/Room.vue';
+import NotFound from './vue/NotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -13,12 +12,17 @@ export default new VueRouter({
     {
       path: '/',
       name: RouteNames.Lobby,
-      component: Lobby,
+      component: () => import('./vue/Lobby.vue'),
+    },
+    {
+      path: '/404',
+      name: RouteNames.NotFound,
+      component: NotFound,
     },
     {
       path: '/:id',
       name: RouteNames.Room,
-      component: Room,
+      component: () => import('./vue/Room.vue'),
     },
   ],
 });
