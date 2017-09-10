@@ -10,11 +10,14 @@
           v-text-field(
             label="名前"
             v-model="name"
+            :rules="[requiredRule]"
             required
           )
+        v-form(@submit.prevent="submit")
           v-text-field(
             label="イニシアチブ"
             type="number"
+            :rules="[requiredRule]"
             v-model="initiative"
             required
           )
@@ -51,6 +54,9 @@ export default {
     ...mapActions([
       'createCharacter',
     ]),
+    requiredRule(v) {
+      return v ? true : '入力して下さい。';
+    },
     submit() {
       const {
         name,

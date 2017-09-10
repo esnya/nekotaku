@@ -8,7 +8,7 @@ export default {
     async joinRoom({ commit, state }, { id, router }) {
       [
         'characters',
-        'map',
+        'maps',
         'messages',
         'shapes',
       ].forEach(key => commit(`${key}:clear`));

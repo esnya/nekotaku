@@ -2,7 +2,7 @@ import backend from '../backend';
 import objectStore from './objectStore';
 
 export default {
-  ...objectStore('map'),
+  ...objectStore('maps', 'map'),
   actions: {
     async updateMap(context, { key, value }) {
       await backend.updateMap(key, value);

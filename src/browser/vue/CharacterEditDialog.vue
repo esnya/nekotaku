@@ -25,7 +25,7 @@
         v-tabs-items
           v-tabs-content(id="basis")
             v-card-text
-              v-form(v-model="valid", @submit.prevent="submit")
+              form(@submit.prevent="submit")
                 v-text-field(
                   label="名前"
                   v-model="name"
@@ -121,7 +121,6 @@ export default {
     return {
       open: false,
       rdOpen: false,
-      valid: true,
       tab: 'basis',
     };
   },

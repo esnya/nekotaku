@@ -10,23 +10,25 @@
           v-text-field(
             label="タイトル"
             v-model="data.title"
-            :rules="titleRules"
+            :rules="[requiredRule]"
             required
           )
           v-select(
-          autocomplete
-          label="ダイス"
-          item-text="gameType"
-          item-value="filename"
-          :items="diceBotDescs"
-          v-model="data.dice"
+            autocomplete
+            label="ダイスの種類"
+            item-text="gameType"
+            item-value="filename"
+            :items="diceBotDescs"
+            :rules="[requiredRule]"
+            v-model="data.dice"
+            required
           )
+        form(@submit.prevent="submit")
           v-text-field(
             label="キャラクター属性"
             placeholder="例: HP,MP,SP"
             v-model="data.characterAttributes"
           )
-          <small>*必須項目</small>
       v-card-actions
         v-spacer
         v-btn.primary(:disabled="!valid",@click="submit") 作成
@@ -42,9 +44,6 @@ export default {
       diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       open: false,
       valid: false,
-      titleRules: [
-        v => !!v || 'タイトルを入力して下さい',
-      ],
       data: {
         title: null,
         dice: null,
@@ -56,6 +55,9 @@ export default {
     ...mapActions([
       'createRoom',
     ]),
+    requiredRule(v) {
+      return v ? true : '入力して下さい。';
+    },
     submit() {
       if (!this.valid) return;
 
@@ -67,7 +69,7 @@ export default {
 
       this.createRoom({
         title,
-        dice: dice || 'DiceBot',
+        dice,
         characterAttributes: characterAttributes ? characterAttributes.split(',') : [],
         router: this.$router,
       });

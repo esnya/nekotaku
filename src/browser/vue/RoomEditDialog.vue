@@ -5,18 +5,18 @@
         span.headline 卓設定
       v-card-text
         v-text-field(
+          required
           label="タイトル"
           v-model="title"
-          :rules="titleRules"
-          required
         )
         v-select(
           autocomplete
-          label="ダイス"
+          required
+          label="ダイスの種類"
           item-text="gameType"
           item-value="filename"
-          :items="diceBotDescs"
           v-model="dice"
+          :items="diceBotDescs"
         )
         v-text-field(
           label="キャラクター属性"
@@ -52,10 +52,6 @@ export default {
   data() {
     return {
       diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
-      valid: true,
-      titleRules: [
-        v => Boolean(v) || 'タイトルを入力して下さい',
-      ],
       mapSizeRules: [
         v => Boolean(v) || '幅・高さを入力して下さい',
         v => Boolean(`${v}`.match(/^[1-9][0-9]*$/)) || '1以上の数値を入力して下さい',

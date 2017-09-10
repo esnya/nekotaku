@@ -47,11 +47,15 @@ export default {
   props: [
     'room',
   ],
-  created() {
-    import('../utilities/bcdice').then(({ getDiceBotDescByFilename }) => {
-      const desc = getDiceBotDescByFilename(this.room.dice);
-      if (desc) this.dice = desc.gameType;
-    });
+  watch: {
+    room({ dice }, { dice: prevDice }) {
+      if (dice === prevDice) return;
+
+      import('../utilities/bcdice').then(({ getDiceBotDescByFilename }) => {
+        const desc = getDiceBotDescByFilename(this.room.dice);
+        this.dice = desc ? desc.gameType : dice;
+      });
+    },
   },
 };
 </script>

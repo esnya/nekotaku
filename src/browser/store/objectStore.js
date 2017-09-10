@@ -1,12 +1,14 @@
 /* eslint no-param-reassign: off, no-useless-computed-key: off */
 
-export default function objectStore(key: string) {
+export default function objectStore(type: string, storeKey: ?string) {
+  const key = storeKey || type;
+
   return {
     mutations: {
-      [`${key}:clear`]: function clear(state) {
+      [`${type}:clear`]: function clear(state) {
         state[key] = null;
       },
-      [`${key}:update`]: function update(state, value) {
+      [`${type}:update`]: function update(state, value) {
         state[key] = value;
       },
     },
