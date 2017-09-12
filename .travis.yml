@@ -10,7 +10,7 @@ before_deploy:
   - rm -rf public/assets
   - cp public/index.html public/404.html
   - echo $CNAME > public/CNAME
-  - node scripts/genFirebaseConfig.js
+  - node scripts/genFirebaseConfig.js > config/config.json
   - NODE_ENV=producion yarn build
 deploy:
   provider: pages

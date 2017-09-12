@@ -1,24 +1,26 @@
 const _ = require('lodash');
 const fs = require('fs');
 
-fs.readFile('config/config.firebase.json', (e, file) => {
+function replace(obj) {
+  return _.mapValues(obj, (value) => {
+    if (Array.isArray(value)) return value;
+    else if (typeof value === 'object') return replace(value);
+    else if (value.match(/^[A-Z][A-Z_0-9]*$/) && value in process.env) return process.env[value];
+
+    return value;
+  });
+}
+
+function onRead(e, file) {
   if (e) {
     console.error(e);
     return process.exit(1);
   }
 
-  const src = JSON.parse(file.toString()).backend;
-  const dst = _.mapValues(src, (value) => {
-    if (value.match(/^FIREBASE_/)) {
-      return process.env[value];
-    }
-    return value;
-  });
+  const src = JSON.parse(file.toString());
+  const dst = replace(src);
 
-  return fs.writeFile('config/config.json', JSON.stringify({ backend: dst }), (e) => {
-    if (e) {
-      console.error(e);
-      return process.exit(2);
-    }
-  });
-});
+  return console.log(JSON.stringify(dst, null, '  '));
+}
+
+fs.readFile('config/config.trial-server.json', onRead);
