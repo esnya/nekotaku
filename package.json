@@ -57,6 +57,7 @@
     "scroll": "^2.0.0",
     "shortid": "^2.2.8",
     "vue": "^2.4.2",
+    "vue-dice-component": "^0.1.2",
     "vue-router": "^2.7.0",
     "vuetify": "^0.15.2",
     "vuex": "^2.4.0",

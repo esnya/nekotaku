@@ -79,3 +79,12 @@
   &-leave-to
     transform translate(100%, 0)
     opacity 0
+
+.neko-fade
+  &-enter-active
+  &-leave-active
+    transition opacity 0.4s ease-in-out, opacity 0.4s ease-in-out
+
+  &-enter
+  &-leave-to
+    opacity 0

@@ -3,18 +3,21 @@
     .neko-flex
       .neko-scroll
         message-list.message-list
+    dice-panel
     portrait-panel
     chat-control.control
 </template>
 
 <script>
 import ChatControl from './ChatControl.vue';
+import DicePanel from './DicePanel.vue';
 import MessageList from './MessageList.vue';
 import PortraitPanel from './PortraitPanel.vue';
 
 export default {
   components: {
     ChatControl,
+    DicePanel,
     MessageList,
     PortraitPanel,
   },
