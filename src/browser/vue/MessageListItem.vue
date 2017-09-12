@@ -47,7 +47,11 @@ export default {
       const scrollTo = (item.offsetTop + item.offsetHeight + 8) - scrollable.offsetHeight;
 
       if (scrollTo > scrollable.scrollTop) {
-        scroll.top(scrollable, scrollTo, { duration: 400, ease: inOutSign });
+        if (Date.now() - this.message.createdAt < 1000) {
+          scroll.top(scrollable, scrollTo, { duration: 400, ease: inOutSign });
+        } else {
+          scrollable.scrollTop = scrollTo;
+        }
       }
     }
   },
