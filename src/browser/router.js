@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import * as RouteNames from './constants/route';
+import Loading from './vue/Loading.vue';
 import NotFound from './vue/NotFound.vue';
 
 Vue.use(VueRouter);
@@ -12,7 +13,10 @@ export default new VueRouter({
     {
       path: '/',
       name: RouteNames.Lobby,
-      component: () => import('./vue/Lobby.vue'),
+      component: () => ({
+        component: import('./vue/Lobby.vue'),
+        loading: Loading,
+      }),
     },
     {
       path: '/404',
@@ -22,7 +26,10 @@ export default new VueRouter({
     {
       path: '/:id',
       name: RouteNames.Room,
-      component: () => import('./vue/Room.vue'),
+      component: () => ({
+        component: import('./vue/Room.vue'),
+        loading: Loading,
+      }),
     },
   ],
 });
