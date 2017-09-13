@@ -5,24 +5,61 @@
 [![Dependencies](https://img.shields.io/david/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku)
 [![DevDependencies](https://img.shields.io/david/dev/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku?type=dev)
 
-**!!WIP!!** モバイルフレンドリーなオンラインセッションつーる開発中。
+モバイルフレンドリーなオンラインセッションツールを目指して開発中。
 
+## できること / Features
+- チャット
+  - ダイスロール
+    - どどんとふ互換
+    - アニメーション表示（ダイス種類による）
+- キャラクター管理
+- マップ管理
+  - グリッド
+  - 背景画像
+  - キャラクターコマ
+  - 図形描画
 
+## 使い方 / How to Use
+### A. お試しサーバー / Trial Server
+https://nekotaku.nekometer.info
 
-## Run UI Preview (with stub backend)
-1. Install dependencies.
+### B. UIプレビュー（データ保存・共有なし） / UI Preview (Without data saving and sharering)
+1. Requirements:
+  - Node.js >= 6.11.3
+  - yarn (install: `npm i -g yarn`)
+
+2. Install dependencies.
   ```bash
   $ yarn
   ```
-
-2. Configure.
+  
+3. Configure.
   ```
   $ cp config/config.stub.json config/config.json
   ```
 
-3. Run webpack-dev-server.
+4. Start dev-server.
   ```bash
   $ yarn start
   ```
 
-4. Open [http://localhost:8080/](http://localhost:8080/) with your browser.
+5. Open http://localhost:8080 with your browser.
+
+### C. Firebase
+1. Requirements:
+  - Node.js >= 6.11.3
+  - yarn
+2. Setup your Firebase project.
+3. Install dependencies. (See B-2)
+4. Configure.
+  ```bash
+  $ cp config/config.firebase.json config/config.json
+  $ vi config/config.json
+  # Write your Firbase API tokens and save.
+  ```
+5. Build. (or run locally to follow B-4, B-5)
+  ```bash
+  $ NODE_ENV=production yarn build
+  ```
+
+6. Deploy `<your-nekitaku-directory>/public` into your server.
