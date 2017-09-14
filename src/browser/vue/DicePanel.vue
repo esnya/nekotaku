@@ -96,6 +96,8 @@ export default {
   top 0
   width 100%
   height 0
+  margin-top -120px
+  padding-right 60px
 
   .dice-container-outer
     display inline-block

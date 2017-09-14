@@ -1,0 +1,57 @@
+.scroll
+  -webkit-overflow-scrolling touch
+  overflow hidden
+
+  &.scroll-x
+    overflow-x auto
+    max-width 100%
+  &.scroll-y
+    overflow-y auto
+    max-height 100%
+  &.scroll-all
+    overflow auto
+    max-width 100%
+    max-height 100%
+
+.no-shadow
+  box-shadow: none
+
+.floating
+  position relative
+  height 0
+  z-index 1
+
+.neko-slide
+  &-enter-active
+  &-leave-active
+    transition transform 0.4s ease-in-out
+    position absolute
+    top 0
+    left 0
+    max-width 100vh
+    overflow hidden
+
+  &-enter
+    transform translate(100%, 0)
+
+  &-leave-to
+    transform translate(-100%, 0)
+
+.neko-field
+  &-enter-active
+  &-leave-active
+    transition transform 0.4s ease-in-out, opacity 0.4s ease-in-out
+
+  &-enter
+  &-leave-to
+    transform translate(100%, 0)
+    opacity 0
+
+.neko-fade
+  &-enter-active
+  &-leave-active
+    transition opacity 0.4s ease-in-out, opacity 0.4s ease-in-out
+
+  &-enter
+  &-leave-to
+    opacity 0

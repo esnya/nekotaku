@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(:value="value", @input="v => $emit('input', v)")
-    v-card.neko-card(v-if="map")
+    v-card(v-scroll="'y'" v-if="map")
       v-card-title
         span.headline 描画設定
       v-card-text
@@ -69,8 +69,3 @@ export default {
   ],
 };
 </script>
-
-<style lang="stylus" scoped>
-.input-group
-  // margin-bottom -22px
-</style>

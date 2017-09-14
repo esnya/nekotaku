@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(v-model="open")
-    v-card
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline {{title}}
       v-card-text.pb-0

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .btn-toggle(ref='group')
+  v-layout(row ref='group')
     slot
 </template>
 

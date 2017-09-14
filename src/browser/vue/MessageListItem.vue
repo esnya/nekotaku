@@ -33,21 +33,21 @@ export default {
   props: [
     'message',
   ],
-  created() {
-    if (Date.now() - this.message.createdAt < 1000) {
-      playNoticeSound();
-    }
-  },
   mounted() {
     const item = this.$refs.root;
-    const scrollable = item.closest('.neko-scroll');
+    const scrollable = item.closest('.scroll');
     const prev = item.previousElementSibling;
 
-    if (prev && prev.offsetTop < scrollable.scrollTop + scrollable.offsetHeight) {
-      const scrollTo = (item.offsetTop + item.offsetHeight + 8) - scrollable.offsetHeight;
+    const isNewMessage = Date.now() - this.message.createdAt < 1000;
+    if (isNewMessage) playNoticeSound();
+
+    const scrollableHeight = scrollable.offsetHeight
+      - (isNewMessage ? 0 : 56); // Why ?
+    if (prev && prev.offsetTop < scrollable.scrollTop + scrollableHeight) {
+      const scrollTo = (item.offsetTop + item.offsetHeight + 8) - scrollableHeight;
 
       if (scrollTo > scrollable.scrollTop) {
-        if (Date.now() - this.message.createdAt < 1000) {
+        if (isNewMessage) {
           scroll.top(scrollable, scrollTo, { duration: 400, ease: inOutSign });
         } else {
           scrollable.scrollTop = scrollTo;

@@ -2,7 +2,7 @@
   v-dialog(v-model="open")
     v-btn(icon, slot="activator")
       v-icon edit
-    v-card
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline {{character.name}}
       v-divider

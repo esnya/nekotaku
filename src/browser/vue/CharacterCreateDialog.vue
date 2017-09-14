@@ -1,8 +1,6 @@
 <template lang="pug">
-  v-dialog(v-model="open")
-    v-btn.primary.add-button(dark, fab, slot="activator")
-      v-icon add
-    v-card
+  v-dialog(:value="value" @input="v => $emit('input', v)")
+    v-card(v-scroll="'y'")
       v-card-title
         .headline キャラクター追加
       v-card-text
@@ -31,7 +29,7 @@
       v-card-actions
         v-spacer
         v-btn.primary(:disabled="!valid",@click="submit") 作成
-        v-btn(@click.native="open = false") キャンセル
+        v-btn(@click.native="close()") キャンセル
 </template>
 
 <script>
@@ -70,15 +68,17 @@ export default {
         attributes: [...attributes],
       });
 
-      this.open = false;
+      this.close();
+    },
+    close() {
+      this.$emit('input', false);
+    },
+  },
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
     },
   },
 };
 </script>
-
-<style lang="stylus" scoped>
-.add-button
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-</style>

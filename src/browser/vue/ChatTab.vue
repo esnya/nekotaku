@@ -1,11 +1,10 @@
 <template lang="pug">
-  .neko-flex-container
-    .neko-flex
-      .neko-scroll
-        message-list.message-list
+  v-layout(column)
+    v-flex.scroll(v-scroll="'y'")
+      message-list.message-list
     dice-panel
     portrait-panel
-    chat-control.control
+    chat-control.controll
 </template>
 
 <script>

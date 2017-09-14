@@ -2,7 +2,7 @@
   v-dialog(v-model="open")
     v-btn.ml-0.mr-1.my-0(icon, slot="activator")
       v-icon mdi-message-settings-variant
-    v-card
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline チャット設定
       v-card-text.pb-0

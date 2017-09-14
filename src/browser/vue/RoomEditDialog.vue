@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(v-model="open")
-    v-card(v-if="room")
+    v-card(v-scroll="'y'" v-if="room")
       v-card-title
         span.headline 卓設定
       v-card-text

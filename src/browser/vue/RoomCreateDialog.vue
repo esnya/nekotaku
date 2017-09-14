@@ -1,8 +1,14 @@
 <template lang="pug">
   v-dialog(v-model="open")
-    v-btn.btn-create-room.primary(fab, dark, slot="activator")
+    v-btn.primary(
+      dark
+      fab
+      fixed
+      bottom right
+      slot="activator"
+    )
       v-icon add
-    v-card
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline 卓作成
       v-card-text

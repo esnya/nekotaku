@@ -14,7 +14,7 @@ export default new VueRouter({
       path: '/',
       name: RouteNames.Lobby,
       component: () => ({
-        component: import('./vue/Lobby.vue'),
+        component: import('./vue/LobbyPage.vue'),
         loading: Loading,
       }),
     },
@@ -27,7 +27,7 @@ export default new VueRouter({
       path: '/:id',
       name: RouteNames.Room,
       component: () => ({
-        component: import('./vue/Room.vue'),
+        component: import('./vue/RoomPage.vue'),
         loading: Loading,
       }),
     },

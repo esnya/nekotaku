@@ -1,22 +1,25 @@
 <template lang="pug">
-  div.neko-flex-container
-    v-toolbar.primary(dark)
+  v-app(v-scroll="'y'")
+    v-toolbar.primary(dark fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title ねこたく
-    .neko-flex
+    main
+      v-container(fluid, :grid-list-md="true")
         room-list
-    room-create-dialog.neko-fab
+      room-create-dialog
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import RoomCreateDialog from './RoomCreateDialog.vue';
+import WelcomeMessage from './WelcomeMessage.vue';
 import RoomList from './RoomList.vue';
 
 export default {
   components: {
     RoomCreateDialog,
     RoomList,
+    WelcomeMessage,
   },
   methods: mapActions([
     'joinLobby',

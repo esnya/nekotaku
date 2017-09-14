@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(:value="value", @input="v => $emit('input', v)")
-    v-card
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline パスワード解除
       v-card-text

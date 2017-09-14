@@ -310,9 +310,7 @@ export default {
 
 <style lang="stylus" scoped>
 .map-container
-  overflow scroll
   position relative
-  height 100%
 
 .map
   user-select none

@@ -1,7 +1,8 @@
 <template lang="pug">
-  div.map(v-if="map")
-    map-view.map-view
-    map-control.map-control
+  v-layout(v-if="map" column)
+    v-flex(v-scroll="'all'")
+      map-view
+    map-control
   loading(v-else)
 </template>
 
@@ -22,16 +23,3 @@ export default {
   ]),
 };
 </script>
-
-<style lang="stylus" scoped>
-  .map
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    .map-view
-      flex: 1 1 0;
-
-    .map-control
-      flex: 0 0 auto;
-</style>

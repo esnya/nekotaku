@@ -12,13 +12,23 @@ import router from './router';
 import store from './store';
 
 import './styles/vuetify.styl';
-import './style.styl';
+import './styles/main.styl';
 
 async function main() {
   moment.locale('ja');
 
   Vue.use(Dice);
   Vue.use(Vuetify);
+  Vue.directive('scroll', {
+    inserted(el, binding) {
+      el.classList.add('scroll');
+      if (binding.value === 'y') el.classList.add('scroll-y');
+      else if (binding.value === 'x') el.classList.add('scroll-x');
+      else if (binding.value === 'all') el.classList.add('scroll-all');
+
+      el.addEventListener('touchmove', e => e.stopPropagation());
+    },
+  });
 
   const loading = new Vue(Loading).$mount('#static-loading');
 

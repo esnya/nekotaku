@@ -1,18 +1,19 @@
 <template lang="pug">
-  v-card.pb-2.chat-control
+  v-card.pb-2
     v-divider
-    v-card-text.py-0.neko-flex-row.align-end
+    v-layout(row align-end)
       chat-config-dialog
-      v-text-field.neko-flex.message-body(
-        multi-line
-        v-model="body"
-        :label="name"
-        :hide-details="true"
-        :rows="bodyRows"
-        :style="{ color }"
-        @keypress.enter="enter"
-      )
-      v-btn.my-0.pl-1(icon,primary,dark, @click="submit")
+      v-flex
+        v-text-field.message-body(
+          multi-line
+          v-model="body"
+          :label="name"
+          :hide-details="true"
+          :rows="bodyRows"
+          :style="{ color }"
+          @keypress.enter="enter"
+        )
+      v-btn.my-0.pl-1(icon primary dark  @click="submit")
         v-icon send
 </template>
 
@@ -73,15 +74,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.chat-control
-  .message-body
-    :global(textarea)
-    :global(label)
-      color inherit !important
+.message-body
+  :global(textarea)
+  :global(label)
+    color inherit !important
 
-    :global(label)
-      opacity 0.45
+  :global(label)
+    opacity 0.45
 
-    &.input-group--focused :global(label)
-      opacity 1
+  &.input-group--focused :global(label)
+    opacity 1
 </style>

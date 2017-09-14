@@ -1,7 +1,7 @@
 <template lang="pug">
   div.room-list-info
     v-dialog(v-model="helpOpen", width="auto")
-      v-card
+      v-card(v-scroll="'y'")
         v-card-title
           span.headline {{dice}}
         v-card-text.neko-scroll

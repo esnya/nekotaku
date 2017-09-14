@@ -1,22 +1,26 @@
 <template lang="pug">
-  .neko-container
-    .neko-scroll.neko-fill
-      v-data-table(
-        :headers="headers"
-        :items="characters"
-        hide-actions
-      ).mt-5.mb-6.elevation-1
-        template(slot="items", scope="props")
-            td.pa-0.td-edit
-              character-edit-dialog(:character="props.item")
-            td {{props.item.name}}
-            td.text-xs-center {{props.item.initiative}}
-            td.text-xs-center(
-              v-if="room.characterAttributes"
-              v-for="(attribute, index) in room.characterAttributes"
-            ) {{props.item.attributes && props.item.attributes[index]}}
-    .neko-fab
-      character-create-dialog
+  v-container.pa-0
+    v-layout(column fluid v-scroll="'all'")
+      v-card.mt-4
+        v-data-table(
+          :headers="headers"
+          :items="characters"
+          hide-actions
+        )
+          template(slot="items", scope="props")
+              td.pa-0.td-edit
+                character-edit-dialog(:character="props.item")
+              td {{props.item.name}}
+              td.text-xs-center {{props.item.initiative}}
+              td.text-xs-center(
+                v-if="room.characterAttributes"
+                v-for="(attribute, index) in room.characterAttributes"
+              ) {{props.item.attributes && props.item.attributes[index]}}
+          template(slot="footer")
+            td.text-xs-center(colspan="100%")
+              v-btn(primary flat @click.stop="ccdOpen = true")
+                v-icon add
+    character-create-dialog(v-model="ccdOpen")
 </template>
 
 <script>
@@ -67,6 +71,7 @@ export default {
   },
   data() {
     return {
+      ccdOpen: false,
       cedOpen: {},
     };
   },
@@ -74,9 +79,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.mb-6
-  margin-bottom 96px
-
 .td-edit
   width 32px
 
