@@ -4,6 +4,7 @@ import webpack from 'webpack';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const devtool = isProduction ? 'source-map' : 'eval-source-map';
+
 const plugins = isProduction ? [
   new webpack.DefinePlugin({
     'process.env': {
@@ -32,22 +33,24 @@ export default {
     rules: [
       {
         test: /\.css$/,
-        loader: [
+        use: [
           'style-loader',
           'css-loader',
+          { loader: 'postcss-loader', options: { sourceMap: true } },
         ],
       },
       {
         test: /\.styl$/,
-        loader: [
+        use: [
           'style-loader',
           'css-loader',
+          { loader: 'postcss-loader', options: { sourceMap: true } },
           'stylus-loader',
         ],
       },
       {
         test: /\.js$/,
-        loader: [
+        use: [
           'babel-loader',
           'eslint-loader',
         ],
@@ -55,19 +58,21 @@ export default {
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            js: [
-              'babel-loader',
-              'eslint-loader',
-            ],
+        use: [{
+          loader: 'vue-loader',
+          options: {
+            loaders: {
+              js: [
+                'babel-loader',
+                'eslint-loader',
+              ],
+            },
           },
-        },
+        }],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader',
+        use: 'file-loader',
       },
     ],
   },

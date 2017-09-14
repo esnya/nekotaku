@@ -1,5 +1,4 @@
 import 'vue-dice-component/lib/dice.css';
-import 'vuetify/dist/vuetify.min.css';
 import 'mdi/css/materialdesignicons.min.css';
 
 import moment from 'moment';
@@ -12,6 +11,7 @@ import Loading from './vue/Loading.vue';
 import router from './router';
 import store from './store';
 
+import './styles/vuetify.styl';
 import './style.styl';
 
 async function main() {

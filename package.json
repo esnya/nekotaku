@@ -15,8 +15,9 @@
     "start": "webpack-dev-server"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.4",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-webpack": "^1.0.1",
     "babel-preset-env": "^1.6.0",
@@ -35,6 +36,8 @@
     "file-loader": "^0.11.2",
     "firebase-tools": "^3.10.1",
     "flow-bin": "^0.54.0",
+    "postcss": "^6.0.11",
+    "postcss-loader": "^2.0.6",
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
