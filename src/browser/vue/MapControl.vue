@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card.px-0.py-1
-    v-layout(row v-scroll="'x'")
+    v-layout(row align-center v-scroll="'x'")
       map-style-dialog(v-model="msdOpen")
       map-edit-dialog(v-model="medOpen")
       button-group
@@ -89,8 +89,6 @@ export default {
 <style lang="stylus" scoped>
 .vertical-divider
   margin 0 8px
-  position relative
-  top 4px
   height 28px
   display inline-block
   border-right 1px solid rgba(0, 0, 0, 0.45)

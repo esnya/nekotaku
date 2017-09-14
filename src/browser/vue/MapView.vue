@@ -3,6 +3,8 @@
     ref="container"
     @mousedown="entityCreate"
     @touchstart="entityCreate"
+    @mousemove="move"
+    @touchmove="move"
   )
     div.map(:style="styles.map")
       div.background(:style="styles.background")
@@ -120,7 +122,7 @@ export default {
       const {
         scrollLeft,
         scrollTop,
-      } = this.$refs.container;
+      } = this.$refs.container.parentElement;
 
       const s = this.scale * 50;
       return new Vec2(

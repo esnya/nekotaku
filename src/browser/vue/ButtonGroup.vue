@@ -59,6 +59,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.layout
+  flex 0 0 auto
+
 .neko-button-group
   .btn
     margin 0
