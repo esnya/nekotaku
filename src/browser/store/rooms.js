@@ -18,12 +18,14 @@ export default {
         title,
         dice,
         characterAttributes,
+        password,
         router,
       },
     ) {
       const id = await backend.createRoom({
         title,
         dice,
+        password,
         characterAttributes,
       }, {
         width: 10,

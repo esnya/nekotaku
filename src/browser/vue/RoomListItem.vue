@@ -1,7 +1,7 @@
 <template lang="pug">
   v-card
     v-card-title(primary-title)
-      div.neko-flex-row
+      v-layout(row)
         v-avatar(v-if="room.isLocked", size="30px")
           v-icon lock
         .headline {{room.title}}

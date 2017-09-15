@@ -23,6 +23,8 @@ function roomFilter(room) {
   };
 }
 
+const UserId = 'user';
+
 export default class StubStrategy extends BackendStrategy {
   constructor(config: Object) {
     super(config);
@@ -97,10 +99,10 @@ export default class StubStrategy extends BackendStrategy {
   async watchLobby(handler: Handler) {
     ListEvents.forEach((key) => {
       const event = `rooms:${key}`;
-      this.on(event, v => handler(event, v));
+      this.on(event, v => handler(event, roomFilter(v)));
     });
     this.data.rooms.forEach((room) => {
-      handler('rooms:add', room);
+      handler('rooms:add', roomFilter(room));
     });
   }
   async unwatchLobby() {
@@ -211,6 +213,8 @@ export default class StubStrategy extends BackendStrategy {
     this.data.messages[id] = [];
     this.data.shapes[id] = [];
 
+    await this.update('members', id, { [UserId]: Date.now() });
+
     this.emit('rooms:add', data);
     this.emit('room:update', data);
 
@@ -232,10 +236,12 @@ export default class StubStrategy extends BackendStrategy {
   }
   async loginRoom(roomId: string, password: ?string) {
     const room = this.findRoom(roomId);
+    const isMember = this.getObject('members', roomId)[UserId];
 
-    if (room.password !== password) return false;
+    if (!isMember && room.password !== password) return false;
 
     await this.updateRoom(roomId, { players: 1 });
+    await this.update('members', roomId, { [UserId]: Date.now() });
 
     return true;
   }

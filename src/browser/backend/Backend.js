@@ -125,23 +125,26 @@ export default class Backend {
       };
     }
 
-    const {
-      isLocked,
-      title,
-    } = roomData;
-    if (isLocked && !password) {
-      return {
-        result: JoinResult.PasswordRequired,
-        title,
-      };
-    }
-
-    const loginResult = await this.strategy.loginRoom(roomId, password);
+    const loginResult = await this.strategy.loginRoom(roomId);
     if (!loginResult) {
-      return {
-        result: JoinResult.IncorrectPassword,
+      const {
+        isLocked,
         title,
-      };
+      } = roomData;
+      if (isLocked && !password) {
+        return {
+          result: JoinResult.PasswordRequired,
+          title,
+        };
+      }
+
+      const passwordLoginResult = await this.strategy.loginRoom(roomId, password);
+      if (!passwordLoginResult) {
+        return {
+          result: JoinResult.IncorrectPassword,
+          title,
+        };
+      }
     }
 
     this.roomId = roomId;
