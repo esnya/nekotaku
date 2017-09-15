@@ -1,0 +1,16 @@
+export const SetUID = 'set_uid';
+export const Watch = 'watch';
+export const Unwatch = 'unwatch';
+export const Update = 'update';
+export const Remove = 'remove';
+export const AddChild = 'add_child';
+export const ChangeChild = 'change_child';
+export const ChangeChildValue = 'change_child_value';
+export const RemoveChild = 'remove_child';
+export const UploadFile = 'upload_file';
+export const DeleteFile = 'delete_file';
+export const CreateRoom = 'create_room';
+export const GetRoom = 'get_room';
+export const UpdateRoom = 'update_room';
+export const LoginRoom = 'login_room';
+export const RemoveRoom = 'remove_room';

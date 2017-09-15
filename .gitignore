@@ -1,3 +1,5 @@
 /config/config.json
+/config/server.json
+/lib
 /node_modules
 /public/assets

@@ -1,0 +1,16 @@
+{
+  "datastore": {
+    "type": "mongodb",
+
+    "url": "mongodb://localhost:27017/nekotaku"
+  },
+  "http": {
+    "host": "localhost",
+    "port": 8080
+  },
+  "file": {
+    "path": "./data/files",
+    "maxSize": "10MB"
+  },
+  "loglevel": "INFO"
+}

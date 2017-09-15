@@ -50,7 +50,10 @@ http://nekotaku.nekometer.info
   - Node.js >= 6.11.3
   - yarn
 2. Setup your Firebase project.
-3. Install dependencies. (See B-2)
+3. Install dependencies.
+  ```bash
+  $ yarn
+  ```
 4. Configure.
   ```bash
   $ cp config/config.firebase.json config/config.json
@@ -63,3 +66,31 @@ http://nekotaku.nekometer.info
   ```
 
 6. Deploy `<your-nekitaku-directory>/public` into your server.
+
+### D. Standalone Server with MongoDB
+1. Requirements:
+  - Node.js >= 6.11.3
+  - yarn
+  - MongoDB
+2. Install dependencies.
+  ```bash
+  $ yarn
+  ```
+4. Configure client.
+  ```bash
+  $ cp config/config.server.json config/config.json
+  ```
+5. Configure server.
+  ```bash
+  $ cp config/server.mongodb.json config/server.json
+  $ vi config/server.json
+  # Edit config
+  ```
+6. Build.
+  ```
+  $ NODE_ENV=production yarn build
+  ```
+7. Run.
+  ```
+  $ node index.js
+  ```
