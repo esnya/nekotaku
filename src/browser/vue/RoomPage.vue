@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app()
+  .app
     room-drawer(v-if="room" v-model="drawer")
     v-toolbar.primary.app-bar(dark, fixed)
       v-toolbar-side-icon(@click.stop="drawer = !drawer")

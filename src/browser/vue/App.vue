@@ -1,4 +1,5 @@
 <template lang="pug">
-  transition(name="neko-slide")
-    router-view
+  v-app
+    transition(name="neko-slide")
+      router-view
 </template>

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app(v-scroll="'y'")
+  .app(v-scroll="'y'")
     v-toolbar.primary(dark fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title ねこたく
