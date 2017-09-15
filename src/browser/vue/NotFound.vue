@@ -1,5 +1,6 @@
 <template lang="pug">
-  .neko-flex-container
+  v-layout(column align-center)
+    v-spacer
     .nekokoro(@click="count++")
       transition(name="transition-nekokoro")
         img(v-if="count >= 50", src="/img/nekokoro.svg")
@@ -12,6 +13,7 @@
         div(v-else, key="1") ここにはなにもないよ。
     div
       v-btn(primary, :to="{ name: RouteNames.Lobby }") もどる
+    v-spacer
 </template>
 
 <script>
@@ -38,9 +40,9 @@ export default {
 
 
 <style lang="stylus" scoped>
-.neko-flex-container
-  align-items center
-  justify-content center
+.layout
+  height: 100%
+
 .shadow
   margin 20px
   width 50vw
