@@ -12,7 +12,7 @@ script:
   - yarn build
   - yarn test -- --coverage --coverageReporters lcov
 after_success:
-  - cat ./coverage/lcov.info | coveralls
+  - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls; fi
 before_deploy:
   - rm -rf public/assets
   - cp public/index.html public/404.html
