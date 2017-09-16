@@ -149,9 +149,9 @@ export default class Backend {
 
     this.roomId = roomId;
 
-    this.strategy.watchRoom(roomId, handler);
-    Objects.forEach(type => this.strategy.watchObject(type, roomId, handler));
-    Lists.forEach(type => this.strategy.watchList(type, roomId, handler));
+    await this.strategy.watchRoom(roomId, handler);
+    await Promise.all(Objects.map(type => this.strategy.watchObject(type, roomId, handler)));
+    await Promise.all(Lists.map(type => this.strategy.watchList(type, roomId, handler)));
 
     return {
       result: JoinResult.OK,
@@ -165,6 +165,11 @@ export default class Backend {
     this.strategy.unwatchRoom(roomId);
 
     this.roomId = null;
+  }
+  async leaveRoomHard(): Promise<void> {
+    const roomId = this.enforceInRoom();
+    await this.strategy.removeMe(roomId);
+    await this.leaveRoom();
   }
 
   async createRoom(room, map): Promise<string> {

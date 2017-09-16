@@ -45,10 +45,14 @@ export default class Client {
 
     _(SocketEvents).forEach((event, key) => {
       socket.on(event, (...args) => {
-        system.trace('received', event, ...args);
-        const methodKey = `on${key}`;
-        if (!this[methodKey]) system.fatal(`Client.${methodKey} is not defined`);
-        this[methodKey](...args);
+        try {
+          system.trace('received', event, ...args);
+          const methodKey = `on${key}`;
+          if (!this[methodKey]) system.fatal(`Client.${methodKey} is not defined`);
+          this[methodKey](...args);
+        } catch (e) {
+          system.error(e, args);
+        }
       });
     });
   }
@@ -159,29 +163,55 @@ export default class Client {
       throw new Error('Premission denied');
     }
   }
+  async updateRoom(roomId: string, value: Object): Promise<void> {
+    await this.enforceMember(roomId);
+
+    const room = await this.update('rooms', roomId, null, value);
+    this.emitMessage(['update', 'rooms', roomId], room);
+    this.emitMessage(['change', 'rooms'], room);
+  }
 
   async onSetUID(uid: string) {
     this.uid = uid;
   }
-  async onWatch(event: string, type: string, roomId: ?string, silent: boolean = false) {
-    if (roomId) await this.enforceMember(roomId);
+  async onWatch(
+    requestId: string,
+    event: string,
+    type: string,
+    roomId: ?string,
+    silent: boolean = false,
+  ) {
+    try {
+      if (roomId) await this.enforceMember(roomId);
 
-    this.join(event, type, roomId);
+      this.join(event, type, roomId);
 
-    if (silent) return;
+      if (silent) return this.resolve(requestId);
 
-    if (event === 'add') {
-      const children = await datastore.findArray(type, roomId && { roomId });
-      children.forEach((child) => {
-        this.emitMessage([event, type, roomId], child, false);
-      });
-    } else if (event === 'update') {
-      const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
-      if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : data, false);
+      if (event === 'add') {
+        const children = await datastore.findArray(type, roomId && { roomId });
+        children.forEach((child) => {
+          this.emitMessage([event, type, roomId], child, false);
+        });
+      } else if (event === 'update') {
+        const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
+        if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : data, false);
+      }
+
+      return this.resolve(requestId);
+    } catch (e) {
+      system.error(e, { requestId });
+      return this.reject(requestId);
     }
   }
-  onUnwatch(event: string, type: string, roomId: ?string) {
-    this.leave(event, type, roomId);
+  onUnwatch(requestId: string, event: string, type: string, roomId: ?string) {
+    try {
+      this.leave(event, type, roomId);
+      this.resolve(requestId);
+    } catch (e) {
+      system.error(e, { requestId });
+      this.reject(requestId);
+    }
   }
 
   async onUpdate(type: string, roomId: string, value: Object) {
@@ -211,7 +241,7 @@ export default class Client {
       });
       this.resolve(requestId, childId);
     } catch (e) {
-      system.error(e);
+      system.error(e, { requestId });
       this.reject(requestId, e);
     }
 
@@ -277,7 +307,7 @@ export default class Client {
 
       this.resolve(requestId, `/files/${fileId}`);
     } catch (e) {
-      system.error(e);
+      system.error(e, { requestId });
       this.reject(requestId, e);
     }
   }
@@ -315,7 +345,7 @@ export default class Client {
 
       this.resolve(requestId, roomId);
     } catch (e) {
-      system.error(e);
+      system.error(e, { requestId });
       this.reject(requestId, e);
     }
 
@@ -327,21 +357,25 @@ export default class Client {
       const room = await datastore.findOne('rooms', roomId);
       this.resolve(requestId, room && roomFilter(room));
     } catch (e) {
-      system.error(e);
+      system.error(e, { requestId });
       this.reject(requestId, e);
     }
   }
-  async onUpdateRoom(roomId: string, value: Object) {
-    await this.enforceMember(roomId);
-
-    const room = await this.update('rooms', roomId, null, value);
-    this.emitMessage(['update', 'rooms', roomId], room);
-    this.emitMessage(['change', 'rooms'], room);
+  async onUpdateRoom(requestId: string, roomId: string, value: Object) {
+    try {
+      await this.updateRoom(roomId, value);
+      this.resolve(requestId);
+    } catch (e) {
+      system.error(e, { requestId });
+      this.reject(requestId, e);
+    }
   }
   async onLoginRoom(requestId: string, roomId: string, password: ?string) {
     try {
       const member = await this.isMemberOf(roomId);
-      if (member) return this.resolve(requestId, true);
+      if (member) {
+        return this.resolve(requestId, true);
+      }
 
       const room = await datastore.findOne('rooms', roomId);
       if (!room || (room.password && room.password !== password)) {
@@ -349,11 +383,11 @@ export default class Client {
       }
 
       const members = await this.insertMember(roomId);
-      this.onUpdateRoom(roomId, { players: Object.keys(members.members).length });
+      this.updateRoom(roomId, { players: Object.keys(members.members).length });
 
       return this.resolve(requestId, true);
     } catch (e) {
-      system.error(e);
+      system.error(e, { requestId });
       return this.reject(requestId, e);
     }
   }
@@ -364,5 +398,25 @@ export default class Client {
 
     this.emitMessage(['remove', 'rooms'], { id: roomId });
     this.emitMessage(['update', 'rooms', roomId], null);
+  }
+
+  async onRemoveMe(requestId: string, roomId: string) {
+    try {
+      const uid = this.getUID();
+      await this.enforceMember(roomId);
+
+      const oldValue = await datastore.findOne('members', null, { roomId });
+      const newValue = {
+        ...oldValue,
+        members: _(oldValue.members).pickBy((v, k) => k !== uid).value(),
+      };
+
+      await datastore.updateOne('members', null, { roomId }, newValue);
+
+      this.resolve(requestId);
+    } catch (e) {
+      system.error(e, { requestId });
+      this.reject(requestId, e);
+    }
   }
 }

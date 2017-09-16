@@ -15,3 +15,10 @@ rules:
   class-methods-use-this: off
   # flowtype-errors/show-errors: error
   # flowtype-errors/enforce-min-coverage: [warn, 50]
+overrides:
+  files:
+    - '**/*.test.js'
+  env:
+    jest: true
+  rules:
+    global-require: off

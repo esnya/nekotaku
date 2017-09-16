@@ -23,7 +23,7 @@ function roomFilter(room) {
   };
 }
 
-const UserId = 'user';
+export const UserId = 'user';
 
 export default class StubStrategy extends BackendStrategy {
   constructor(config: Object) {
@@ -48,7 +48,7 @@ export default class StubStrategy extends BackendStrategy {
     });
     this.files = {};
 
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   /* Utilities */
@@ -200,9 +200,14 @@ export default class StubStrategy extends BackendStrategy {
 
   async createRoom(room: Object) {
     const id = room.id || shortid();
+    const now = Date.now();
     const data = {
       ...room,
+      uid: UserId,
       id,
+      players: 1,
+      createdAt: now,
+      updatedAt: now,
     };
 
     this.data.rooms.push(data);
@@ -250,5 +255,11 @@ export default class StubStrategy extends BackendStrategy {
     this.data.rooms = this.data.rooms.filter(r => r.id !== roomId);
     this.remove('members', roomId);
     this.emit('rooms:remove', room);
+  }
+
+  async removeMe(roomId: string) {
+    delete this.data.members[roomId][UserId];
+    await this.updateRoom(roomId, { players: 0 });
+    this.emit('members:update', this.data.members);
   }
 }

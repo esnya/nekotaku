@@ -1,25 +1,45 @@
 import mem from 'mem';
 import { MongoClient, ObjectId } from 'mongodb';
-import config from './config';
-import { system } from './logger';
-
+import { system } from '../logger';
 
 function getQuery(id: ?string, query: Object = {}) {
   return id ? { _id: ObjectId(id), ...query } : query;
 }
 
-class Datastore {
-  constructor() {
-    this.type = config.datastore.type;
-    this.getDB = mem(() => this.connect(config.datastore.url));
+export default class Datastore {
+  constructor(config) {
+    const {
+      type,
+      url,
+      ...options
+    } = config;
+    this.type = type;
+    this.getDB = mem(() => this.connect(url, options));
     this.getDB();
   }
 
-  async connect(url: string) {
-    const db = await MongoClient.connect(url);
-    system.info('Datastore connected');
-    return db;
+  async connect(url: string, options: ?Object) {
+    try {
+      system.info('Datastore connecting', url);
+      const db = await MongoClient.connect(url, options);
+      system.info('Datastore connected');
+      return db;
+    } catch (e) {
+      system.fatal(e);
+      return null;
+    }
   }
+  async close() {
+    try {
+      system.info('Datastore connection closing');
+      const db = await this.getDB();
+      await db.close();
+      system.info('Datastore connection closed');
+    } catch (e) {
+      system.fatal(e);
+    }
+  }
+
   async collection(name: string) {
     const db = await this.getDB();
     return db.collection(name);
@@ -55,5 +75,3 @@ class Datastore {
     return result;
   }
 }
-
-export default new Datastore();

@@ -2,10 +2,17 @@ language: node_js
 node_js:
   - node
   - lts/*
+services:
+  - mongodb
 before_script:
   - cp config/config.stub.json config/config.json
-script: yarn build
-after_success: cat ./coverage/lcov.info | coveralls
+  - cp config/server.mongodb.json config/server.json
+script:
+  - yarn lint
+  - yarn build
+  - yarn test -- --coverage --coverageReporters lcov
+after_success:
+  - cat ./coverage/lcov.info | coveralls
 before_deploy:
   - rm -rf public/assets
   - cp public/index.html public/404.html

@@ -79,4 +79,8 @@ export default class BackendStrategy {
   async removeRoom(roomId: string): Promise<void> {
     throw new Error('Abstract method called');
   }
+
+  async removeMe(roomId: string): Promise<void> {
+    throw new Error('Abstract method called');
+  }
 }

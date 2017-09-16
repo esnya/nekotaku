@@ -224,4 +224,9 @@ export default class FirebaseStrategy extends BackendStrategy {
     await this.remove('passwords', roomId);
     await this.remove('rooms', roomId);
   }
+
+  async removeMe(roomId: string) {
+    const { uid } = await this.getUser();
+    await this.childRef('members', roomId, uid).remove();
+  }
 }

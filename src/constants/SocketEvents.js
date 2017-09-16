@@ -14,3 +14,4 @@ export const GetRoom = 'get_room';
 export const UpdateRoom = 'update_room';
 export const LoginRoom = 'login_room';
 export const RemoveRoom = 'remove_room';
+export const RemoveMe = 'remove_me';
