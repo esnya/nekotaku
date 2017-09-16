@@ -48,6 +48,7 @@
     "eslint-plugin-vue-libs": "^1.2.1",
     "eslint-watch": "^3.1.2",
     "file-loader": "^0.11.2",
+    "firebase-mock": "^1.1.5",
     "firebase-tools": "^3.10.1",
     "flow-bin": "^0.54.0",
     "jest": "^21.1.0",

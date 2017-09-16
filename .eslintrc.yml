@@ -18,7 +18,10 @@ rules:
 overrides:
   files:
     - '**/*.test.js'
+    - '**/__mocks__/*.js'
   env:
     jest: true
   rules:
     global-require: off
+    import/no-extraneous-dependencies: off
+    import/prefer-default-export: off

@@ -114,6 +114,11 @@ export default class FirebaseStrategy extends BackendStrategy {
 
   /* Strategy Implements */
 
+  async getUID() {
+    const { uid } = await this.getUser();
+    return uid;
+  }
+
   async watchLobby(handler: Handler) {
     watchList(this.roomsRef, 'rooms', handler, roomFilter);
   }
@@ -200,14 +205,14 @@ export default class FirebaseStrategy extends BackendStrategy {
     await this.update('rooms', roomId, value);
   }
   async loginRoom(roomId: string, password: ?string) {
-    const user = await this.getUser();
+    const uid = await this.getUID();
 
     if (password) {
-      await this.childRef('passwords', roomId, user.uid).set(password);
+      await this.childRef('passwords', roomId, uid).set(password);
     }
 
     try {
-      await this.childRef('members', roomId, user.uid).set(Date.now());
+      await this.childRef('members', roomId, uid).set(Date.now());
 
       this.updateMemberCount(roomId);
 
@@ -226,7 +231,7 @@ export default class FirebaseStrategy extends BackendStrategy {
   }
 
   async removeMe(roomId: string) {
-    const { uid } = await this.getUser();
+    const uid = await this.getUID();
     await this.childRef('members', roomId, uid).remove();
   }
 }

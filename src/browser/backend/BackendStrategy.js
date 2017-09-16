@@ -7,6 +7,10 @@ export default class BackendStrategy {
     this.type = config.type;
   }
 
+  async getUID(): Promise<string> {
+    throw new Error('Abstract method called');
+  }
+
   async watchLobby(handler: Handler): Promise<void> {
     throw new Error('Abstract method called');
   }

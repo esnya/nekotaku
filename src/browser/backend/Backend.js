@@ -105,6 +105,11 @@ export default class Backend {
     ]);
   }
 
+  async getUID(): Promise<string> {
+    const uid = await this.strategy.getUID();
+    return uid;
+  }
+
   /* API Adapters */
   async joinLobby(handler: Handler): Promise<void> {
     await this.strategy.watchLobby(handler);

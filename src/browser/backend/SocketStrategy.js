@@ -119,6 +119,11 @@ export default class SocketStrategy extends BackendStrategy {
       this.handlers.filter(h => !(h.event === event && h.type === type && h.roomId === roomId));
   }
 
+  /* Strategy Implements */
+  async getUID(): Promise<string> {
+    return getUID();
+  }
+
   async watchLobby(handler: Handler): Promise<void> {
     const tasks = ListEvents.map((event) => {
       const handlerEvent = `rooms:${event}`;

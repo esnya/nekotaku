@@ -95,6 +95,9 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   /* Implementations */
+  async getUID(): Promise<string> {
+    return UserId;
+  }
 
   async watchLobby(handler: Handler) {
     ListEvents.forEach((key) => {
@@ -200,10 +203,11 @@ export default class StubStrategy extends BackendStrategy {
 
   async createRoom(room: Object) {
     const id = room.id || shortid();
+    const uid = await this.getUID();
     const now = Date.now();
     const data = {
       ...room,
-      uid: UserId,
+      uid,
       id,
       players: 1,
       createdAt: now,
@@ -218,7 +222,7 @@ export default class StubStrategy extends BackendStrategy {
     this.data.messages[id] = [];
     this.data.shapes[id] = [];
 
-    await this.update('members', id, { [UserId]: Date.now() });
+    await this.update('members', id, { [uid]: Date.now() });
 
     this.emit('rooms:add', data);
     this.emit('room:update', data);
@@ -240,13 +244,14 @@ export default class StubStrategy extends BackendStrategy {
     this.emit('room:update', data);
   }
   async loginRoom(roomId: string, password: ?string) {
+    const uid = this.getUID();
     const room = this.findRoom(roomId);
-    const isMember = this.getObject('members', roomId)[UserId];
+    const isMember = this.getObject('members', roomId)[uid];
 
     if (!isMember && room.password !== password) return false;
 
     await this.updateRoom(roomId, { players: 1 });
-    await this.update('members', roomId, { [UserId]: Date.now() });
+    await this.update('members', roomId, { [uid]: Date.now() });
 
     return true;
   }
@@ -258,7 +263,8 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   async removeMe(roomId: string) {
-    delete this.data.members[roomId][UserId];
+    const uid = this.getUID();
+    delete this.data.members[roomId][uid];
     await this.updateRoom(roomId, { players: 0 });
     this.emit('members:update', this.data.members);
   }
