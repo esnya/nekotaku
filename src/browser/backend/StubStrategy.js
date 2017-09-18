@@ -179,7 +179,7 @@ export default class StubStrategy extends BackendStrategy {
     this.emit(`${type}:change`, data);
   }
   async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
-    this.changeChild(type, roomId, childId, { [key]: value });
+    this.changeChild(type, roomId, childId, key.split(/\//g).reduceRight((prev, curr) => ({ [curr]: prev }), value));
   }
   async removeChild(type: string, roomId: string, childId: string) {
     const data = this.findChild(type, roomId, childId);
@@ -198,7 +198,7 @@ export default class StubStrategy extends BackendStrategy {
 
     this.files[key] = null;
 
-    URL.revokeObjectURL(url);
+    if (url) URL.revokeObjectURL(url);
   }
 
   async createRoom(room: Object) {

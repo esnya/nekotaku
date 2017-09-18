@@ -1,5 +1,5 @@
 export function runBackendTests(Stragtegy) {
-  URL.createObjectURL = jest.fn();
+  URL.createObjectURL = jest.fn().mockReturnValue('/');
   URL.revokeObjectURL = jest.fn();
   const now = Date.now();
   Date.now = jest.fn().mockReturnValue(now);
@@ -42,7 +42,6 @@ export function runBackendTests(Stragtegy) {
 
     expect(roomId1).toBeDefined();
   });
-
   it('should receives created room', () => {
     RoomData1 = {
       ...TestRoom1,
@@ -65,7 +64,6 @@ export function runBackendTests(Stragtegy) {
       result: JoinResult.OK,
     });
   });
-
   it('should receives logged in room', () => {
     RoomData1.players = 1;
 
@@ -81,7 +79,6 @@ export function runBackendTests(Stragtegy) {
     await backend.updateRoom('title', title);
     RoomData1.title = title;
   });
-
   it('should receives updated room title', () => {
     expect(roomWatcher).toBeCalledWith('room:update', RoomData1);
   });
@@ -92,7 +89,6 @@ export function runBackendTests(Stragtegy) {
     await backend.updateRoom('characterAttributes', characterAttributes);
     RoomData1.characterAttributes = characterAttributes;
   });
-
   it('should receives updated room characterAttributes', () => {
     expect(roomWatcher).toBeCalledWith('room:update', RoomData1);
   });
@@ -112,11 +108,9 @@ export function runBackendTests(Stragtegy) {
       result: JoinResult.OK,
     });
   });
-
   it('should be able to remove user from members', async () => {
     await backend.leaveRoomHard();
   });
-
   it('should requires password to login room', async () => {
     const result = await backend.joinRoom(roomId1, null, roomWatcher);
     expect(result).toEqual({
@@ -124,7 +118,6 @@ export function runBackendTests(Stragtegy) {
       result: JoinResult.PasswordRequired,
     });
   });
-
   it('should checks password when logging in room', async () => {
     const result = await backend.joinRoom(roomId1, '1234', roomWatcher);
     expect(result).toEqual({
@@ -132,12 +125,20 @@ export function runBackendTests(Stragtegy) {
       result: JoinResult.IncorrectPassword,
     });
   });
-
   it('should be able to login with password', async () => {
     const result = await backend.joinRoom(roomId1, 'pass', roomWatcher);
     expect(result).toEqual({
       result: JoinResult.OK,
     });
+  });
+
+  it('should be able to clear password', async () => {
+    roomWatcher.mockClear();
+    await backend.clearRoomPassword(roomId1);
+  });
+  it('should receives cleared room password', () => {
+    RoomData1.isLocked = false;
+    expect(roomWatcher).toBeCalledWith('room:update', RoomData1);
   });
 
   it('should be able to update map', async () => {
@@ -146,9 +147,28 @@ export function runBackendTests(Stragtegy) {
     await backend.updateMap('width', width);
     TestMap1.width = width;
   });
-
   it('should receives updated map', async () => {
     expect(roomWatcher).toBeCalledWith('maps:update', TestMap1);
+  });
+
+  it('should be able to upload map background image', async () => {
+    roomWatcher.mockClear();
+    await backend.updateMapBackgroundImage(new File([], 'image.png'));
+  });
+  it('should receives updated map', async () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('maps:update');
+    expect(value.backgroundImage).toBeDefined();
+  });
+
+  it('should be able to clear map background image', async () => {
+    roomWatcher.mockClear();
+    await backend.clearMapBackgroundImage();
+  });
+  it('should receives updated map', async () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('maps:update');
+    expect(value.backgroundImage).toBeFalsy();
   });
 
   const Message1 = {
@@ -162,7 +182,6 @@ export function runBackendTests(Stragtegy) {
     Message1.id = await backend.sendMessage(Message1);
     expect(Message1.id).toBeDefined();
   });
-
   it('should receives sent message', () => {
     expect(roomWatcher).toBeCalledWith('messages:add', Message1);
   });
@@ -177,7 +196,6 @@ export function runBackendTests(Stragtegy) {
     Character1.id = await backend.createCharacter(Character1);
     expect(Character1.id).toBeDefined();
   });
-
   it('should receives created character', () => {
     expect(roomWatcher).toBeCalledWith('characters:add', Character1);
   });
@@ -188,7 +206,6 @@ export function runBackendTests(Stragtegy) {
     await backend.updateCharacter(Character1.id, 'name', name);
     Character1.name = name;
   });
-
   it('should receives updated character', () => {
     expect(roomWatcher).toBeCalledWith('characters:change', Character1);
   });
@@ -200,16 +217,54 @@ export function runBackendTests(Stragtegy) {
     Character1.y = 2;
     Character1.z = 3;
   });
-
   it('should receives moved character', () => {
     expect(roomWatcher).toBeCalledWith('characters:change', Character1);
+  });
+
+  it('should be able to upload character icon', async () => {
+    roomWatcher.mockClear();
+    await backend.updateCharacterIcon(Character1.id, new File([], 'image.png'));
+  });
+  it('should receives updated character icon', () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('characters:change');
+    expect(value.icon).toBeDefined();
+  });
+
+  it('should be able to clear character icon', async () => {
+    roomWatcher.mockClear();
+    await backend.clearCharacterIcon(Character1.id);
+  });
+  it('should receives updated character icon', () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('characters:change');
+    expect(value.icon).toBeFalsy();
+  });
+
+  it('should be able to upload character portrait', async () => {
+    roomWatcher.mockClear();
+    await backend.updateCharacterPortrait(Character1.id, 'default', new File([], 'image.png'));
+  });
+  it('should receives updated character portrait', () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('characters:change');
+    expect(value.portrait.default.url).toBeDefined();
+  });
+
+  it('should be able to upload character portrait', async () => {
+    roomWatcher.mockClear();
+    await backend.clearCharacterPortrait(Character1.id, 'default');
+  });
+  it('should receives updated character portrait', () => {
+    const [event, value] = roomWatcher.mock.calls[0];
+    expect(event).toEqual('characters:change');
+    expect(value.portrait && value.portrait.default && value.portrait.default.url).toBeFalsy();
   });
 
   it('should be able to remove character', async () => {
     roomWatcher.mockClear();
     await backend.removeCharacter(Character1.id);
   });
-
   it('should receives character removal', () => {
     const call = roomWatcher.mock.calls.find(([event]) => event === 'characters:remove');
     expect(call).toBeDefined();
@@ -277,6 +332,10 @@ describe('Backend', () => {
   const BackendStrategy = require('./BackendStrategy').default;
 
   it('should reject abstract strategy', () => {
-    expect(() => new Backend(new BackendStrategy())).toThrow();
+    const strategy = new BackendStrategy({ backend: { type: 'abstract' } });
+    expect(() => new Backend(strategy)).toThrow();
+  });
+  it('should reject non strategy object', () => {
+    expect(() => new Backend({})).toThrow();
   });
 });

@@ -44,6 +44,13 @@ export default class Vec2 {
     this.v = [x, y];
   }
 
+  get x() {
+    return this.v[0];
+  }
+  get y() {
+    return this.v[1];
+  }
+
   map(handler) {
     return new Vec2(...this.v.map(handler));
   }

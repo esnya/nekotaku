@@ -54,14 +54,10 @@ class DatabaseStore {
     if (data === null) {
       delete target[lastKey];
     } else {
-      target[lastKey] = data;
+      target[lastKey] = (typeof data === 'object')
+        ? _.pickBy(data, v => v !== null)
+        : data;
     }
-  }
-  update(path: string, data: any) {
-    this.set(path, {
-      ...this.get(path),
-      ...data,
-    });
   }
   remove(path: string) {
     const target = this.get(getParent(path));
@@ -126,6 +122,7 @@ class DatabaseReference {
   }
 
   parent() {
+    if (!this.path || this.path === '/') return null;
     return new DatabaseReference(getParent(this.path));
   }
   child(path: string) {
@@ -147,7 +144,15 @@ class DatabaseReference {
     databaseStore.set(this.path, data);
     const snapshot = this.getSnapshot();
     this.emit('value', snapshot);
+
     this.parent().emit(exists ? 'child_changed' : 'child_added', snapshot);
+    let target = this.parent().parent();
+    let targetSnapshot = this.parent().getSnapshot();
+    while (target) {
+      target.emit('child_changed', targetSnapshot);
+      targetSnapshot = target.getSnapshot();
+      target = target.parent();
+    }
   }
   async update(data: any) {
     const oldData = databaseStore.get(this.path);
@@ -209,13 +214,29 @@ const mockDatabase = {
 };
 const database = jest.fn().mockReturnValue(mockDatabase);
 
+const storageStore = {};
+class StorageObjectNotFoundError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.code = 'storage/object-not-found';
+  }
+}
 class StorageReference {
   path: string;
   constructor(path?: string) {
     this.path = path || '/';
   }
 
-  delete() {
+  async put() {
+    // console.log('storage.put', this.path);
+    storageStore[this.path] = true;
+    return {
+      downloadURL: '/',
+    };
+  }
+  async delete() {
+    // console.log('storage.delete', this.path);
+    if (!storageStore[this.path]) throw new StorageObjectNotFoundError('File not found');
   }
 }
 const mockStorage = {

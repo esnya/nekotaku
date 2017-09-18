@@ -249,7 +249,7 @@ export default class Backend {
     await this.updateCharacter(id, 'icon', null);
   }
   async clearCharacterPortrait(id, key): Promise<void> {
-    await this.deleteFile(FileKeys.characterPortrait(id, 'default'));
+    await this.deleteFile(FileKeys.characterPortrait(id, key));
     await this.changeChildValue(DataKeys.characters, id, DataKeys.characterPortraitKey(key), null);
   }
   async updateCharacterIcon(id, file) {

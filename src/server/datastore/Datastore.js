@@ -50,9 +50,9 @@ export default class Datastore {
     const result = await col.findOne(getQuery(id, query));
     return result;
   }
-  async fundArray(collection: string, query: Object = {}) {
-    const col = await this.collection(collection);
-    const result = await col.find(getQuery(null, query)).toArray();
+  async findArray(name: string, query: Object) {
+    const collection = await this.collection(name);
+    const result = await collection.find(query).toArray();
     return result;
   }
   async insert(collection: string, value: string) {
@@ -67,11 +67,5 @@ export default class Datastore {
   async remove(collection: string, id: ?string, query: Object) {
     const col = await this.collection(collection);
     await col.remove(getQuery(id, query));
-  }
-
-  async findArray(name: string, query: Object) {
-    const collection = await this.collection(name);
-    const result = await collection.find(query).toArray();
-    return result;
   }
 }
