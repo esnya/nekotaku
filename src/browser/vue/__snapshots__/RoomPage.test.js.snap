@@ -1910,7 +1910,20 @@ exports[`RoomPage should be RoomPage 1`] = `
                                           アイコン
                                         </span>
                                       </div>
-                                      <!---->
+                                      <div
+                                        class="card__media"
+                                        style="height: auto;"
+                                      >
+                                        <div
+                                          class="card__media__content"
+                                        >
+                                          <div>
+                                            <img
+                                              src="/sample/i2.png"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
                                       <div
                                         class="card__actions"
                                       >
@@ -1925,7 +1938,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                             class="btn__content"
                                           >
                                             <span>
-                                              登録
+                                              変更
                                             </span>
                                             <input
                                               hidden="hidden"
@@ -3175,8 +3188,8 @@ exports[`RoomPage should be RoomPage 1`] = `
                   class="map"
                 >
                   <div
-                    class="background"
-                    style="background-image: url(https://raw.githubusercontent.com/torgtaitai/DodontoF/master/image/defaultImageSet/feeld001.gif);"
+                    class="map-inner"
+                    style="width: 500px; height: 500px; background-image: url(https://raw.githubusercontent.com/torgtaitai/DodontoF/master/image/defaultImageSet/feeld001.gif);"
                   >
                     <div
                       class="row"
@@ -3828,63 +3841,77 @@ exports[`RoomPage should be RoomPage 1`] = `
                         10-10
                       </div>
                     </div>
-                  </div>
-                  <svg
-                    height="500"
-                    width="500"
-                  >
-                    <g>
-                      <g
-                        class="neko-shape"
-                        style="fill: #F44336; fill-opacity: 0.25; stroke: #F44336; stroke-width: 2;"
-                      >
-                        <circle
-                          cx="0"
-                          cy="0"
-                          r="75"
-                        />
+                    <svg
+                      class="layer"
+                      height="500"
+                      width="500"
+                    >
+                      <g>
+                        <g
+                          class="neko-shape"
+                          style="fill: #F44336; fill-opacity: 0.25; stroke: #F44336; stroke-width: 2;"
+                        >
+                          <circle
+                            cx="0"
+                            cy="0"
+                            r="75"
+                          />
+                        </g>
+                        <g
+                          class="neko-shape"
+                          style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 8;"
+                        >
+                          <circle
+                            cx="0"
+                            cy="0"
+                            r="75"
+                          />
+                        </g>
                       </g>
-                      <g
-                        class="neko-shape"
-                        style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 8;"
-                      >
-                        <circle
-                          cx="0"
-                          cy="0"
-                          r="75"
-                        />
-                      </g>
-                    </g>
-                  </svg>
-                  <div
-                    class="layer"
-                  >
+                    </svg>
                     <div
-                      class="character elevation-2"
+                      class="layer"
                     >
                       <div
-                        class="name text-xs-center caption"
+                        class="character elevation-2"
                       >
-                        ありす
+                        <div
+                          class="character-inner"
+                          style="background-image: url(/sample/i2.png);"
+                        >
+                          <div
+                            class="name text-xs-center caption"
+                          >
+                            ありす
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      class="character elevation-2"
-                    >
                       <div
-                        class="name text-xs-center caption"
+                        class="character elevation-2"
                       >
-                        ぼぶ
+                        <div
+                          class="character-inner"
+                        >
+                          <div
+                            class="name text-xs-center caption"
+                          >
+                            ぼぶ
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      class="character elevation-2"
-                      style="background-image: url(/sample/i1.png);"
-                    >
                       <div
-                        class="name text-xs-center caption"
+                        class="character elevation-2"
                       >
-                        しゃーりー
+                        <div
+                          class="character-inner"
+                          style="background-image: url(/sample/i1.png);"
+                        >
+                          <div
+                            class="name text-xs-center caption"
+                          >
+                            しゃーりー
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3976,7 +4003,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                       >
                                         <ul
                                           class="list"
-                                          data-uid="265"
+                                          data-uid="266"
                                         >
                                           <li>
                                             <div
@@ -4261,7 +4288,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                       >
                                         <ul
                                           class="list"
-                                          data-uid="290"
+                                          data-uid="291"
                                         >
                                           <li>
                                             <div
@@ -4568,7 +4595,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                       >
                                         <ul
                                           class="list"
-                                          data-uid="314"
+                                          data-uid="315"
                                         >
                                           <li>
                                             <div
@@ -4853,7 +4880,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                       >
                                         <ul
                                           class="list"
-                                          data-uid="339"
+                                          data-uid="340"
                                         >
                                           <li>
                                             <div
@@ -5269,6 +5296,16 @@ exports[`RoomPage should be RoomPage 1`] = `
                       >
                         zoom_out_map
                       </i>
+                    </div>
+                  </button>
+                  <button
+                    class="btn btn--icon btn--raised"
+                    type="button"
+                  >
+                    <div
+                      class="btn__content"
+                    >
+                      3D
                     </div>
                   </button>
                 </div>

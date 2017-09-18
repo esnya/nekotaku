@@ -43,6 +43,7 @@ describe('RoomPage', () => {
       addMapZoom: jest.fn(),
       resetMapZoom: jest.fn(),
       setMapMode: jest.fn(),
+      togglePerspective: jest.fn(),
     }),
     mapState,
   });
