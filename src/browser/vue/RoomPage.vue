@@ -28,10 +28,11 @@
         v-layout(column)
           .floating
             room-info-list.room-info-list(:room="room")
-          .slide(:style="slideStyle")
-            chat-tab
-            character-list
-            map-tab
+          v-flex.slider
+            div(:style="slideStyle")
+              chat-tab
+              character-list
+              map-tab
           v-bottom-nav.white(
             :active.sync="roomTab"
             :class="{ 'no-shadow': roomTab !== '1' }"
@@ -85,7 +86,7 @@ export default {
     },
     slideStyle() {
       return {
-        transform: `translate(-${this.roomTab}00vw, 0)`,
+        transform: `translate(-${this.roomTab}00%, 0)`,
       };
     },
     joinInfo() {
@@ -113,12 +114,14 @@ export default {
       this.$router.push({ name: RouteNames.Lobby });
     },
   },
-  mounted() {
+  created() {
     const {
       id,
     } = this.$route.params;
 
     this.joinRoom({ id, router: this.$router });
+
+    this.width = window.innerWidth;
   },
   beforeDestroy() {
     this.leaveRoom();
@@ -127,15 +130,27 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.slide
-  height 100%
-  width 300%
-  display flex
-  transition transform 0.4s ease-in-out
+.slider
   overflow hidden
 
   > *
-    flex 1 1 0
+    transition transform 0.4s ease-in-out
+    width 100%
+    height 100%
+    overflow visible
+    display flex
+
+    > *
+      flex 0 0 100vw
+      width 100vw
+      overflow hidden
+
+.slide
+  height 100%
+  transition transform 0.4s ease-in-out
+
+  > *
+    flex 0 0 auto
     overflow hidden
 
 main
