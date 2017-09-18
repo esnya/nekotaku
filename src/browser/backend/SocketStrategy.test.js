@@ -72,5 +72,8 @@ describe('SocketBackend', () => {
 
   require('../../server/io');
 
+  beforeAll(async () => datastore.getDB());
+  afterAll(async () => datastore.close());
+
   require('./Backend.test.js').runBackendTests(require('./SocketStrategy').default);
 });
