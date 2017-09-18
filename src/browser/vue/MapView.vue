@@ -1,8 +1,8 @@
 <template lang="pug">
   div.map-container(
     ref="container"
-    @mousedown="entityCreate"
-    @touchstart="entityCreate"
+    @mousedown="start"
+    @touchstart="start"
     @mousemove="move"
     @touchmove="move"
   )
@@ -94,6 +94,11 @@ export default {
       return mode === 'move' || mode === 'erase';
     },
   },
+  data() {
+    return {
+      scrollOffset: new Vec2(0, 0),
+    };
+  },
   methods: {
     ...mapActions([
       'alignCharacter',
@@ -153,56 +158,58 @@ export default {
         this.removeShape(entity.id);
       }
     },
-    entityCreate(e) {
+    start(e) {
       const {
         mode,
         style,
         shapeType,
       } = this.mapControl;
 
-      if (mode !== 'create') return;
+      if (mode === 'move' && e.type === 'mousedown') {
+        this.scrollOffset = new Vec2(e.pageX, e.pageY);
+      } else if (mode === 'create') {
+        const pos = this.page2map(e);
 
-      const pos = this.page2map(e);
+        const {
+          width,
+          height,
+        } = this.map;
+        if (pos[0] < 0 || pos[1] < 0 || pos[0] >= width || pos[1] >= height) {
+          return;
+        }
 
-      const {
-        width,
-        height,
-      } = this.map;
-      if (pos[0] < 0 || pos[1] < 0 || pos[0] >= width || pos[1] >= height) {
-        return;
-      }
+        e.preventDefault();
 
-      e.preventDefault();
+        const offset = pos.map(a => align(a, 0.5));
+        const alignedPos = offset.toObject();
 
-      const offset = pos.map(a => align(a, 0.5));
-      const alignedPos = offset.toObject();
-
-      if (shapeType === 'circle') {
-        this.createShape({
-          ...style,
-          ...alignedPos,
-          type: shapeType,
-          radius: 0.5,
-          offset,
-        });
-      } else if (shapeType === 'line' || shapeType === 'ruler') {
-        this.createShape({
-          ...style,
-          ...alignedPos,
-          type: shapeType,
-          rx: 0,
-          ry: 0,
-          offset,
-        });
-      } else if (shapeType === 'rect') {
-        this.createShape({
-          ...style,
-          ...offset.add(0.5).toObject(),
-          type: shapeType,
-          width: 1,
-          height: 1,
-          offset,
-        });
+        if (shapeType === 'circle') {
+          this.createShape({
+            ...style,
+            ...alignedPos,
+            type: shapeType,
+            radius: 0.5,
+            offset,
+          });
+        } else if (shapeType === 'line' || shapeType === 'ruler') {
+          this.createShape({
+            ...style,
+            ...alignedPos,
+            type: shapeType,
+            rx: 0,
+            ry: 0,
+            offset,
+          });
+        } else if (shapeType === 'rect') {
+          this.createShape({
+            ...style,
+            ...offset.add(0.5).toObject(),
+            type: shapeType,
+            width: 1,
+            height: 1,
+            offset,
+          });
+        }
       }
     },
     move(e) {
@@ -211,9 +218,17 @@ export default {
         shapeType,
         selected,
       } = this.mapControl;
-      if (!selected) return;
+      if (!selected) {
+        if (e.type === 'mousemove' && e.buttons === 1) {
+          const pos = new Vec2(e.pageX, e.pageY);
+          const d = this.scrollOffset.sub(pos);
+          this.scrollOffset = pos;
 
-      if (mode === 'move') {
+          const scrollable = this.$refs.container.parentElement;
+          scrollable.scrollLeft += d.v[0];
+          scrollable.scrollTop += d.v[1];
+        }
+      } else if (mode === 'move') {
         const {
           id,
           type,
