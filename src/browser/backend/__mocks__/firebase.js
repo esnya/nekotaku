@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import _ from 'lodash';
 import shortid from 'shortid';
-import DatabaseRules from '../../../../database.rules.json';
 
 const initializeApp = jest.fn();
 
