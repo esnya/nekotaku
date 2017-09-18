@@ -22,16 +22,36 @@ function joinKeys(...keys) {
   return keys.filter(a => a).join(':');
 }
 
+function itemFilter(value: ?Object) {
+  const {
+    _id,
+    roomId,
+    ...others
+  } = value;
+
+  return {
+    ...others,
+    ...(_id ? { id: _id.toString() } : {}),
+  };
+}
+function dataFilter(value: ?Object) {
+  const {
+    _id,
+    ...others
+  } = value;
+
+  return itemFilter(others);
+}
 function roomFilter(value: ?Object) {
   if (!value) return value;
 
   const {
     password,
-    ...othres
-  } = value;
+    ...others
+  } = itemFilter(value);
 
   return {
-    ...othres,
+    ...others,
     isLocked: Boolean(password),
   };
 }
@@ -93,21 +113,17 @@ export default class Client {
   }
 
   async update(type: string, targetId: ?string, roomId: ?string, value: Object) {
-    const now = Date.now();
     const query = roomId ? { roomId } : {};
 
     const oldValue = await datastore.findOne(type, targetId, query);
     const newValue = {
       ...oldValue,
       ...value,
-      ...(roomId ? { roomId } : {}),
-      uid: (oldValue && oldValue.uid) || this.getUID(),
-      updatedAt: now,
+      ...query,
     };
     if (!oldValue) {
       await datastore.insert(type, {
         ...newValue,
-        createdAt: now,
       });
     } else {
       await datastore.updateOne(type, targetId, query, newValue);
@@ -191,11 +207,12 @@ export default class Client {
       if (event === 'add') {
         const children = await datastore.findArray(type, roomId && { roomId });
         children.forEach((child) => {
-          this.emitMessage([event, type, roomId], child, false);
+          this.emitMessage([event, type, roomId], itemFilter(child), false);
         });
       } else if (event === 'update') {
         const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
-        if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : data, false);
+        const filter = type === 'rooms' ? roomFilter : dataFilter;
+        if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : filter(data), false);
       }
 
       return this.resolve(requestId);
@@ -218,7 +235,7 @@ export default class Client {
     await this.enforceMember(roomId);
 
     const updatedValue = await this.update(type, null, roomId, value);
-    this.emitMessage(['update', type, roomId], updatedValue);
+    this.emitMessage(['update', type, roomId], dataFilter(updatedValue));
   }
   async onRemove(type: string, roomId: string) {
     await this.enforceMember(roomId);
@@ -231,13 +248,9 @@ export default class Client {
     try {
       await this.enforceMember(roomId);
 
-      const now = Date.now();
       childId = await datastore.insert(type, {
         ...value,
-        uid: this.getUID(),
         roomId,
-        createdAt: now,
-        updatedAt: now,
       });
       this.resolve(requestId, childId);
     } catch (e) {
@@ -246,7 +259,7 @@ export default class Client {
     }
 
     const child = await datastore.findOne(type, childId, { roomId });
-    if (child) this.emitMessage(['add', type, roomId], child);
+    if (child) this.emitMessage(['add', type, roomId], itemFilter(child));
   }
   async onChangeChild(type: string, roomId: string, childId: string, value: Object) {
     await this.enforceMember(roomId);
@@ -261,14 +274,10 @@ export default class Client {
       {},
       oldValue,
       value,
-      {
-        uid: oldValue.uid || this.getUID(),
-        roomId,
-        updatedAt: Date.now(),
-      },
+      { roomId },
     );
     await datastore.updateOne(type, childId, { roomId }, newValue);
-    this.emitMessage(['change', type, roomId], newValue);
+    this.emitMessage(['change', type, roomId], itemFilter(newValue));
   }
   async onChangeChildValue(
     type: string,
@@ -287,7 +296,7 @@ export default class Client {
     if (!data) return;
 
     await datastore.remove(type, childId, { roomId });
-    this.emitMessage(['remove', type, roomId], data);
+    this.emitMessage(['remove', type, roomId], itemFilter(data));
   }
 
   async onUploadFile(

@@ -4,12 +4,6 @@ export function runBackendTests(Stragtegy) {
   const now = Date.now();
   Date.now = jest.fn().mockReturnValue(now);
 
-  const _ = require('lodash');
-  const MetadataFields = ['id', 'createdAt', 'updatedAt', 'uid', 'roomId'];
-  function filterMetadata(o) {
-    return _.pickBy(o, (v, k) => MetadataFields.indexOf(k) < 0);
-  }
-
   let backend;
   const JoinResult = require('./JoinResult');
   it('should be able to instantiate', () => {
@@ -77,8 +71,8 @@ export function runBackendTests(Stragtegy) {
 
     const roomUpate = roomWatcher.mock.calls.find(([e]) => e === 'room:update');
     const mapUpate = roomWatcher.mock.calls.find(([e]) => e === 'maps:update');
-    expect(roomUpate).toEqual(['room:update', RoomData1]);
-    expect(filterMetadata(mapUpate[1])).toEqual(TestMap1);
+    expect(roomUpate[1]).toEqual(RoomData1);
+    expect(mapUpate[1]).toEqual(TestMap1);
   });
 
   it('should be able to update room title', async () => {
@@ -144,6 +138,107 @@ export function runBackendTests(Stragtegy) {
     expect(result).toEqual({
       result: JoinResult.OK,
     });
+  });
+
+  it('should be able to update map', async () => {
+    roomWatcher.mockClear();
+    const width = 25;
+    await backend.updateMap('width', width);
+    TestMap1.width = width;
+  });
+
+  it('should receives updated map', async () => {
+    expect(roomWatcher).toBeCalledWith('maps:update', TestMap1);
+  });
+
+  const Message1 = {
+    body: [
+      { type: 'text', text: 'Test Message' },
+    ],
+    name: 'tester',
+  };
+  it('should be able to send message', async () => {
+    roomWatcher.mockClear();
+    Message1.id = await backend.sendMessage(Message1);
+    expect(Message1.id).toBeDefined();
+  });
+
+  it('should receives sent message', () => {
+    expect(roomWatcher).toBeCalledWith('messages:add', Message1);
+  });
+
+  const Character1 = {
+    name: 'char1',
+    initiative: 0,
+    attributes: ['10', '2'],
+  };
+  it('should be able to create character', async () => {
+    roomWatcher.mockClear();
+    Character1.id = await backend.createCharacter(Character1);
+    expect(Character1.id).toBeDefined();
+  });
+
+  it('should receives created character', () => {
+    expect(roomWatcher).toBeCalledWith('characters:add', Character1);
+  });
+
+  it('should be able to update character', async () => {
+    roomWatcher.mockClear();
+    const name = 'char1a';
+    await backend.updateCharacter(Character1.id, 'name', name);
+    Character1.name = name;
+  });
+
+  it('should receives updated character', () => {
+    expect(roomWatcher).toBeCalledWith('characters:change', Character1);
+  });
+
+  it('should be able to remove character', async () => {
+    roomWatcher.mockClear();
+    await backend.removeCharacter(Character1.id);
+  });
+
+  it('should receives character removal', () => {
+    const call = roomWatcher.mock.calls.find(([event]) => event === 'characters:remove');
+    expect(call[1].id).toEqual(Character1.id);
+  });
+
+  const Shape1 = {
+    type: 'circle',
+    x: 0,
+    y: 1,
+    radius: 10,
+  };
+  it('should be able to create shape', async () => {
+    roomWatcher.mockClear();
+    Shape1.id = await backend.createShape(Shape1);
+    expect(Shape1.id).toBeDefined();
+  });
+
+  it('should receives created shape', () => {
+    expect(roomWatcher).toBeCalledWith('shapes:add', Shape1);
+  });
+
+  it('should be able to update shape', async () => {
+    roomWatcher.mockClear();
+    await backend.moveShape(Shape1.id, 1, 2, 3);
+    Shape1.x = 1;
+    Shape1.y = 2;
+    Shape1.z = 3;
+  });
+
+  it('should receives updated shape', () => {
+    expect(roomWatcher).toBeCalledWith('shapes:change', Shape1);
+  });
+
+  it('should be able to remove shape', async () => {
+    roomWatcher.mockClear();
+    await backend.removeShape(Shape1.id);
+  });
+
+  it('should receives shape removal', () => {
+    const call = roomWatcher.mock.calls.find(([event]) => event === 'shapes:remove');
+    expect(call[1].id).toEqual(Shape1.id);
   });
 
   it('should be able to leaveRoom', async () => {

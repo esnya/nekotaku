@@ -137,18 +137,19 @@ class DatabaseReference {
   async set(data: any) {
     if (!this.isWritable()) throw new Error('Can not write');
 
+    const exists = this.exists();
+
     databaseStore.set(this.path, data);
     const snapshot = this.getSnapshot();
     this.emit('value', snapshot);
-    this.parent().emit('child_added', snapshot);
+    this.parent().emit(exists ? 'child_changed' : 'child_added', snapshot);
   }
   async update(data: any) {
-    if (!this.isWritable()) throw new Error('Can not write');
-
-    databaseStore.update(this.path, data);
-    const snapshot = this.getSnapshot();
-    this.emit('value', snapshot);
-    this.parent().emit('child_added', snapshot);
+    const oldData = databaseStore.get(this.path);
+    await this.set({
+      ...oldData,
+      ...data,
+    });
   }
   async remove() {
     if (!this.isWritable()) throw new Error('Can not write');

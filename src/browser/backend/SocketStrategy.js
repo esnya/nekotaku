@@ -12,20 +12,6 @@ const ListEvents = [
   'remove',
 ];
 
-function dataFilter(data) {
-  if (!data || !('_id' in data)) return data;
-
-  const {
-    _id,
-    ...others
-  } = data;
-
-  return {
-    ...others,
-    id: _id.toString(),
-  };
-}
-
 function joinKey(...args) {
   return args.filter(a => a).join(':');
 }
@@ -127,7 +113,7 @@ export default class SocketStrategy extends BackendStrategy {
   async watchLobby(handler: Handler): Promise<void> {
     const tasks = ListEvents.map((event) => {
       const handlerEvent = `rooms:${event}`;
-      return this.on(event, 'rooms', null, data => handler(handlerEvent, dataFilter(data)));
+      return this.on(event, 'rooms', null, data => handler(handlerEvent, data));
     });
     await Promise.all(tasks);
   }
@@ -136,14 +122,14 @@ export default class SocketStrategy extends BackendStrategy {
     await Promise.all(tasks);
   }
   async watchRoom(roomId: string, handler: Handler): Promise<void> {
-    await this.on('update', 'rooms', roomId, data => handler('room:update', dataFilter(data)));
+    await this.on('update', 'rooms', roomId, data => handler('room:update', data));
   }
   async unwatchRoom(roomId: string) {
     await this.off('update', 'rooms', roomId);
   }
   async watchObject(type: string, roomId: string, handler: Handler): Promise<void> {
     const event = `${type}:update`;
-    await this.on('update', type, roomId, data => handler(event, dataFilter(data)));
+    await this.on('update', type, roomId, data => handler(event, data));
   }
   async unwatchObject(type: string, roomId: string): Promise<void> {
     await this.off('update', type, roomId);
@@ -151,7 +137,7 @@ export default class SocketStrategy extends BackendStrategy {
   async watchList(type: string, roomId: string, handler: Handler): Promise<void> {
     const tasks = ListEvents.map((event) => {
       const handlerEvent = `${type}:${event}`;
-      return this.on(event, type, roomId, data => handler(handlerEvent, dataFilter(data)));
+      return this.on(event, type, roomId, data => handler(handlerEvent, data));
     });
     await Promise.all(tasks);
   }
