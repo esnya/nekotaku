@@ -9,8 +9,8 @@ before_script:
   - cp config/server.mongodb.json config/server.json
 script:
   - yarn lint
-  - yarn build
   - yarn test -- --coverage --coverageReporters lcov
+  - yarn build
 after_success:
   - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls; fi
 before_deploy:

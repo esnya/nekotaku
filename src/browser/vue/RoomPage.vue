@@ -51,14 +51,20 @@
 </template>
 
 <script>
+import _ from 'lodash';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
+import sessionStorage from '../utilities/sessionStorage';
 import ChatTab from './ChatTab.vue';
 import CharacterList from './CharacterList.vue';
 import Loading from './Loading.vue';
 import MapTab from './MapTab.vue';
 import RoomInfoList from './RoomInfoList.vue';
 import RoomDrawer from './RoomDrawer.vue';
+
+const saveRoomTab = _.debounce((roomId, roomTab) => {
+  sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
+}, 1000);
 
 export default {
   components: {
@@ -112,6 +118,15 @@ export default {
     leave() {
       this.leaveRoom();
       this.$router.push({ name: RouteNames.Lobby });
+    },
+  },
+  watch: {
+    room({ id }) {
+      const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
+      if (roomTab) this.roomTab = roomTab;
+    },
+    roomTab(roomTab) {
+      saveRoomTab(this.room.id, roomTab);
     },
   },
   created() {

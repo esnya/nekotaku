@@ -6,31 +6,34 @@
     @mousemove="move"
     @touchmove="move"
   )
-    div.map(:style="styles.map")
-      div.background(:style="styles.background")
+    div.map(:class="{ perspective: mapControl.perspective }" :style="styles.map" @mousemove="drag" @touchmove="drag")
+      div.map-inner(:style="styles.mapInner")
         div.row(
           v-for="y in map.height"
           :v-key="y"
         )
           div.tile.text-xs-center(v-for="x in map.width", :v-key="x") {{x}}-{{y}}
-      svg(:width="map.width * 50", :height="map.width * 50")
-        g(
-          v-for="shape in shapes"
-          :key="shape.id"
-          @mousedown="e => entitySelect(e, shape, 'shape')"
-          @touchstart="e => entitySelect(e, shape, 'shape')"
-        )
-          shape-entity(:shape="shape")
-          shape-entity(v-if="showHolder", :shape="shape", holder)
-      div.layer
-        div.character.elevation-2(
-          v-for="character in characters"
-          v-tooltip:bottom="{html:character.name}"
-          :style="character.style"
-          @mousedown="e => entitySelect(e, character, 'character')"
-          @touchstart="e => entitySelect(e, character, 'character')"
-        )
-          div.name.text-xs-center.caption {{character.name}}
+        svg.layer(:width="map.width * 50", :height="map.width * 50")
+          g(
+            v-for="shape in shapes"
+            :key="shape.id"
+            @mousedown="e => entitySelect(e, shape, 'shape')"
+            @touchstart="e => entitySelect(e, shape, 'shape')"
+          )
+            shape-entity(:shape="shape")
+            shape-entity(v-if="showHolder", :shape="shape", holder)
+        .layer
+          .character.elevation-2(
+            v-for="character in characters"
+            :style="character.style"
+          )
+            .character-inner(
+              v-tooltip:bottom="{html:character.name}"
+              :style="character.innerStyle"
+              @mousedown="e => entitySelect(e, character, 'character')"
+              @touchstart="e => entitySelect(e, character, 'character')"
+            )
+              div.name.text-xs-center.caption {{character.name}}
 </template>
 
 <script>
@@ -60,7 +63,9 @@ export default {
         map: {
           transform: `scale(${this.scale})`,
         },
-        background: {
+        mapInner: {
+          width: `${this.map.width * 50}px`,
+          height: `${this.map.height * 50}px`,
           backgroundImage: `url(${this.map.backgroundImage})`,
         },
       };
@@ -78,6 +83,8 @@ export default {
           ...character,
           style: {
             transform: `translate(${(x * 50) - 25}px, ${(y * 50) - 25}px)`,
+          },
+          innerStyle: {
             backgroundImage: iconUrl ? `url(${iconUrl})` : null,
           },
         };
@@ -212,23 +219,28 @@ export default {
         }
       }
     },
+    drag(e) {
+      if (this.mapControl.selected) return;
+
+      if (e.type === 'mousemove' && e.buttons === 1) {
+        const pos = new Vec2(e.pageX, e.pageY);
+        const d = this.scrollOffset.sub(pos);
+        this.scrollOffset = pos;
+
+        const scrollable = this.$refs.container.parentElement;
+        scrollable.scrollLeft += d.v[0];
+        scrollable.scrollTop += d.v[1];
+      }
+    },
     move(e) {
       const {
         mode,
         shapeType,
         selected,
       } = this.mapControl;
-      if (!selected) {
-        if (e.type === 'mousemove' && e.buttons === 1) {
-          const pos = new Vec2(e.pageX, e.pageY);
-          const d = this.scrollOffset.sub(pos);
-          this.scrollOffset = pos;
+      if (!selected) return;
 
-          const scrollable = this.$refs.container.parentElement;
-          scrollable.scrollLeft += d.v[0];
-          scrollable.scrollTop += d.v[1];
-        }
-      } else if (mode === 'move') {
+      if (mode === 'move') {
         const {
           id,
           type,
@@ -326,42 +338,51 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.map-container
-  position relative
-
 .map
   user-select none
-  position absolute
+  padding 100px
+  display inline-block
+
   transition transform 0.4s ease-in-out
   transform-origin top left
 
-  .background
-    background-origin content-box
-    background-size 100% 100%
-    padding 100px
-    top 0
-    left 0
+  transform-style preserve-3d
+  perspective 1000px
+  perspective-origin center center
 
-  .row
-    white-space nowrap
-    height 50px
+  *
+    transform-style preserve-3d
 
-  .tile
-    display inline-block
-    width 50px
-    height 50px
-    border 1px solid rgba(0, 0, 0, 0.5)
-    text-align center
+.map-inner
+  transition transform 0.4s ease-in-out
+  transform-origin bottom
+  position relative
+  background-origin content-box
+  background-size 100% 100%
 
-  svg
-    position absolute;
-    top 100px
-    left 100px
+.row
+  white-space nowrap
+  height 50px
 
-  .character
-    position absolute
-    top 100px
-    left 100px
+.tile
+  display inline-block
+  width 50px
+  height 50px
+  border 1px solid rgba(0, 0, 0, 0.5)
+  text-align center
+
+.layer
+  position absolute
+  top 0
+  left 0
+
+svg g *
+  box-shadow 0 0 5px rgba(0, 0, 0, 0.5)
+
+.character
+  position absolute
+
+  .character-inner
     width 50px
     height 50px
     background-color rgba(255, 255, 255, 0.5)
@@ -371,17 +392,48 @@ export default {
     align-items stretch
     justify-content flex-end
     border 1px solid black
+    transform-origin bottom
+    transition transform 0.4s ease-in-out
 
-    .name
-      background-color rgba(255, 255, 255, 0.5)
-      text-overflow ellipsis
-      white-space nowrap
-      overflow hidden
+  .name
+    background-color rgba(255, 255, 255, 0.5)
+    text-overflow ellipsis
+    white-space nowrap
+    overflow hidden
+    transition transform 0.4s ease-in-out
 
-  .editor
-    position absolute
-    top 100px
-    left 100px
-    right 100px
-    bottom 100px
+.editor
+  position absolute
+  top 100px
+  left 100px
+  right 100px
+  bottom 100px
+
+.perspective
+  .map-inner
+    transform rotateX(90deg)
+
+  .character
+    box-shadow none !important
+
+    &:after
+      content: ' '
+      width 40px
+      height 10px
+      position absolute
+      top 46px
+      left 5px
+      border-radius 50%
+      background rgba(0, 0, 0, 0.6)
+      box-shadow 0 0 10px rgba(0, 0, 0, 0.6)
+
+  .character-inner
+    transform rotateX(-90deg)
+
+    background-color transparent
+    border: none
+
+  .name
+    border 1px solid black
+    transform translateY(-50px)
 </style>

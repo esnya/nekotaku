@@ -25,9 +25,13 @@ export default {
         [key]: value,
       };
     },
+    togglePerspective(state) {
+      state.perspective = !state.perspective;
+    },
   },
   state: {
     zoom: 0,
+    perspective: false,
     mode: 'move',
     shapeType: null,
     selected: null,

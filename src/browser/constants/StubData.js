@@ -8,6 +8,7 @@ export default {
       portrait: {
         default: { url: '/sample/p2a.png' },
       },
+      icon: '/sample/i2.png',
       attributes: [
         '12/12',
         '6/6',

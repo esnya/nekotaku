@@ -10,6 +10,7 @@
           v-icon zoom_out
         v-btn(icon, @click="resetMapZoom")
           v-icon zoom_out_map
+        v-btn(icon, @click="togglePerspective") 3D
       .vertical-divider
       button-group(toggle, v-model="mode")
         v-btn(icon, value="move")
@@ -76,6 +77,7 @@ export default {
     'addMapZoom',
     'resetMapZoom',
     'setMapMode',
+    'togglePerspective',
   ]),
   data() {
     return {
