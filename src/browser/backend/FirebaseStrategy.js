@@ -9,6 +9,8 @@ function dataFilter(data) {
 }
 
 function itemFilter(data) {
+  if (!data) return data;
+
   return {
     id: data.key,
     ...dataFilter(data),
@@ -16,6 +18,8 @@ function itemFilter(data) {
 }
 
 function roomFilter(data) {
+  if (!data) return data;
+
   const {
     password,
     ...others

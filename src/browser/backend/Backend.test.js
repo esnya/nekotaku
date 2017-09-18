@@ -193,6 +193,18 @@ export function runBackendTests(Stragtegy) {
     expect(roomWatcher).toBeCalledWith('characters:change', Character1);
   });
 
+  it('should be able to move character', async () => {
+    roomWatcher.mockClear();
+    await backend.moveCharacter(Character1.id, 1, 2, 3);
+    Character1.x = 1;
+    Character1.y = 2;
+    Character1.z = 3;
+  });
+
+  it('should receives moved character', () => {
+    expect(roomWatcher).toBeCalledWith('characters:change', Character1);
+  });
+
   it('should be able to remove character', async () => {
     roomWatcher.mockClear();
     await backend.removeCharacter(Character1.id);
@@ -200,6 +212,7 @@ export function runBackendTests(Stragtegy) {
 
   it('should receives character removal', () => {
     const call = roomWatcher.mock.calls.find(([event]) => event === 'characters:remove');
+    expect(call).toBeDefined();
     expect(call[1].id).toEqual(Character1.id);
   });
 
@@ -238,6 +251,7 @@ export function runBackendTests(Stragtegy) {
 
   it('should receives shape removal', () => {
     const call = roomWatcher.mock.calls.find(([event]) => event === 'shapes:remove');
+    expect(call).toBeDefined();
     expect(call[1].id).toEqual(Shape1.id);
   });
 
@@ -248,6 +262,13 @@ export function runBackendTests(Stragtegy) {
   it('should be able to remove room', async () => {
     await backend.joinRoom(roomId1, null, roomWatcher);
     await backend.removeRoom({}, []);
+  });
+
+  it('should respond NotFound when joined to unexists room', async () => {
+    const result = await backend.joinRoom(roomId1, null, roomWatcher);
+    expect(result).toEqual({
+      result: JoinResult.NotFound,
+    });
   });
 }
 

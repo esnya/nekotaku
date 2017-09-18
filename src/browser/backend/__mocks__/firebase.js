@@ -72,9 +72,14 @@ class DatabaseStore {
 const databaseStore = new DatabaseStore();
 const databaseEventBus = new EventEmitter();
 class DatabaseSnapshot {
-  constructor(key: string, data: any) {
-    this.key = key;
+  path: string;
+  constructor(path: string, data: any) {
+    this.path = path;
     this.data = data;
+  }
+
+  get key() {
+    return getLastKey(this.path);
   }
 
   val() {
@@ -82,7 +87,7 @@ class DatabaseSnapshot {
   }
 
   exists() {
-    return this.data !== null;
+    return this.key in databaseStore.get(getParent(this.path));
   }
 }
 class DatabaseReference {
@@ -113,7 +118,7 @@ class DatabaseReference {
     databaseEventBus.emit(this.getEventName(event), snapshot);
   }
   getSnapshot() {
-    return new DatabaseSnapshot(getLastKey(this.path), databaseStore.get(this.path));
+    return new DatabaseSnapshot(this.path, databaseStore.get(this.path));
   }
 
   get key() {
@@ -156,7 +161,7 @@ class DatabaseReference {
 
     const snapshot = this.getSnapshot();
     databaseStore.remove(this.path);
-    this.emit('value', new DatabaseSnapshot(getLastKey(this.path), null));
+    this.emit('value', new DatabaseSnapshot(this.path, null));
     this.parent().emit('child_removed', snapshot);
   }
 
@@ -166,7 +171,7 @@ class DatabaseReference {
       return true;
     } else if (event === 'child_added') {
       _(databaseStore.get(this.path)).forEach((data, key) => {
-        listener(new DatabaseSnapshot(key, data));
+        listener(new DatabaseSnapshot(`${this.path}/${key}`, data));
       });
       return true;
     }

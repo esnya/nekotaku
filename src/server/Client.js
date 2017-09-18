@@ -23,6 +23,8 @@ function joinKeys(...keys) {
 }
 
 function itemFilter(value: ?Object) {
+  if (!value) return value;
+
   const {
     _id,
     roomId,
@@ -35,6 +37,8 @@ function itemFilter(value: ?Object) {
   };
 }
 function dataFilter(value: ?Object) {
+  if (!value) return value;
+
   const {
     _id,
     ...others
