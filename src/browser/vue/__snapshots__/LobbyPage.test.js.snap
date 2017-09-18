@@ -1,0 +1,606 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LobbyPage should be LobbyPage 1`] = `
+<div
+  class="app"
+>
+  <nav
+    class="primary toolbar toolbar--fixed theme--dark"
+    style="margin-top: 0px;"
+  >
+    <div
+      class="toolbar__content"
+    >
+      <img
+        src="/img/nekokoro32.png"
+      />
+      <div
+        class="toolbar__title"
+      >
+        ねこたく
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div
+      class="container fluid grid-list-md"
+    >
+      <div
+        class="layout row wrap pb-5"
+      >
+        <div
+          class="flex xs12 sm6 md4"
+        >
+          <div
+            class="card"
+            style="height: auto;"
+          >
+            <div
+              class="card__title card__title--primary"
+            >
+              <div
+                class="layout row"
+              >
+                <!---->
+                <div
+                  class="headline"
+                >
+                  卓01 (パスワード:pass)
+                </div>
+              </div>
+            </div>
+            <div
+              class="card__text pa-0"
+            >
+              <div
+                class="room-list-info"
+              >
+                <div
+                  class="dialog__container"
+                  style="display: block;"
+                >
+                  <div
+                    class="dialog__content"
+                  >
+                    <div
+                      class="dialog"
+                      style="width: auto; display: none;"
+                    >
+                      <div
+                        class="card"
+                        style="height: auto;"
+                      >
+                        <div
+                          class="card__title"
+                        >
+                          <span
+                            class="headline"
+                          >
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="card__text neko-scroll"
+                        />
+                        <div
+                          class="card__actions"
+                        >
+                          <div
+                            class="spacer"
+                          />
+                          <button
+                            class="btn btn--raised"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              閉じる
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  class="pl-0 mr-0 indigo chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    SwordWorld2_0
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 green chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                     3
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="card__actions"
+            >
+              <div
+                class="spacer"
+              />
+              <a
+                class="btn btn--raised primary"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex xs12 sm6 md4"
+        >
+          <div
+            class="card"
+            style="height: auto;"
+          >
+            <div
+              class="card__title card__title--primary"
+            >
+              <div
+                class="layout row"
+              >
+                <!---->
+                <div
+                  class="headline"
+                >
+                  卓02
+                </div>
+              </div>
+            </div>
+            <div
+              class="card__text pa-0"
+            >
+              <div
+                class="room-list-info"
+              >
+                <div
+                  class="dialog__container"
+                  style="display: block;"
+                >
+                  <div
+                    class="dialog__content"
+                  >
+                    <div
+                      class="dialog"
+                      style="width: auto; display: none;"
+                    >
+                      <div
+                        class="card"
+                        style="height: auto;"
+                      >
+                        <div
+                          class="card__title"
+                        >
+                          <span
+                            class="headline"
+                          >
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="card__text neko-scroll"
+                        />
+                        <div
+                          class="card__actions"
+                        >
+                          <div
+                            class="spacer"
+                          />
+                          <button
+                            class="btn btn--raised"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              閉じる
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  class="pl-0 mr-0 indigo chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    SwordWorld2_0
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 green chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                     3
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="card__actions"
+            >
+              <div
+                class="spacer"
+              />
+              <a
+                class="btn btn--raised primary"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex xs12 sm6 md4"
+        >
+          <div
+            class="card"
+            style="height: auto;"
+          >
+            <div
+              class="card__title card__title--primary"
+            >
+              <div
+                class="layout row"
+              >
+                <!---->
+                <div
+                  class="headline"
+                >
+                  卓03
+                </div>
+              </div>
+            </div>
+            <div
+              class="card__text pa-0"
+            >
+              <div
+                class="room-list-info"
+              >
+                <div
+                  class="dialog__container"
+                  style="display: block;"
+                >
+                  <div
+                    class="dialog__content"
+                  >
+                    <div
+                      class="dialog"
+                      style="width: auto; display: none;"
+                    >
+                      <div
+                        class="card"
+                        style="height: auto;"
+                      >
+                        <div
+                          class="card__title"
+                        >
+                          <span
+                            class="headline"
+                          >
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="card__text neko-scroll"
+                        />
+                        <div
+                          class="card__actions"
+                        >
+                          <div
+                            class="spacer"
+                          />
+                          <button
+                            class="btn btn--raised"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              閉じる
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  class="pl-0 mr-0 indigo chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    Cthulhu7th
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 green chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                     3
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="card__actions"
+            >
+              <div
+                class="spacer"
+              />
+              <a
+                class="btn btn--raised primary"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="dialog__container"
+      style="display: inline-block;"
+    >
+      <div
+        class="dialog__activator"
+      >
+        <button
+          class="primary btn btn--bottom btn--floating btn--fixed btn--raised btn--right theme--dark"
+          type="button"
+        >
+          <div
+            class="btn__content"
+          >
+            <i
+              class="material-icons icon"
+            >
+              add
+            </i>
+          </div>
+        </button>
+      </div>
+      <div
+        class="dialog__content"
+      >
+        <div
+          class="dialog"
+          style="width: 290px; display: none;"
+        >
+          <div
+            class="card"
+            style="height: auto;"
+          >
+            <div
+              class="card__title"
+            >
+              <span
+                class="headline"
+              >
+                卓作成
+              </span>
+            </div>
+            <div
+              class="card__text"
+            >
+              <form>
+                <div
+                  class="input-group input-group--required input-group--text-field"
+                >
+                  <label>
+                    タイトル
+                  </label>
+                  <div
+                    class="input-group__input"
+                  >
+                    <input
+                      aria-label="タイトル"
+                      required=""
+                      tabindex="0"
+                      type="text"
+                    />
+                  </div>
+                  <div
+                    class="input-group__details"
+                  >
+                    <div
+                      class="input-group__messages"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="input-group input-group--append-icon input-group--required input-group--text-field input-group--select input-group--autocomplete"
+                  tabindex="-1"
+                >
+                  <label>
+                    ダイスの種類
+                  </label>
+                  <div
+                    class="input-group__input"
+                  >
+                    <div
+                      class="input-group__selections"
+                      style="overflow: hidden;"
+                    >
+                      <input
+                        class="input-group--select__autocomplete"
+                        role="combobox"
+                        tabindex="0"
+                      />
+                    </div>
+                    <div
+                      class="menu"
+                      style="display: inline-block;"
+                    >
+                      <div
+                        class="menu__content menu__content--select"
+                        style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+                      >
+                        <div
+                          class="card"
+                          style="height: auto;"
+                        >
+                          <ul
+                            class="list"
+                            data-uid="41"
+                          >
+                            <li>
+                              <div
+                                class="list__tile list__tile--link"
+                                href="javascript:;"
+                              >
+                                <div
+                                  class="list__tile__content"
+                                >
+                                  <div
+                                    class="list__tile__title"
+                                  >
+                                    DiceBot
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <i
+                      aria-hidden="true"
+                      class="material-icons icon input-group__append-icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </div>
+                  <div
+                    class="input-group__details"
+                  >
+                    <div
+                      class="input-group__messages"
+                    />
+                  </div>
+                </div>
+              </form>
+              <form>
+                <div
+                  class="input-group input-group--dirty input-group--placeholder input-group--text-field"
+                >
+                  <label>
+                    パスワード
+                  </label>
+                  <div
+                    class="input-group__input"
+                  >
+                    <input
+                      aria-label="パスワード"
+                      placeholder="空欄で公開卓"
+                      tabindex="0"
+                      type="password"
+                    />
+                  </div>
+                  <div
+                    class="input-group__details"
+                  >
+                    <div
+                      class="input-group__messages"
+                    />
+                  </div>
+                </div>
+                <!---->
+                <div
+                  class="input-group input-group--dirty input-group--placeholder input-group--text-field"
+                >
+                  <label>
+                    キャラクター属性
+                  </label>
+                  <div
+                    class="input-group__input"
+                  >
+                    <input
+                      aria-label="キャラクター属性"
+                      placeholder="例: HP,MP,SP"
+                      tabindex="0"
+                      type="text"
+                    />
+                  </div>
+                  <div
+                    class="input-group__details"
+                  >
+                    <div
+                      class="input-group__messages"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div
+              class="card__actions"
+            >
+              <div
+                class="spacer"
+              />
+              <button
+                class="primary btn btn--disabled btn--raised"
+                disabled="disabled"
+                type="button"
+              >
+                <div
+                  class="btn__content"
+                >
+                  作成
+                </div>
+              </button>
+              <button
+                class="btn btn--raised"
+                type="button"
+              >
+                <div
+                  class="btn__content"
+                >
+                  キャンセル
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

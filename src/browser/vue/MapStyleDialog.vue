@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(:value="value", @input="v => $emit('input', v)")
-    v-card(v-scroll="'y'" v-if="map")
+    v-card(v-scroll="'y'")
       v-card-title
         span.headline 描画設定
       v-card-text
@@ -55,11 +55,6 @@ export default {
     strokeWidth: dataValue('strokeWidth'),
     fill: dataValue('fill'),
     fillOpacity: dataValue('fillOpacity', 100),
-  },
-  data() {
-    return {
-      map: {},
-    };
   },
   methods: mapMutations([
     'updateMapStyle',

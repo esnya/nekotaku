@@ -35,6 +35,8 @@ export default {
   ],
   mounted() {
     const item = this.$refs.root;
+    if (!item.closest) return;
+
     const scrollable = item.closest('.scroll');
     const prev = item.previousElementSibling;
 

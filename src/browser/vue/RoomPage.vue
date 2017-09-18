@@ -89,10 +89,10 @@ export default {
       };
     },
     joinInfo() {
-      return this.roomJoinInfo[this.id];
+      return this.roomJoinInfo && this.roomJoinInfo[this.id];
     },
     password() {
-      return this.roomJoinInfo[this.id] && this.roomJoinInfo[this.id].password;
+      return this.roomJoinInfo && this.roomJoinInfo[this.id] && this.roomJoinInfo[this.id].password;
     },
   },
   methods: {
