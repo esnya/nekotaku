@@ -85,7 +85,7 @@ export default {
     },
     slideStyle() {
       return {
-        transform: `translate(-${this.roomTab}00%, 0)`,
+        transform: `translate(-${this.roomTab}00vw, 0)`,
       };
     },
     joinInfo() {
@@ -129,11 +129,13 @@ export default {
 <style lang="stylus" scoped>
 .slide
   height 100%
+  width 300%
   display flex
   transition transform 0.4s ease-in-out
+  overflow hidden
 
   > *
-    flex 0 0 100%
+    flex 1 1 0
     overflow hidden
 
 main
