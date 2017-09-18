@@ -1,4 +1,4 @@
-describe.skip('FirebaseBackend', () => {
+describe('FirebaseBackend', () => {
   jest.mock('firebase');
 
   const {

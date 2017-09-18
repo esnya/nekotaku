@@ -193,8 +193,16 @@ export default class FirebaseStrategy extends BackendStrategy {
   }
 
   async createRoom(room: Object) {
+    const now = Date.now();
+    const uid = await this.getUID();
     const ref = this.databaseRef('rooms').push();
-    await ref.set(room);
+    await ref.set({
+      ...room,
+      uid,
+      players: 1,
+      createdAt: now,
+      updatedAt: now,
+    });
     return ref.key;
   }
   async getRoom(roomId: string) {
