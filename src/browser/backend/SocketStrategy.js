@@ -38,11 +38,11 @@ export default class SocketStrategy extends BackendStrategy {
     this.socket = new SocketIO();
 
     this.socket.on('connect', () => {
-      this.socket.emit(SocketEvents.SetUID, getUID());
+      this.request(SocketEvents.SetUID, getUID());
     });
     this.socket.on('reconnect', () => {
       this.handlers.forEach(({ event, type, roomId }) => {
-        this.socket.emit(SocketEvents.Watch, event, type, roomId, true);
+        this.request(SocketEvents.Watch, event, type, roomId, true);
       });
     });
 
@@ -147,17 +147,17 @@ export default class SocketStrategy extends BackendStrategy {
   }
 
   async update(type: string, roomId: string, value: Object): Promise<void> {
-    this.emit(SocketEvents.Update, type, roomId, value);
+    await this.request(SocketEvents.Update, type, roomId, value);
   }
   async remove(type: string, roomId: string): Promise<void> {
-    this.emit(SocketEvents.Remove, type, roomId);
+    await this.request(SocketEvents.Remove, type, roomId);
   }
   async addChild(type: string, roomId: string, value: Object): Promise<string> {
     const id = await this.request(SocketEvents.AddChild, type, roomId, value);
     return id;
   }
   async changeChild(type: string, roomId: string, childId: string, value: Object): Promise<void> {
-    this.emit(SocketEvents.ChangeChild, type, roomId, childId, value);
+    await this.request(SocketEvents.ChangeChild, type, roomId, childId, value);
   }
   async changeChildValue(
     type: string,
@@ -166,10 +166,10 @@ export default class SocketStrategy extends BackendStrategy {
     key: string,
     value: any,
   ): Promise<void> {
-    this.emit(SocketEvents.ChangeChildValue, type, roomId, childId, key, value);
+    await this.request(SocketEvents.ChangeChildValue, type, roomId, childId, key, value);
   }
   async removeChild(type: string, roomId: string, chlidId: string): Promise<void> {
-    this.emit(SocketEvents.RemoveChild, type, roomId, chlidId);
+    await this.request(SocketEvents.RemoveChild, type, roomId, chlidId);
   }
 
   async uploadFile(roomId: string, path: string, file: File): Promise<string> {
@@ -177,7 +177,7 @@ export default class SocketStrategy extends BackendStrategy {
     return url;
   }
   async deleteFile(roomId: string, path: string) {
-    this.emit(SocketEvents.DeleteFile, roomId, path);
+    await this.request(SocketEvents.DeleteFile, roomId, path);
   }
 
   async createRoom(room: Object): Promise<string> {
@@ -196,7 +196,7 @@ export default class SocketStrategy extends BackendStrategy {
     return result;
   }
   async removeRoom(roomId: string): Promise<void> {
-    this.emit(SocketEvents.RemoveRoom, roomId);
+    await this.request(SocketEvents.RemoveRoom, roomId);
   }
 
   async removeMe(roomId: string): Promise<void> {

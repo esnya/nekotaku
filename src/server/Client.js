@@ -68,14 +68,16 @@ export default class Client {
     system.info(`New socket connection ${socket.id}`);
 
     _(SocketEvents).forEach((event, key) => {
-      socket.on(event, (...args) => {
+      socket.on(event, async (requestId: string, ...args) => {
         try {
           system.trace('received', event, ...args);
           const methodKey = `on${key}`;
           if (!this[methodKey]) system.fatal(`Client.${methodKey} is not defined`);
-          this[methodKey](...args);
+          const result = await this[methodKey](...args);
+          this.resolve(requestId, result);
         } catch (e) {
-          system.error(e, args);
+          system.error(e, requestId, args);
+          this.reject(requestId, e);
         }
       });
     });
@@ -194,45 +196,26 @@ export default class Client {
   async onSetUID(uid: string) {
     this.uid = uid;
   }
-  async onWatch(
-    requestId: string,
-    event: string,
-    type: string,
-    roomId: ?string,
-    silent: boolean = false,
-  ) {
-    try {
-      if (roomId) await this.enforceMember(roomId);
+  async onWatch(event: string, type: string, roomId: ?string, silent: boolean = false) {
+    if (roomId) await this.enforceMember(roomId);
 
-      this.join(event, type, roomId);
+    this.join(event, type, roomId);
 
-      if (silent) return this.resolve(requestId);
+    if (silent) return;
 
-      if (event === 'add') {
-        const children = await datastore.findArray(type, roomId && { roomId });
-        children.forEach((child) => {
-          this.emitMessage([event, type, roomId], itemFilter(child), false);
-        });
-      } else if (event === 'update') {
-        const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
-        const filter = type === 'rooms' ? roomFilter : dataFilter;
-        if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : filter(data), false);
-      }
-
-      return this.resolve(requestId);
-    } catch (e) {
-      system.error(e, { requestId });
-      return this.reject(requestId);
+    if (event === 'add') {
+      const children = await datastore.findArray(type, roomId && { roomId });
+      children.forEach((child) => {
+        this.emitMessage([event, type, roomId], itemFilter(child), false);
+      });
+    } else if (event === 'update') {
+      const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
+      const filter = type === 'rooms' ? roomFilter : dataFilter;
+      if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : filter(data), false);
     }
   }
-  onUnwatch(requestId: string, event: string, type: string, roomId: ?string) {
-    try {
-      this.leave(event, type, roomId);
-      this.resolve(requestId);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId);
-    }
+  onUnwatch(event: string, type: string, roomId: ?string) {
+    this.leave(event, type, roomId);
   }
 
   async onUpdate(type: string, roomId: string, value: Object) {
@@ -247,23 +230,18 @@ export default class Client {
     await datastore.remove(type, null, { roomId });
     this.emitMessage(['update', type, roomId], null);
   }
-  async onAddChild(requestId: string, type: string, roomId: string, value: Object) {
-    let childId;
-    try {
-      await this.enforceMember(roomId);
+  async onAddChild(type: string, roomId: string, value: Object) {
+    await this.enforceMember(roomId);
 
-      childId = await datastore.insert(type, {
-        ...value,
-        roomId,
-      });
-      this.resolve(requestId, childId);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
+    const childId = await datastore.insert(type, {
+      ...value,
+      roomId,
+    });
 
     const child = await datastore.findOne(type, childId, { roomId });
     if (child) this.emitMessage(['add', type, roomId], itemFilter(child));
+
+    return childId;
   }
   async onChangeChild(type: string, roomId: string, childId: string, value: Object) {
     await this.enforceMember(roomId);
@@ -303,26 +281,15 @@ export default class Client {
     this.emitMessage(['remove', type, roomId], itemFilter(data));
   }
 
-  async onUploadFile(
-    requestId: string,
-    roomId: string,
-    filePath: string,
-    type: string,
-    file: Buffer,
-  ) {
-    try {
-      await this.enforceMember(roomId);
+  async onUploadFile(roomId: string, filePath: string, type: string, file: Buffer) {
+    await this.enforceMember(roomId);
 
-      if (file.length > MaxFileSize) throw new Error('Maximum file size exceeded');
+    if (file.length > MaxFileSize) throw new Error('Maximum file size exceeded');
 
-      const fileId = await datastore.insert('files', { roomId, type, path: filePath });
-      await fs.writeFile(path.join(FilePath, fileId), file);
+    const fileId = await datastore.insert('files', { roomId, type, path: filePath });
+    await fs.writeFile(path.join(FilePath, fileId), file);
 
-      this.resolve(requestId, `/files/${fileId}`);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
+    return `/files/${fileId}`;
   }
   async onDeleteFile(roomId: string, filePath: string) {
     await this.enforceMember(roomId);
@@ -340,69 +307,47 @@ export default class Client {
     });
   }
 
-  async onCreateRoom(requestId: string, room: Object) {
-    let roomId;
-    try {
-      const uid = this.getUID();
-      const now = Date.now();
-      const newValue = {
-        ...room,
-        players: 1,
-        uid,
-        createdAt: now,
-        updatedAt: now,
-      };
+  async onCreateRoom(room: Object) {
+    const uid = this.getUID();
+    const now = Date.now();
+    const newValue = {
+      ...room,
+      players: 1,
+      uid,
+      createdAt: now,
+      updatedAt: now,
+    };
 
-      roomId = await datastore.insert('rooms', newValue);
-      await this.insertMember(roomId);
-
-      this.resolve(requestId, roomId);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
+    const roomId = await datastore.insert('rooms', newValue);
+    await this.insertMember(roomId);
 
     const storedValue = await datastore.findOne('rooms', roomId);
     this.emitMessage(['add', 'rooms'], storedValue);
-  }
-  async onGetRoom(requestId: string, roomId: string) {
-    try {
-      const room = await datastore.findOne('rooms', roomId);
-      this.resolve(requestId, room && roomFilter(room));
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
-  }
-  async onUpdateRoom(requestId: string, roomId: string, value: Object) {
-    try {
-      await this.updateRoom(roomId, value);
-      this.resolve(requestId);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
-  }
-  async onLoginRoom(requestId: string, roomId: string, password: ?string) {
-    try {
-      const member = await this.isMemberOf(roomId);
-      if (member) {
-        return this.resolve(requestId, true);
-      }
 
-      const room = await datastore.findOne('rooms', roomId);
-      if (!room || (room.password && room.password !== password)) {
-        return this.resolve(requestId, false);
-      }
-
-      const members = await this.insertMember(roomId);
-      this.updateRoom(roomId, { players: Object.keys(members.members).length });
-
-      return this.resolve(requestId, true);
-    } catch (e) {
-      system.error(e, { requestId });
-      return this.reject(requestId, e);
+    return roomId;
+  }
+  async onGetRoom(roomId: string) {
+    const room = await datastore.findOne('rooms', roomId);
+    return room && roomFilter(room);
+  }
+  async onUpdateRoom(roomId: string, value: Object) {
+    await this.updateRoom(roomId, value);
+  }
+  async onLoginRoom(roomId: string, password: ?string) {
+    const member = await this.isMemberOf(roomId);
+    if (member) {
+      return true;
     }
+
+    const room = await datastore.findOne('rooms', roomId);
+    if (!room || (room.password && room.password !== password)) {
+      return false;
+    }
+
+    const members = await this.insertMember(roomId);
+    this.updateRoom(roomId, { players: Object.keys(members.members).length });
+
+    return true;
   }
   async onRemoveRoom(roomId: string) {
     await this.enforceMember(roomId);
@@ -413,23 +358,16 @@ export default class Client {
     this.emitMessage(['update', 'rooms', roomId], null);
   }
 
-  async onRemoveMe(requestId: string, roomId: string) {
-    try {
-      const uid = this.getUID();
-      await this.enforceMember(roomId);
+  async onRemoveMe(roomId: string) {
+    const uid = this.getUID();
+    await this.enforceMember(roomId);
 
-      const oldValue = await datastore.findOne('members', null, { roomId });
-      const newValue = {
-        ...oldValue,
-        members: _(oldValue.members).pickBy((v, k) => k !== uid).value(),
-      };
+    const oldValue = await datastore.findOne('members', null, { roomId });
+    const newValue = {
+      ...oldValue,
+      members: _(oldValue.members).pickBy((v, k) => k !== uid).value(),
+    };
 
-      await datastore.updateOne('members', null, { roomId }, newValue);
-
-      this.resolve(requestId);
-    } catch (e) {
-      system.error(e, { requestId });
-      this.reject(requestId, e);
-    }
+    await datastore.updateOne('members', null, { roomId }, newValue);
   }
 }
