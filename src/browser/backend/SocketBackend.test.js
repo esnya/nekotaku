@@ -72,7 +72,7 @@ describe('SocketBackend', () => {
 
   require('../../server/io');
 
-  beforeEach(() => new Promise(resolve => setTimeout(resolve, 50)));
+  beforeEach(() => new Promise(resolve => setTimeout(resolve, 100)));
 
   require('./Backend.test.js').runBackendTests(require('./SocketStrategy').default);
 });
