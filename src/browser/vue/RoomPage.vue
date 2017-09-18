@@ -144,4 +144,5 @@ main
 
 .bottom-nav
   position static
+  flex 0 0 auto
 </style>
