@@ -5,7 +5,7 @@ import objectStore from './objectStore';
 export default {
   ...objectStore('room'),
   actions: {
-    async joinRoom({ commit, state }, { id, router }) {
+    async joinRoom({ commit, dispatch, state }, { id, router }) {
       [
         'characters',
         'maps',
@@ -35,6 +35,8 @@ export default {
         });
       } else if (result === JoinResult.NotFound) {
         router.push({ name: RouteNames.NotFound });
+      } else {
+        dispatch('loadChatConfig', id);
       }
     },
     async leaveRoom({ commit }) {

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import MaterialColorSelector from './MaterialColorSelector.vue';
 
 export default {
@@ -40,7 +40,7 @@ export default {
       open: false,
     };
   },
-  methods: mapMutations([
+  methods: mapActions([
     'setChatColor',
     'setChatName',
   ]),
