@@ -51,18 +51,10 @@ export default class SocketStrategy extends BackendStrategy {
     });
 
     this.socket.on('response:resolve', (requestId: string, data: any) => {
-      if (this.resolvers[requestId]) {
-        const { resolve } = this.resolvers[requestId];
-        this.resolvers[requestId] = null;
-        resolve(data);
-      }
+      this.emitter.emit(`response:${requestId}`, true, data);
     });
     this.socket.on('response:reject', (requestId: string, error: any) => {
-      if (this.resolvers[requestId]) {
-        const { reject } = this.resolvers[requestId];
-        this.resolvers[requestId] = null;
-        reject(error);
-      }
+      this.emitter.emit(`response:${requestId}`, false, error);
     });
   }
 
@@ -73,21 +65,19 @@ export default class SocketStrategy extends BackendStrategy {
     const requestId = shortid();
 
     const result = await new Promise((resolve, reject) => {
+      const resolveEvent = `response:${requestId}`;
+
       const timeout = setTimeout(() => {
-        if (this.resolvers[requestId]) {
-          this.resolvers[requestId] = null;
-          reject(new Error('timeout'));
-        }
+        this.emitter.emit(resolveEvent, (false, new Error(`Request ${requestId} timeout`)));
       }, 30 * 1000);
 
-      this.resolvers[requestId] = {
-        resolve: (data) => {
-          clearTimeout(timeout);
-          resolve(data);
-        },
-        reject,
-      };
+      function listener(resolved: boolean, data: any) {
+        clearTimeout(timeout);
+        if (resolved) resolve(data);
+        else reject(data);
+      }
 
+      this.emitter.once(resolveEvent, listener);
       this.emit(event, requestId, ...args);
     });
 
