@@ -1,29 +1,27 @@
 <template lang="pug">
-  v-card.neko-card(:style="{ border, boxShadow }")
-    .neko-flex-row.neko-scroll
-      div
-        v-btn.neko-fixed-width(
-          v-for="(c, name) in palette"
-          :key="name"
-          :outline="color !== name"
-          :style="{ backgroundColor: get(name), borderColor: get(name) }"
-          @click="updateColor(name)"
-        )
-    v-divider(:style="{ backgroundColor: colorValue, boxShadow }")
-    .neko-flex-row.neko-scroll
-      div
-        v-btn.neko-fixed-width(
-          :outline="shade !== '500'"
-          :style="{ backgroundColor: colorValue500, borderColor: colorValue500 }"
-          @click="updateShade('500')"
-        )
-        v-btn.neko-fixed-width(
-          v-for="(value, name) in palette[color]"
-          :key="name"
-          :outline="shade !== name"
-          :style="{ backgroundColor: value, borderColor: value }"
-          @click="updateShade(name)"
-        )
+  v-layout(row)
+    v-flex(xs6)
+      v-select(
+        label="色"
+        :value="color"
+        :items="colors"
+        @input="updateColor"
+      )
+        template(slot="selection" scope="data")
+          div.fill(:style="{ backgroundColor: getColor(data.item) }")
+        template(slot="item" scope="data")
+          div.fill(:style="{ backgroundColor: getColor(data.item) }")
+    v-flex(xs6)
+      v-select(
+        label="明るさ"
+        :value="shade"
+        :items="shades"
+        @input="updateShade"
+      )
+        template(slot="selection" scope="data")
+          div.fill(:style="{ backgroundColor: getColor(color, data.item) }")
+        template(slot="item" scope="data")
+          div.fill(:style="{ backgroundColor: getColor(color, data.item) }")
 </template>
 
 <script>
@@ -37,26 +35,19 @@ export default {
     shade() {
       return this.value[1];
     },
-    colorValue() {
-      return this.get(...this.value);
+    colors() {
+      return Object.keys(Palette.palette);
     },
-    colorValue500() {
-      return this.get(this.color);
-    },
-    border() {
-      return `1px solid ${this.colorValue}`;
-    },
-    boxShadow() {
-      return `0 0 2px 0px ${this.colorValue}`;
+    shades() {
+      return Object.keys(Palette.palette[this.value[0]]);
     },
   },
   data() {
     return {
-      palette: Palette.palette,
     };
   },
   methods: {
-    get: Palette.get.bind(Palette),
+    getColor: Palette.get.bind(Palette),
     updateColor(color) {
       this.$emit('input', [color, this.value[1]]);
     },
@@ -71,15 +62,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.neko-fixed-width
-  flex 0 0 36px
-  min-width 36px
-
-.expand-enter-active, .expand-leave-active
-  transition transform 0.4s ease-in-out
-.expand-enter
-.expand-leave-to
-  transform translate(100%)
-
+.fill
+  width 100%
+  height 100%
 </style>
 

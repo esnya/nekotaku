@@ -36,10 +36,10 @@ describe('RoomPage', () => {
       updateMapStyle: jest.fn(),
       updateMapBackgroundImage: jest.fn(),
       clearMapBackgroundImage: jest.fn(),
-    }),
-    mapMutations: jest.fn().mockReturnValue({
       setChatName: jest.fn(),
       setChatColor: jest.fn(),
+    }),
+    mapMutations: jest.fn().mockReturnValue({
       addMapZoom: jest.fn(),
       resetMapZoom: jest.fn(),
       setMapMode: jest.fn(),
