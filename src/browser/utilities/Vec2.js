@@ -33,10 +33,34 @@ export default class Vec2 {
     );
   }
 
+  static getPage(e) {
+    const {
+      touches,
+      pageX,
+      pageY,
+    } = e;
+
+    if (touches && touches.length >= 1) {
+      return Vec2.getPage(touches[0]);
+    }
+
+    return new Vec2(
+      pageX,
+      pageY,
+    );
+  }
+
   static getOffset(e: HTMLElement) {
     return new Vec2(
       e.offsetLeft,
       e.offsetTop,
+    );
+  }
+
+  static getScroll(e: HTMLElement) {
+    return new Vec2(
+      e.scrollLeft,
+      e.scrollTop,
     );
   }
 
@@ -87,5 +111,19 @@ export default class Vec2 {
   }
   toString() {
     return `Vec2(${this.v.join(',')})`;
+  }
+}
+
+export class Rect {
+  constructor(pos: Vec2, size: Vec2) {
+    this.pos = pos;
+    this.size = size;
+  }
+
+  isInside(pos: Vec2) {
+    const d1 = pos.sub(this.pos);
+    const d2 = d1.sub(this.size);
+
+    return d1.x > 0 && d1.y > 0 && d2.x < 0 && d2.y < 0;
   }
 }

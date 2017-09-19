@@ -1,5 +1,8 @@
 describe('Vec2', () => {
-  const Vec2 = require('./Vec2').default;
+  const {
+    default: Vec2,
+    Rect,
+  } = require('./Vec2');
 
   it('should be vec2', () => {
     expect((new Vec2(1, 2).v)).toEqual([1, 2]);
@@ -42,13 +45,25 @@ describe('Vec2', () => {
     expect(a.toString()).toEqual('Vec2(1,3)');
   });
 
-  it('generates from ...', () => {
+  it('should generates from ...', () => {
     expect(Vec2.getScreen({ screenX: 1, screenY: 2 }).v).toEqual([1, 2]);
     expect(Vec2.getScreen({ touches: [{ screenX: 1, screenY: 2 }] }).v).toEqual([1, 2]);
 
     expect(Vec2.getLayer({ layerX: 1, layerY: 2 }).v).toEqual([1, 2]);
     expect(Vec2.getLayer({ touches: [{ layerX: 1, layerY: 2 }] }).v).toEqual([1, 2]);
 
+    expect(Vec2.getPage({ pageX: 1, pageY: 2 }).v).toEqual([1, 2]);
+    expect(Vec2.getPage({ touches: [{ pageX: 1, pageY: 2 }] }).v).toEqual([1, 2]);
+
     expect(Vec2.getOffset({ offsetLeft: 1, offsetTop: 2 }).v).toEqual([1, 2]);
+    expect(Vec2.getScroll({ scrollLeft: 1, scrollTop: 2 }).v).toEqual([1, 2]);
+  });
+
+  it('should be Rect', () => {
+    const r = new Rect(new Vec2(1, 2), new Vec2(3, 4));
+
+    expect(r.isInside(new Vec2(2, 4))).toBe(true);
+    expect(r.isInside(new Vec2(0, 4))).toBe(false);
+    expect(r.isInside(new Vec2(2, 6))).toBe(false);
   });
 });

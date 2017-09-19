@@ -1,12 +1,15 @@
 <template lang="pug">
   div.map-container(
     ref="container"
-    @mousedown="start"
-    @touchstart="start"
-    @mousemove="move"
-    @touchmove="move"
+    @mousedown="e => mms.onMapTouch(e)"
+    @touchstart="e => mms.onMapTouch(e)"
+    @touchmove="e => mms.onMapMove(e)"
   )
-    div.map(:class="{ perspective: mapControl.perspective }" :style="styles.map" @mousemove="drag" @touchmove="drag")
+    div.map(
+      :class="{ perspective: mapControl.perspective }"
+      :style="styles.map"
+      @mousemove="e => mms.onMapDrag(e)"
+    )
       div.map-inner(:style="styles.mapInner")
         div.row(
           v-for="y in map.height"
@@ -17,8 +20,8 @@
           g(
             v-for="shape in shapes"
             :key="shape.id"
-            @mousedown="e => entitySelect(e, shape, 'shape')"
-            @touchstart="e => entitySelect(e, shape, 'shape')"
+            @mousedown="e => mms.onShapeTouch(e, shape)"
+            @touchstart="e => mms.onShapeTouch(e, shape)"
           )
             shape-entity(:shape="shape")
             shape-entity(v-if="showHolder", :shape="shape", holder)
@@ -30,16 +33,16 @@
             .character-inner(
               v-tooltip:bottom="{html:character.name}"
               :style="character.innerStyle"
-              @mousedown="e => entitySelect(e, character, 'character')"
-              @touchstart="e => entitySelect(e, character, 'character')"
+              @mousedown="e => mms.onCharacterTouch(e, character)"
+              @touchstart="e => mms.onCharacterTouch(e, character)"
             )
               div.name.text-xs-center.caption {{character.name}}
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import Vec2 from '../utilities/Vec2';
-import { align } from '../utilities/entity';
+import getMapModeStrategy from '../map';
+// import MapModeStrategy from '../map/MapModeStrategy';
 import ShapeEntity from './ShapeEntity.vue';
 
 export default {
@@ -100,10 +103,23 @@ export default {
 
       return mode === 'move' || mode === 'erase';
     },
+    mms() {
+      const {
+        mode,
+        shapeType,
+      } = this.mapControl;
+
+      console.log(mode, shapeType, this.mmsCache);
+      if (!this.mmsCache || mode !== this.mmsCache.mode || shapeType !== this.mmsCache.shapeType) {
+        this.mmsCache = getMapModeStrategy(this);
+      }
+
+      return this.mmsCache;
+    },
   },
   data() {
     return {
-      scrollOffset: new Vec2(0, 0),
+      mmsCache: null,
     };
   },
   methods: {
@@ -120,200 +136,6 @@ export default {
       'selectEntity',
       'deselectEntity',
     ]),
-    page2map(e) {
-      const {
-        touches,
-      } = e;
-
-      if (touches && touches[0]) return this.page2map(touches[0]);
-
-      const {
-        pageX,
-        pageY,
-      } = e;
-      const {
-        scrollLeft,
-        scrollTop,
-      } = this.$refs.container.parentElement;
-
-      const s = this.scale * 50;
-      return new Vec2(
-        ((pageX + scrollLeft) / s) - 2,
-        ((pageY + (scrollTop - 56)) / s) - 2, // 56 = titlebar height
-      );
-    },
-    entitySelect(e, entity, type) {
-      const {
-        mode,
-      } = this.mapControl;
-
-      if (mode === 'move') {
-        e.preventDefault();
-
-        const {
-          id, x, y,
-        } = entity;
-
-        this.selectEntity({
-          id,
-          type,
-          offset: this.page2map(e).sub(new Vec2(x, y)),
-        });
-      } else if (mode === 'erase' && type === 'shape') {
-        e.preventDefault();
-
-        this.removeShape(entity.id);
-      }
-    },
-    start(e) {
-      const {
-        mode,
-        style,
-        shapeType,
-      } = this.mapControl;
-
-      if (mode === 'move' && e.type === 'mousedown') {
-        this.scrollOffset = new Vec2(e.pageX, e.pageY);
-      } else if (mode === 'create') {
-        const pos = this.page2map(e);
-
-        const {
-          width,
-          height,
-        } = this.map;
-        if (pos[0] < 0 || pos[1] < 0 || pos[0] >= width || pos[1] >= height) {
-          return;
-        }
-
-        e.preventDefault();
-
-        const offset = pos.map(a => align(a, 0.5));
-        const alignedPos = offset.toObject();
-
-        if (shapeType === 'circle') {
-          this.createShape({
-            ...style,
-            ...alignedPos,
-            type: shapeType,
-            radius: 0.5,
-            offset,
-          });
-        } else if (shapeType === 'line' || shapeType === 'ruler') {
-          this.createShape({
-            ...style,
-            ...alignedPos,
-            type: shapeType,
-            rx: 0,
-            ry: 0,
-            offset,
-          });
-        } else if (shapeType === 'rect') {
-          this.createShape({
-            ...style,
-            ...offset.add(0.5).toObject(),
-            type: shapeType,
-            width: 1,
-            height: 1,
-            offset,
-          });
-        }
-      }
-    },
-    drag(e) {
-      if (this.mapControl.selected) return;
-
-      if (e.type === 'mousemove' && e.buttons === 1) {
-        const pos = new Vec2(e.pageX, e.pageY);
-        const d = this.scrollOffset.sub(pos);
-        this.scrollOffset = pos;
-
-        const scrollable = this.$refs.container.parentElement;
-        scrollable.scrollLeft += d.v[0];
-        scrollable.scrollTop += d.v[1];
-      }
-    },
-    move(e) {
-      const {
-        mode,
-        shapeType,
-        selected,
-      } = this.mapControl;
-      if (!selected) return;
-
-      if (mode === 'move') {
-        const {
-          id,
-          type,
-          offset,
-        } = selected;
-
-        const pos = this.page2map(e).sub(offset).toObject();
-
-        if (type === 'shape') {
-          this.moveShape({
-            ...pos,
-            id,
-          });
-        } else if (type === 'character') {
-          this.moveCharacter({
-            ...pos,
-            id,
-          });
-        }
-      } else if (mode === 'create') {
-        const { id, offset } = selected;
-        const shape = this.shapes.find(s => s.id === id);
-        if (!shape) return;
-        if (shapeType === 'circle') {
-          const { x, y } = shape;
-          const radius = Math.max(align(this.page2map(e).sub(new Vec2(x, y)).len()), 0.5);
-
-          this.updateShape({ id, radius });
-        } else if (shapeType === 'line' || shapeType === 'ruler') {
-          const size = this.page2map(e).sub(offset).map(a => align(a, 1));
-          const pos = offset.add(size.div(2));
-          const [rx, ry] = size.v;
-
-          this.updateShape({
-            ...pos.toObject(),
-            rx,
-            ry,
-            id,
-          });
-        } else if (shapeType === 'rect') {
-          const size = this.page2map(e).sub(offset).map(a => Math.max(align(Math.abs(a), 1), 1));
-          const pos = offset.add(size.div(2));
-
-          this.updateShape({
-            ...size.toSizeObject(),
-            ...pos.toObject(),
-            id,
-          });
-        }
-      }
-    },
-    end() {
-      const {
-        mode,
-        selected,
-      } = this.mapControl;
-      if (!selected) return;
-
-      if (mode === 'move') {
-        const {
-          id,
-          type,
-        } = selected;
-
-        if (type === 'shape') {
-          this.alignShape(id);
-        } else if (type === 'character') {
-          this.alignCharacter(id);
-        }
-      }
-
-      this.deselectEntity();
-    },
   },
   created() {
     const unsubscribers = [];
@@ -326,10 +148,9 @@ export default {
 
     this.unsibscribe = () => unsubscribers.forEach(f => f());
 
-    subscribe('mousemove', this.move);
-    subscribe('touchmove', this.move);
-    subscribe('mouseup', this.end);
-    subscribe('touchend', this.end);
+    subscribe('mousemove', e => this.mms.onMapMove(e));
+    subscribe('mouseup', e => this.mms.onMoveEnd(e));
+    subscribe('touchend', e => this.mms.onMoveEnd(e));
   },
   destroyed() {
     this.unsibscribe();

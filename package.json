@@ -15,7 +15,7 @@
     "flow": "flow check",
     "lint": "eslint src",
     "start": "webpack-dev-server",
-    "test": "jest",
+    "test": "jest --coverage",
     "version": "update-changelog && git add CHANGELOG.md",
     "watch": "run-p -l watch:*",
     "watch:babel": "npm run -s build:babel -- -w",
