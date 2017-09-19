@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import * as RouteNames from './constants/route';
-import Loading from './vue/Loading.vue';
+import LobbyPage from './vue/LobbyPage.vue';
 import NotFound from './vue/NotFound.vue';
+import RoomPage from './vue/RoomPage.vue';
 
 Vue.use(VueRouter);
 
@@ -13,10 +14,7 @@ export default new VueRouter({
     {
       path: '/',
       name: RouteNames.Lobby,
-      component: () => ({
-        component: import('./vue/LobbyPage.vue'),
-        loading: Loading,
-      }),
+      component: LobbyPage,
     },
     {
       path: '/404',
@@ -26,10 +24,7 @@ export default new VueRouter({
     {
       path: '/:id',
       name: RouteNames.Room,
-      component: () => ({
-        component: import('./vue/RoomPage.vue'),
-        loading: Loading,
-      }),
+      component: RoomPage,
     },
   ],
 });
