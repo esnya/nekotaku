@@ -1,6 +1,9 @@
+import _ from 'lodash';
 import Vec2 from '../utilities/Vec2';
 
 export type MouseTouchEvent = MouseEvent | TouchEvent;
+
+const Wait = 40;
 
 export default class MapModeStrategy {
   c: any;
@@ -13,6 +16,9 @@ export default class MapModeStrategy {
       this.mode = c.mapControl.mode;
       this.shapeType = c.mapControl.shapeType;
     }
+
+    this.mapMove = _.throttle(e => this.onMapMove(e), Wait);
+    this.mapDrag = _.throttle(e => this.onMapDrag(e), Wait);
   }
 
   page2map(e: MouseTouchEvent) {
