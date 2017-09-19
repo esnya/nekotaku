@@ -3,11 +3,13 @@ import 'mdi/css/materialdesignicons.min.css';
 
 import moment from 'moment';
 import Vue from 'vue';
+import VueAnalytics from 'vue-analytics';
 import Dice from 'vue-dice-component';
 import Vuetify from 'vuetify';
 import { sync } from 'vuex-router-sync';
 import App from './vue/App.vue';
 import Loading from './vue/Loading.vue';
+import config from './config';
 import router from './router';
 import store from './store';
 
@@ -29,6 +31,13 @@ async function main() {
       el.addEventListener('touchmove', e => e.stopPropagation());
     },
   });
+
+  if (config.googleAnalytics) {
+    Vue.use(VueAnalytics, {
+      id: config.googleAnalytics.id,
+      router,
+    });
+  }
 
   const loading = new Vue(Loading).$mount('#static-loading');
 

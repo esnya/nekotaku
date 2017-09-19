@@ -16,5 +16,8 @@
       "ご自由にお試しください。",
       "バグ、要望などは https://github.com/ukatama/nekotaku にどうぞ。"
     ]
+  },
+  "googleAnalytics": {
+    "id": "GOOGLE_ANALYTICS_ID"
   }
 }
