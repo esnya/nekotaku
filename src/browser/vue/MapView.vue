@@ -3,12 +3,12 @@
     ref="container"
     @mousedown="e => mms.onMapTouch(e)"
     @touchstart="e => mms.onMapTouch(e)"
-    @touchmove="e => mms.onMapMove(e)"
+    @touchmove="e => mms.mapMove(e)"
   )
     div.map(
       :class="{ perspective: mapControl.perspective }"
       :style="styles.map"
-      @mousemove="e => mms.onMapDrag(e)"
+      @mousemove="e => mms.mapDrag(e)"
     )
       div.map-inner(:style="styles.mapInner")
         div.row(
@@ -42,7 +42,6 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import getMapModeStrategy from '../map';
-// import MapModeStrategy from '../map/MapModeStrategy';
 import ShapeEntity from './ShapeEntity.vue';
 
 export default {
@@ -109,7 +108,6 @@ export default {
         shapeType,
       } = this.mapControl;
 
-      console.log(mode, shapeType, this.mmsCache);
       if (!this.mmsCache || mode !== this.mmsCache.mode || shapeType !== this.mmsCache.shapeType) {
         this.mmsCache = getMapModeStrategy(this);
       }
@@ -148,7 +146,7 @@ export default {
 
     this.unsibscribe = () => unsubscribers.forEach(f => f());
 
-    subscribe('mousemove', e => this.mms.onMapMove(e));
+    subscribe('mousemove', e => this.mms.mapMove(e));
     subscribe('mouseup', e => this.mms.onMoveEnd(e));
     subscribe('touchend', e => this.mms.onMoveEnd(e));
   },

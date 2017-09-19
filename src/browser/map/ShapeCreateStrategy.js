@@ -14,7 +14,7 @@ class LineCreateStrategy extends ShapeCreateStrategy {
     };
   }
   onMove(shape: Object, pos: Vec2, offset: Vec2) {
-    const size = pos.sub(offset).map(a => align(a, 1));
+    const size = pos.sub(offset).map(a => align(a, 0.5));
     const [x, y] = offset.add(size.div(2)).v;
     const [rx, ry] = size.v;
 
