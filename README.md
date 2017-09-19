@@ -21,7 +21,7 @@
 
 ## 使い方 / How to Use
 ### A. お試しサーバー / Trial Server
-http://nekotaku.nekometer.info
+https://nekotaku.nekometer.info
 
 ### B. UIプレビュー（データ保存・共有なし） / UI Preview (Without data saving and sharering)
 1. Requirements:
