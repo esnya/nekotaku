@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: off */
-
+import _ from 'lodash';
 import sessionStorage from '../../utilities/sessionStorage';
 
 function storageKey(roomId: string, key: string) {
@@ -12,6 +12,13 @@ function storageGet(roomId: string, key: string) {
 function storageSet(roomId: string, key: string, data: string) {
   sessionStorage.setItem(storageKey(roomId, key), JSON.stringify(data));
 }
+
+const saveName = _.debounce((roomId: string, name: string) => {
+  storageSet(roomId, 'name', name);
+}, 1000);
+const saveColor = _.debounce((roomId: string, color: string[]) => {
+  storageSet(roomId, 'color', color);
+}, 1000);
 
 const DefaultConfig = {
   name: 'ななしさん',
@@ -26,11 +33,11 @@ export default {
   actions: {
     setChatName({ rootState, commit }, name) {
       commit('setChatName', name);
-      storageSet(getRoomId(rootState), 'name', name);
+      saveName(getRoomId(rootState), name);
     },
     setChatColor({ rootState, commit }, color) {
       commit('setChatColor', color);
-      storageSet(getRoomId(rootState), 'color', color);
+      saveColor(getRoomId(rootState), color);
     },
     loadChatConfig({ commit }, roomId: string) {
       commit('setChatConfig', roomId ? {
