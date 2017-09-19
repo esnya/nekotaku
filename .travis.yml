@@ -15,17 +15,13 @@ after_success:
   - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls; fi
 before_deploy:
   - rm -rf public/assets
-  - cp public/index.html public/404.html
-  - echo $CNAME > public/CNAME
   - node scripts/genFirebaseConfig.js > config/config.json
   - NODE_ENV=producion yarn build
 deploy:
-  provider: pages
+  provider: firebase
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: public
+  token: $FIREBASE_CI_TOKEN
+  project: prod
   on:
     branch: master
     condition: $TRAVIS_NODE_VERSION = node
-after_deploy:
-  - firebase deploy --project prod --token $FIREBASE_CI_TOKEN
