@@ -213,6 +213,7 @@ svg g *
     border 1px solid black
     transform-origin bottom
     transition transform 0.4s ease-in-out
+    transform translateZ(0.5px)
 
   .name
     background-color rgba(255, 255, 255, 0.5)
