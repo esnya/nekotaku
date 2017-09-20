@@ -2,7 +2,7 @@
   .app(v-scroll="'y'")
     v-toolbar.primary(dark fixed)
       img(src="/img/nekokoro32.png")
-      v-toolbar-title ねこたく
+      v-toolbar-title ねこ卓
     main
       v-container(fluid, :grid-list-md="true")
         room-list

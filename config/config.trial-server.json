@@ -10,8 +10,8 @@
     "messagingSenderId": "FIREBASE_MESSAGING_SENDER_ID"
   },
   "welcomeMessage": {
-    "id": "201709130610",
-    "title": "「ねこたく」お試しサーバーへようこそ",
+    "id": "201709201346",
+    "title": "「ねこ卓」お試しサーバーへようこそ",
     "body": [
       "ご自由にお試しください。",
       "バグ、要望などは https://github.com/ukatama/nekotaku にどうぞ。"

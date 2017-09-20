@@ -13,7 +13,7 @@
           v-list-tile-action
             img(src="/img/nekokoro32.png")
           v-list-tile-content
-            v-list-tile-title ねこたく
+            v-list-tile-title ねこ卓
     v-list.pt-0
       v-divider
       v-list-tile(@click.stop="() => { close(); redOpen = true; }")

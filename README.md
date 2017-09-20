@@ -1,4 +1,4 @@
-# ねこたく (NekoTaku)
+# ねこ卓 (NekoTaku)
 
 [![Build Status](https://img.shields.io/travis/ukatama/nekotaku/master.svg?style=flat-square)](https://travis-ci.org/ukatama/nekotaku)
 [![Coverage Status](https://img.shields.io/coveralls/ukatama/nekotaku.svg?style=flat-square)](https://coveralls.io/github/ukatama/nekotaku)

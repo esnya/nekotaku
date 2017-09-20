@@ -17,7 +17,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
       <div
         class="toolbar__title"
       >
-        ねこたく
+        ねこ卓
       </div>
     </div>
   </nav>
