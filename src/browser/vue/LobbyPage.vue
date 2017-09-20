@@ -12,14 +12,12 @@
 <script>
 import { mapActions } from 'vuex';
 import RoomCreateDialog from './RoomCreateDialog.vue';
-import WelcomeMessage from './WelcomeMessage.vue';
 import RoomList from './RoomList.vue';
 
 export default {
   components: {
     RoomCreateDialog,
     RoomList,
-    WelcomeMessage,
   },
   methods: mapActions([
     'joinLobby',

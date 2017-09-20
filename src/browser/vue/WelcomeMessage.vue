@@ -14,7 +14,7 @@
 <script>
 import config from '../config';
 
-const StorageKey = 'nekotaku/welco-memessage/hidden-id';
+const StorageKey = 'nekotaku:welco-memessage:hidden-id';
 
 export default {
   data() {
