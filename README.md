@@ -5,7 +5,7 @@
 [![Dependencies](https://img.shields.io/david/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku)
 [![DevDependencies](https://img.shields.io/david/dev/ukatama/nekotaku.svg?style=flat-square)](https://david-dm.org/ukatama/nekotaku?type=dev)
 
-モバイルフレンドリーなオンラインセッションツールを目指して開発中。
+モバイルフレンドリーなオンラインセッション支援ツール
 
 ## できること / Features
 - チャット
