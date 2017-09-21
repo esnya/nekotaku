@@ -72,7 +72,10 @@ describe('SocketBackend', () => {
 
   require('../../server/io');
 
-  beforeAll(async () => datastore.getDB());
+  beforeAll(async () => {
+    await datastore.getDB();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  });
   afterAll(async () => datastore.close());
 
   require('./Backend.test.js').runBackendTests(require('./SocketStrategy').default);
