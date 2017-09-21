@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.px-0.py-1
+  v-card.px-0.py-1.room-tab-control
     v-layout(row align-center v-scroll="'x'")
       map-style-dialog(v-model="msdOpen")
       map-edit-dialog(v-model="medOpen")

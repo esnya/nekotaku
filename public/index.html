@@ -9,13 +9,13 @@
   <link rel="icon" sizes="any" type="image/svg+xml" href="/img/nekokoro.svg">
   <link rel="icon" sizes="32px" type="image/png" href="/img/nekokoro32.png">
   <style>
-    html, body, #app, #static-loading {
+    html, body, #app {
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
     }
     #static-loading {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -23,7 +23,7 @@
     }
   </style>
 </head>
-<body ontouchmove="event.preventDefault()">
+<body>
   <div id="app">
     <div id="static-loading">
       <div>なう、ろーでぃんぐ。</div>

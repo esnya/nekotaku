@@ -20,3 +20,9 @@ export default {
   }),
 };
 </script>
+
+<style lang="stylus" scoped>
+.container
+  padding-top 42px
+  padding-bottom 50vh
+</style>

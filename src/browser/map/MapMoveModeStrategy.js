@@ -34,7 +34,7 @@ export default class MapMoveModeStrategy extends MapModeStrategy {
     const d = this.scrollOffset.sub(pos);
     this.scrollOffset = pos;
 
-    const scrollable = this.c.$refs.container.parentElement;
+    const scrollable = this.c.$refs.container;
     scrollable.scrollLeft += d.v[0];
     scrollable.scrollTop += d.v[1];
   }

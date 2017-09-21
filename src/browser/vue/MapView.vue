@@ -1,5 +1,6 @@
 <template lang="pug">
-  div.map-container(
+  .map-container(
+    v-if="map"
     ref="container"
     @mousedown="e => mms.onMapTouch(e)"
     @touchstart="e => mms.onMapTouch(e)"
@@ -37,15 +38,18 @@
               @touchstart="e => mms.onCharacterTouch(e, character)"
             )
               div.name.text-xs-center.caption {{character.name}}
+  loading(v-else)
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import getMapModeStrategy from '../map';
+import Loading from './Loading.vue';
 import ShapeEntity from './ShapeEntity.vue';
 
 export default {
   components: {
+    Loading,
     ShapeEntity,
   },
   computed: {
@@ -149,14 +153,31 @@ export default {
     subscribe('mousemove', e => this.mms.mapMove(e));
     subscribe('mouseup', e => this.mms.onMoveEnd(e));
     subscribe('touchend', e => this.mms.onMoveEnd(e));
+
+    document.body.parentElement.classList.add('no-scroll');
   },
   destroyed() {
+    document.body.parentElement.classList.remove('no-scroll');
     this.unsibscribe();
   },
 };
 </script>
 
+<style lang="stylus">
+html.no-scroll {
+  overflow hidden
+}
+</style>
+
 <style lang="stylus" scoped>
+.map-container
+  position fixed
+  top 56px
+  bottom 106px
+  left 0
+  right 0
+  overflow scroll
+
 .map
   user-select none
   padding 100px

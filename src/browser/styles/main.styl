@@ -1,12 +1,24 @@
+@require './slide.styl'
+
 html
 body
 #app
 #app .app
-  width 100%
-  height 100%
+  min-width: 100%;
+  min-height: 100%;
 
-  &:not(.scroll)
-    overflow hidden
+.fixed
+  position fixed
+  width 100%
+  z-index 1
+
+  &.floating
+    height 0
+
+.room-tab-control
+  @extend .fixed
+  left 0
+  bottom 56px
 
 .scroll
   -webkit-overflow-scrolling touch
@@ -25,11 +37,6 @@ body
 
 .no-shadow
   box-shadow: none
-
-.floating
-  position relative
-  height 0
-  z-index 1
 
 .neko-slide
   &-enter-active
@@ -65,3 +72,19 @@ body
   &-enter
   &-leave-to
     opacity 0
+
+.neko-slide-right
+  &-enter-active
+  &-leave-active
+    transition transform 0.4s ease-in-out
+  &-enter
+  &-leave-to
+    transform translateX(100%)
+
+.neko-slide-bottom
+  &-enter-active
+  &-leave-active
+    transition transform 0.4s ease-in-out
+  &-enter
+  &-leave-to
+    transform translateY(100%)

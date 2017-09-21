@@ -28,7 +28,7 @@ async function main() {
       else if (binding.value === 'x') el.classList.add('scroll-x');
       else if (binding.value === 'all') el.classList.add('scroll-all');
 
-      el.addEventListener('touchmove', e => e.stopPropagation());
+      // el.addEventListener('touchmove', e => e.stopPropagation());
     },
   });
 

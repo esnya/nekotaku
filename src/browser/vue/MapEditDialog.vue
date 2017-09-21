@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(:value="value", @input="v => $emit('input', v)")
+  v-dialog(v-if="map" :value="value", @input="v => $emit('input', v)")
     v-card(v-scroll="'y'")
       v-card-title
         span.headline マップ設定

@@ -1,6 +1,5 @@
 <template lang="pug">
-  v-card.pb-2
-    v-divider
+  v-card.pb-2.room-tab-control
     v-layout(row align-end)
       chat-config-dialog
       v-flex

@@ -92,12 +92,11 @@ export default {
 @import '../styles/dice.styl'
 
 .neko-dice-panel
-  position absolute
+  position fixed
   top 0
+  left -32px
   width 100%
   height 0
-  margin-top -120px
-  padding-right 60px
 
   .dice-container-outer
     display inline-block

@@ -1,20 +1,24 @@
 <template lang="pug">
-  div
+  .portrait-panel
     transition(name="portrait-slide")
-      div.portrait-panel(v-if="open", @click="open = !open")
-        div.portrait(
-          v-for="style in styles"
-          :style="style"
+      div(v-if="open")
+        img.portrait(
+          v-for="portarit in portraits"
+          :key="portarit.name"
+          :style="portarit.style"
+          :src="portarit.src"
+          @click="open = !open"
         )
-    transition(name="portrait-slide")
-      div.btn-panel(v-if="!open", @click="open = !open")
-        v-btn.expand-btn.primary(fab, dark)
-          v-icon mdi-arrow-expand-left
+      v-btn.primary(v-else fab dark @click="open = !open")
+        v-icon mdi-arrow-expand-left
 </template>
 
 <script>
 import _ from 'lodash';
 import { mapState } from 'vuex';
+
+const N = 3;
+const Wait = 40;
 
 export default {
   computed: {
@@ -22,7 +26,7 @@ export default {
       'characters',
       'messages',
     ]),
-    portraits() {
+    portraits: _.throttle(function portraits() {
       const characterPortraits =
         _(this.characters)
           .map((c) => {
@@ -38,22 +42,24 @@ export default {
         .reverse()
         .map(m => m.name)
         .filter(n => n && (n in characterPortraits))
-        .map(n => characterPortraits[n])
         .uniq()
-        .take(3)
+        .take(N)
+        .map(name => ({ name, src: characterPortraits[name] }))
+        .map(({ name, src }, i) => ({
+          name,
+          style: {
+            transform: `translate3d(${i * 40}px, ${i * 10}px, ${-i}px)`,
+            opacity: i ? 0.5 : 1,
+          },
+          src,
+        }))
+        .sort((a, b) => ((a.name > b.name) ? -1 : 1))
         .value();
-    },
-    styles() {
-      return this.portraits.map((url, i) => ({
-        backgroundImage: `url(${url})`,
-        transform: `translate(${i * 40}px, ${i * 10}px)`,
-        opacity: i === 0 ? 1.0 : 0.5,
-        zIndex: this.portraits.length - i,
-      }));
-    },
+    }, Wait),
   },
   data() {
     return {
+      N,
       open: true,
     };
   },
@@ -62,30 +68,31 @@ export default {
 
 <style lang="stylus" scoped>
 .portrait-panel
-  position: relative;
-  z-index: 0;
+  position fixed
+  bottom 114px
+  width 100%
+  height 0
+  transform-style preserve-3d
 
-  .portrait
-    position: absolute;
-    bottom: 0px;
-    right: 0;
-    height: 250px;
-    width: 50%;
-    background-position: bottom right;
-    background-size: contain;
-    transition: all 0.4s ease-in-out;
+.portrait
+  position absolute
+  bottom 0
+  right 0
+  max-width 50vw
+  max-height 50vh
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 
-.btn-panel
-  position: relative;
-  height: 0;
+button
+  position: absolute;
+  right: -16px;
+  bottom: 8px;
 
-  .expand-btn
-    position: absolute;
-    bottom: 16px;
-    right: -20px;
+.portrait-slide
+  &-enter-active
+  &-leave-active
+    transition: transform 0.4s ease-in-out;
 
-.portrait-slide-enter-active, .portrait-slide-leave-active
-  transition: transform 0.4s ease-in-out;
-.portrait-slide-enter, .portrait-slide-leave-to
-  transform: translate(100%, 0);
+  &-enter
+  &-leave-to
+    transform: translate(100%, 0);
 </style>

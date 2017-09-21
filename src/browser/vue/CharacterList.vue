@@ -1,6 +1,6 @@
 <template lang="pug">
-  v-container.pa-0(fluid v-scroll="'all'")
-    v-card.mt-5
+  v-container.pa-0.pb-5
+    v-card.mt-5.mb-4
       v-data-table(
         :headers="headers"
         :items="characters"
@@ -83,4 +83,7 @@ export default {
 
   button
     margin-right 0
+
+.card
+  margin-bottom 56px
 </style>

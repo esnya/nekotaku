@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.elevation-1.my-2(:style="styles.container", ref="root")
+  v-card.elevation-1.my-3(:style="styles.container", ref="root")
     v-card-title.px-2.pt-2.pb-1
       div {{message.name}}
       v-spacer
@@ -35,16 +35,17 @@ export default {
   ],
   mounted() {
     const item = this.$refs.root;
-    if (!item.closest) return;
-
-    const scrollable = item.closest('.scroll');
+    // if (!item.closest) return;
+    // const scrollable = item.closest('[data-scroll]');
+    const scrollable = document.body;
     const prev = item.previousElementSibling;
 
     const isNewMessage = Date.now() - this.message.createdAt < 1000;
     if (isNewMessage) playNoticeSound();
 
-    const scrollableHeight = scrollable.offsetHeight
-      - (isNewMessage ? 0 : 56); // Why ?
+    const margin = 56 + 50 + 16 + (isNewMessage ? 0 : 56);
+
+    const scrollableHeight = scrollable.offsetHeight - margin;
     if (prev && prev.offsetTop < scrollable.scrollTop + scrollableHeight) {
       const scrollTo = (item.offsetTop + item.offsetHeight + 8) - scrollableHeight;
 

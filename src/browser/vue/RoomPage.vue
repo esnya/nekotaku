@@ -25,40 +25,55 @@
             v-btn(@click="leave") やめる
             v-spacer
       main(v-else-if="room && !room.locked")
-        v-layout(column)
-          .floating
-            room-info-list.room-info-list(:room="room")
-          v-flex.slider
-            div(:style="slideStyle")
-              chat-tab
-              character-list
-              map-tab
-          v-bottom-nav.white(
-            :active.sync="roomTab"
-            :class="{ 'no-shadow': roomTab !== '1' }"
-            :value="true"
-          )
-            v-btn(flat, primary, value="0")
-              span チャット
-              v-icon mdi-forum
-            v-btn(flat, primary, value="1")
-              span キャラクター
-              v-icon mdi-account-multiple
-            v-btn(flat, primary, value="2")
-              span マップ
-              v-icon mdi-map-marker-radius
+        .floating.fixed
+          room-info-list.room-info-list(:room="room")
+        transition(
+          :name="roomTab > prevRoomTab ? 'slide-rl' : 'slide-lr'"
+          @enter="restoreScroll"
+        )
+          message-list.slide-absolute(v-if="roomTab === '0'")
+          character-list.slide-absolute(v-else-if="roomTab === '1'")
+          map-view.slide-absolute(v-else-if="roomTab === '2'")
+        transition(name="neko-slide-right")
+          portrait-panel(v-if="roomTab === '0'")
+        transition(name="neko-fade")
+          dice-panel(v-if="roomTab === '0'")
+        transition(name="neko-slide-bottom")
+          chat-control(v-if="roomTab === '0'")
+          map-control(v-else-if="roomTab === '2'")
+        v-bottom-nav.white(
+          :active.sync="roomTab"
+          :class="{ 'no-shadow': roomTab !== '1' }"
+          :fixed="true"
+          :value="true"
+        )
+          v-btn(flat, primary, value="0")
+            span チャット
+            v-icon mdi-forum
+          v-btn(flat, primary, value="1")
+            span キャラクター
+            v-icon mdi-account-multiple
+          v-btn(flat, primary, value="2")
+            span マップ
+            v-icon mdi-map-marker-radius
       loading(v-else)
 </template>
 
 <script>
 import _ from 'lodash';
+import { inOutSign } from 'ease-component';
+import scroll from 'scroll';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
-import ChatTab from './ChatTab.vue';
+import ChatControl from './ChatControl.vue';
 import CharacterList from './CharacterList.vue';
+import DicePanel from './DicePanel.vue';
 import Loading from './Loading.vue';
-import MapTab from './MapTab.vue';
+import MapControl from './MapControl.vue';
+import MapView from './MapView.vue';
+import MessageList from './MessageList.vue';
+import PortraitPanel from './PortraitPanel.vue';
 import RoomInfoList from './RoomInfoList.vue';
 import RoomDrawer from './RoomDrawer.vue';
 
@@ -68,18 +83,24 @@ const saveRoomTab = _.debounce((roomId, roomTab) => {
 
 export default {
   components: {
-    ChatTab,
+    ChatControl,
     CharacterList,
+    DicePanel,
     Loading,
-    MapTab,
+    MapControl,
+    MapView,
+    MessageList,
     RoomInfoList,
     RoomDrawer,
     RouteNames,
+    PortraitPanel,
   },
   data() {
     return {
       drawer: false,
       roomTab: '0',
+      prevRoomTab: '0',
+      scrollTop: {},
     };
   },
   computed: {
@@ -89,11 +110,6 @@ export default {
     ]),
     id() {
       return this.$route.params.id;
-    },
-    slideStyle() {
-      return {
-        transform: `translate(-${this.roomTab}00%, 0)`,
-      };
     },
     joinInfo() {
       return this.roomJoinInfo && this.roomJoinInfo[this.id];
@@ -119,13 +135,29 @@ export default {
       this.leaveRoom();
       this.$router.push({ name: RouteNames.Lobby });
     },
+    restoreScroll() {
+      const scrollable = document.body;
+      setTimeout(() => {
+        scroll.top(
+          scrollable,
+          this.scrollTop[this.roomTab] || 0,
+          { duration: 400, ease: inOutSign },
+        );
+      });
+    },
   },
   watch: {
     room({ id }) {
       const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
       if (roomTab) this.roomTab = roomTab;
     },
-    roomTab(roomTab) {
+    roomTab(roomTab, oldValue) {
+      this.prevRoomTab = oldValue;
+
+      const scrollable = document.body;
+      this.scrollTop[oldValue] = scrollable.scrollTop;
+      scrollable.scrollTop = 0;
+
       saveRoomTab(this.room.id, roomTab);
     },
   },
@@ -145,36 +177,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.slider
-  overflow hidden
-
-  > *
-    transition transform 0.4s ease-in-out
-    width 100%
-    height 100%
-    overflow visible
-    display flex
-
-    > *
-      flex 0 0 100vw
-      width 100vw
-      overflow hidden
-
-.slide
-  height 100%
-  transition transform 0.4s ease-in-out
-
-  > *
-    flex 0 0 auto
-    overflow hidden
-
 main
-  height 100%
+  padding-top 64px
 
-  > .layout
-    height 100%
-
-.bottom-nav
-  position static
-  flex 0 0 auto
+.slide-absolute
+  top 64px
 </style>

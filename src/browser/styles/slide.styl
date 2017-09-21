@@ -1,0 +1,38 @@
+.active
+  transition transform 0.4s ease-in-out
+  &.slide-absolute
+    position absolute
+
+.slide-ll
+  &-enter-active
+  &-leave-active
+    @extend .active
+  &-enter
+  &-leave-to
+    transform translateX(-100%)
+
+.slide-lr
+  &-enter-active
+  &-leave-active
+    @extend .active
+  &-enter
+    transform translateX(-100%)
+  &-leave-to
+    transform translateX(100%)
+
+.slide-rl
+  &-enter-active
+  &-leave-active
+    @extend .active
+  &-enter
+    transform translateX(100%)
+  &-leave-to
+    transform translateX(-100%)
+
+.slide-rr
+  &-enter-active
+  &-leave-active
+    @extend .active
+  &-enter
+  &-leave-to
+    transform translateX(100%)

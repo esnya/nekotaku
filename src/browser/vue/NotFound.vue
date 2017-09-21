@@ -41,7 +41,7 @@ export default {
 
 <style lang="stylus" scoped>
 .layout
-  height: 100%
+  height 100vh
 
 .shadow
   margin 20px
