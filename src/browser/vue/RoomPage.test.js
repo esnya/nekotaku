@@ -1,6 +1,7 @@
 describe('RoomPage', () => {
   jest.setMock('../config', { backend: { type: 'stub' } });
   jest.mock('./FromNow.vue');
+  Date.now = jest.fn().mockReturnValue(1506150389571);
 
   const joinRoom = jest.fn();
   const leaveRoom = jest.fn();

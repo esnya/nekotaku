@@ -1,5 +1,6 @@
 describe('LobbyPage', () => {
   jest.setMock('../config', { backend: { type: 'stub' } });
+  Date.now = jest.fn().mockReturnValue(1506150389571);
 
   const joinLobby = jest.fn();
   const leaveLobby = jest.fn();
