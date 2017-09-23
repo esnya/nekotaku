@@ -706,7 +706,20 @@ exports[`RoomPage should be RoomPage 1`] = `
           <span
             class="white--text"
           >
-             3
+            3
+          </span>
+        </span>
+        <span
+          class="pl-0 mr-0 orange chip chip--small"
+          tabindex="-1"
+        >
+          <i
+            class="mdi icon mx-1 theme--dark mdi-clock"
+          />
+          <span
+            class="white--text"
+          >
+            Sep 23, 2017 3:58 PM
           </span>
         </span>
       </div>
@@ -1061,7 +1074,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                               >
                                 <ul
                                   class="list"
-                                  data-uid="90"
+                                  data-uid="91"
                                 >
                                   <li>
                                     <div
@@ -1346,7 +1359,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                               >
                                 <ul
                                   class="list"
-                                  data-uid="115"
+                                  data-uid="116"
                                 >
                                   <li>
                                     <div

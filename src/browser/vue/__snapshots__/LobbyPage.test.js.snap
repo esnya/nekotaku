@@ -29,7 +29,40 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         class="layout row wrap pb-5"
       >
         <div
-          class="flex xs12 sm6 md4"
+          class="flex pa-2 xs12"
+        >
+          <div
+            class="input-group input-group--append-icon input-group--hide-details input-group--text-field input-group--single-line"
+          >
+            <label>
+              検索
+            </label>
+            <div
+              class="input-group__input"
+            >
+              <input
+                aria-label="検索"
+                tabindex="0"
+                type="text"
+              />
+              <i
+                aria-hidden="true"
+                class="material-icons icon input-group__append-icon"
+              >
+                search
+              </i>
+            </div>
+            <div
+              class="input-group__details"
+            >
+              <div
+                class="input-group__messages"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex sm12 md6"
         >
           <div
             class="card"
@@ -126,7 +159,20 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   <span
                     class="white--text"
                   >
-                     3
+                    3
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 orange chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-clock"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    Sep 23, 2017 3:58 PM
                   </span>
                 </span>
               </div>
@@ -144,7 +190,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
           </div>
         </div>
         <div
-          class="flex xs12 sm6 md4"
+          class="flex sm12 md6"
         >
           <div
             class="card"
@@ -241,7 +287,20 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   <span
                     class="white--text"
                   >
-                     3
+                    3
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 orange chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-clock"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    Sep 23, 2017 3:58 PM
                   </span>
                 </span>
               </div>
@@ -259,7 +318,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
           </div>
         </div>
         <div
-          class="flex xs12 sm6 md4"
+          class="flex sm12 md6"
         >
           <div
             class="card"
@@ -356,7 +415,20 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   <span
                     class="white--text"
                   >
-                     3
+                    3
+                  </span>
+                </span>
+                <span
+                  class="pl-0 mr-0 orange chip chip--small"
+                  tabindex="-1"
+                >
+                  <i
+                    class="mdi icon mx-1 theme--dark mdi-clock"
+                  />
+                  <span
+                    class="white--text"
+                  >
+                    Sep 23, 2017 3:58 PM
                   </span>
                 </span>
               </div>
@@ -479,7 +551,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                         >
                           <ul
                             class="list"
-                            data-uid="41"
+                            data-uid="46"
                           >
                             <li>
                               <div
