@@ -14,14 +14,24 @@
       span.white--text {{dice || room.dice}}
     v-chip.pl-0.mr-0.green(small)
       v-icon.mx-1(dark) mdi-account-multiple
-      span.white--text  {{room.players}}
+      span.white--text {{room.players}}
+    v-chip.pl-0.mr-0.orange(small)
+      v-icon.mx-1(dark) mdi-clock
+      span.white--text {{time}}
     //- v-chip.pl-0.orange(small)
     //-   v-icon.mx-1(dark) mdi-binoculars
     //-   span.white--text  {{room.visitors}}
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
+  computed: {
+    time() {
+      return moment(this.room.createdAt).format('lll');
+    },
+  },
   data() {
     return {
       dice: null,

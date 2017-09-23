@@ -1,6 +1,14 @@
 <template lang="pug">
   v-layout.row.wrap.pb-5
-    v-flex(xs12, sm6, md4, v-for="room in rooms", :key="room.id")
+    v-flex.pa-2(xs12)
+      v-text-field(
+        single-line
+        hide-details
+        label="検索"
+        v-model="search"
+        append-icon="search"
+      )
+    v-flex(sm12, md6, v-for="room in results", :key="room.id")
       room-list-item(:room="room")
 </template>
 
@@ -12,8 +20,23 @@ export default {
   components: {
     RoomListItem,
   },
-  computed: mapState([
-    'rooms',
-  ]),
+  computed: {
+    ...mapState([
+      'rooms',
+    ]),
+    results() {
+      const {
+        search,
+        rooms,
+      } = this;
+
+      return search ? rooms.filter(r => r.title.match(search)) : rooms;
+    },
+  },
+  data() {
+    return {
+      search: null,
+    };
+  },
 };
 </script>
