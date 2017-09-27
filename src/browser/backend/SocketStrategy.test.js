@@ -74,7 +74,7 @@ describe('SocketBackend', () => {
 
   beforeAll(async () => {
     await datastore.getDB();
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
   });
   afterAll(async () => datastore.close());
 

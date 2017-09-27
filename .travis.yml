@@ -1,27 +1,32 @@
 language: node_js
 node_js:
-  - node
-  - lts/*
+- node
+- lts/*
 services:
-  - mongodb
+- mongodb
 before_script:
-  - cp config/config.stub.json config/config.json
-  - cp config/server.mongodb.json config/server.json
+- cp config/config.stub.json config/config.json
+- cp config/server.mongodb.json config/server.json
 script:
-  - yarn lint
-  - yarn test -- --coverage --coverageReporters lcov
-  - yarn build
+- yarn lint
+- yarn test -- --coverage --coverageReporters lcov
+- yarn build
 after_success:
-  - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls; fi
+- if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls;
+  fi
 before_deploy:
-  - rm -rf public/assets
-  - node scripts/genFirebaseConfig.js > config/config.json
-  - NODE_ENV=producion yarn build
+- rm -rf public/assets
+- node scripts/genFirebaseConfig.js > config/config.json
+- NODE_ENV=producion yarn build
 deploy:
   provider: firebase
   skip_cleanup: true
-  token: $FIREBASE_CI_TOKEN
+  token: "$FIREBASE_CI_TOKEN"
   project: prod
   on:
     branch: master
-    condition: $TRAVIS_NODE_VERSION = node
+    condition: "$TRAVIS_NODE_VERSION = node"
+notifications:
+  email: false
+  slack:
+    secure: N8fehSd37RFupKCN6uTzSU59aFcvihqkQaovdnDP3SdNZumreSPm9GIdzlJQmR+K172xbwwX5znwNDT9qOd+upAfJwisxVo+oVF2SO613me+XXNKg4G1FqvUtbAvEEwnaMilAOeDo2zhHLS8TRfXky2u1L0U4EQYn3hFEhOnuFL10Nsrdq1rGC+q+beVH5OARrMO5n+e60fdzJO38WN8N1j67jubDFlOGfywEGQKJwBa1gyi9EfXDhU7W3h0FFpr1PqRiLCS71RtSrpbB7A1hE1TkFpjgw1S4uFJPWJX3/9UBUHAEcNr9cvpnk1dDIaba5kjo2aQXTggnOalfpjcg1vBrXy5pyJ+2RiQ65EiEhE+gAbu9G3lYCBZjB8FCQTj96I7knzDviKTeJVjVifLqwfqUzS2R9/2sN+sZR7Z17HoOiS/G8Njj4puns40UYEhdDZYxz4/OU7urJJrtEAGyO8LKJ0SQHnuKGI3Bbv32U+zf0Nqfy+TLVRPVFSwIfyoG/MsvYZMtBdERX7FzpUH1zFZrFF2uIVy2Ar8UPS/JImr1ak+pGbMsxZhggR5o1RDq3GQAxNpEqEzanyJ/XTWINrfj2OODN0oYv6sjGy+xKBc/Or3MRA270HEBnsYIcxYTtbR6CPs9pfAS4uloe/aHk2teA4nRioYzX7IAMrd2lM=
