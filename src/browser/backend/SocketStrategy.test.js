@@ -66,7 +66,7 @@ describe('SocketBackend', () => {
   const datastore = new Datastore({
     type: 'mongodb',
     url: 'mongodb://localhost:27017/nekotaku-test',
-    socketTimeoutMS: 200,
+    socketTimeoutMS: 10000,
   });
   jest.setMock('../../server/datastore', datastore);
 
