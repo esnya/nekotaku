@@ -1,13 +1,14 @@
 <template lang="pug">
   .app
-    room-drawer(v-if="room" v-model="drawer")
     v-toolbar.primary.app-bar(dark, fixed)
-      v-toolbar-side-icon(@click.stop="drawer = !drawer")
-      v-toolbar-title(:class="{ 'ml-0': room && room.isLocked }")
+      img(src="/img/nekokoro32.png")
+      v-toolbar-title
         v-layout(row)
           v-avatar.mr-1(v-if="room && room.isLocked" size="24px")
             v-icon(dark) lock_outline
           div {{room && room.title}}
+      v-spacer
+      room-menu.mr-0
     transition(name="neko-slide")
       main(v-if="room && room.locked")
         v-container
@@ -75,7 +76,7 @@ import MapView from './MapView.vue';
 import MessageList from './MessageList.vue';
 import PortraitPanel from './PortraitPanel.vue';
 import RoomInfoList from './RoomInfoList.vue';
-import RoomDrawer from './RoomDrawer.vue';
+import RoomMenu from './RoomMenu.vue';
 
 const saveRoomTab = _.debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
@@ -91,7 +92,7 @@ export default {
     MapView,
     MessageList,
     RoomInfoList,
-    RoomDrawer,
+    RoomMenu,
     RouteNames,
     PortraitPanel,
   },

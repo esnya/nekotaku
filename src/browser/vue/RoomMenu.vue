@@ -1,37 +1,24 @@
 <template lang="pug">
-  v-navigation-drawer(
-    absolute
-    light
-    overflow
-    temporary
-    :value="value"
-    @input="v => $emit('input', v)"
-  )
-    v-toolbar.transparent(flat)
-      v-list.pa-0
-        v-list-tile
-          v-list-tile-action
-            img(src="/img/nekokoro32.png")
-          v-list-tile-content
-            v-list-tile-title ねこ卓
+  v-menu(offset-y v-if="room")
+    v-btn(icon slot="activator")
+      v-icon more_vert
     v-list.pt-0
-      v-divider
-      v-list-tile(@click.stop="() => { close(); redOpen = true; }")
+      v-list-tile(@click="redOpen = true")
         v-list-tile-action
           v-icon mdi-settings
         v-list-tile-content
           v-list-tile-title 卓設定
-      v-list-tile(@click.stop="() => { close(); rpedOpen = true; }")
+      v-list-tile(@click="rpedOpen = true")
         v-list-tile-action
           v-icon lock
         v-list-tile-content
           v-list-tile-title パスワード設定
-      v-list-tile(:disabled="!room.isLocked", @click.stop="() => { if (room.isLocked) { close(); rpcdOpen = true; } }")
+      v-list-tile(:disabled="!room.isLocked", @click="() => { if (room.isLocked) { rpcdOpen = true; } }")
         v-list-tile-action
           v-icon lock_open
         v-list-tile-content
           v-list-tile-title パスワード解除
-      v-list-tile(@click.stop="() => { close(); rrdOpen = true; }")
+      v-list-tile(@click="rrdOpen = true")
         v-list-tile-action
           v-icon mdi-settings
         v-list-tile-content
@@ -77,9 +64,6 @@ export default {
   methods: {
     logout() {
       this.$router.push({ name: RouteNames.Lobby });
-    },
-    close() {
-      this.$emit('input', false);
     },
   },
   props: ['value'],
