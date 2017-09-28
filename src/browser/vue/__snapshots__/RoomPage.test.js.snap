@@ -4,595 +4,6 @@ exports[`RoomPage should be RoomPage 1`] = `
 <div
   class="app"
 >
-  <aside
-    class="navigation-drawer navigation-drawer--absolute navigation-drawer--close navigation-drawer--temporary theme--light"
-    overflow="overflow"
-    style="height: 100%;"
-  >
-    <nav
-      class="transparent toolbar elevation-0"
-      style="margin-top: 0px;"
-    >
-      <div
-        class="toolbar__content"
-      >
-        <ul
-          class="pa-0 list"
-          data-uid="5"
-        >
-          <li>
-            <div
-              class="list__tile"
-              href="javascript:;"
-            >
-              <div
-                class="list__tile__action"
-              >
-                <img
-                  src="/img/nekokoro32.png"
-                />
-              </div>
-              <div
-                class="list__tile__content"
-              >
-                <div
-                  class="list__tile__title"
-                >
-                  ねこ卓
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <ul
-      class="pt-0 list"
-      data-uid="7"
-    >
-      <hr
-        class="divider"
-      />
-      <li>
-        <div
-          class="list__tile list__tile--link"
-          href="javascript:;"
-        >
-          <div
-            class="list__tile__action"
-          >
-            <i
-              class="mdi icon mdi-settings"
-            />
-          </div>
-          <div
-            class="list__tile__content"
-          >
-            <div
-              class="list__tile__title"
-            >
-              卓設定
-            </div>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div
-          class="list__tile list__tile--link"
-          href="javascript:;"
-        >
-          <div
-            class="list__tile__action"
-          >
-            <i
-              class="material-icons icon"
-            >
-              lock
-            </i>
-          </div>
-          <div
-            class="list__tile__content"
-          >
-            <div
-              class="list__tile__title"
-            >
-              パスワード設定
-            </div>
-          </div>
-        </div>
-      </li>
-      <li
-        disabled="disabled"
-      >
-        <div
-          class="list__tile list__tile--link list__tile--disabled"
-          disabled="disabled"
-          href="javascript:;"
-        >
-          <div
-            class="list__tile__action"
-          >
-            <i
-              class="material-icons icon"
-            >
-              lock_open
-            </i>
-          </div>
-          <div
-            class="list__tile__content"
-          >
-            <div
-              class="list__tile__title"
-            >
-              パスワード解除
-            </div>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div
-          class="list__tile list__tile--link"
-          href="javascript:;"
-        >
-          <div
-            class="list__tile__action"
-          >
-            <i
-              class="mdi icon mdi-settings"
-            />
-          </div>
-          <div
-            class="list__tile__content"
-          >
-            <div
-              class="list__tile__title"
-            >
-              卓削除
-            </div>
-          </div>
-        </div>
-      </li>
-      <hr
-        class="divider"
-      />
-      <li>
-        <div
-          class="list__tile list__tile--link"
-          href="javascript:;"
-        >
-          <div
-            class="list__tile__action"
-          >
-            <i
-              class="material-icons icon"
-            >
-              title
-            </i>
-          </div>
-          <div
-            class="list__tile__content"
-          >
-            <div
-              class="list__tile__title"
-            >
-              ログアウト
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-    <div
-      class="dialog__container"
-      style="display: block;"
-    >
-      <div
-        class="dialog__content"
-      >
-        <div
-          class="dialog"
-          style="width: 290px; display: none;"
-        >
-          <div
-            class="card"
-            style="height: auto;"
-          >
-            <div
-              class="card__title"
-            >
-              <span
-                class="headline"
-              >
-                卓設定
-              </span>
-            </div>
-            <div
-              class="card__text"
-            >
-              <div
-                class="input-group input-group--dirty input-group--required input-group--text-field"
-              >
-                <label>
-                  タイトル
-                </label>
-                <div
-                  class="input-group__input"
-                >
-                  <input
-                    aria-label="タイトル"
-                    required=""
-                    tabindex="0"
-                    type="text"
-                  />
-                </div>
-                <div
-                  class="input-group__details"
-                >
-                  <div
-                    class="input-group__messages"
-                  />
-                </div>
-              </div>
-              <div
-                class="input-group input-group--append-icon input-group--required input-group--text-field input-group--select input-group--autocomplete"
-                tabindex="-1"
-              >
-                <label>
-                  ダイスの種類
-                </label>
-                <div
-                  class="input-group__input"
-                >
-                  <div
-                    class="input-group__selections"
-                    style="overflow: hidden;"
-                  >
-                    <input
-                      class="input-group--select__autocomplete"
-                      role="combobox"
-                      tabindex="0"
-                    />
-                  </div>
-                  <div
-                    class="menu"
-                    style="display: inline-block;"
-                  >
-                    <div
-                      class="menu__content menu__content--select"
-                      style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
-                    >
-                      <div
-                        class="card"
-                        style="height: auto;"
-                      >
-                        <ul
-                          class="list"
-                          data-uid="21"
-                        >
-                          <li>
-                            <div
-                              class="list__tile list__tile--link"
-                              href="javascript:;"
-                            >
-                              <div
-                                class="list__tile__content"
-                              >
-                                <div
-                                  class="list__tile__title"
-                                >
-                                  DiceBot
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <i
-                    aria-hidden="true"
-                    class="material-icons icon input-group__append-icon"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-                <div
-                  class="input-group__details"
-                >
-                  <div
-                    class="input-group__messages"
-                  />
-                </div>
-              </div>
-              <div
-                class="input-group input-group--dirty input-group--placeholder input-group--text-field"
-              >
-                <label>
-                  キャラクター属性
-                </label>
-                <div
-                  class="input-group__input"
-                >
-                  <input
-                    aria-label="キャラクター属性"
-                    placeholder="例: HP,MP,SP"
-                    tabindex="0"
-                    type="text"
-                  />
-                </div>
-                <div
-                  class="input-group__details"
-                >
-                  <div
-                    class="input-group__messages"
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              class="card__actions"
-            >
-              <div
-                class="spacer"
-              />
-              <button
-                class="btn btn--raised"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  閉じる
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="dialog__container"
-      style="display: block;"
-    >
-      <div
-        class="dialog__content"
-      >
-        <div
-          class="dialog"
-          style="width: 290px; display: none;"
-        >
-          <div
-            class="card"
-            style="height: auto;"
-          >
-            <div
-              class="card__title"
-            >
-              <span
-                class="headline"
-              >
-                パスワード解除
-              </span>
-            </div>
-            <div
-              class="card__text"
-            >
-              <div>
-                パスワードを解除しますか？
-              </div>
-              <div>
-                誰でも卓に入れるようになります。
-              </div>
-            </div>
-            <div
-              class="card__actions"
-            >
-              <div
-                class="spacer"
-              />
-              <button
-                class="warning btn btn--raised"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  解除
-                </div>
-              </button>
-              <button
-                class="btn btn--raised"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  キャンセル
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="dialog__container"
-      style="display: block;"
-    >
-      <div
-        class="dialog__content"
-      >
-        <div
-          class="dialog"
-          style="width: 290px; display: none;"
-        >
-          <div
-            class="card"
-            style="height: auto;"
-          >
-            <div
-              class="card__title"
-            >
-              <span
-                class="headline"
-              >
-                パスワード設定
-              </span>
-            </div>
-            <div
-              class="card__text"
-            >
-              <form>
-                <div
-                  class="input-group input-group--required input-group--text-field"
-                >
-                  <label>
-                    新しいパスワード
-                  </label>
-                  <div
-                    class="input-group__input"
-                  >
-                    <input
-                      aria-label="新しいパスワード"
-                      required=""
-                      tabindex="0"
-                      type="password"
-                    />
-                  </div>
-                  <div
-                    class="input-group__details"
-                  >
-                    <div
-                      class="input-group__messages"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="input-group input-group--required input-group--text-field"
-                >
-                  <label>
-                    パスワードの確認
-                  </label>
-                  <div
-                    class="input-group__input"
-                  >
-                    <input
-                      aria-label="パスワードの確認"
-                      required=""
-                      tabindex="0"
-                      type="password"
-                    />
-                  </div>
-                  <div
-                    class="input-group__details"
-                  >
-                    <div
-                      class="input-group__messages"
-                    />
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div
-              class="card__actions"
-            >
-              <div
-                class="spacer"
-              />
-              <button
-                class="primary btn btn--disabled btn--raised"
-                disabled="disabled"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  設定
-                </div>
-              </button>
-              <button
-                class="btn btn--raised"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  キャンセル
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="dialog__container"
-      style="display: block;"
-    >
-      <div
-        class="dialog__content"
-      >
-        <div
-          class="dialog"
-          style="width: 290px; display: none;"
-        >
-          <div
-            class="card"
-            style="height: auto;"
-          >
-            <div
-              class="card__title"
-            >
-              <span
-                class="hadline"
-              >
-                卓の削除
-              </span>
-            </div>
-            <div
-              class="card__text"
-            >
-              <div>
-                卓を削除しますか？
-              </div>
-              <div>
-                ※元には戻せません。
-              </div>
-            </div>
-            <div
-              class="card__actions"
-            >
-              <div
-                class="spacer"
-              />
-              <button
-                class="btn btn--raised error"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  削除
-                </div>
-              </button>
-              <button
-                class="btn btn--raised"
-                type="button"
-              >
-                <div
-                  class="btn__content"
-                >
-                  やめる
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="navigation-drawer__border"
-    />
-  </aside>
   <nav
     class="primary app-bar toolbar toolbar--fixed theme--dark"
     style="margin-top: 0px;"
@@ -600,20 +11,9 @@ exports[`RoomPage should be RoomPage 1`] = `
     <div
       class="toolbar__content"
     >
-      <button
-        class="toolbar__side-icon btn btn--icon btn--raised"
-        type="button"
-      >
-        <div
-          class="btn__content"
-        >
-          <i
-            class="material-icons icon"
-          >
-            menu
-          </i>
-        </div>
-      </button>
+      <img
+        src="/img/nekokoro32.png"
+      />
       <div
         class="toolbar__title"
       >
@@ -623,6 +23,601 @@ exports[`RoomPage should be RoomPage 1`] = `
           <!---->
           <div>
             卓01 (パスワード:pass)
+          </div>
+        </div>
+      </div>
+      <div
+        class="spacer"
+      />
+      <div
+        class="menu mr-0"
+        style="display: inline-block;"
+      >
+        <div
+          class="menu__activator"
+        >
+          <button
+            class="btn btn--icon btn--raised"
+            type="button"
+          >
+            <div
+              class="btn__content"
+            >
+              <i
+                class="material-icons icon"
+              >
+                more_vert
+              </i>
+            </div>
+          </button>
+        </div>
+        <div
+          class="menu__content"
+          style="max-height: auto; min-width: 0px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+        >
+          <ul
+            class="pt-0 list"
+            data-uid="7"
+          >
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-settings"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    卓設定
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    lock
+                  </i>
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    パスワード設定
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li
+              disabled="disabled"
+            >
+              <div
+                class="list__tile list__tile--link list__tile--disabled"
+                disabled="disabled"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    lock_open
+                  </i>
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    パスワード解除
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-settings"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    卓削除
+                  </div>
+                </div>
+              </div>
+            </li>
+            <hr
+              class="divider"
+            />
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-file-export"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    ログ保存
+                  </div>
+                </div>
+              </div>
+            </li>
+            <hr
+              class="divider"
+            />
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-logout"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    卓から出る
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div
+            class="dialog__container"
+            style="display: block;"
+          >
+            <div
+              class="dialog__content"
+            >
+              <div
+                class="dialog"
+                style="width: 290px; display: none;"
+              >
+                <div
+                  class="card"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__title"
+                  >
+                    <span
+                      class="headline"
+                    >
+                      卓設定
+                    </span>
+                  </div>
+                  <div
+                    class="card__text"
+                  >
+                    <div
+                      class="input-group input-group--dirty input-group--required input-group--text-field"
+                    >
+                      <label>
+                        タイトル
+                      </label>
+                      <div
+                        class="input-group__input"
+                      >
+                        <input
+                          aria-label="タイトル"
+                          required=""
+                          tabindex="0"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="input-group__details"
+                      >
+                        <div
+                          class="input-group__messages"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="input-group input-group--append-icon input-group--required input-group--text-field input-group--select input-group--autocomplete"
+                      tabindex="-1"
+                    >
+                      <label>
+                        ダイスの種類
+                      </label>
+                      <div
+                        class="input-group__input"
+                      >
+                        <div
+                          class="input-group__selections"
+                          style="overflow: hidden;"
+                        >
+                          <input
+                            class="input-group--select__autocomplete"
+                            role="combobox"
+                            tabindex="0"
+                          />
+                        </div>
+                        <div
+                          class="menu"
+                          style="display: inline-block;"
+                        >
+                          <div
+                            class="menu__content menu__content--select"
+                            style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+                          >
+                            <div
+                              class="card"
+                              style="height: auto;"
+                            >
+                              <ul
+                                class="list"
+                                data-uid="22"
+                              >
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        DiceBot
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon input-group__append-icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                      <div
+                        class="input-group__details"
+                      >
+                        <div
+                          class="input-group__messages"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="input-group input-group--dirty input-group--placeholder input-group--text-field"
+                    >
+                      <label>
+                        キャラクター属性
+                      </label>
+                      <div
+                        class="input-group__input"
+                      >
+                        <input
+                          aria-label="キャラクター属性"
+                          placeholder="例: HP,MP,SP"
+                          tabindex="0"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="input-group__details"
+                      >
+                        <div
+                          class="input-group__messages"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="btn btn--raised"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        閉じる
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dialog__container"
+            style="display: block;"
+          >
+            <div
+              class="dialog__content"
+            >
+              <div
+                class="dialog"
+                style="width: 290px; display: none;"
+              >
+                <div
+                  class="card"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__title"
+                  >
+                    <span
+                      class="headline"
+                    >
+                      パスワード解除
+                    </span>
+                  </div>
+                  <div
+                    class="card__text"
+                  >
+                    <div>
+                      パスワードを解除しますか？
+                    </div>
+                    <div>
+                      誰でも卓に入れるようになります。
+                    </div>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="warning btn btn--raised"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        解除
+                      </div>
+                    </button>
+                    <button
+                      class="btn btn--raised"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        キャンセル
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dialog__container"
+            style="display: block;"
+          >
+            <div
+              class="dialog__content"
+            >
+              <div
+                class="dialog"
+                style="width: 290px; display: none;"
+              >
+                <div
+                  class="card"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__title"
+                  >
+                    <span
+                      class="headline"
+                    >
+                      パスワード設定
+                    </span>
+                  </div>
+                  <div
+                    class="card__text"
+                  >
+                    <form>
+                      <div
+                        class="input-group input-group--required input-group--text-field"
+                      >
+                        <label>
+                          新しいパスワード
+                        </label>
+                        <div
+                          class="input-group__input"
+                        >
+                          <input
+                            aria-label="新しいパスワード"
+                            required=""
+                            tabindex="0"
+                            type="password"
+                          />
+                        </div>
+                        <div
+                          class="input-group__details"
+                        >
+                          <div
+                            class="input-group__messages"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="input-group input-group--required input-group--text-field"
+                      >
+                        <label>
+                          パスワードの確認
+                        </label>
+                        <div
+                          class="input-group__input"
+                        >
+                          <input
+                            aria-label="パスワードの確認"
+                            required=""
+                            tabindex="0"
+                            type="password"
+                          />
+                        </div>
+                        <div
+                          class="input-group__details"
+                        >
+                          <div
+                            class="input-group__messages"
+                          />
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="primary btn btn--disabled btn--raised"
+                      disabled="disabled"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        設定
+                      </div>
+                    </button>
+                    <button
+                      class="btn btn--raised"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        キャンセル
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dialog__container"
+            style="display: block;"
+          >
+            <div
+              class="dialog__content"
+            >
+              <div
+                class="dialog"
+                style="width: 290px; display: none;"
+              >
+                <div
+                  class="card"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__title"
+                  >
+                    <span
+                      class="hadline"
+                    >
+                      卓の削除
+                    </span>
+                  </div>
+                  <div
+                    class="card__text"
+                  >
+                    <div>
+                      卓を削除しますか？
+                    </div>
+                    <div>
+                      ※元には戻せません。
+                    </div>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="btn btn--raised error"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        削除
+                      </div>
+                    </button>
+                    <button
+                      class="btn btn--raised"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        やめる
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1094,7 +1089,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                               >
                                 <ul
                                   class="list"
-                                  data-uid="91"
+                                  data-uid="90"
                                 >
                                   <li>
                                     <div
@@ -1379,7 +1374,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                               >
                                 <ul
                                   class="list"
-                                  data-uid="116"
+                                  data-uid="115"
                                 >
                                   <li>
                                     <div
