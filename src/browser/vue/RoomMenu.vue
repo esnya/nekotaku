@@ -24,6 +24,12 @@
         v-list-tile-content
           v-list-tile-title 卓削除
       v-divider
+      v-list-tile(@click="exportLog")
+        v-list-tile-action
+          v-icon mdi-file-export
+        v-list-tile-content
+          v-list-tile-title ログ保存
+      v-divider
       v-list-tile(@click="logout")
         v-list-tile-action
           v-icon mdi-logout
@@ -36,6 +42,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import RoomEditDialog from './RoomEditDialog.vue';
@@ -52,6 +59,7 @@ export default {
   },
   computed: mapState([
     'room',
+    'messages',
   ]),
   data() {
     return {
@@ -64,6 +72,26 @@ export default {
   methods: {
     logout() {
       this.$router.push({ name: RouteNames.Lobby });
+    },
+    exportLog() {
+      const { title } = this.room;
+      const filename = `${title}.html`;
+      const html = new Blob([
+        '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>',
+        title,
+        '</title><style>td { vertical-align: top; }</style></head><body>',
+        '<h1>', title, '</h1>',
+        '<table><tbody>',
+        this.messages.map(m => `<tr style="color: ${m.color};"><td>${m.name}</td><td>${m.body.map(b => b.text).join('<br>')}</td><td>${moment(m.createdAt).format('lll')}</td><tr/>`).join(''),
+        '</tbody></table></body></html>',
+      ], { type: 'text/html', name: filename });
+      const url = URL.createObjectURL(html);
+      console.log(url);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
     },
   },
   props: ['value'],
