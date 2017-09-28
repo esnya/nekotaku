@@ -17,7 +17,7 @@ after_success:
 before_deploy:
 - rm -rf public/assets
 - node scripts/genFirebaseConfig.js > config/config.json
-- NODE_ENV=producion yarn build
+- NODE_ENV=production yarn build
 deploy:
   provider: firebase
   skip_cleanup: true
