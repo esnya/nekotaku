@@ -26,9 +26,9 @@
       v-divider
       v-list-tile(@click="logout")
         v-list-tile-action
-          v-icon title
+          v-icon mdi-logout
         v-list-tile-content
-          v-list-tile-title ログアウト
+          v-list-tile-title 卓から出る
     room-edit-dialog(v-model="redOpen")
     room-password-clear-dialog(v-model="rpcdOpen")
     room-password-edit-dialog(v-model="rpedOpen")
