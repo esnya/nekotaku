@@ -76,6 +76,7 @@ export default {
     exportLog() {
       const { title } = this.room;
       const filename = `${title}.html`;
+
       const html = new Blob([
         '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>',
         title,
@@ -86,11 +87,16 @@ export default {
         '</tbody></table></body></html>',
       ], { type: 'text/html', name: filename });
       const url = URL.createObjectURL(html);
-      console.log(url);
+
       const a = document.createElement('a');
       a.href = url;
+      // a.target = '_blank';
       a.download = filename;
+
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
+
       URL.revokeObjectURL(url);
     },
   },
