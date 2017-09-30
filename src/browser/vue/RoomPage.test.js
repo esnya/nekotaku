@@ -1,5 +1,9 @@
 describe('RoomPage', () => {
   jest.setMock('../config', { backend: { type: 'stub' } });
+  jest.setMock('../utilities/localStorage', {
+    setItem: jest.fn(),
+    getItem: jest.fn(),
+  });
 
   jest.mock('moment');
   const moment = require('moment');
