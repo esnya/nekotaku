@@ -48,7 +48,7 @@ export default {
         .map(({ name, src }, i) => ({
           name,
           style: {
-            transform: `translate3d(${i * 40}px, ${i * 10}px, ${-i}px)`,
+            transform: `translate3d(${i * 10}vw, ${i * 3}vh, ${-i}px)`,
             opacity: i ? 0.5 : 1,
           },
           src,
