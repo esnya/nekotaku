@@ -967,544 +967,84 @@ exports[`RoomPage should be RoomPage 1`] = `
         class="layout row align-end"
       >
         <div
-          class="dialog__container"
+          class="menu"
           style="display: inline-block;"
         >
           <div
-            class="dialog__activator"
+            class="menu__activator"
           >
             <button
-              class="ml-0 mr-1 my-0 btn btn--icon btn--raised"
+              class="my-0 btn btn--icon btn--raised"
               type="button"
             >
               <div
                 class="btn__content"
               >
                 <i
-                  class="mdi icon mdi-message-settings-variant"
-                />
+                  class="material-icons icon"
+                >
+                  more_vert
+                </i>
               </div>
             </button>
           </div>
           <div
-            class="dialog__content"
+            class="menu__content"
+            style="max-height: auto; min-width: 0px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
           >
-            <div
-              class="dialog"
-              style="width: 290px; display: none;"
+            <ul
+              class="list"
+              data-uid="83"
             >
-              <div
-                class="card"
-                style="height: auto;"
-              >
+              <li>
                 <div
-                  class="card__title"
-                >
-                  <span
-                    class="headline"
-                  >
-                    チャット設定
-                  </span>
-                </div>
-                <div
-                  class="card__text pb-0"
+                  class="list__tile list__tile--link"
+                  href="javascript:;"
                 >
                   <div
-                    class="input-group input-group--dirty input-group--required input-group--text-field"
+                    class="list__tile__action"
                   >
-                    <label>
-                      名前
-                    </label>
-                    <div
-                      class="input-group__input"
+                    <i
+                      class="material-icons icon"
                     >
-                      <input
-                        aria-label="名前"
-                        required=""
-                        tabindex="0"
-                        type="text"
-                      />
-                    </div>
+                      palette
+                    </i>
+                  </div>
+                  <div
+                    class="list__tile__content"
+                  >
                     <div
-                      class="input-group__details"
+                      class="list__tile__title"
                     >
-                      <div
-                        class="input-group__messages"
-                      />
+                      チャットパレット
                     </div>
                   </div>
                 </div>
+              </li>
+              <li>
                 <div
-                  class="card__text"
+                  class="list__tile list__tile--link"
+                  href="javascript:;"
                 >
                   <div
-                    class="mb-1"
+                    class="list__tile__action"
                   >
-                    文字色
+                    <i
+                      class="mdi icon mdi-message-settings-variant"
+                    />
                   </div>
                   <div
-                    class="layout row"
-                    required="required"
+                    class="list__tile__content"
                   >
                     <div
-                      class="flex xs6"
+                      class="list__tile__title"
                     >
-                      <div
-                        class="input-group input-group--dirty input-group--append-icon input-group--text-field input-group--select"
-                        role="combobox"
-                        tabindex="0"
-                      >
-                        <label>
-                          色
-                        </label>
-                        <div
-                          class="input-group__input"
-                        >
-                          <div
-                            class="input-group__selections"
-                            style="overflow: hidden;"
-                          >
-                            <div
-                              class="fill"
-                              style="background-color: rgb(0, 0, 0);"
-                            />
-                            <input
-                              class="input-group--select__autocomplete"
-                              disabled="disabled"
-                              style="display: none;"
-                              tabindex="-1"
-                            />
-                          </div>
-                          <div
-                            class="menu"
-                            style="display: inline-block;"
-                          >
-                            <div
-                              class="menu__content menu__content--select"
-                              style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
-                            >
-                              <div
-                                class="card"
-                                style="height: auto;"
-                              >
-                                <ul
-                                  class="list"
-                                  data-uid="90"
-                                >
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(244, 67, 54);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(233, 30, 99);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(156, 39, 176);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(103, 58, 183);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(63, 81, 181);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(33, 150, 243);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(3, 169, 244);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(0, 188, 212);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(0, 150, 136);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(76, 175, 80);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(139, 195, 74);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(205, 220, 57);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(255, 235, 59);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(255, 193, 7);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(255, 152, 0);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(255, 87, 34);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(121, 85, 72);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(158, 158, 158);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(96, 125, 139);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link list__tile--active"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(0, 0, 0);"
-                                      />
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <i
-                            aria-hidden="true"
-                            class="material-icons icon input-group__append-icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </div>
-                        <div
-                          class="input-group__details"
-                        >
-                          <div
-                            class="input-group__messages"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="flex xs6"
-                    >
-                      <div
-                        class="input-group input-group--dirty input-group--append-icon input-group--text-field input-group--select"
-                        role="combobox"
-                        tabindex="0"
-                      >
-                        <label>
-                          明るさ
-                        </label>
-                        <div
-                          class="input-group__input"
-                        >
-                          <div
-                            class="input-group__selections"
-                            style="overflow: hidden;"
-                          >
-                            <div
-                              class="fill"
-                              style="background-color: rgb(0, 0, 0);"
-                            />
-                            <input
-                              class="input-group--select__autocomplete"
-                              disabled="disabled"
-                              style="display: none;"
-                              tabindex="-1"
-                            />
-                          </div>
-                          <div
-                            class="menu"
-                            style="display: inline-block;"
-                          >
-                            <div
-                              class="menu__content menu__content--select"
-                              style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
-                            >
-                              <div
-                                class="card"
-                                style="height: auto;"
-                              >
-                                <ul
-                                  class="list"
-                                  data-uid="115"
-                                >
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link list__tile--active"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgb(0, 0, 0);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.87);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.87);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.54);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.38);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.38);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.38);"
-                                      />
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div
-                                      class="list__tile list__tile--link"
-                                      href="javascript:;"
-                                    >
-                                      <div
-                                        class="fill"
-                                        style="background-color: rgba(0, 0, 0, 0.12);"
-                                      />
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <i
-                            aria-hidden="true"
-                            class="material-icons icon input-group__append-icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </div>
-                        <div
-                          class="input-group__details"
-                        >
-                          <div
-                            class="input-group__messages"
-                          />
-                        </div>
-                      </div>
+                      チャット設定
                     </div>
                   </div>
                 </div>
-                <div
-                  class="card__actions"
-                >
-                  <div
-                    class="spacer"
-                  />
-                  <button
-                    class="btn btn--raised"
-                    type="button"
-                  >
-                    <div
-                      class="btn__content"
-                    >
-                      閉じる
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         </div>
         <div
@@ -1549,6 +1089,669 @@ exports[`RoomPage should be RoomPage 1`] = `
             </i>
           </div>
         </button>
+      </div>
+      <div
+        class="dialog__container"
+        style="display: block;"
+      >
+        <div
+          class="dialog__content"
+        >
+          <div
+            class="dialog"
+            style="width: 290px; display: none;"
+          >
+            <div
+              class="card"
+              style="height: auto;"
+            >
+              <div
+                class="card__title"
+              >
+                <span
+                  class="headline"
+                >
+                  チャット設定
+                </span>
+              </div>
+              <div
+                class="card__text pb-0"
+              >
+                <div
+                  class="input-group input-group--dirty input-group--required input-group--text-field"
+                >
+                  <label>
+                    名前
+                  </label>
+                  <div
+                    class="input-group__input"
+                  >
+                    <input
+                      aria-label="名前"
+                      required=""
+                      tabindex="0"
+                      type="text"
+                    />
+                  </div>
+                  <div
+                    class="input-group__details"
+                  >
+                    <div
+                      class="input-group__messages"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card__text"
+              >
+                <div
+                  class="mb-1"
+                >
+                  文字色
+                </div>
+                <div
+                  class="layout row"
+                  required="required"
+                >
+                  <div
+                    class="flex xs6"
+                  >
+                    <div
+                      class="input-group input-group--dirty input-group--append-icon input-group--text-field input-group--select"
+                      role="combobox"
+                      tabindex="0"
+                    >
+                      <label>
+                        色
+                      </label>
+                      <div
+                        class="input-group__input"
+                      >
+                        <div
+                          class="input-group__selections"
+                          style="overflow: hidden;"
+                        >
+                          <div
+                            class="fill"
+                            style="background-color: rgb(0, 0, 0);"
+                          />
+                          <input
+                            class="input-group--select__autocomplete"
+                            disabled="disabled"
+                            style="display: none;"
+                            tabindex="-1"
+                          />
+                        </div>
+                        <div
+                          class="menu"
+                          style="display: inline-block;"
+                        >
+                          <div
+                            class="menu__content menu__content--select"
+                            style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+                          >
+                            <div
+                              class="card"
+                              style="height: auto;"
+                            >
+                              <ul
+                                class="list"
+                                data-uid="98"
+                              >
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(244, 67, 54);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(233, 30, 99);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(156, 39, 176);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(103, 58, 183);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(63, 81, 181);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(33, 150, 243);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(3, 169, 244);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(0, 188, 212);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(0, 150, 136);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(76, 175, 80);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(139, 195, 74);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(205, 220, 57);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(255, 235, 59);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(255, 193, 7);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(255, 152, 0);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(255, 87, 34);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(121, 85, 72);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(158, 158, 158);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(96, 125, 139);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link list__tile--active"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(0, 0, 0);"
+                                    />
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon input-group__append-icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                      <div
+                        class="input-group__details"
+                      >
+                        <div
+                          class="input-group__messages"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="flex xs6"
+                  >
+                    <div
+                      class="input-group input-group--dirty input-group--append-icon input-group--text-field input-group--select"
+                      role="combobox"
+                      tabindex="0"
+                    >
+                      <label>
+                        明るさ
+                      </label>
+                      <div
+                        class="input-group__input"
+                      >
+                        <div
+                          class="input-group__selections"
+                          style="overflow: hidden;"
+                        >
+                          <div
+                            class="fill"
+                            style="background-color: rgb(0, 0, 0);"
+                          />
+                          <input
+                            class="input-group--select__autocomplete"
+                            disabled="disabled"
+                            style="display: none;"
+                            tabindex="-1"
+                          />
+                        </div>
+                        <div
+                          class="menu"
+                          style="display: inline-block;"
+                        >
+                          <div
+                            class="menu__content menu__content--select"
+                            style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+                          >
+                            <div
+                              class="card"
+                              style="height: auto;"
+                            >
+                              <ul
+                                class="list"
+                                data-uid="123"
+                              >
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link list__tile--active"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgb(0, 0, 0);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.87);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.87);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.54);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.38);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.38);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.38);"
+                                    />
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    class="list__tile list__tile--link"
+                                    href="javascript:;"
+                                  >
+                                    <div
+                                      class="fill"
+                                      style="background-color: rgba(0, 0, 0, 0.12);"
+                                    />
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <i
+                          aria-hidden="true"
+                          class="material-icons icon input-group__append-icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                      <div
+                        class="input-group__details"
+                      >
+                        <div
+                          class="input-group__messages"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card__actions"
+              >
+                <div
+                  class="spacer"
+                />
+                <button
+                  class="btn btn--raised"
+                  type="button"
+                >
+                  <div
+                    class="btn__content"
+                  >
+                    閉じる
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="dialog__container"
+        style="display: block;"
+      >
+        <div
+          class="dialog__content"
+        >
+          <div
+            class="dialog"
+            style="width: 290px; display: none;"
+          >
+            <div
+              class="card"
+              style="height: auto;"
+            >
+              <div
+                class="card__title headline"
+              >
+                チャットパレット
+              </div>
+              <div
+                class="tabs tabs--scroll-bars theme--dark"
+              >
+                <div
+                  class="tabs__items"
+                >
+                  <div
+                    class="tabs__content"
+                    id="chat-palette-0"
+                    style="display: none;"
+                  >
+                    <ul
+                      class="list"
+                      data-uid="140"
+                    >
+                      <li>
+                        <div
+                          class="list__tile list__tile--link"
+                          href="javascript:;"
+                        >
+                          <div
+                            class="list__tile__content"
+                          >
+                            <div
+                              class="list__tile__title"
+                            >
+                              2D6+{器用度ボーナス} 命中判定!
+                            </div>
+                          </div>
+                          <!---->
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="list__tile list__tile--link"
+                          href="javascript:;"
+                        >
+                          <div
+                            class="list__tile__content"
+                          >
+                            <div
+                              class="list__tile__title"
+                            >
+                              2D6+{敏捷度ボーナス} 回避判定!
+                            </div>
+                          </div>
+                          <!---->
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="list__tile list__tile--link"
+                          href="javascript:;"
+                        >
+                          <div
+                            class="list__tile__content"
+                          >
+                            <div
+                              class="list__tile__title"
+                            >
+                              //器用度ボーナス=2
+                            </div>
+                          </div>
+                          <!---->
+                        </div>
+                      </li>
+                      <li>
+                        <div
+                          class="list__tile list__tile--link"
+                          href="javascript:;"
+                        >
+                          <div
+                            class="list__tile__content"
+                          >
+                            <div
+                              class="list__tile__title"
+                            >
+                              //敏捷度ボーナス=3
+                            </div>
+                          </div>
+                          <!---->
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card__actions"
+              >
+                <button
+                  class="btn btn--raised primary"
+                  type="button"
+                >
+                  <div
+                    class="btn__content"
+                  >
+                    編集
+                  </div>
+                </button>
+                <div
+                  class="spacer"
+                />
+                <button
+                  class="btn btn--raised"
+                  type="button"
+                >
+                  <div
+                    class="btn__content"
+                  >
+                    閉じる
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div
