@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Log exporting
+- Chat-Palette
 
 ## [0.2.0] - 2017-09-28
 ### Added
