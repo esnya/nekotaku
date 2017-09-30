@@ -1,7 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="open")
-    v-btn.ml-0.mr-1.my-0(icon, slot="activator")
-      v-icon mdi-message-settings-variant
+  v-dialog(:value="value" @input="v => $emit('input', v)")
     v-card(v-scroll="'y'")
       v-card-title
         span.headline チャット設定
@@ -21,7 +19,7 @@
         )
       v-card-actions
         v-spacer
-        v-btn(@click="open = false") 閉じる
+        v-btn(@click="$emit('input', false)") 閉じる
 </template>
 
 <script>
@@ -44,5 +42,11 @@ export default {
     'setChatColor',
     'setChatName',
   ]),
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
+    },
+  },
 };
 </script>
