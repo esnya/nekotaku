@@ -1,10 +1,24 @@
 <template lang="pug">
   v-card.pb-2.room-tab-control
     v-layout(row align-end)
-      chat-config-dialog
+      v-menu(top offset-y transition="slide-y-reverse-transition")
+        v-btn.my-0(icon slot="activator")
+          v-icon more_vert
+        v-list
+          v-list-tile(@click="cpdOpen = true")
+            v-list-tile-action
+              v-icon palette
+            v-list-tile-content
+              v-list-tile-title チャットパレット
+          v-list-tile(@click="ccdOpen = true")
+            v-list-tile-action
+              v-icon mdi-message-settings-variant
+            v-list-tile-content
+              v-list-tile-title チャット設定
       v-flex
         v-text-field.message-body(
           multi-line
+          hide-details
           v-model="body"
           :label="name"
           :hide-details="true"
@@ -14,16 +28,20 @@
         )
       v-btn.my-0.pl-1(icon primary dark  @click="submit")
         v-icon send
+    chat-config-dialog(v-model="ccdOpen")
+    chat-palette-dialog(v-model="cpdOpen")
 </template>
 
 <script>
 import Palette from 'google-material-color';
 import { mapActions, mapState } from 'vuex';
 import ChatConfigDialog from './ChatConfigDialog.vue';
+import ChatPaletteDialog from './ChatPaletteDialog.vue';
 
 export default {
   components: {
     ChatConfigDialog,
+    ChatPaletteDialog,
   },
   computed: {
     ...mapState([
@@ -43,6 +61,8 @@ export default {
     return {
       body: null,
       face: 'default',
+      ccdOpen: false,
+      cpdOpen: false,
     };
   },
   methods: {
