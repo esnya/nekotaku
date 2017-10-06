@@ -1,10 +1,12 @@
 import 'vue-dice-component/lib/dice.css';
+import 'vue-simple-markdown/dist/vue-simple-markdown.css';
 import 'mdi/css/materialdesignicons.min.css';
 
 import moment from 'moment';
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import Dice from 'vue-dice-component';
+import VueSimpleMarkdown from 'vue-simple-markdown';
 import Vuetify from 'vuetify';
 import { sync } from 'vuex-router-sync';
 import App from './vue/App.vue';
@@ -21,6 +23,7 @@ async function main() {
 
   Vue.use(Dice);
   Vue.use(Vuetify);
+  Vue.use(VueSimpleMarkdown);
   Vue.directive('scroll', {
     inserted(el, binding) {
       el.classList.add('scroll');

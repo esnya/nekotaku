@@ -35,16 +35,24 @@
           v-icon mdi-logout
         v-list-tile-content
           v-list-tile-title 卓から出る
+      v-divider
+      v-list-tile(@click="cdOpen = true")
+        v-list-tile-action
+          v-icon mdi-update
+        v-list-tile-content
+          v-list-tile-title 更新履歴
     room-edit-dialog(v-model="redOpen")
     room-password-clear-dialog(v-model="rpcdOpen")
     room-password-edit-dialog(v-model="rpedOpen")
     room-remove-dialog(v-model="rrdOpen")
+    changelog-dialog(v-model="cdOpen")
 </template>
 
 <script>
 import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
+import ChangelogDialog from './ChangelogDialog.vue';
 import RoomEditDialog from './RoomEditDialog.vue';
 import RoomPasswordClearDialog from './RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from './RoomPasswordEditDialog.vue';
@@ -52,6 +60,7 @@ import RoomRemoveDialog from './RoomRemoveDialog.vue';
 
 export default {
   components: {
+    ChangelogDialog,
     RoomEditDialog,
     RoomPasswordClearDialog,
     RoomPasswordEditDialog,
@@ -67,6 +76,7 @@ export default {
       rpedOpen: false,
       rpcdOpen: false,
       rrdOpen: false,
+      cdOpen: false,
     };
   },
   methods: {

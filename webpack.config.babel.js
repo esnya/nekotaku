@@ -71,7 +71,7 @@ export default {
         }],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        test: /\.(eot|svg|ttf|woff|woff2|md)$/,
         use: 'file-loader',
       },
     ],

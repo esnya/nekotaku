@@ -27,6 +27,12 @@
 ![ss03.png](https://raw.githubusercontent.com/ukatama/nekotaku/master/docs/img/ss03.png)
 ![ss04.png](https://raw.githubusercontent.com/ukatama/nekotaku/master/docs/img/ss04.png)
 
+## 更新履歴 / Changelog
+[CHANGELOG.md](https://github.com/ukatama/nekotaku/blob/master/CHANGELOG.md)
+
+All notable changes to this project will be documented in `CHANGELOG.md`.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
 ## 使い方 / How to Use
 ### A. お試しサーバー / Trial Server
 https://nekotaku.nekometer.info
