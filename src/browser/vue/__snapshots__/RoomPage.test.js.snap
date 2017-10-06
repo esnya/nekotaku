@@ -210,6 +210,32 @@ exports[`RoomPage should be RoomPage 1`] = `
                 </div>
               </div>
             </li>
+            <hr
+              class="divider"
+            />
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-update"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    更新履歴
+                  </div>
+                </div>
+              </div>
+            </li>
           </ul>
           <div
             class="dialog__container"
@@ -296,7 +322,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="22"
+                                data-uid="23"
                               >
                                 <li>
                                   <div
@@ -612,6 +638,78 @@ exports[`RoomPage should be RoomPage 1`] = `
                         class="btn__content"
                       >
                         やめる
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dialog__container"
+            style="display: block;"
+          >
+            <div
+              class="dialog__content"
+            >
+              <div
+                class="dialog"
+                style="width: 290px; display: none;"
+              >
+                <div
+                  class="card"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__text"
+                  >
+                    <div
+                      class="loading-container"
+                    >
+                      <div
+                        class="primary--text progress-circular progress-circular--indeterminate"
+                        style="height: 50px; width: 50px;"
+                      >
+                        <svg
+                          viewBox="25 25 50 50"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            class="progress-circular__overlay"
+                            cx="50"
+                            cy="50"
+                            fill="transparent"
+                            r="20"
+                            stroke-dasharray="125.664"
+                            stroke-dashoffset="125.66370614359172px"
+                            stroke-width="4"
+                          />
+                        </svg>
+                        <div
+                          class="progress-circular__info"
+                        />
+                      </div>
+                      <div
+                        class="py-2"
+                      >
+                        なう、ろーでぃんぐ。
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="btn btn--raised primary"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        閉じる
                       </div>
                     </button>
                   </div>
@@ -994,7 +1092,7 @@ exports[`RoomPage should be RoomPage 1`] = `
           >
             <ul
               class="list"
-              data-uid="83"
+              data-uid="90"
             >
               <li>
                 <div
@@ -1197,7 +1295,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="98"
+                                data-uid="105"
                               >
                                 <li>
                                   <div
@@ -1482,7 +1580,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="123"
+                                data-uid="130"
                               >
                                 <li>
                                   <div
@@ -1648,7 +1746,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                   >
                     <ul
                       class="list"
-                      data-uid="140"
+                      data-uid="147"
                     >
                       <li>
                         <div

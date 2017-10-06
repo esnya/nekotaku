@@ -19,6 +19,65 @@ exports[`LobbyPage should be LobbyPage 1`] = `
       >
         ねこ卓
       </div>
+      <div
+        class="spacer"
+      />
+      <div
+        class="menu mr-0"
+        style="display: inline-block;"
+      >
+        <div
+          class="menu__activator"
+        >
+          <button
+            class="btn btn--icon btn--raised"
+            type="button"
+          >
+            <div
+              class="btn__content"
+            >
+              <i
+                class="material-icons icon"
+              >
+                more_vert
+              </i>
+            </div>
+          </button>
+        </div>
+        <div
+          class="menu__content"
+          style="max-height: auto; min-width: 0px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+        >
+          <ul
+            class="pt-0 list"
+            data-uid="6"
+          >
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
+                    class="mdi icon mdi-update"
+                  />
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    更新履歴
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </nav>
   <main>
@@ -551,7 +610,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                         >
                           <ul
                             class="list"
-                            data-uid="46"
+                            data-uid="51"
                           >
                             <li>
                               <div
@@ -674,5 +733,77 @@ exports[`LobbyPage should be LobbyPage 1`] = `
       </div>
     </div>
   </main>
+  <div
+    class="dialog__container"
+    style="display: block;"
+  >
+    <div
+      class="dialog__content"
+    >
+      <div
+        class="dialog"
+        style="width: 290px; display: none;"
+      >
+        <div
+          class="card"
+          style="height: auto;"
+        >
+          <div
+            class="card__text"
+          >
+            <div
+              class="loading-container"
+            >
+              <div
+                class="primary--text progress-circular progress-circular--indeterminate"
+                style="height: 50px; width: 50px;"
+              >
+                <svg
+                  viewBox="25 25 50 50"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="progress-circular__overlay"
+                    cx="50"
+                    cy="50"
+                    fill="transparent"
+                    r="20"
+                    stroke-dasharray="125.664"
+                    stroke-dashoffset="125.66370614359172px"
+                    stroke-width="4"
+                  />
+                </svg>
+                <div
+                  class="progress-circular__info"
+                />
+              </div>
+              <div
+                class="py-2"
+              >
+                なう、ろーでぃんぐ。
+              </div>
+            </div>
+          </div>
+          <div
+            class="card__actions"
+          >
+            <div
+              class="spacer"
+            />
+            <button
+              class="btn btn--raised primary"
+              type="button"
+            >
+              <div
+                class="btn__content"
+              >
+                閉じる
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

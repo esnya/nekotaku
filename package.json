@@ -30,6 +30,9 @@
       "js",
       "vue"
     ],
+    "moduleNameMapper": {
+      "\\.(md)$": "<rootDir>/__mocks__/fileMock.js"
+    },
     "setupFiles": [
       "<rootDir>/node_modules/babel-polyfill"
     ],
