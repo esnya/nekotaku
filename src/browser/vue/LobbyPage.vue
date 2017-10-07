@@ -8,6 +8,11 @@
         v-btn(icon slot="activator")
           v-icon more_vert
         v-list.pt-0
+          v-list-tile(@click="fdOpen = true")
+            v-list-tile-action
+              v-icon star
+            v-list-tile-content
+              v-list-tile-title フィードバック
           v-list-tile(@click="cdOpen = true")
             v-list-tile-action
               v-icon mdi-update
@@ -18,23 +23,27 @@
         room-list
       room-create-dialog
     changelog-dialog(v-model="cdOpen")
+    feedback-dialog(v-model="fdOpen")
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import ChangelogDialog from './ChangelogDialog.vue';
+import FeedbackDialog from './FeedbackDialog.vue';
 import RoomCreateDialog from './RoomCreateDialog.vue';
 import RoomList from './RoomList.vue';
 
 export default {
   components: {
     ChangelogDialog,
+    FeedbackDialog,
     RoomCreateDialog,
     RoomList,
   },
   data() {
     return {
       cdOpen: false,
+      fdOpen: false,
     };
   },
   methods: mapActions([

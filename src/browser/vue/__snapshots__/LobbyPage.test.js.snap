@@ -61,6 +61,31 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   class="list__tile__action"
                 >
                   <i
+                    class="material-icons icon"
+                  >
+                    star
+                  </i>
+                </div>
+                <div
+                  class="list__tile__content"
+                >
+                  <div
+                    class="list__tile__title"
+                  >
+                    フィードバック
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div
+                class="list__tile list__tile--link"
+                href="javascript:;"
+              >
+                <div
+                  class="list__tile__action"
+                >
+                  <i
                     class="mdi icon mdi-update"
                   />
                 </div>
@@ -610,7 +635,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                         >
                           <ul
                             class="list"
-                            data-uid="51"
+                            data-uid="52"
                           >
                             <li>
                               <div
@@ -783,6 +808,75 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 なう、ろーでぃんぐ。
               </div>
             </div>
+          </div>
+          <div
+            class="card__actions"
+          >
+            <div
+              class="spacer"
+            />
+            <button
+              class="btn btn--raised primary"
+              type="button"
+            >
+              <div
+                class="btn__content"
+              >
+                閉じる
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="dialog__container"
+    style="display: block;"
+  >
+    <div
+      class="dialog__content"
+    >
+      <div
+        class="dialog"
+        style="width: 290px; display: none;"
+      >
+        <div
+          class="card"
+          style="height: auto;"
+        >
+          <div
+            class="card__title headline"
+          >
+            フィードバック
+          </div>
+          <div
+            class="card__text"
+          >
+            <span>
+              Issue/Pull Request大歓迎です。GitHubアカウントをお持ちの方は
+            </span>
+            <a
+              href="https://github.com/ukatama/nekotaku/issues"
+              target="_blank"
+            >
+              こちら
+            </a>
+            <span>
+              から作成して下さい。
+            </span>
+          </div>
+          <div
+            class="card__text"
+          >
+            <a
+              target="_blank"
+            >
+              こちらのフォーム
+            </a>
+            <span>
+              もご利用下さい。GitHubアカウントのない方でもご意見・ご要望・不具合報告などをご送信いただけます。
+            </span>
           </div>
           <div
             class="card__actions"

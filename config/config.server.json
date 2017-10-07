@@ -6,7 +6,8 @@
     "id": "201709130610",
     "title": "「ねこ卓」へようこそ",
     "body": [
-      "バグ、要望などは https://github.com/ukatama/nekotaku にどうぞ。"
+      "ご意見・ご要望・バグ報告歓迎です。詳細はメニューの「フィードバック」を御覧ください"
     ]
-  }
+  },
+  "feedbackFormURL": "https://docs.google.com/forms/d/12MXZ41UemyIqGIjEKqxe-k5fF5tZNHT0HbPwDU6gMS4"
 }

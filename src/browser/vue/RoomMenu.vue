@@ -36,6 +36,11 @@
         v-list-tile-content
           v-list-tile-title 卓から出る
       v-divider
+      v-list-tile(@click="fdOpen = true")
+        v-list-tile-action
+          v-icon star
+        v-list-tile-content
+          v-list-tile-title フィードバック
       v-list-tile(@click="cdOpen = true")
         v-list-tile-action
           v-icon mdi-update
@@ -46,6 +51,7 @@
     room-password-edit-dialog(v-model="rpedOpen")
     room-remove-dialog(v-model="rrdOpen")
     changelog-dialog(v-model="cdOpen")
+    feedback-dialog(v-model="fdOpen")
 </template>
 
 <script>
@@ -53,6 +59,7 @@ import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import ChangelogDialog from './ChangelogDialog.vue';
+import FeedbackDialog from './FeedbackDialog.vue';
 import RoomEditDialog from './RoomEditDialog.vue';
 import RoomPasswordClearDialog from './RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from './RoomPasswordEditDialog.vue';
@@ -61,6 +68,7 @@ import RoomRemoveDialog from './RoomRemoveDialog.vue';
 export default {
   components: {
     ChangelogDialog,
+    FeedbackDialog,
     RoomEditDialog,
     RoomPasswordClearDialog,
     RoomPasswordEditDialog,
@@ -77,6 +85,7 @@ export default {
       rpcdOpen: false,
       rrdOpen: false,
       cdOpen: false,
+      fdOpen: false,
     };
   },
   methods: {

@@ -14,11 +14,12 @@
     "title": "「ねこ卓」お試しサーバーへようこそ",
     "body": [
       "ご自由にお試しください。",
-      "バグ、要望などは https://github.com/ukatama/nekotaku か、開発者のTwitterにどうぞ。",
+      "ご意見・ご要望・バグ報告歓迎です。詳細はメニューの「フィードバック」を御覧ください",
       "※テスト用と思われる名前の卓や長期間更新のない卓は、予告なく削除することがあります。"
     ]
   },
   "googleAnalytics": {
     "id": "GOOGLE_ANALYTICS_ID"
-  }
+  },
+  "feedbackFormURL": "https://docs.google.com/forms/d/12MXZ41UemyIqGIjEKqxe-k5fF5tZNHT0HbPwDU6gMS4"
 }
