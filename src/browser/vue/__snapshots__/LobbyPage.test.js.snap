@@ -10,6 +10,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
   >
     <div
       class="toolbar__content"
+      style="height: 56px;"
     >
       <img
         src="/img/nekokoro32.png"
@@ -30,13 +31,15 @@ exports[`LobbyPage should be LobbyPage 1`] = `
           class="menu__activator"
         >
           <button
-            class="btn btn--icon btn--raised"
+            class="btn btn--icon"
+            data-ripple="true"
             type="button"
           >
             <div
               class="btn__content"
             >
               <i
+                aria-hidden="true"
                 class="material-icons icon"
               >
                 more_vert
@@ -46,21 +49,22 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         </div>
         <div
           class="menu__content"
-          style="max-height: auto; min-width: 0px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+          style="max-height: auto; min-width: 0px; max-width: auto; top: 12px; left: 0px; z-index: 0; display: none;"
         >
           <ul
             class="pt-0 list"
             data-uid="6"
           >
             <li>
-              <div
+              <a
                 class="list__tile list__tile--link"
-                href="javascript:;"
+                data-ripple="false"
               >
                 <div
                   class="list__tile__action"
                 >
                   <i
+                    aria-hidden="true"
                     class="material-icons icon"
                   >
                     star
@@ -75,17 +79,18 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                     フィードバック
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
             <li>
-              <div
+              <a
                 class="list__tile list__tile--link"
-                href="javascript:;"
+                data-ripple="false"
               >
                 <div
                   class="list__tile__action"
                 >
                   <i
+                    aria-hidden="true"
                     class="mdi icon mdi-update"
                   />
                 </div>
@@ -98,7 +103,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                     更新履歴
                   </div>
                 </div>
-              </div>
+              </a>
             </li>
           </ul>
         </div>
@@ -116,7 +121,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
           class="flex pa-2 xs12"
         >
           <div
-            class="input-group input-group--append-icon input-group--hide-details input-group--text-field input-group--single-line"
+            class="input-group input-group--append-icon input-group--hide-details input-group--text-field input-group--single-line primary--text"
           >
             <label>
               検索
@@ -138,11 +143,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
             </div>
             <div
               class="input-group__details"
-            >
-              <div
-                class="input-group__messages"
-              />
-            </div>
+            />
           </div>
         </div>
         <div
@@ -150,6 +151,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         >
           <div
             class="card"
+            data-ripple="false"
             style="height: auto;"
           >
             <div
@@ -178,13 +180,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 >
                   <div
                     class="dialog__content"
+                    style="z-index: 0;"
+                    tabindex="-1"
                   >
                     <div
                       class="dialog"
-                      style="width: auto; display: none;"
+                      style="display: none;"
                     >
                       <div
                         class="card"
+                        data-ripple="false"
                         style="height: auto;"
                       >
                         <div
@@ -206,7 +211,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                             class="spacer"
                           />
                           <button
-                            class="btn btn--raised"
+                            class="btn"
+                            data-ripple="true"
                             type="button"
                           >
                             <div
@@ -221,42 +227,57 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   </div>
                 </div>
                 <span
-                  class="pl-0 mr-0 indigo chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 indigo chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    SwordWorld2_0
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      SwordWorld2_0
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 green chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 green chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    3
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      3
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 orange chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 orange chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-clock"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    2017年9月23日 15:00
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-clock"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      2017年9月23日 15:00
+                    </span>
                   </span>
                 </span>
               </div>
@@ -268,7 +289,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 class="spacer"
               />
               <a
-                class="btn btn--raised primary"
+                class="btn btn--router primary"
+                data-ripple="true"
               />
             </div>
           </div>
@@ -278,6 +300,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         >
           <div
             class="card"
+            data-ripple="false"
             style="height: auto;"
           >
             <div
@@ -306,13 +329,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 >
                   <div
                     class="dialog__content"
+                    style="z-index: 0;"
+                    tabindex="-1"
                   >
                     <div
                       class="dialog"
-                      style="width: auto; display: none;"
+                      style="display: none;"
                     >
                       <div
                         class="card"
+                        data-ripple="false"
                         style="height: auto;"
                       >
                         <div
@@ -334,7 +360,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                             class="spacer"
                           />
                           <button
-                            class="btn btn--raised"
+                            class="btn"
+                            data-ripple="true"
                             type="button"
                           >
                             <div
@@ -349,42 +376,57 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   </div>
                 </div>
                 <span
-                  class="pl-0 mr-0 indigo chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 indigo chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    SwordWorld2_0
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      SwordWorld2_0
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 green chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 green chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    3
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      3
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 orange chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 orange chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-clock"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    2017年9月23日 15:00
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-clock"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      2017年9月23日 15:00
+                    </span>
                   </span>
                 </span>
               </div>
@@ -396,7 +438,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 class="spacer"
               />
               <a
-                class="btn btn--raised primary"
+                class="btn btn--router primary"
+                data-ripple="true"
               />
             </div>
           </div>
@@ -406,6 +449,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         >
           <div
             class="card"
+            data-ripple="false"
             style="height: auto;"
           >
             <div
@@ -434,13 +478,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 >
                   <div
                     class="dialog__content"
+                    style="z-index: 0;"
+                    tabindex="-1"
                   >
                     <div
                       class="dialog"
-                      style="width: auto; display: none;"
+                      style="display: none;"
                     >
                       <div
                         class="card"
+                        data-ripple="false"
                         style="height: auto;"
                       >
                         <div
@@ -462,7 +509,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                             class="spacer"
                           />
                           <button
-                            class="btn btn--raised"
+                            class="btn"
+                            data-ripple="true"
                             type="button"
                           >
                             <div
@@ -477,42 +525,57 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   </div>
                 </div>
                 <span
-                  class="pl-0 mr-0 indigo chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 indigo chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-dice-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    Cthulhu7th
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-dice-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      Cthulhu7th
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 green chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 green chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-account-multiple"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    3
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-account-multiple"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      3
+                    </span>
                   </span>
                 </span>
                 <span
-                  class="pl-0 mr-0 orange chip chip--small"
-                  tabindex="-1"
+                  class="chip pl-0 mr-0 orange chip--small"
+                  tabindex="0"
                 >
-                  <i
-                    class="mdi icon mx-1 theme--dark mdi-clock"
-                  />
                   <span
-                    class="white--text"
+                    class="chip__content"
                   >
-                    2017年9月23日 15:00
+                    <i
+                      aria-hidden="true"
+                      class="mdi icon mx-1 theme--dark mdi-clock"
+                    />
+                    <span
+                      class="white--text"
+                    >
+                      2017年9月23日 15:00
+                    </span>
                   </span>
                 </span>
               </div>
@@ -524,7 +587,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 class="spacer"
               />
               <a
-                class="btn btn--raised primary"
+                class="btn btn--router primary"
+                data-ripple="true"
               />
             </div>
           </div>
@@ -539,13 +603,15 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         class="dialog__activator"
       >
         <button
-          class="primary btn btn--bottom btn--floating btn--fixed btn--raised btn--right theme--dark"
+          class="primary btn btn--bottom btn--floating btn--fixed btn--right theme--dark"
+          data-ripple="true"
           type="button"
         >
           <div
             class="btn__content"
           >
             <i
+              aria-hidden="true"
               class="material-icons icon"
             >
               add
@@ -555,13 +621,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
       </div>
       <div
         class="dialog__content"
+        style="z-index: 0;"
+        tabindex="-1"
       >
         <div
           class="dialog"
-          style="width: 290px; display: none;"
+          style="display: none;"
         >
           <div
             class="card"
+            data-ripple="false"
             style="height: auto;"
           >
             <div
@@ -576,9 +645,11 @@ exports[`LobbyPage should be LobbyPage 1`] = `
             <div
               class="card__text"
             >
-              <form>
+              <form
+                novalidate="novalidate"
+              >
                 <div
-                  class="input-group input-group--required input-group--text-field"
+                  class="input-group input-group--required input-group--text-field primary--text"
                 >
                   <label>
                     タイトル
@@ -602,7 +673,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                   </div>
                 </div>
                 <div
-                  class="input-group input-group--append-icon input-group--required input-group--text-field input-group--select input-group--autocomplete"
+                  class="input-group input-group--append-icon input-group--required input-group--text-field input-group--select input-group--autocomplete primary--text"
                   tabindex="-1"
                 >
                   <label>
@@ -616,6 +687,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                       style="overflow: hidden;"
                     >
                       <input
+                        autocomplete="on"
                         class="input-group--select__autocomplete"
                         role="combobox"
                         tabindex="0"
@@ -626,21 +698,22 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                       style="display: inline-block;"
                     >
                       <div
-                        class="menu__content menu__content--select"
-                        style="max-height: 300px; min-width: 24px; max-width: NaNpx; top: 12px; left: 0px; z-index: 6; display: none;"
+                        class="menu__content menu__content--select   menu__content--autocomplete"
+                        style="max-height: 300px; min-width: 0px; max-width: auto; top: 12px; left: 0px; z-index: 0; display: none;"
                       >
                         <div
                           class="card"
+                          data-ripple="false"
                           style="height: auto;"
                         >
                           <ul
                             class="list"
-                            data-uid="52"
+                            data-uid="58"
                           >
                             <li>
-                              <div
+                              <a
                                 class="list__tile list__tile--link"
-                                href="javascript:;"
+                                data-ripple="true"
                               >
                                 <div
                                   class="list__tile__content"
@@ -651,7 +724,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                                     DiceBot
                                   </div>
                                 </div>
-                              </div>
+                              </a>
                             </li>
                           </ul>
                         </div>
@@ -659,7 +732,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                     </div>
                     <i
                       aria-hidden="true"
-                      class="material-icons icon input-group__append-icon"
+                      class="material-icons icon input-group__append-icon input-group__icon-cb"
                     >
                       arrow_drop_down
                     </i>
@@ -675,7 +748,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
               </form>
               <form>
                 <div
-                  class="input-group input-group--dirty input-group--placeholder input-group--text-field"
+                  class="input-group input-group--placeholder input-group--text-field primary--text"
                 >
                   <label>
                     パスワード
@@ -700,7 +773,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 </div>
                 <!---->
                 <div
-                  class="input-group input-group--dirty input-group--placeholder input-group--text-field"
+                  class="input-group input-group--placeholder input-group--text-field primary--text"
                 >
                   <label>
                     キャラクター属性
@@ -732,7 +805,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 class="spacer"
               />
               <button
-                class="primary btn btn--disabled btn--raised"
+                class="primary btn btn--disabled"
+                data-ripple="true"
                 disabled="disabled"
                 type="button"
               >
@@ -743,7 +817,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 </div>
               </button>
               <button
-                class="btn btn--raised"
+                class="btn"
+                data-ripple="true"
                 type="button"
               >
                 <div
@@ -764,13 +839,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
   >
     <div
       class="dialog__content"
+      style="z-index: 0;"
+      tabindex="-1"
     >
       <div
         class="dialog"
-        style="width: 290px; display: none;"
+        style="display: none;"
       >
         <div
           class="card"
+          data-ripple="false"
           style="height: auto;"
         >
           <div
@@ -816,7 +894,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
               class="spacer"
             />
             <button
-              class="btn btn--raised primary"
+              class="btn primary"
+              data-ripple="true"
               type="button"
             >
               <div
@@ -836,13 +915,16 @@ exports[`LobbyPage should be LobbyPage 1`] = `
   >
     <div
       class="dialog__content"
+      style="z-index: 0;"
+      tabindex="-1"
     >
       <div
         class="dialog"
-        style="width: 290px; display: none;"
+        style="display: none;"
       >
         <div
           class="card"
+          data-ripple="false"
           style="height: auto;"
         >
           <div
@@ -885,7 +967,8 @@ exports[`LobbyPage should be LobbyPage 1`] = `
               class="spacer"
             />
             <button
-              class="btn btn--raised primary"
+              class="btn primary"
+              data-ripple="true"
               type="button"
             >
               <div
