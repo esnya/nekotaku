@@ -1,4 +1,6 @@
 describe('RoomPage', () => {
+  window.requestAnimationFrame = jest.fn();
+
   jest.setMock('../config', { backend: { type: 'stub' } });
   jest.setMock('../utilities/localStorage', {
     setItem: jest.fn(),

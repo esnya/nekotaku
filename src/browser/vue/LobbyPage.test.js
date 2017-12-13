@@ -1,4 +1,6 @@
 describe('LobbyPage', () => {
+  window.requestAnimationFrame = jest.fn();
+
   jest.setMock('../config', { backend: { type: 'stub' } });
   jest.mock('moment');
 
