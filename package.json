@@ -1,6 +1,6 @@
 {
   "name": "nekotaku",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "ねこ卓：モバイルフレンドリーなオンラインセッション支援ツール",
   "private": true,
   "main": "index.js",
