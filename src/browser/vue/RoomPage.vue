@@ -42,7 +42,8 @@
         transition(name="neko-slide-bottom")
           chat-control(v-if="roomTab === '0'")
           map-control(v-else-if="roomTab === '2'")
-        v-bottom-nav.white(
+        v-bottom-nav(
+          color="white"
           :active.sync="roomTab"
           :class="{ 'no-shadow': roomTab !== '1' }"
           :fixed="true"

@@ -193,12 +193,10 @@ export default class Backend {
       Promise.all(characters.map(({ id }) => this.clearCharacterFiles(id))),
     ]);
 
-    await Promise.all(
-      [
-        ...Lists,
-        ...Objects,
-      ].filter(type => type !== 'members').map(type => this.remove(type)),
-    );
+    await Promise.all([
+      ...Lists,
+      ...Objects,
+    ].filter(type => type !== 'members').map(type => this.remove(type)));
 
     await this.strategy.removeRoom(roomId);
   }

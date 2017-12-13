@@ -22,6 +22,7 @@ overrides:
   env:
     jest: true
   rules:
+    function-paren-newline: ["error", "multiline"]
     global-require: off
     import/no-extraneous-dependencies: off
     import/prefer-default-export: off

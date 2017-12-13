@@ -58,14 +58,12 @@ export default {
           sortable: true,
           value: 'initiative',
         },
-      ].concat(
-        (characterAttributes || []).map(attribute => ({
-          text: attribute,
-          align: 'center',
-          sortable: false,
-          value: attribute,
-        })),
-      );
+      ].concat((characterAttributes || []).map(attribute => ({
+        text: attribute,
+        align: 'center',
+        sortable: false,
+        value: attribute,
+      })));
     },
   },
   data() {

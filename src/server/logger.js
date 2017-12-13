@@ -5,8 +5,7 @@ configure({
   appenders: {
     console: { type: 'console' },
   },
-  categories: {
-    default: { appenders: ['console'], level: config.loglevel || levels.INFO } },
+  categories: { default: { appenders: ['console'], level: config.loglevel || levels.INFO } },
 });
 
 export const system = getLogger('system');

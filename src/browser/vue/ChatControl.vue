@@ -80,7 +80,12 @@ export default {
 
       this.body = null;
 
-      this.sendMessage({ color, name, face, body });
+      this.sendMessage({
+        color,
+        name,
+        face,
+        body,
+      });
     },
     enter(e) {
       if (e.shiftKey) return;
