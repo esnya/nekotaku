@@ -37,23 +37,21 @@ export default {
     },
   },
   mounted() {
-    this.$vuetify.load(() => {
-      this.buttons = this.$slots.default
-        .filter(vnode => vnode.tag !== undefined)
-        .map(vnode => vnode.elm);
+    this.buttons = this.$slots.default
+      .filter(vnode => vnode.tag !== undefined)
+      .map(vnode => vnode.elm);
 
-      if (this.toggle) {
-        this.buttons.forEach((button) => {
-          const listener = () => {
-            const value = button.getAttribute('value');
-            this.$emit('input', value);
-          };
-          button.addEventListener('click', listener, { passive: true });
-        });
-      }
+    if (this.toggle) {
+      this.buttons.forEach((button) => {
+        const listener = () => {
+          const value = button.getAttribute('value');
+          this.$emit('input', value);
+        };
+        button.addEventListener('click', listener, { passive: true });
+      });
+    }
 
-      this.update();
-    });
+    this.update();
   },
 };
 </script>
