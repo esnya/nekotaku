@@ -1,5 +1,7 @@
 <template lang="pug">
-  div(v-tooltip:left="{html:full}") {{past}}
+  v-tooltip(left)
+    v-btn.ma-0(flat small slot="activator") {{past}}
+    span {{full}}
 </template>
 
 <script>
@@ -19,4 +21,3 @@ export default {
   ],
 };
 </script>
-

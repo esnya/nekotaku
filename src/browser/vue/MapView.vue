@@ -32,7 +32,6 @@
             :style="character.style"
           )
             .character-inner(
-              v-tooltip:bottom="{html:character.name}"
               :style="character.innerStyle"
               @mousedown="e => mms.onCharacterTouch(e, character)"
               @touchstart="e => mms.onCharacterTouch(e, character)"
