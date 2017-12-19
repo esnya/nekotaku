@@ -603,7 +603,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
         class="dialog__activator"
       >
         <button
-          class="primary btn btn--bottom btn--floating btn--fixed btn--right theme--dark"
+          class="btn btn--bottom btn--floating btn--fixed btn--right theme--dark primary"
           data-ripple="true"
           type="button"
         >
@@ -805,7 +805,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 class="spacer"
               />
               <button
-                class="primary btn btn--disabled"
+                class="btn btn--disabled primary"
                 data-ripple="true"
                 disabled="disabled"
                 type="button"
