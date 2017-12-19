@@ -8,7 +8,7 @@
         v-checkbox(label="次回から表示しない。", v-model="dontShowAgain")
       v-card-actions
         v-spacer
-        v-btn(primary, @click="open = false") 閉じる
+        v-btn(color="primary" @click="open = false") 閉じる
 </template>
 
 <script>

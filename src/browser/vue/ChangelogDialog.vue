@@ -6,7 +6,7 @@
         loading(v-else)
       v-card-actions
         v-spacer
-        v-btn(primary @click="$emit('input', false)") 閉じる
+        v-btn(color="primary" @click="$emit('input', false)") 閉じる
 </template>
 
 <script>

@@ -21,7 +21,7 @@
           )
       v-card-actions
         v-spacer
-        v-btn.primary(:disabled="!valid", @click="submit") 設定
+        v-btn(color="primary" :disabled="!valid" @click="submit") 設定
         v-btn(@click="close") キャンセル
 </template>
 

@@ -75,7 +75,7 @@
             v-card-text.text-xs-center {{character.name}}を削除しますか？
             v-card-actions
               v-spacer
-              v-btn(error, @click="() => { open = false; removeCharacter(character.id); }") 削除
+              v-btn(color="error" @click="() => { open = false; removeCharacter(character.id); }") 削除
               v-spacer
         v-divider
         v-card-actions

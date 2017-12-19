@@ -11,7 +11,7 @@
         span もご利用下さい。GitHubアカウントのない方でもご意見・ご要望・不具合報告などをご送信いただけます。
       v-card-actions
         v-spacer
-        v-btn(primary @click="$emit('input', false)") 閉じる
+        v-btn(color="primary" @click="$emit('input', false)") 閉じる
 </template>
 
 <script>

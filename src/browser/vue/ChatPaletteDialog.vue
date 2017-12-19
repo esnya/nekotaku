@@ -26,8 +26,8 @@
                   v-list-tile-action(v-if="isSelected(i, j)")
                     v-icon(primary @click.stop="send(i, line)") send
       v-card-actions
-        v-btn(primary v-if="edit" @click="edit = false") 編集終了
-        v-btn(primary v-else @click="edit = true") 編集
+        v-btn(color="primary" v-if="edit" @click="edit = false") 編集終了
+        v-btn(color="primary" v-else @click="edit = true") 編集
         v-spacer
         v-btn(@click.stop="$emit('input', false)") 閉じる
 </template>

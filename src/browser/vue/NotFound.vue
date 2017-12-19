@@ -12,7 +12,7 @@
         div(v-else-if="count >= 10", key="2") なにもないってば。
         div(v-else, key="1") ここにはなにもないよ。
     div
-      v-btn(primary, :to="{ name: RouteNames.Lobby }") もどる
+      v-btn(color="primary" :to="{ name: RouteNames.Lobby }") もどる
     v-spacer
 </template>
 

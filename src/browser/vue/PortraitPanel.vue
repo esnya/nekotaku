@@ -9,7 +9,7 @@
           :src="portarit.src"
           @click="open = !open"
         )
-      v-btn.primary(v-else fab dark @click="open = !open")
+      v-btn(color="primary" v-else fab dark @click="open = !open")
         v-icon mdi-arrow-expand-left
 </template>
 

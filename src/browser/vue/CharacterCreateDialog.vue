@@ -28,7 +28,7 @@
           )
       v-card-actions
         v-spacer
-        v-btn.primary(:disabled="!valid",@click="submit") 作成
+        v-btn(color="primary" :disabled="!valid" @click="submit") 作成
         v-btn(@click.native="close()") キャンセル
 </template>
 

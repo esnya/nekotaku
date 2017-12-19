@@ -22,7 +22,7 @@
           )
           v-layout(row)
             v-spacer
-            v-btn(primary, @click="joinRoom({ id, route: $route })") 参加
+            v-btn(color="primary" @click="joinRoom({ id, route: $route })") 参加
             v-btn(@click="leave") やめる
             v-spacer
       main(v-else-if="room && !room.locked")
@@ -49,13 +49,13 @@
           :fixed="true"
           :value="true"
         )
-          v-btn(flat, primary, value="0")
+          v-btn(flat color="primary" value="0")
             span チャット
             v-icon mdi-forum
-          v-btn(flat, primary, value="1")
+          v-btn(flat color="primary" value="1")
             span キャラクター
             v-icon mdi-account-multiple
-          v-btn(flat, primary, value="2")
+          v-btn(flat color="primary" value="2")
             span マップ
             v-icon mdi-map-marker-radius
       loading(v-else)

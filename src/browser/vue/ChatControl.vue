@@ -26,7 +26,7 @@
           :style="{ color }"
           @keypress.enter="enter"
         )
-      v-btn.my-0.pl-1(icon primary dark  @click="submit")
+      v-btn.my-0.pl-1(icon color="primary" dark  @click="submit")
         v-icon send
     chat-config-dialog(v-model="ccdOpen")
     chat-palette-dialog(v-model="cpdOpen")

@@ -1,10 +1,11 @@
 <template lang="pug">
   v-dialog(v-model="open")
-    v-btn.primary(
+    v-btn(
       dark
       fab
       fixed
       bottom right
+      color="primary"
       slot="activator"
     )
       v-icon add
@@ -52,7 +53,7 @@
           )
       v-card-actions
         v-spacer
-        v-btn.primary(:disabled="!canSubmit",@click="submit") 作成
+        v-btn(color="primary" :disabled="!canSubmit",@click="submit") 作成
         v-btn(@click.native="open = false") キャンセル
 </template>
 

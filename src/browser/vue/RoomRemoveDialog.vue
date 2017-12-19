@@ -8,7 +8,7 @@
         div ※元には戻せません。
       v-card-actions
         v-spacer
-        v-btn(error, @click="() => { close(); removeRoom($router); }") 削除
+        v-btn(color="error" @click="() => { close(); removeRoom($router); }") 削除
         v-btn(@click="close") やめる
 </template>
 

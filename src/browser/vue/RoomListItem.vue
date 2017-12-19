@@ -9,7 +9,7 @@
       room-info-list(:room="room")
     v-card-actions
       v-spacer
-      v-btn(primary, :to="{ name: RouteNames.Room, params: { id: room.id } }") 参加
+      v-btn(color="primary" :to="{ name: RouteNames.Room, params: { id: room.id } }") 参加
       //- v-btn(secondary) 見学
 </template>
 
