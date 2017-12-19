@@ -170,12 +170,11 @@ html.no-scroll {
 
 <style lang="stylus" scoped>
 .map-container
-  position fixed
-  top 56px
-  bottom 106px
-  left 0
-  right 0
   overflow scroll
+  margin-top 56px
+  margin-bottom 104px
+  width 100%
+  height calc(100% - 160px)
 
 .map
   user-select none

@@ -72,8 +72,10 @@ export default {
 
 <style lang="stylus" scoped>
 .room-list-info
-  display: flex;
-  flex-wrap: wrap;
+  display flex
+  flex-wrap nowrap
+  overflow-x auto
+  -webkit-overflow-scrolling touch
 
 .line
   white-space nowrap

@@ -6,7 +6,7 @@
         :items="characters"
         hide-actions
       )
-        template(slot="items", scope="props")
+        template(slot="items" slot-scope="props")
             td.pa-0.td-edit
               character-edit-dialog(:character="props.item")
             td {{props.item.name}}

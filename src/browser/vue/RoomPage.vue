@@ -28,13 +28,13 @@
       main(v-else-if="room && !room.locked")
         .floating.fixed
           room-info-list.room-info-list(:room="room")
-        transition(
-          :name="roomTab > prevRoomTab ? 'slide-rl' : 'slide-lr'"
-          @enter="restoreScroll"
-        )
-          message-list.slide-absolute(v-if="roomTab === '0'")
-          character-list.slide-absolute(v-else-if="roomTab === '1'")
-          map-view.slide-absolute(v-else-if="roomTab === '2'")
+        div.room-slider(:style="{ transform: `translateX(${Number(roomTab) * -100}%)` }")
+          .room-slider-item.scroll
+            message-list
+          .room-slider-item.scroll
+            character-list
+          .room-slider-item
+            map-view
         transition(name="neko-slide-right")
           portrait-panel(v-if="roomTab === '0'")
         transition(name="neko-fade")
@@ -63,8 +63,6 @@
 
 <script>
 import _ from 'lodash';
-import { inOutSign } from 'ease-component';
-import scroll from 'scroll';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
@@ -102,7 +100,6 @@ export default {
       drawer: false,
       roomTab: '0',
       prevRoomTab: '0',
-      scrollTop: {},
     };
   },
   computed: {
@@ -137,16 +134,6 @@ export default {
       this.leaveRoom();
       this.$router.push({ name: RouteNames.Lobby });
     },
-    restoreScroll() {
-      const scrollable = document.body;
-      setTimeout(() => {
-        scroll.top(
-          scrollable,
-          this.scrollTop[this.roomTab] || 0,
-          { duration: 400, ease: inOutSign },
-        );
-      });
-    },
   },
   watch: {
     room({ id }) {
@@ -155,10 +142,6 @@ export default {
     },
     roomTab(roomTab, oldValue) {
       this.prevRoomTab = oldValue;
-
-      const scrollable = document.body;
-      this.scrollTop[oldValue] = scrollable.scrollTop;
-      scrollable.scrollTop = 0;
 
       saveRoomTab(this.room.id, roomTab);
     },
@@ -182,6 +165,21 @@ export default {
 main
   padding-top 64px
 
-.slide-absolute
-  top 64px
+.room-slider
+  display flex
+  transition transform 0.4s ease-in-out
+  margin-top -64px
+
+.room-slider-item
+  overflow hidden
+  flex 0 0 100vw
+  max-height 100vh
+
+.scroll
+  overflow-x hidden
+  overflow-y auto
+  -webkit-overflow-scrolling touch
+  width 100%
+  height 100%
+  padding-top 64px
 </style>

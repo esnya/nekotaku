@@ -7,9 +7,9 @@
         :items="colors"
         @input="updateColor"
       )
-        template(slot="selection" scope="data")
+        template(slot="selection" slot-scope="data")
           div.fill(:style="{ backgroundColor: getColor(data.item) }")
-        template(slot="item" scope="data")
+        template(slot="item" slot-scope="data")
           div.fill(:style="{ backgroundColor: getColor(data.item) }")
     v-flex(xs6)
       v-select(
@@ -18,9 +18,9 @@
         :items="shades"
         @input="updateShade"
       )
-        template(slot="selection" scope="data")
+        template(slot="selection" slot-scope="data")
           div.fill(:style="{ backgroundColor: getColor(color, data.item) }")
-        template(slot="item" scope="data")
+        template(slot="item" slot-scope="data")
           div.fill(:style="{ backgroundColor: getColor(color, data.item) }")
 </template>
 

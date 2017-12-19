@@ -34,16 +34,16 @@ export default {
     'message',
   ],
   mounted() {
-    const item = this.$refs.root;
-    // if (!item.closest) return;
-    // const scrollable = item.closest('[data-scroll]');
-    const scrollable = document.body;
+    const item = this.$refs.root.$el;
+    if (!item.closest) return;
+
+    const scrollable = item.closest('.scroll');
     const prev = item.previousElementSibling;
 
     const isNewMessage = Date.now() - this.message.createdAt < 1000;
     if (isNewMessage) playNoticeSound();
 
-    const margin = 56 + 50 + 16 + (isNewMessage ? 0 : 56);
+    const margin = 56 + 50 + 16;
 
     const scrollableHeight = scrollable.offsetHeight - margin;
     if (prev && prev.offsetTop < scrollable.scrollTop + scrollableHeight) {
