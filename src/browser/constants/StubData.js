@@ -69,6 +69,14 @@ export default {
     height: 10,
     backgroundImage: 'https://raw.githubusercontent.com/torgtaitai/DodontoF/master/image/defaultImageSet/feeld001.gif',
   },
+  memos: [
+    {
+      id: '01',
+      title: 'ハンドアウト①',
+      front: '何かがある\n一見普通の物体',
+      back: 'ああ、よく見てみれば……\n【恐怖チェック】',
+    },
+  ],
   messages: [
     {
       id: '01',

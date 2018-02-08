@@ -5,6 +5,7 @@ const Lists = [
   'characters',
   'messages',
   'shapes',
+  'memos',
 ];
 const Objects = [
   'maps',
@@ -34,6 +35,7 @@ const DataKeys = {
   rooms: 'rooms',
   maps: 'maps',
   messages: 'messages',
+  memos: 'memos',
 };
 const FileKeys = {
   mapBackgroundImage: 'map/background',
@@ -271,5 +273,16 @@ export default class Backend {
   }
   async moveShape(id, x, y, z) {
     await this.updateShape(id, { x, y, z });
+  }
+
+  async createMemo(data) {
+    const id = await this.addChild('memos', data);
+    return id;
+  }
+  async updateMemo(id, data) {
+    await this.changeChild('memos', id, data);
+  }
+  async removeMemo(id) {
+    await this.removeChild('memos', id);
   }
 }

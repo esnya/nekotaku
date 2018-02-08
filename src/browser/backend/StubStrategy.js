@@ -37,10 +37,11 @@ export default class StubStrategy extends BackendStrategy {
       messages: {},
       members: {},
       shapes: {},
+      memos: {},
     };
 
     this.data.rooms.forEach(({ id }) => {
-      ['characters', 'messages', 'shapes'].forEach((type) => {
+      ['characters', 'messages', 'shapes', 'memos'].forEach((type) => {
         this.data[type][id] = StubData[type];
       });
       this.data.maps[id] = { ...StubData.map };

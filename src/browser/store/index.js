@@ -7,6 +7,7 @@ import mapControl from './modules/mapControl';
 import characters from './characters';
 import map from './map';
 import member from './member';
+import memos from './memos';
 import messages from './messages';
 import room from './room';
 import rooms from './rooms';
@@ -19,6 +20,7 @@ export default new Vuex.Store(merge(
   characters,
   map,
   member,
+  memos,
   messages,
   room,
   rooms,

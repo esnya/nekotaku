@@ -4,6 +4,11 @@
       v-card.my-2(v-if="node.type === 'dice'", v-bind:class="node.classNames", :dark="node.dark")
         v-card-title.caption.px-2.pt-2.pb-0 {{node.dice}}
         v-card-text.pa-2 {{node.text}}
+      v-card.my-2(v-else-if="node.type === 'memoOpen'")
+        v-card-title.caption.px-2.pt-2.pb-0
+          v-icon mdi-note
+          span {{node.title}}
+        v-card-text.pa-2 {{node.text}}
       div(v-else) {{node.text}}
 </template>
 

@@ -1310,6 +1310,320 @@ exports[`RoomPage should be RoomPage 1`] = `
         class="room-slider-item scroll"
       >
         <div
+          class="container pt-5 pb-5"
+        >
+          <div
+            class="layout row wrap"
+          >
+            <div
+              class="flex pa-2 xs12 sm6"
+            >
+              <div
+                class="card"
+                data-ripple="false"
+                style="height: auto;"
+              >
+                <div
+                  class="card__title"
+                >
+                  <span
+                    class="headline"
+                  >
+                    ハンドアウト①
+                  </span>
+                </div>
+                <div
+                  class="card__text"
+                >
+                  <p>
+                    何かがある
+                  </p>
+                  <p>
+                    一見普通の物体
+                  </p>
+                </div>
+                <!---->
+                <div
+                  class="card__actions"
+                >
+                  <button
+                    class="btn btn--flat btn--icon"
+                    data-ripple="true"
+                    type="button"
+                  >
+                    <div
+                      class="btn__content"
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="material-icons icon"
+                      >
+                        keyboard_arrow_down
+                      </i>
+                    </div>
+                  </button>
+                  <!---->
+                  <div
+                    class="spacer"
+                  />
+                  <!---->
+                  <!---->
+                </div>
+                <div
+                  class="dialog__container"
+                  style="display: block;"
+                >
+                  <div
+                    class="dialog__content"
+                    style="z-index: 0;"
+                    tabindex="-1"
+                  >
+                    <div
+                      class="dialog"
+                      style="display: none;"
+                    >
+                      <div
+                        class="card"
+                        data-ripple="false"
+                        style="height: auto;"
+                      >
+                        <div
+                          class="card__title"
+                        >
+                          <span
+                            class="headline"
+                          >
+                            メモを編集
+                          </span>
+                        </div>
+                        <div
+                          class="card__text pt-0 pb-0"
+                        >
+                          <div
+                            class="pa-0 input-group input-group--dirty input-group--hide-details input-group--placeholder input-group--text-field input-group--multi-line input-group--full-width primary--text"
+                          >
+                            <div
+                              class="input-group__input"
+                            >
+                              <textarea
+                                placeholder="<タイトル>
+--
+<表面の本文>
+--
+<裏面の本文>
+※裏面を開くとチャットにメッセージが表示されます。
+"
+                                rows="5"
+                                tabindex="0"
+                              />
+                            </div>
+                            <div
+                              class="input-group__details"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="card__actions"
+                        >
+                          <div
+                            class="spacer"
+                          />
+                          <button
+                            class="btn btn--flat primary--text"
+                            data-ripple="true"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              閉じる
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="dialog__container"
+                  style="display: block;"
+                >
+                  <div
+                    class="dialog__content"
+                    style="z-index: 0;"
+                    tabindex="-1"
+                  >
+                    <div
+                      class="dialog"
+                      style="display: none;"
+                    >
+                      <div
+                        class="card"
+                        data-ripple="false"
+                        style="height: auto;"
+                      >
+                        <div
+                          class="card__title"
+                        >
+                          <span
+                            class="headline"
+                          >
+                            メモを削除
+                          </span>
+                        </div>
+                        <div
+                          class="card__text"
+                        >
+                          本当にメモを削除しますか？
+                        </div>
+                        <div
+                          class="card__actions"
+                        >
+                          <div
+                            class="spacer"
+                          />
+                          <button
+                            class="btn btn--flat red--text"
+                            data-ripple="true"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              削除
+                            </div>
+                          </button>
+                          <button
+                            class="btn btn--flat"
+                            data-ripple="true"
+                            type="button"
+                          >
+                            <div
+                              class="btn__content"
+                            >
+                              キャンセル
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dialog__container"
+            style="display: inline-block;"
+          >
+            <div
+              class="dialog__activator"
+            >
+              <button
+                class="ma-2 btn btn--bottom btn--floating btn--fixed btn--right theme--dark primary"
+                data-ripple="true"
+                type="button"
+              >
+                <div
+                  class="btn__content"
+                >
+                  <i
+                    aria-hidden="true"
+                    class="material-icons icon"
+                  >
+                    add
+                  </i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="dialog__content"
+              style="z-index: 0;"
+              tabindex="-1"
+            >
+              <div
+                class="dialog"
+                style="display: none;"
+              >
+                <div
+                  class="card"
+                  data-ripple="false"
+                  style="height: auto;"
+                >
+                  <div
+                    class="card__title"
+                  >
+                    <span
+                      class="headline"
+                    >
+                      共有メモ作成
+                    </span>
+                  </div>
+                  <div
+                    class="card__text pt-0 pb-0"
+                  >
+                    <div
+                      class="pa-0 input-group input-group--dirty input-group--hide-details input-group--placeholder input-group--text-field input-group--multi-line input-group--full-width primary--text"
+                    >
+                      <div
+                        class="input-group__input"
+                      >
+                        <textarea
+                          placeholder="<タイトル>
+--
+<表面の本文>
+--
+<裏面の本文>
+※裏面を開くとチャットにメッセージが表示されます。
+"
+                          rows="5"
+                          tabindex="0"
+                        />
+                      </div>
+                      <div
+                        class="input-group__details"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="card__actions"
+                  >
+                    <div
+                      class="spacer"
+                    />
+                    <button
+                      class="btn btn--flat primary--text"
+                      data-ripple="true"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        作成
+                      </div>
+                    </button>
+                    <button
+                      class="btn btn--flat"
+                      data-ripple="true"
+                      type="button"
+                    >
+                      <div
+                        class="btn__content"
+                      >
+                        キャンセル
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="room-slider-item scroll"
+      >
+        <div
           class="container pa-0 pb-5"
         >
           <div
@@ -3794,7 +4108,7 @@ exports[`RoomPage should be RoomPage 1`] = `
           >
             <ul
               class="list"
-              data-uid="261"
+              data-uid="282"
             >
               <li>
                 <a
@@ -3997,7 +4311,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="277"
+                                data-uid="298"
                               >
                                 <li>
                                   <a
@@ -4279,7 +4593,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="303"
+                                data-uid="324"
                               >
                                 <li>
                                   <a
@@ -4450,7 +4764,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                   >
                     <ul
                       class="list"
-                      data-uid="322"
+                      data-uid="343"
                     >
                       <li>
                         <a
@@ -4592,6 +4906,24 @@ exports[`RoomPage should be RoomPage 1`] = `
           class="btn__content"
         >
           <span>
+            共有メモ
+          </span>
+          <i
+            aria-hidden="true"
+            class="mdi icon mdi-note-multiple"
+          />
+        </div>
+      </button>
+      <button
+        class="btn btn--flat primary--text"
+        data-ripple="true"
+        type="button"
+        value="2"
+      >
+        <div
+          class="btn__content"
+        >
+          <span>
             キャラクター
           </span>
           <i
@@ -4604,7 +4936,7 @@ exports[`RoomPage should be RoomPage 1`] = `
         class="btn btn--flat primary--text"
         data-ripple="true"
         type="button"
-        value="2"
+        value="3"
       >
         <div
           class="btn__content"

@@ -5,6 +5,12 @@ import listStore from './listStore';
 export default {
   ...listStore('messages'),
   actions: {
+    async sendStructuredMessage(context, message) {
+      await backend.sendMessage({
+        ...message,
+        createdAt: Date.now(),
+      });
+    },
     async sendMessage(context, message) {
       const {
         body,
@@ -33,10 +39,9 @@ export default {
         diceResults,
       }]);
 
-      await backend.sendMessage({
+      await context.dispatch('sendStructuredMessage', {
         ...message,
         body: parsedBody,
-        createdAt: Date.now(),
       });
     },
   },

@@ -32,6 +32,8 @@
           .room-slider-item.scroll
             message-list
           .room-slider-item.scroll
+            memo-list
+          .room-slider-item.scroll
             character-list
           .room-slider-item
             map-view
@@ -41,11 +43,11 @@
           dice-panel(v-if="roomTab === '0'")
         transition(name="neko-slide-bottom")
           chat-control(v-if="roomTab === '0'")
-          map-control(v-else-if="roomTab === '2'")
+          map-control(v-else-if="roomTab === '3'")
         v-bottom-nav(
           color="white"
           :active.sync="roomTab"
-          :class="{ 'no-shadow': roomTab !== '1' }"
+          :class="{ 'no-shadow': roomTab !== '1' || roomTab !== '2' }"
           :fixed="true"
           :value="true"
         )
@@ -53,9 +55,12 @@
             span チャット
             v-icon mdi-forum
           v-btn(flat color="primary" value="1")
+            span 共有メモ
+            v-icon mdi-note-multiple
+          v-btn(flat color="primary" value="2")
             span キャラクター
             v-icon mdi-account-multiple
-          v-btn(flat color="primary" value="2")
+          v-btn(flat color="primary" value="3")
             span マップ
             v-icon mdi-map-marker-radius
       loading(v-else)
@@ -72,6 +77,7 @@ import DicePanel from './DicePanel.vue';
 import Loading from './Loading.vue';
 import MapControl from './MapControl.vue';
 import MapView from './MapView.vue';
+import MemoList from './MemoList.vue';
 import MessageList from './MessageList.vue';
 import PortraitPanel from './PortraitPanel.vue';
 import RoomInfoList from './RoomInfoList.vue';
@@ -89,6 +95,7 @@ export default {
     Loading,
     MapControl,
     MapView,
+    MemoList,
     MessageList,
     RoomInfoList,
     RoomMenu,

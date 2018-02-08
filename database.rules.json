@@ -35,6 +35,12 @@
         ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
 			}
 		},
+    "memos": {
+      "$roomId": {
+        ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()"
+			}
+		},
     "messages": {
       "$roomId": {
         ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
