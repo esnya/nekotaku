@@ -222,6 +222,7 @@ export default class StubStrategy extends BackendStrategy {
     this.data.characters[id] = [];
     this.data.messages[id] = [];
     this.data.shapes[id] = [];
+    this.data.memos[id] = [];
 
     await this.update('members', id, { [uid]: Date.now() });
 
