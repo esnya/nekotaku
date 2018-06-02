@@ -3,7 +3,7 @@ import BCDice, { DiceBotLoader, DiceBotResolver } from 'bcdice-js';
 DiceBotResolver.setCustomLoader(filename => import(`bcdice-js/lib/diceBot/${filename}`), true);
 
 const DiceBotDescs = [
-  { filename: 'DiceBot', gameType: 'DiceBot', gameName: 'ダイスボット' },
+  // { filename: 'DiceBot', gameType: 'DiceBot', gameName: 'ダイスボット' },
   ...DiceBotLoader
     .collectDiceBotDescriptions()
     .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName })),

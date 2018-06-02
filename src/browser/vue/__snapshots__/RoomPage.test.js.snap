@@ -363,7 +363,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="25"
+                                data-uid="26"
                               >
                                 <li>
                                   <a
@@ -376,7 +376,311 @@ exports[`RoomPage should be RoomPage 1`] = `
                                       <div
                                         class="list__tile__title"
                                       >
-                                        DiceBot
+                                        エースキラージーン
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        朱の孤塔のエアゲトラム
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        詩片のアルセット
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        アルシャード
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        アマデウス
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        아마데우스
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        アリアンロッド
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        アルスマギカ
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        黒絢のアヴァンドナー
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        犯罪活劇RPGバッドライフ
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        バルナ・クロニカ
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        バトルテック
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ビーストバインド トリニティ
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ビギニングアイドル
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        비기닝 아이돌
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ブレイド・オブ・アルカナ
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ブラインド・ミトス
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ブラッド・クルセイド
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        ブラッド・ムーン
+                                      </div>
+                                    </div>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    class="list__tile list__tile--link"
+                                    data-ripple="true"
+                                  >
+                                    <div
+                                      class="list__tile__content"
+                                    >
+                                      <div
+                                        class="list__tile__title"
+                                      >
+                                        カードランカー
                                       </div>
                                     </div>
                                   </a>
@@ -888,7 +1192,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                   <span
                     class="headline"
                   >
-                    
+                    ソードワールド2.0
                   </span>
                 </div>
                 <div
@@ -930,7 +1234,7 @@ exports[`RoomPage should be RoomPage 1`] = `
             <span
               class="white--text"
             >
-              SwordWorld2_0
+              ソードワールド2.0
             </span>
           </span>
         </span>
@@ -4108,7 +4412,7 @@ exports[`RoomPage should be RoomPage 1`] = `
           >
             <ul
               class="list"
-              data-uid="282"
+              data-uid="302"
             >
               <li>
                 <a
@@ -4311,7 +4615,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="298"
+                                data-uid="318"
                               >
                                 <li>
                                   <a
@@ -4593,7 +4897,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                             >
                               <ul
                                 class="list"
-                                data-uid="324"
+                                data-uid="344"
                               >
                                 <li>
                                   <a
@@ -4764,7 +5068,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                   >
                     <ul
                       class="list"
-                      data-uid="343"
+                      data-uid="363"
                     >
                       <li>
                         <a
