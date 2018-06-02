@@ -9,15 +9,7 @@
           label="タイトル"
           v-model="title"
         )
-        v-select(
-          autocomplete
-          required
-          label="ダイスの種類"
-          item-text="gameType"
-          item-value="filename"
-          v-model="dice"
-          :items="diceBotDescs"
-        )
+        dice-select(v-model="dice")
         v-text-field(
           label="キャラクター属性"
           placeholder="例: HP,MP,SP"
@@ -33,6 +25,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import Loading from './Loading.vue';
+import DiceSelect from './DiceSelect.vue';
 
 function genInputValue(key) {
   return {
@@ -48,10 +41,10 @@ function genInputValue(key) {
 export default {
   components: {
     Loading,
+    DiceSelect,
   },
   data() {
     return {
-      diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       mapSizeRules: [
         v => Boolean(v) || '幅・高さを入力して下さい',
         v => Boolean(`${v}`.match(/^[1-9][0-9]*$/)) || '1以上の数値を入力して下さい',
@@ -90,11 +83,6 @@ export default {
   props: [
     'value',
   ],
-  created() {
-    import('../utilities/bcdice').then(({ getDiceBotDescs }) => {
-      this.diceBotDescs = getDiceBotDescs();
-    });
-  },
 };
 </script>
 

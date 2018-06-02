@@ -20,16 +20,7 @@
             :rules="[notEmpty]"
             required
           )
-          v-select(
-            autocomplete
-            label="ダイスの種類"
-            item-text="gameType"
-            item-value="filename"
-            :items="diceBotDescs"
-            :rules="[notEmpty]"
-            v-model="dice"
-            required
-          )
+          dice-select(v-model="dice")
         form(@submit.prevent="submit")
           v-text-field(
             label="パスワード"
@@ -59,8 +50,12 @@
 
 <script>
 import { mapActions } from 'vuex';
+import DiceSelect from './DiceSelect.vue';
 
 export default {
+  components: {
+    DiceSelect,
+  },
   computed: {
     canSubmit() {
       return this.valid && (!this.password || this.password === this.passwordConfirm);
@@ -68,11 +63,10 @@ export default {
   },
   data() {
     return {
-      diceBotDescs: [{ filename: 'DiceBot', gameType: 'DiceBot' }],
       open: false,
       valid: false,
       title: null,
-      dice: null,
+      dice: 'DiceBot',
       characterAttributes: null,
       password: null,
       passwordConfirm: null,
@@ -108,11 +102,6 @@ export default {
         router: this.$router,
       });
     },
-  },
-  created() {
-    import('../utilities/bcdice').then(({ getDiceBotDescs }) => {
-      this.diceBotDescs = getDiceBotDescs();
-    });
   },
 };
 </script>
