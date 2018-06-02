@@ -85,7 +85,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "bcdice-js": "^0.7.5",
+    "bcdice-js": "^0.8.0",
     "bluebird": "^3.5.0",
     "ease-component": "^1.0.0",
     "eventemitter3": "^3.0.0",
