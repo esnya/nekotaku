@@ -10,7 +10,6 @@ import VueSimpleMarkdown from 'vue-simple-markdown';
 import Vuetify from 'vuetify';
 import { sync } from 'vuex-router-sync';
 import App from './vue/App.vue';
-import Loading from './vue/Loading.vue';
 import config from './config';
 import router from './router';
 import store from './store';
@@ -42,13 +41,8 @@ async function main() {
     });
   }
 
-  const loading = new Vue(Loading).$mount('#static-loading');
-
-  await import('./utilities/bcdice');
-
   sync(store, router);
 
-  loading.$destroy();
   new Vue({
     router,
     store,
