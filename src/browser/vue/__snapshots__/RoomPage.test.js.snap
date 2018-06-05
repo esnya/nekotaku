@@ -1037,6 +1037,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                         style="height: 50px; width: 50px;"
                       >
                         <svg
+                          style="transform: rotate(0deg);"
                           viewBox="25 25 50 50"
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -1278,6 +1279,7 @@ exports[`RoomPage should be RoomPage 1`] = `
     </div>
     <div
       class="room-slider"
+      style="transform: translateX(0%);"
     >
       <div
         class="room-slider-item scroll"
@@ -2077,6 +2079,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                   >
                                     <ul
                                       class="tabs__container"
+                                      style="transform: translateX(0px);"
                                     >
                                       <li
                                         class="tabs__slider primary accent"
@@ -2554,6 +2557,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                   >
                                     <ul
                                       class="tabs__container"
+                                      style="transform: translateX(0px);"
                                     >
                                       <li
                                         class="tabs__slider primary accent"
@@ -3031,6 +3035,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                                   >
                                     <ul
                                       class="tabs__container"
+                                      style="transform: translateX(0px);"
                                     >
                                       <li
                                         class="tabs__slider primary accent"
@@ -3622,6 +3627,7 @@ exports[`RoomPage should be RoomPage 1`] = `
         >
           <div
             class="map"
+            style="transform: scale(1);"
           >
             <div
               class="map-inner"
@@ -4285,7 +4291,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                 <g>
                   <g
                     class="neko-shape"
-                    style="fill: #F44336; fill-opacity: 0.25; stroke: #F44336; stroke-width: 2;"
+                    style="fill: #F44336; fill-opacity: 0.25; stroke: #F44336; stroke-width: 2; transform: translate(100px, 100px);"
                   >
                     <circle
                       cx="0"
@@ -4295,7 +4301,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                   </g>
                   <g
                     class="neko-shape"
-                    style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 8;"
+                    style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 8; transform: translate(100px, 100px);"
                   >
                     <circle
                       cx="0"
@@ -4310,6 +4316,7 @@ exports[`RoomPage should be RoomPage 1`] = `
               >
                 <div
                   class="character elevation-2"
+                  style="transform: translate(75px, 75px);"
                 >
                   <div
                     class="character-inner"
@@ -4324,6 +4331,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                 </div>
                 <div
                   class="character elevation-2"
+                  style="transform: translate(0px, 0px);"
                 >
                   <div
                     class="character-inner"
@@ -4337,6 +4345,7 @@ exports[`RoomPage should be RoomPage 1`] = `
                 </div>
                 <div
                   class="character elevation-2"
+                  style="transform: translate(150px, 150px);"
                 >
                   <div
                     class="character-inner"
@@ -4362,12 +4371,12 @@ exports[`RoomPage should be RoomPage 1`] = `
         <img
           class="portrait"
           src="/sample/p1a.png"
-          style="opacity: 1;"
+          style="transform: translate3d(0vw, 0vh, 0px); opacity: 1;"
         />
         <img
           class="portrait"
           src="/sample/p2a.png"
-          style="opacity: 0.5;"
+          style="transform: translate3d(10vw, 3vh, -1px); opacity: 0.5;"
         />
       </div>
     </div>
@@ -5182,6 +5191,7 @@ exports[`RoomPage should be RoomPage 1`] = `
     >
       <button
         class="btn btn--flat primary--text btn--active"
+        data-index="0"
         data-only-child="true"
         data-ripple="true"
         data-selected="true"
@@ -5202,6 +5212,7 @@ exports[`RoomPage should be RoomPage 1`] = `
       </button>
       <button
         class="btn btn--flat primary--text"
+        data-index="1"
         data-ripple="true"
         type="button"
         value="1"
@@ -5220,6 +5231,7 @@ exports[`RoomPage should be RoomPage 1`] = `
       </button>
       <button
         class="btn btn--flat primary--text"
+        data-index="2"
         data-ripple="true"
         type="button"
         value="2"
@@ -5238,6 +5250,7 @@ exports[`RoomPage should be RoomPage 1`] = `
       </button>
       <button
         class="btn btn--flat primary--text"
+        data-index="3"
         data-ripple="true"
         type="button"
         value="3"

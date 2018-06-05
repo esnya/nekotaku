@@ -1166,6 +1166,7 @@ exports[`LobbyPage should be LobbyPage 1`] = `
                 style="height: 50px; width: 50px;"
               >
                 <svg
+                  style="transform: rotate(0deg);"
                   viewBox="25 25 50 50"
                   xmlns="http://www.w3.org/2000/svg"
                 >
