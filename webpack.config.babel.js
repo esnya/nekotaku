@@ -85,6 +85,9 @@ export default {
     contentBase: path.resolve(__dirname, './public'),
     historyApiFallback: true,
     noInfo: true,
+
+    // host: '0.0.0.0',
+    // disableHostCheck: true,
   },
   performance: {
     hints: false,

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-select(
+  v-autocomplete(
     required
     label="ダイスの種類"
     item-text="gameName"
@@ -7,6 +7,7 @@
     :items="diceBotDescs"
     :rules="[notEmpty]"
     :value="value"
+    :z-index="10000"
     @input="$emit('input', $event)"
   )
 </template>
@@ -35,3 +36,7 @@ export default {
 };
 </script>
 
+<style lang="stylus">
+.dialog
+  overflow: initial
+</style>
