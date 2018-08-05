@@ -6,81 +6,83 @@
       v-card-title
         span.headline {{character.name}}
       v-divider
-      v-tabs(centered, icons, light, v-model="tab")
-        v-tabs-bar.white
-          v-tabs-slider.primary
-          v-tabs-item(href="#basis")
-            v-icon format_list_bulleted
-            div 基本データ
-          v-tabs-item(href="#icon")
-            v-icon portrait
-            div アイコン
-          v-tabs-item(href="#portrait")
-            v-icon person
-            div 立ち絵
-          v-tabs-item(href="#remove")
-            v-icon(error) delete
-            div.error--text 削除
+      v-tabs(
+        centered
+        icons-and-text
+        light
+        v-model="tab"
+      )
+        v-tab
+          div 基本データ
+          v-icon format_list_bulleted
+        v-tab
+          div アイコン
+          v-icon portrait
+        v-tab
+          div 立ち絵
+          v-icon person
+        v-tab
+          div.error--text 削除
+          v-icon(error) delete
         v-divider
-        v-tabs-items
-          v-tabs-content(id="basis")
-            v-card-text
-              form(@submit.prevent="submit")
-                v-text-field(
-                  label="名前"
-                  v-model="name"
-                  required
-                )
-                v-text-field(
-                  label="イニシアチブ"
-                  type="number"
-                  v-model="initiative"
-                  required
-                )
-                v-text-field(
-                  v-if="room && room.characterAttributes"
-                  v-for="(attr, index) in room.characterAttributes"
-                  :value="attributes && attributes[index]"
-                  :key="index"
-                  :label="attr"
-                  @input="value => updateAttribute(index, value)"
-                )
-          v-tabs-content(id="icon")
-            v-card-title
-              span.headline アイコン
-            v-card-media(v-if="character.icon")
-              div
-                img(:src="character.icon")
-            v-card-actions
-              v-spacer
-              file-input.success(@input="file => updateCharacterIcon({ id, file })")
-                span(v-if="character.icon") 変更
-                span(v-else) 登録
-              v-btn.warning(@click="clearCharacterIcon(id)") クリア
-              v-spacer
-          v-tabs-content(id="portrait")
-            v-card-title
-              span.headline 立ち絵
-            v-card-media(v-if="character.portrait && character.portrait.default")
-              div
-                img(:src="character.portrait && character.portrait.default && character.portrait.default.url")
-            v-card-actions
-              v-spacer
-              file-input.success(@input="file => updateCharacterPortrait({ id, key: 'default', file })")
-                span(v-if="character.portrait && character.portrait.default") 変更
-                span(v-else) 登録
-              v-btn.warning(@click="clearCharacterPortrait({ id, key: 'default' })") クリア
-              v-spacer
-          v-tabs-content(id="remove")
-            v-card-text.text-xs-center {{character.name}}を削除しますか？
-            v-card-actions
-              v-spacer
-              v-btn(color="error" @click="() => { open = false; removeCharacter(character.id); }") 削除
-              v-spacer
-        v-divider
-        v-card-actions
-          v-spacer
-          v-btn(@click="open = false") 閉じる
+        v-tab-item
+          v-card-text
+            form(@submit.prevent="submit")
+              v-text-field(
+                label="名前"
+                v-model="name"
+                required
+              )
+              v-text-field(
+                label="イニシアチブ"
+                type="number"
+                v-model="initiative"
+                required
+              )
+              v-text-field(
+                v-if="room && room.characterAttributes"
+                v-for="(attr, index) in room.characterAttributes"
+                :value="attributes && attributes[index]"
+                :key="index"
+                :label="attr"
+                @input="value => updateAttribute(index, value)"
+              )
+        v-tab-item
+          v-card-title
+            span.headline アイコン
+          v-card-media(v-if="character.icon")
+            div
+              img(:src="character.icon")
+          v-card-actions
+            v-spacer
+            file-input.success(@input="file => updateCharacterIcon({ id, file })")
+              span(v-if="character.icon") 変更
+              span(v-else) 登録
+            v-btn.warning(@click="clearCharacterIcon(id)") クリア
+            v-spacer
+        v-tab-item
+          v-card-title
+            span.headline 立ち絵
+          v-card-media(v-if="character.portrait && character.portrait.default")
+            div
+              img(:src="character.portrait && character.portrait.default && character.portrait.default.url")
+          v-card-actions
+            v-spacer
+            file-input.success(@input="file => updateCharacterPortrait({ id, key: 'default', file })")
+              span(v-if="character.portrait && character.portrait.default") 変更
+              span(v-else) 登録
+            v-btn.warning(@click="clearCharacterPortrait({ id, key: 'default' })") クリア
+            v-spacer
+        v-tab-item
+          v-card-text.text-xs-center {{character.name}}を削除しますか？
+          v-card-actions
+            v-spacer
+            v-btn(color="error" @click="() => { open = false; removeCharacter(character.id); }") 削除
+            v-spacer
+      v-divider
+      v-card-actions
+        v-spacer
+        v-btn(@click="open = false") 閉じる
 </template>
 
 <script>

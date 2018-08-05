@@ -22,7 +22,7 @@ const saveColor = _.debounce((roomId: string, color: string[]) => {
 
 const DefaultConfig = {
   name: 'ななしさん',
-  color: ['Black', '500'],
+  color: '#000000',
 };
 
 function getRoomId(state) {

@@ -1,6 +1,5 @@
 <template lang="pug">
-  v-select(
-    autocomplete
+  v-autocomplete(
     required
     label="ダイスの種類"
     item-text="gameName"

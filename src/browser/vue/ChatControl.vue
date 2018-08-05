@@ -16,14 +16,14 @@
             v-list-tile-content
               v-list-tile-title チャット設定
       v-flex
-        v-text-field.message-body(
-          multi-line
+        v-textarea.message-body(
           hide-details
           v-model="body"
+          :color="chatControl.color"
           :label="name"
           :hide-details="true"
           :rows="bodyRows"
-          :style="{ color }"
+          :style="{ color: chatControl.color }"
           @keypress.enter="enter"
         )
       v-btn.my-0.pl-1(icon color="primary" dark  @click="submit")
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import Palette from 'google-material-color';
 import { mapActions, mapState } from 'vuex';
 import ChatConfigDialog from './ChatConfigDialog.vue';
 import ChatPaletteDialog from './ChatPaletteDialog.vue';
@@ -49,9 +48,6 @@ export default {
     ]),
     bodyRows() {
       return Math.max(1, this.body ? this.body.split(/\n/g).length : 1);
-    },
-    color() {
-      return Palette.get(...this.chatControl.color) || Palette.get(this.chatControl.color[0]);
     },
     name() {
       return this.chatControl.name;
@@ -74,14 +70,14 @@ export default {
         body,
         face,
         name,
-        color,
+        chatControl,
       } = this;
       if (!body) return;
 
       this.body = null;
 
       this.sendMessage({
-        color,
+        color: chatControl.color,
         name,
         face,
         body,
@@ -108,4 +104,7 @@ export default {
 
   &.input-group--focused :global(label)
     opacity 1
+
+  &.primary--text
+    color unset !important
 </style>

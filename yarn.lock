@@ -5371,6 +5371,10 @@ lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
 
+lodash.throttle@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash.toarray@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.toarray/-/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
@@ -5516,6 +5520,10 @@ map-obj@^1.0.0, map-obj@^1.0.1:
 map-stream@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
+
+material-colors@^1.0.0:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/material-colors/-/material-colors-1.2.6.tgz#6d1958871126992ceecc72f4bcc4d8f010865f46"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -8397,6 +8405,10 @@ timespan@2.3.x:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/timespan/-/timespan-2.3.0.tgz#4902ce040bd13d845c8f59b27e9d59bad6f39929"
 
+tinycolor2@^1.1.2:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
+
 tmp@0.0.27:
   version "0.0.27"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.27.tgz#6aaf42a2d7664150ab528287068ecbc27139a013"
@@ -8797,6 +8809,14 @@ vue-analytics@^5.1.1:
   dependencies:
     load-script "^1.0.0"
 
+vue-color@^2.4.6:
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/vue-color/-/vue-color-2.4.6.tgz#9dcd5850f7eec5ee3ac0b20bec7bbffb5f475f64"
+  dependencies:
+    lodash.throttle "^4.0.0"
+    material-colors "^1.0.0"
+    tinycolor2 "^1.1.2"
+
 vue-dice-component@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/vue-dice-component/-/vue-dice-component-0.1.2.tgz#2dd8524f56fb86e5650397a50e5596957a4aa7e9"
@@ -8872,9 +8892,9 @@ vue@^2.5.10:
   version "2.5.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.10.tgz#dcd772e2594ba994145f2f09522149d9a1e7841a"
 
-vuetify@^0.17.4:
-  version "0.17.4"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.17.4.tgz#6afc01e661f920be4ff58089f846b590cd0bdd29"
+vuetify@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.9.tgz#3eb497cc89d318ee6865bbebd081f5830f83f8ba"
 
 vuex-router-sync@^5.0.0:
   version "5.0.0"

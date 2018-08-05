@@ -21,10 +21,9 @@
         v-card-title
           span.headline メモを編集
         v-card-text.pt-0.pb-0
-          v-text-field.pa-0(
+          v-textarea.pa-0(
             :full-width="true"
             :hide-details="true"
-            :multiLine="true"
             :placeholder="InitialText"
             :value="text"
             @input="v => updateMemo({ id: memo.id, data: parseText(v) })"

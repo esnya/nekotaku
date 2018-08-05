@@ -12,10 +12,9 @@
         )
       v-card-text
         div.mb-1 文字色
-        material-color-selector(
-          required
+        compact(
           :value="chatControl.color"
-          @input="setChatColor"
+          @input="setChatColor($event.hex)"
         )
       v-card-actions
         v-spacer
@@ -23,21 +22,16 @@
 </template>
 
 <script>
+import { Compact } from 'vue-color';
 import { mapActions, mapState } from 'vuex';
-import MaterialColorSelector from './MaterialColorSelector.vue';
 
 export default {
   components: {
-    MaterialColorSelector,
+    Compact,
   },
   computed: mapState([
     'chatControl',
   ]),
-  data() {
-    return {
-      open: false,
-    };
-  },
   methods: mapActions([
     'setChatColor',
     'setChatName',

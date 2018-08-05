@@ -1,4 +1,3 @@
-import Palette from 'google-material-color';
 import { align, limit } from '../utilities/entity';
 import backend from '../backend';
 import listStore from './listStore';
@@ -27,8 +26,8 @@ export default {
     }) {
       const id = await backend.createShape({
         ...shape,
-        stroke: stroke && Palette.get(...stroke),
-        fill: fill && Palette.get(...fill),
+        stroke,
+        fill,
       });
 
       commit('selectEntity', {

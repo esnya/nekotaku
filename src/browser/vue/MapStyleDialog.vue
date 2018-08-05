@@ -5,7 +5,7 @@
         span.headline 描画設定
       v-card-text
         div.mb-1 線の色
-        material-color-selector(:value="stroke", @input="value => stroke = value")
+        compact(:value="stroke" @input="stroke = $event.hex")
       v-card-text.py-0
         div.mb-1 線の透明度
         v-slider(v-model="strokeOpacity")
@@ -17,7 +17,7 @@
         )
       v-card-text
         div.mb-1 塗りつぶしの色
-        material-color-selector(:value="fill", @input="value => fill = value")
+        compact(:value="fill" @input="fill = $event.hex")
       v-card-text.py-0
         div.mb-1 塗りつぶしの透明度
         v-slider(v-model="fillOpacity")
@@ -27,8 +27,8 @@
 </template>
 
 <script>
+import { Compact } from 'vue-color';
 import { mapMutations, mapState } from 'vuex';
-import MaterialColorSelector from './MaterialColorSelector.vue';
 
 function dataValue(key, r) {
   return {
@@ -44,7 +44,7 @@ function dataValue(key, r) {
 
 export default {
   components: {
-    MaterialColorSelector,
+    Compact,
   },
   computed: {
     ...mapState([

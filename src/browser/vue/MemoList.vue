@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container.pt-5.pb-5
-    v-layout.row.wrap
+    v-layout.row.wrap.pb-5
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(:memo="memo")
     v-dialog(v-model="addDialog")
@@ -8,18 +8,17 @@
         dark
         fab
         fixed
-        bottom right
         color="primary"
         slot="activator"
+        :style="{ left: 'calc(200vw - 76px)', top: 'calc(100vh - 132px)' }"
       )
         v-icon add
       v-card
         v-card-title
           span.headline 共有メモ作成
         v-card-text.pt-0.pb-0
-          v-text-field.pa-0(
+          v-textarea.pa-0(
             v-model="addText"
-            :full-width="true"
             :hide-details="true"
             :multiLine="true"
             :placeholder="InitialText"

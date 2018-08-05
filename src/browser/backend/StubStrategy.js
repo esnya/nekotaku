@@ -78,14 +78,17 @@ export default class StubStrategy extends BackendStrategy {
   }
   set(type: string, roomId: string, value: Object | Object[]) {
     this.data[type][roomId] = value;
+    // console.log(this.data);
   }
   setObject(type: string, roomId: string, value: Object) {
     if (!(value instanceof Object)) throw new TypeError(`${type}.${roomId} is not Object`);
     this.set(type, roomId, value);
+    // console.log(this.data);
   }
   setList(type: string, roomId: string, value: Object[]) {
     if (!(Array.isArray(value))) throw new TypeError(`${type}.${roomId} is not Array`);
     this.set(type, roomId, value);
+    // console.log(this.data);
   }
   findChild(type: string, roomId: string, childId: string): Object {
     return this.getList(type, roomId).find(i => i.id === childId);
@@ -169,6 +172,8 @@ export default class StubStrategy extends BackendStrategy {
 
     this.emit(`${type}:add`, data);
 
+    // console.log(this.data);
+
     return id;
   }
   async changeChild(type: string, roomId: string, childId: string, value: any) {
@@ -178,14 +183,20 @@ export default class StubStrategy extends BackendStrategy {
     };
     this.setList(type, roomId, this.getList(type, roomId).map(i => (i.id === childId ? data : i)));
     this.emit(`${type}:change`, data);
+
+    // console.log(this.data);
   }
   async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
     this.changeChild(type, roomId, childId, key.split(/\//g).reduceRight((prev, curr) => ({ [curr]: prev }), value));
+
+    // console.log(this.data);
   }
   async removeChild(type: string, roomId: string, childId: string) {
     const data = this.findChild(type, roomId, childId);
     this.setList(type, roomId, this.getList(type, roomId).filter(i => i.id !== childId));
     this.emit(`${type}:remove`, data);
+
+    // console.log(this.data);
   }
 
   async uploadFile(roomId: string, path: string, file: File) {

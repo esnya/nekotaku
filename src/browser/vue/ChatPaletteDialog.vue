@@ -2,29 +2,24 @@
   v-dialog(:value="value" @input="v => $emit('input', v)")
     v-card
       v-card-title.headline チャットパレット
-      v-tabs(dark v-model="tab")
-        //- v-tabs-bar
-        //-   v-tabs-item(v-for="(tab, i) in tabs" :key="i" :href="`#chat-palette-${i}`") {{i}}
-        //-   v-tabs-slider
-        v-tabs-items
-          v-tabs-content(v-for="(tab, i) in tabs" :key="i" :id="`chat-palette-${i}`")
-            v-container(v-if="edit")
-              v-text-field(
-                multi-line
-                :value="tabs[i].palette.join('\\n')"
-                @input="v => update(i, v)"
-              )
-            v-list(v-else)
-              v-list-tile(
-                v-for="(line, j) in tab.palette"
-                :key="j"
-                @click="itemClick(i, j)"
-              )
-                v-list-tile-content
-                  v-list-tile-title {{line}}
-                transition(name="slide-rr")
-                  v-list-tile-action(v-if="isSelected(i, j)")
-                    v-icon(primary @click.stop="send(i, line)") send
+      v-card-text
+        div(v-for="(tab, i) in tabs" :key="i" :id="`chat-palette-${i}`")
+          v-container(v-if="edit")
+            v-textarea(
+              :value="tabs[i].palette.join('\\n')"
+              @input="v => update(i, v)"
+            )
+          v-list(v-else)
+            v-list-tile(
+              v-for="(line, j) in tab.palette"
+              :key="j"
+              @click="itemClick(i, j)"
+            )
+              v-list-tile-content
+                v-list-tile-title {{line}}
+              transition(name="slide-rr")
+                v-list-tile-action(v-if="isSelected(i, j)")
+                  v-icon(primary @click.stop="send(i, line)") send
       v-card-actions
         v-btn(color="primary" v-if="edit" @click="edit = false") 編集終了
         v-btn(color="primary" v-else @click="edit = true") 編集
@@ -33,7 +28,6 @@
 </template>
 
 <script>
-import Palette from 'google-material-color';
 import _ from 'lodash';
 import { mapActions, mapState } from 'vuex';
 import localStorage from '../utilities/localStorage';
@@ -65,7 +59,7 @@ export default {
       'room',
     ]),
     color() {
-      return Palette.get(...this.chatControl.color) || Palette.get(this.chatControl.color[0]);
+      return this.chatControl.color;
     },
     name() {
       return this.chatControl.name;
