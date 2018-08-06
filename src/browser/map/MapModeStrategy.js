@@ -26,7 +26,7 @@ export default class MapModeStrategy {
     const s = this.c.scale * 50;
 
     return page
-      .add(Vec2.getScroll(this.c.$refs.container.parentElement))
+      .add(Vec2.getScroll(this.c.$refs.container))
       .sub(new Vec2(0, 56))
       .div(s)
       .sub(2);
