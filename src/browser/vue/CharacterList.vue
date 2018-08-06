@@ -18,7 +18,7 @@
             ) {{props.item.attributes && props.item.attributes[index]}}
         template(slot="footer")
           td.text-xs-center(colspan="100%")
-            v-btn(color="primary" flat @click.stop="ccdOpen = true")
+            v-btn(color="primary" flat block @click.stop="ccdOpen = true")
               v-icon add
     character-create-dialog(v-model="ccdOpen")
 </template>

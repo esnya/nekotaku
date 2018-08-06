@@ -4,15 +4,12 @@
     v-layout.row.wrap.pb-5(v-else)
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(:memo="memo")
+      v-flex.pa-2(xs12)
+        v-card
+          v-card-actions
+            v-btn(flat block @click.stop="addDialog = true")
+              v-icon add
     v-dialog(v-model="addDialog")
-      v-btn.ma-2.memo-list-add-button(
-        dark
-        fab
-        fixed
-        color="primary"
-        slot="activator"
-      )
-        v-icon add
       v-card
         v-card-title
           span.headline 共有メモ作成
