@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container.pt-5
-    loading(v-if="messagesLoading")
+    loading(v-if="messagesLoading && false")
     message-list-item(
       :key="message.id"
       :message="message"

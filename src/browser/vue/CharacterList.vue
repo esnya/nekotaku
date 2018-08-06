@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container.pa-0.pb-5
-    loading(v-if="charactersLoading")
+    loading(v-if="charactersLoading && false")
     v-card.mt-5.mb-4(v-else)
       v-data-table(
         hide-actions
