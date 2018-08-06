@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container
+  v-container.pt-5
     message-list-item(
       v-for="message in messages",
       :key="message.id"
@@ -23,6 +23,5 @@ export default {
 
 <style lang="stylus" scoped>
 .container
-  padding-top 42px
   padding-bottom 50vh
 </style>

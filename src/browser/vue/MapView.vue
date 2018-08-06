@@ -171,10 +171,9 @@ html.no-scroll {
 <style lang="stylus" scoped>
 .map-container
   overflow scroll
-  margin-top 56px
   margin-bottom 104px
   width 100%
-  height calc(100% - 160px)
+  height calc(100% - 104px)
 
 .map
   user-select none

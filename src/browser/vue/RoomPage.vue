@@ -26,7 +26,7 @@
             v-btn(@click="leave") やめる
             v-spacer
       main(v-else-if="room && !room.locked")
-        .floating.fixed
+        .floating.fixed.ignore-toolbar-padding
           room-info-list.room-info-list(:room="room")
         div.room-slider(:style="{ transform: `translateX(${Number(roomTab) * -100}%)` }")
           .room-slider-item.scroll
@@ -188,5 +188,7 @@ main
   -webkit-overflow-scrolling touch
   width 100%
   height 100%
-  padding-top 64px
+
+.ignore-toolbar-padding
+  top 68px
 </style>

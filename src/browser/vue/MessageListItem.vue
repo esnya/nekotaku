@@ -43,7 +43,7 @@ export default {
     const isNewMessage = Date.now() - this.message.createdAt < 1000;
     if (isNewMessage) playNoticeSound();
 
-    const margin = 56 + 50 + 16;
+    const margin = 56 + 50 + 16 + 56;
 
     const scrollableHeight = scrollable.offsetHeight - margin;
     if (prev && prev.offsetTop < scrollable.scrollTop + scrollableHeight) {

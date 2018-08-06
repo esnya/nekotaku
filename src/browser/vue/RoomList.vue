@@ -1,6 +1,6 @@
 <template lang="pug">
   v-layout.row.wrap.pb-5
-    v-flex.pa-2(xs12)
+    v-flex.px-2.pb-4(xs12)
       v-text-field(
         single-line
         hide-details
