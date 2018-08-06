@@ -3,6 +3,12 @@
     v-btn(icon slot="activator")
       v-icon more_vert
     v-list.pt-0
+      v-list-tile(@click="openInNew")
+        v-list-tile-action
+          v-icon mdi-open-in-new
+        v-list-tile-content
+          v-list-tile-title 新しいウィンドウ
+      v-divider
       v-list-tile(@click="redOpen = true")
         v-list-tile-action
           v-icon mdi-settings
@@ -117,6 +123,13 @@ export default {
       document.body.removeChild(a);
 
       URL.revokeObjectURL(url);
+    },
+    openInNew() {
+      window.open(
+        window.location.href,
+        `${Date.now()}${Math.random()}`,
+        'location=no,resizable=yes,scrollbars=yes,status=no,toolbar=no',
+      );
     },
   },
   props: ['value'],
