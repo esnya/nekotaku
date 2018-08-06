@@ -4,13 +4,12 @@
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(:memo="memo")
     v-dialog(v-model="addDialog")
-      v-btn.ma-2(
+      v-btn.ma-2.memo-list-add-button(
         dark
         fab
         fixed
         color="primary"
         slot="activator"
-        :style="{ left: 'calc(200vw - 76px)', top: 'calc(100vh - 132px)' }"
       )
         v-icon add
       v-card
@@ -60,7 +59,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.btn.btn--fixed.btn--bottom.btn--right
-  bottom 56px
+.memo-list-add-button
+  bottom 112px
   right -100%
 </style>
