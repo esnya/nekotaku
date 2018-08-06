@@ -1,10 +1,11 @@
 <template lang="pug">
   v-container.pa-0.pb-5
-    v-card.mt-5.mb-4
+    loading(v-if="charactersLoading")
+    v-card.mt-5.mb-4(v-else)
       v-data-table(
+        hide-actions
         :headers="headers"
         :items="characters"
-        hide-actions
       )
         template(slot="items" slot-scope="props")
             td.pa-0.td-edit
@@ -26,16 +27,19 @@
 import { mapState } from 'vuex';
 import CharacterCreateDialog from './CharacterCreateDialog.vue';
 import CharacterEditDialog from './CharacterEditDialog.vue';
+import Loading from './Loading.vue';
 
 export default {
   components: {
     CharacterCreateDialog,
     CharacterEditDialog,
+    Loading,
   },
   computed: {
     ...mapState([
       'room',
       'characters',
+      'charactersLoading',
     ]),
     headers() {
       const {

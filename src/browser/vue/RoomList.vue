@@ -8,21 +8,30 @@
         v-model="search"
         append-icon="search"
       )
-    v-flex(sm12, md6, v-for="room in results", :key="room.id")
+    loading(v-if="roomsLoading")
+    v-flex(
+      sm12 md6
+      v-for="room in results"
+      :key="room.id"
+      v-else
+    )
       room-list-item(:room="room")
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Loading from './Loading.vue';
 import RoomListItem from './RoomListItem.vue';
 
 export default {
   components: {
+    Loading,
     RoomListItem,
   },
   computed: {
     ...mapState([
       'rooms',
+      'roomsLoading',
     ]),
     results() {
       const {

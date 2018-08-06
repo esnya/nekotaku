@@ -1,6 +1,7 @@
 /* eslint no-param-reassign: off, no-useless-computed-key: off */
 
 export default function listStore(key: string, reverse: boolean = false) {
+  const loadingKey = `${key}Loading`;
   return {
     mutations: {
       [`${key}:clear`]: function clear(state) {
@@ -11,11 +12,13 @@ export default function listStore(key: string, reverse: boolean = false) {
           item,
           ...state[key],
         ];
+        state[loadingKey] = false;
       } : function add(state, item) {
         state[key] = [
           ...state[key],
           item,
         ];
+        state[loadingKey] = false;
       },
       [`${key}:change`]: function change(state, item) {
         state[key] = state[key].map(a => (a.id === item.id ? item : a));
@@ -26,6 +29,7 @@ export default function listStore(key: string, reverse: boolean = false) {
     },
     state: {
       [key]: [],
+      [loadingKey]: true,
     },
   };
 }

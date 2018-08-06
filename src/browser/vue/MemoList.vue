@@ -1,6 +1,7 @@
 <template lang="pug">
   v-container.pt-5.pb-5
-    v-layout.row.wrap.pb-5
+    loading(v-if="memosLoading")
+    v-layout.row.wrap.pb-5(v-else)
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(:memo="memo")
     v-dialog(v-model="addDialog")
@@ -31,10 +32,12 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { parseText, InitialText } from '../utilities/memo';
+import Loading from './Loading.vue';
 import MemoListItem from './MemoListItem.vue';
 
 export default {
   components: {
+    Loading,
     MemoListItem,
   },
   data() {
@@ -44,7 +47,10 @@ export default {
       InitialText,
     };
   },
-  computed: mapState(['memos']),
+  computed: mapState([
+    'memos',
+    'memosLoading',
+  ]),
   methods: {
     ...mapActions(['addMemo']),
     submitMemo() {

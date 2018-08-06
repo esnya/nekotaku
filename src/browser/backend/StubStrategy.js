@@ -5,6 +5,8 @@ import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import BackendStrategy, { Handler } from './BackendStrategy';
 
+const Delay = 5000;
+
 const ListEvents = [
   'add',
   'change',
@@ -108,9 +110,11 @@ export default class StubStrategy extends BackendStrategy {
       const event = `rooms:${key}`;
       this.on(event, v => handler(event, roomFilter(v)));
     });
-    this.data.rooms.forEach((room) => {
-      handler('rooms:add', roomFilter(room));
-    });
+    setTimeout(() => {
+      this.data.rooms.forEach((room) => {
+        handler('rooms:add', roomFilter(room));
+      });
+    }, Delay);
   }
   async unwatchLobby() {
     ListEvents.forEach((key) => {
@@ -139,9 +143,11 @@ export default class StubStrategy extends BackendStrategy {
       const event = `${type}:${key}`;
       this.on(event, v => handler(event, v));
     });
-    this.getList(type, roomId).forEach((item) => {
-      handler(`${type}:add`, item);
-    });
+    setTimeout(() => {
+      this.getList(type, roomId).forEach((item) => {
+        handler(`${type}:add`, item);
+      });
+    }, Delay);
   }
   async unwatchList(type: string) {
     ListEvents.forEach((key) => {
