@@ -3,10 +3,33 @@
     v-card(v-scroll="'y'")
       v-card-title
         span.headline チャット設定
+      v-tabs(
+        light
+        :value="chatConfigList.findIndex(c => c.id === selectedChatId)"
+        @input="selectChatConfig(chatConfigList[$event].id)"
+      )
+        v-tabs-slider(color="primary")
+        v-tab(
+          :key="config.key"
+          :style="{ color: config.color }"
+          v-for="config in chatConfigList"
+        ) {{config.name}}
+        v-btn(
+          icon
+          @click="addChatConfig"
+        )
+          v-icon add
+        v-btn(
+          icon
+          :disabled="chatConfigList.length <= 1"
+          @click="removeChatConfig"
+        )
+          v-icon delete
       v-card-text.pb-0
         v-text-field(
           required
           label="名前"
+          :color="chatControl.color"
           :value="chatControl.name"
           @input="setChatName"
         )
@@ -23,16 +46,23 @@
 
 <script>
 import { Compact } from 'vue-color';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
     Compact,
   },
-  computed: mapState([
-    'chatControl',
-  ]),
+  computed: {
+    ...mapGetters([
+      'chatControl',
+      'chatConfigList',
+      'selectedChatId',
+    ]),
+  },
   methods: mapActions([
+    'addChatConfig',
+    'removeChatConfig',
+    'selectChatConfig',
     'setChatColor',
     'setChatName',
   ]),

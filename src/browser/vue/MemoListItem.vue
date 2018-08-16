@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { parseText, toText, InitialText } from '../utilities/memo';
 
 function byLine(text) {
@@ -53,7 +53,7 @@ function byLine(text) {
 
 export default {
   computed: {
-    ...mapState(['chatControl']),
+    ...mapGetters(['chatControl']),
     text() {
       return toText(this.memo);
     },

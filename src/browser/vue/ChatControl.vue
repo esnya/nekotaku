@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import ChatConfigDialog from './ChatConfigDialog.vue';
 import ChatPaletteDialog from './ChatPaletteDialog.vue';
 
@@ -43,7 +43,7 @@ export default {
     ChatPaletteDialog,
   },
   computed: {
-    ...mapState([
+    ...mapGetters([
       'chatControl',
     ]),
     bodyRows() {

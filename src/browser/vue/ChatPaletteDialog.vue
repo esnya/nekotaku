@@ -29,7 +29,7 @@
 
 <script>
 import _ from 'lodash';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 import localStorage from '../utilities/localStorage';
 
 function getStorageKey(roomId) {
@@ -54,8 +54,10 @@ const saveTabs = _.debounce(
 
 export default {
   computed: {
-    ...mapState([
+    ...mapGetters([
       'chatControl',
+    ]),
+    ...mapState([
       'room',
     ]),
     color() {
