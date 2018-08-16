@@ -80,9 +80,11 @@ export default {
         const {
           x, y,
           icon,
+          iconSize,
         } = character;
 
         const iconUrl = character ? icon : null;
+        const size = `${(iconSize || 1) * 50}px`;
 
         return {
           ...character,
@@ -91,6 +93,8 @@ export default {
           },
           innerStyle: {
             backgroundImage: iconUrl ? `url(${iconUrl})` : null,
+            width: size,
+            height: size,
           },
         };
       }).sort((a, b) => a.z > b.z);

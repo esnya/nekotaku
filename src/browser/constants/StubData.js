@@ -33,6 +33,7 @@ export default {
       x: 0.5,
       y: 0.5,
       z: 0,
+      iconSize: 2,
     },
     {
       id: '03',

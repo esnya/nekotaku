@@ -60,6 +60,12 @@
               span(v-else) 登録
             v-btn.warning(@click="clearCharacterIcon(id)") クリア
             v-spacer
+          v-card-text
+            v-text-field(
+              label="アイコンサイズ"
+              type="number"
+              v-model="iconSize"
+            )
         v-tab-item
           v-card-title
             span.headline 立ち絵
@@ -89,10 +95,10 @@
 import { mapActions, mapState } from 'vuex';
 import FileInput from './FileInput.vue';
 
-function inputValue(key) {
+function inputValue(key, defaultValue) {
   return {
     get() {
-      return this.character[key];
+      return this.character[key] || defaultValue;
     },
     set(value) {
       this.updateCharacter({
@@ -118,6 +124,7 @@ export default {
     name: inputValue('name'),
     initiative: inputValue('initiative'),
     attributes: inputValue('attributes'),
+    iconSize: inputValue('iconSize', 1),
   },
   data() {
     return {
