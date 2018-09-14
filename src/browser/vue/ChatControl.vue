@@ -15,12 +15,17 @@
               v-icon mdi-message-settings-variant
             v-list-tile-content
               v-list-tile-title チャット設定
+          v-list-tile(@click="cwdOpen = true")
+            v-list-tile-action
+              v-icon mdi-account-multiple
+            v-list-tile-content
+              v-list-tile-title 秘匿チャット
       v-flex
         v-textarea.message-body(
           hide-details
           v-model="body"
           :color="chatControl.color"
-          :label="name"
+          :label="to ? `㊙ ${name} >> ${to}` : name"
           :hide-details="true"
           :rows="bodyRows"
           :style="{ color: chatControl.color }"
@@ -30,6 +35,20 @@
         v-icon send
     chat-config-dialog(v-model="ccdOpen")
     chat-palette-dialog(v-model="cpdOpen")
+    v-dialog(v-model="cwdOpen")
+      v-card
+        v-card-title(primary-title)
+          span.headline 秘匿チャット
+        v-card-text
+          v-text-field(
+            name="to"
+            label="宛先"
+            hint="空欄で公開チャット / ,(カンマ)区切りで複数対象"
+            v-model="to"
+          )
+        v-card-actions
+          v-spacer
+          v-btn(@click="cwdOpen = false") 閉じる
 </template>
 
 <script>
@@ -57,8 +76,10 @@ export default {
     return {
       body: null,
       face: 'default',
+      to: null,
       ccdOpen: false,
       cpdOpen: false,
+      cwdOpen: false,
     };
   },
   methods: {
@@ -76,11 +97,14 @@ export default {
 
       this.body = null;
 
+      const to = this.to ? this.to.split(/\s*,\s*/) : null;
+
       this.sendMessage({
         color: chatControl.color,
         name,
         face,
         body,
+        to,
       });
     },
     enter(e) {

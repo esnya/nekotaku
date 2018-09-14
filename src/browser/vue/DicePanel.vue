@@ -49,7 +49,7 @@ export default {
       const now = Date.now();
 
       this.diceList = _(messages)
-        .filter(m => now - m.createdAt < 1000)
+        .filter(m => now - m.createdAt < 1000 && !m.to)
         .map(m => ({
           id: m.id,
           diceResults: _(m.body)

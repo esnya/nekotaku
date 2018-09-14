@@ -1,15 +1,21 @@
 <template lang="pug">
-  v-card.elevation-1.my-3(:style="styles.container", ref="root")
-    v-card-title.px-2.pt-2.pb-1
-      div {{message.name}}
-      v-spacer
-      from-now.caption(:time="message.createdAt")
-    v-divider
-    v-card-text.pa-2
-      message-body(:nodes="message.body")
+  v-card.elevation-1.my-3(
+    ref="root"
+    :style="styles.container"
+  )
+    div(v-if="isVisible")
+      v-card-title.px-2.pt-2.pb-1
+        div(v-if="message.to") ㊙ {{message.name}} >> {{message.to.join(', ')}}
+        div(v-else) {{message.name}}
+        v-spacer
+        from-now.caption(:time="message.createdAt")
+      v-divider
+      v-card-text.pa-2
+        message-body(:nodes="message.body")
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { inOutSign } from 'ease-component';
 import scroll from 'scroll';
 import playNoticeSound from '../utilities/noticeSound';
@@ -22,12 +28,20 @@ export default {
     MessageBody,
   },
   computed: {
+    ...mapGetters([
+      'chatControl',
+    ]),
     styles() {
       return {
         container: {
           color: this.message.color,
         },
       };
+    },
+    isVisible() {
+      return !this.message.to
+        || this.message.to.indexOf(this.chatControl.name) >= 0
+        || this.message.name === this.chatControl.name;
     },
   },
   props: [
