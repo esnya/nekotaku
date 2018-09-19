@@ -19,7 +19,7 @@
             v-list-tile-action
               v-icon mdi-account-multiple
             v-list-tile-content
-              v-list-tile-title 秘匿チャット
+              v-list-tile-title 秘話チャット
       v-flex
         v-textarea.message-body(
           hide-details
@@ -38,7 +38,7 @@
     v-dialog(v-model="cwdOpen")
       v-card
         v-card-title(primary-title)
-          span.headline 秘匿チャット
+          span.headline 秘話チャット
         v-card-text
           v-text-field(
             name="to"
