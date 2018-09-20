@@ -1,0 +1,9 @@
+{
+  extends: '../../.babelrc',
+  presets: [
+    [
+      'env',
+      { target: { node: 'current' }},
+    ],
+  ],
+}
