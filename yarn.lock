@@ -8641,9 +8641,9 @@ vue-color@^2.4.6:
     material-colors "^1.0.0"
     tinycolor2 "^1.1.2"
 
-vue-dice-component@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/vue-dice-component/-/vue-dice-component-0.1.2.tgz#2dd8524f56fb86e5650397a50e5596957a4aa7e9"
+vue-dice-component@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/vue-dice-component/-/vue-dice-component-0.1.3.tgz#9029a692d6ef29dd3bf604b0e9a0606037c6b351"
 
 vue-hot-reload-api@^2.1.0:
   version "2.1.0"

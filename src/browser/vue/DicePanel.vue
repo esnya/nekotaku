@@ -112,11 +112,13 @@ export default {
     transform-style preserve-3d
 
     .dice-container-inner
-      animation fade-out 1s 4s linear forwards
+      animation dice-out 0.4s 4s linear forwards
+      transform-style preserve-3d
+      transform rotateX(-10deg) rotateY(-10deg)
 
-@keyframes fade-out {
+@keyframes dice-out {
   to {
-    opacity 0
+    transform scale3d(0.01, 0.01, 0.01)
   }
 }
 </style>
