@@ -1,5 +1,9 @@
 <template lang="pug">
-  v-dialog(:value="value" @input="v => $emit('input', v)")
+  v-dialog(
+    scrollable
+    :value="value"
+    @input="v => $emit('input', v)"
+  )
     v-card
       v-card-text
         vue-simple-markdown(:source="changelog" v-if="changelog")
@@ -34,3 +38,9 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus">
+.markdown-body
+  h1, h2, h3, h4, ul
+    margin 0
+</style>
