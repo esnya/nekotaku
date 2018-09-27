@@ -120,6 +120,10 @@ function inputValue(key, defaultValue) {
   };
 }
 
+function filterFaces(faces) {
+  return faces.indexOf('default') < 0 ? ['default', ...faces] : faces;
+}
+
 export default {
   components: {
     RemoveConfirmationDialog,
@@ -145,7 +149,7 @@ export default {
       rdOpen: false,
       tab: 'basis',
       face: 'default',
-      faces: faces.length > 0 ? faces : ['default'],
+      faces: filterFaces(faces),
     };
   },
   methods: {
@@ -174,7 +178,9 @@ export default {
       this.face = face;
     },
     removeFace() {
-      this.faces = this.faces.filter(face => face !== this.face);
+      const { face } = this;
+      this.clearCharacterPortrait({ id: this.character.id, key: face });
+      this.faces = filterFaces(this.faces.filter(f => f !== face));
       this.face = 'default';
     },
   },
