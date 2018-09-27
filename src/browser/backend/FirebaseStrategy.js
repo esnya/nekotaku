@@ -184,8 +184,8 @@ export default class FirebaseStrategy extends BackendStrategy {
 
   async uploadFile(roomId: string, path: string, file: File) {
     const ref = this.storageRef(roomId, path);
-    const { downloadURL } = await ref.put(file, { contentType: file.type });
-    return downloadURL;
+    await ref.put(file, { contentType: file.type });
+    return ref.getDownloadURL();
   }
   async deleteFile(roomId: string, path: string) {
     try {
