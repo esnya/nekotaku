@@ -27,6 +27,9 @@
 ![ss03.png](https://raw.githubusercontent.com/ukatama/nekotaku/master/docs/img/ss03.png)
 ![ss04.png](https://raw.githubusercontent.com/ukatama/nekotaku/master/docs/img/ss04.png)
 
+## 素材 / Thanks
+サンプルキャラクター画像は[どぉるキャラメイカー](http://hitsuji15.net/doll.html)様で作成しました。
+
 ## 更新履歴 / Changelog
 [CHANGELOG.md](https://github.com/ukatama/nekotaku/blob/master/CHANGELOG.md)
 
