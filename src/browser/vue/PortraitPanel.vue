@@ -29,22 +29,16 @@ export default {
     portraits: _.throttle(function portraits() {
       const characterPortraits =
         _(this.characters)
-          .map((c) => {
-            const url = c.portrait && c.portrait.default && c.portrait.default.url;
-
-            return [c.name, url];
-          })
-          .filter(p => p[1])
+          .map(c => [c.name, _.mapValues(c.portrait, p => p && p.url)])
           .fromPairs()
           .value();
 
       return _(this.messages.slice())
         .reverse()
-        .map(m => m.name)
-        .filter(n => n && (n in characterPortraits))
-        .uniq()
+        .filter(m => m.name && (m.name in characterPortraits) && characterPortraits[m.name][m.face])
+        .uniqBy(m => m.name)
         .take(N)
-        .map(name => ({ name, src: characterPortraits[name] }))
+        .map(m => ({ name: m.name, src: characterPortraits[m.name][m.face] }))
         .map(({ name, src }, i) => ({
           name,
           style: {

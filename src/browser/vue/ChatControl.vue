@@ -20,6 +20,11 @@
               v-icon mdi-account-multiple
             v-list-tile-content
               v-list-tile-title 秘話チャット
+          v-list-tile(@click="cfdOpen = true")
+            v-list-tile-action
+              v-icon mdi-emoticon
+            v-list-tile-content
+              v-list-tile-title 立ち絵表情
       v-flex
         v-textarea.message-body(
           hide-details
@@ -49,10 +54,23 @@
         v-card-actions
           v-spacer
           v-btn(@click="cwdOpen = false") 閉じる
+    v-dialog(v-model="cfdOpen")
+      v-card
+        v-card-title(primary-title)
+          span.headline 立ち絵表情
+        v-card-text
+          v-select(
+            :disabled="faces.length === 0"
+            :items="faces"
+            v-model="face"
+          )
+        v-card-actions
+          v-spacer
+          v-btn(@click="cfdOpen = false") 閉じる
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import ChatConfigDialog from './ChatConfigDialog.vue';
 import ChatPaletteDialog from './ChatPaletteDialog.vue';
 
@@ -65,11 +83,22 @@ export default {
     ...mapGetters([
       'chatControl',
     ]),
+    ...mapState([
+      'characters',
+    ]),
     bodyRows() {
       return Math.max(1, this.body ? this.body.split(/\n/g).length : 1);
     },
     name() {
       return this.chatControl.name;
+    },
+    faces() {
+      if (!this.characters) return [];
+
+      const character = this.characters.find(c => c.name === this.name);
+      if (!character) return [];
+
+      return Object.keys(character.portrait || {});
     },
   },
   data() {
@@ -80,6 +109,7 @@ export default {
       ccdOpen: false,
       cpdOpen: false,
       cwdOpen: false,
+      cfdOpen: false,
     };
   },
   methods: {

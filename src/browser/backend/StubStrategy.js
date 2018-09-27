@@ -1,11 +1,12 @@
 /* eslint no-console: off */
 
 import EventEmitter from 'eventemitter3';
+import set from 'set-value';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import BackendStrategy, { Handler } from './BackendStrategy';
 
-const Delay = 5000;
+const Delay = 1000;
 
 const ListEvents = [
   'add',
@@ -193,7 +194,11 @@ export default class StubStrategy extends BackendStrategy {
     // console.log(this.data);
   }
   async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
-    this.changeChild(type, roomId, childId, key.split(/\//g).reduceRight((prev, curr) => ({ [curr]: prev }), value));
+    const data = {
+      ...this.findChild(type, roomId, childId),
+    };
+    set(data, key.replace(/\//g, '.'), value);
+    this.changeChild(type, roomId, childId, data);
 
     // console.log(this.data);
   }

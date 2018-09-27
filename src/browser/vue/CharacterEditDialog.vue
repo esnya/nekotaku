@@ -48,8 +48,6 @@
                 @input="value => updateAttribute(index, value)"
               )
         v-tab-item
-          v-card-title
-            span.headline アイコン
           v-card-media(v-if="character.icon")
             div
               img(:src="character.icon")
@@ -67,17 +65,27 @@
               v-model="iconSize"
             )
         v-tab-item
-          v-card-title
-            span.headline 立ち絵
-          v-card-media(v-if="character.portrait && character.portrait.default")
+          v-card-text
+            v-layout(row align-center)
+              v-flex
+                v-select(
+                  full-width
+                  hide-details
+                  label="表情"
+                  :items="faces"
+                  v-model="face"
+                )
+              character-face-append-dialog(@input="appendFace")
+              remove-confirmation-dialog(:disabled="face === 'default'" @remove="removeFace")
+          v-card-media(v-if="character.portrait && character.portrait[face]")
             div
-              img(:src="character.portrait && character.portrait.default && character.portrait.default.url")
+              img(:src="character.portrait[face].url")
           v-card-actions
             v-spacer
-            file-input.success(@input="file => updateCharacterPortrait({ id, key: 'default', file })")
-              span(v-if="character.portrait && character.portrait.default") 変更
+            file-input.success(@input="file => updateCharacterPortrait({ id, key: face, file })")
+              span(v-if="character.portrait && character.portrait[face]") 変更
               span(v-else) 登録
-            v-btn.warning(@click="clearCharacterPortrait({ id, key: 'default' })") クリア
+            v-btn.warning(@click="clearCharacterPortrait({ id, key: face })") クリア
             v-spacer
         v-tab-item
           v-card-text.text-xs-center {{character.name}}を削除しますか？
@@ -93,6 +101,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import CharacterFaceAppendDialog from './CharacterFaceAppendDialog.vue';
+import RemoveConfirmationDialog from './RemoveConfirmationDialog.vue';
 import FileInput from './FileInput.vue';
 
 function inputValue(key, defaultValue) {
@@ -112,6 +122,8 @@ function inputValue(key, defaultValue) {
 
 export default {
   components: {
+    RemoveConfirmationDialog,
+    CharacterFaceAppendDialog,
     FileInput,
   },
   computed: {
@@ -127,10 +139,13 @@ export default {
     iconSize: inputValue('iconSize', 1),
   },
   data() {
+    const faces = Object.keys(this.character.portrait || {});
     return {
       open: false,
       rdOpen: false,
       tab: 'basis',
+      face: 'default',
+      faces: faces.length > 0 ? faces : ['default'],
     };
   },
   methods: {
@@ -152,6 +167,21 @@ export default {
         id: this.character.id,
         key: 'attributes',
         value: attributes,
+      });
+    },
+    appendFace(face) {
+      this.faces.push(face);
+      this.face = face;
+    },
+    removeFace() {
+      this.faces = this.faces.filter(face => face !== this.face);
+      this.face = 'default';
+    },
+  },
+  watch: {
+    character(character) {
+      Object.keys(character.portrait).forEach((key) => {
+        if (this.faces.indexOf(key) < 0) this.faces.push(key);
       });
     },
   },

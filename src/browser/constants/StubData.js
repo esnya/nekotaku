@@ -40,6 +40,7 @@ export default {
       name: 'しゃーりー',
       portrait: {
         default: { url: '/sample/p1a.png' },
+        笑: { url: '/sample/p1b.png' },
       },
       icon: '/sample/i1.png',
       attributes: [
