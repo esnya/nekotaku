@@ -3,13 +3,21 @@
     transition(name="portrait-slide")
       div(v-if="open")
         img.portrait(
-          v-for="portarit in portraits"
           :key="portarit.name"
           :style="portarit.style"
           :src="portarit.src"
-          @click="open = !open"
+          @click.stop="open = false"
+          v-for="portarit in portraits"
         )
-      v-btn(color="primary" v-else fab dark @click="open = !open")
+      v-btn(
+        fab
+        dark
+        absolute
+        bottom right
+        color="primary"
+        @click.stop="open = true"
+        v-else
+      )
         v-icon mdi-arrow-expand-left
 </template>
 
@@ -77,9 +85,7 @@ export default {
   transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 
 button
-  position: absolute;
-  right: -16px;
-  bottom: 8px;
+  bottom: 8px !important;
 
 .portrait-slide
   &-enter-active
