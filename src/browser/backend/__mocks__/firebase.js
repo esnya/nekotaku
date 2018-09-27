@@ -230,13 +230,15 @@ class StorageReference {
   async put() {
     // console.log('storage.put', this.path);
     storageStore[this.path] = true;
-    return {
-      downloadURL: '/',
-    };
+    return {};
   }
   async delete() {
     // console.log('storage.delete', this.path);
     if (!storageStore[this.path]) throw new StorageObjectNotFoundError('File not found');
+  }
+
+  getDownloadURL() {
+    return '/';
   }
 }
 const mockStorage = {
