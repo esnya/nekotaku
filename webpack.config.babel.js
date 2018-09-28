@@ -16,6 +16,7 @@ const plugins = isProduction ? [
     compress: {
       warnings: false,
     },
+    exclude: /node_modules\/set-value/,
   }),
   new webpack.LoaderOptionsPlugin({
     minimize: true,
