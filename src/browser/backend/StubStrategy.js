@@ -1,7 +1,7 @@
 /* eslint no-console: off */
 
+import _ from 'lodash';
 import EventEmitter from 'eventemitter3';
-import set from 'set-value';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import BackendStrategy, { Handler } from './BackendStrategy';
@@ -197,7 +197,7 @@ export default class StubStrategy extends BackendStrategy {
     const data = {
       ...this.findChild(type, roomId, childId),
     };
-    set(data, key.replace(/\//g, '.'), value);
+    _.set(data, key.replace(/\//g, '.'), value);
     this.changeChild(type, roomId, childId, data);
 
     // console.log(this.data);
