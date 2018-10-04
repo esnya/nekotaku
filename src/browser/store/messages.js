@@ -23,7 +23,7 @@ export default {
       const {
         executeDice,
         getDiceBotDescByFilename,
-      } = await import('../utilities/bcdice');
+      } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
 
       const {
         result,

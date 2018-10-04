@@ -1,6 +1,6 @@
 import BCDice, { DiceBotLoader, DiceBotResolver } from 'bcdice-js';
 
-DiceBotResolver.setCustomLoader(filename => import(`bcdice-js/lib/diceBot/${filename}`), true);
+DiceBotResolver.setCustomLoader(filename => import(/* webpackChunkName: "dicebot" */ `bcdice-js/lib/diceBot/${filename}`), true);
 
 const DiceBotDescs = [
   // { filename: 'DiceBot', gameType: 'DiceBot', gameName: 'ダイスボット' },

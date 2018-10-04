@@ -25,30 +25,37 @@
 
 <script>
 import moment from 'moment';
-import { getHelpMessage, getDiceBotDescByFilename } from '../utilities/bcdice';
 
 export default {
   computed: {
     time() {
       return moment(this.room.createdAt).format('lll');
     },
-    dice() {
-      const desc = getDiceBotDescByFilename(this.room.dice);
-      return desc ? desc.gameName : this.room.dice;
-    },
   },
   data() {
     return {
       helpOpen: false,
       helpMessage: [],
+      dice: '',
     };
   },
   watch: {
     async helpOpen(helpOpen) {
       if (helpOpen) {
+        const { getHelpMessage } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
         this.helpMessage = (await getHelpMessage(this.room.dice)).split(/\n/g);
       }
     },
+  },
+  methods: {
+    async updateDice(room) {
+      const { getDiceBotDescByFilename } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
+      const desc = getDiceBotDescByFilename(room.dice);
+      this.dice = desc ? desc.gameName : room.dice;
+    },
+  },
+  created() {
+    this.updateDice(this.room);
   },
   props: [
     'room',

@@ -13,13 +13,15 @@
 </template>
 
 <script>
-import { getDiceBotDescs } from '../utilities/bcdice';
-
 export default {
   data() {
     return {
-      diceBotDescs: getDiceBotDescs(),
+      diceBotDescs: [],
     };
+  },
+  async created() {
+    const { getDiceBotDescs } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
+    this.diceBotDescs = getDiceBotDescs();
   },
   methods: {
     notEmpty(v) {

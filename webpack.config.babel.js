@@ -23,11 +23,13 @@ const plugins = isProduction ? [
 ] : [];
 
 export default {
-  entry: ['babel-polyfill', './src/browser'],
+  entry: {
+    bundle: ['babel-polyfill', './src/browser'],
+  },
   output: {
     path: path.resolve(__dirname, './public/assets'),
     publicPath: '/assets/',
-    filename: 'bundle.js',
+    filename: '[name].js',
   },
   module: {
     rules: [
