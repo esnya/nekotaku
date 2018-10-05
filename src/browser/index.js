@@ -50,3 +50,9 @@ async function main() {
   }).$mount('#app');
 }
 main();
+
+window.addEventListener('load', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/serviceWorker.js');
+  }
+});
