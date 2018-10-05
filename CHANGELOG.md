@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.10.2] - 2018-10-06
 ### 追加
 - PWA対応
 
