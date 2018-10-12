@@ -275,7 +275,7 @@ export default class StubStrategy extends BackendStrategy {
   async loginRoom(roomId: string, password: ?string, member: Object) {
     const uid = await this.getUID();
     const room = this.findRoom(roomId);
-    const isMember = this.getObject('members', roomId)[uid];
+    const isMember = _.get(this.data, `members.${roomId}.${uid}`);
 
     if (!isMember && room.password !== password) return false;
 
@@ -292,8 +292,8 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   async removeMe(roomId: string) {
-    const uid = this.getUID();
-    delete this.data.members[roomId][uid];
+    const uid = await this.getUID();
+    _.set(this.data, `members.${roomId}.${uid}`, null);
     await this.updateRoom(roomId, { players: 0 });
     this.emit('members:update', this.data.members);
   }
