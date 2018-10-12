@@ -2,6 +2,7 @@ export const SetUID = 'set_uid';
 export const Watch = 'watch';
 export const Unwatch = 'unwatch';
 export const Update = 'update';
+export const UpdateChild = 'update_child';
 export const Remove = 'remove';
 export const AddChild = 'add_child';
 export const ChangeChild = 'change_child';

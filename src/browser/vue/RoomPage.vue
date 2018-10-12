@@ -27,7 +27,7 @@
             v-spacer
       main(v-else-if="room && !room.locked")
         .floating.fixed.ignore-toolbar-padding
-          room-info-list.room-info-list(:room="room")
+          room-info-list.room-info-list(showMembers :room="room")
         div.room-slider(:style="{ transform: `translateX(${Number(roomTab) * -100}%)` }")
           .room-slider-item.scroll
             message-list
@@ -68,9 +68,11 @@
 
 <script>
 import _ from 'lodash';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import backend from '../backend';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
+import { IntervalTimer } from '../utilities/timer';
 import ChatControl from './ChatControl.vue';
 import CharacterList from './CharacterList.vue';
 import DicePanel from './DicePanel.vue';
@@ -107,12 +109,16 @@ export default {
       drawer: false,
       roomTab: '0',
       prevRoomTab: '0',
+      timer: null,
     };
   },
   computed: {
     ...mapState([
       'room',
       'roomJoinInfo',
+    ]),
+    ...mapGetters([
+      'chatControl',
     ]),
     id() {
       return this.$route.params.id;
@@ -161,8 +167,17 @@ export default {
     this.joinRoom({ id, router: this.$router });
 
     this.width = window.innerWidth;
+
+    this.timer = new IntervalTimer(() => {
+      const {
+        name,
+        color,
+      } = this.chatControl;
+      backend.updateMember(name, color);
+    }, 5 * 1000);
   },
   beforeDestroy() {
+    this.timer.stop();
     this.leaveRoom();
   },
 };

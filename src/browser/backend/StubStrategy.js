@@ -167,6 +167,11 @@ export default class StubStrategy extends BackendStrategy {
   async remove(type: string, roomId: string) {
     this.data[type][roomId] = null;
   }
+  async updateChild(type: string, roomId: string, path: string, value: Object) {
+    const key = `${type}/${roomId}/${path}`.replace(/\//g, '.');
+    _.set(this.data, key, value);
+    this.emit(`${type}:update`, _.get(this.data, `${type}.${roomId}`));
+  }
   async addChild(type: string, roomId: string, value: any) {
     const id = shortid();
 
@@ -224,7 +229,7 @@ export default class StubStrategy extends BackendStrategy {
     if (url) URL.revokeObjectURL(url);
   }
 
-  async createRoom(room: Object) {
+  async createRoom(room: Object, member: Object) {
     const id = room.id || shortid();
     const uid = await this.getUID();
     const now = Date.now();
@@ -246,7 +251,7 @@ export default class StubStrategy extends BackendStrategy {
     this.data.shapes[id] = [];
     this.data.memos[id] = [];
 
-    await this.update('members', id, { [uid]: Date.now() });
+    await this.updateChild('members', id, uid, member);
 
     this.emit('rooms:add', data);
     this.emit('room:update', data);
@@ -267,15 +272,15 @@ export default class StubStrategy extends BackendStrategy {
     this.emit('rooms:change', data);
     this.emit('room:update', data);
   }
-  async loginRoom(roomId: string, password: ?string) {
-    const uid = this.getUID();
+  async loginRoom(roomId: string, password: ?string, member: Object) {
+    const uid = await this.getUID();
     const room = this.findRoom(roomId);
     const isMember = this.getObject('members', roomId)[uid];
 
     if (!isMember && room.password !== password) return false;
 
     await this.updateRoom(roomId, { players: 1 });
-    await this.update('members', roomId, { [uid]: Date.now() });
+    await this.updateChild('members', roomId, uid, member);
 
     return true;
   }

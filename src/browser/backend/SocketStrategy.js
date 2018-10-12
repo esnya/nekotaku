@@ -139,6 +139,9 @@ export default class SocketStrategy extends BackendStrategy {
   async update(type: string, roomId: string, value: Object): Promise<void> {
     await this.request(SocketEvents.Update, type, roomId, value);
   }
+  async updateChild(type: string, roomId: string, path: string, value: Object): Promise<void> {
+    await this.request(SocketEvents.UpdateChild, type, roomId, path, value);
+  }
   async remove(type: string, roomId: string): Promise<void> {
     await this.request(SocketEvents.Remove, type, roomId);
   }

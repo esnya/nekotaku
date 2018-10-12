@@ -1,5 +1,17 @@
 <template lang="pug">
   div.room-list-info
+    v-chip.pl-0.mr-0.indigo(small @click="helpOpen = true")
+      v-icon.mx-1(dark) mdi-dice-multiple
+      span.white--text {{dice || room.dice}}
+    v-chip.pl-0.mr-0.green(small v-if="showMembers" @click="membersOpen = true")
+      v-icon.mx-1(dark) mdi-account-multiple
+      span.white--text {{memberList.length}}
+    v-chip.pl-0.mr-0.orange(small)
+      v-icon.mx-1(dark) mdi-clock
+      span.white--text {{time}}
+    //- v-chip.pl-0.orange(small)
+    //-   v-icon.mx-1(dark) mdi-binoculars
+    //-   span.white--text  {{room.visitors}}
     v-dialog(v-model="helpOpen" width="auto")
       v-card(v-scroll="'y'")
         v-card-title
@@ -9,33 +21,52 @@
         v-card-actions
           v-spacer
           v-btn(@click="helpOpen = false") 閉じる
-    v-chip.pl-0.mr-0.indigo(small @click="helpOpen = true")
-      v-icon.mx-1(dark) mdi-dice-multiple
-      span.white--text {{dice || room.dice}}
-    v-chip.pl-0.mr-0.green(small)
-      v-icon.mx-1(dark) mdi-account-multiple
-      span.white--text {{room.players}}
-    v-chip.pl-0.mr-0.orange(small)
-      v-icon.mx-1(dark) mdi-clock
-      span.white--text {{time}}
-    //- v-chip.pl-0.orange(small)
-    //-   v-icon.mx-1(dark) mdi-binoculars
-    //-   span.white--text  {{room.visitors}}
+    v-dialog(v-if="showMembers" v-model="membersOpen" width="auto")
+      v-card(v-scroll="'y'")
+        v-card-title
+          span.headline メンバー
+        v-list
+          v-list-tile(
+            avatar
+            :key="member.uid"
+            v-for="member in memberList"
+          )
+            v-list-tile-action
+              v-icon(color="success" v-if="(Date.now() - member.timestamp) <= 60 * 1000") mdi-account
+              v-icon(v-else) mdi-account-outline
+            v-list-tile-content
+              v-list-tile-title
+                span(:style="{ color: member.color }") {{member.name}}
+        v-card-actions
+          v-spacer
+          v-btn(@click="membersOpen = false") 閉じる
 </template>
 
 <script>
+import _ from 'lodash';
 import moment from 'moment';
+import { mapState } from 'vuex';
 
 export default {
   computed: {
+    ...mapState(['members']),
     time() {
       return moment(this.room.createdAt).format('lll');
+    },
+    memberList() {
+      return _(this.members)
+        .filter(v => (typeof v === 'object'))
+        .map((value, uid) => ({ ...value, uid }))
+        .sortBy(['timestamp'])
+        .reverse()
+        .value();
     },
   },
   data() {
     return {
       helpOpen: false,
       helpMessage: [],
+      membersOpen: false,
       dice: '',
     };
   },
@@ -59,6 +90,7 @@ export default {
   },
   props: [
     'room',
+    'showMembers',
   ],
 };
 </script>

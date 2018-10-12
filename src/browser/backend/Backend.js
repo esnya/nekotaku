@@ -68,6 +68,10 @@ export default class Backend {
     const roomId = this.enforceInRoom();
     await this.strategy.update(type, roomId, value);
   }
+  async updateChild(type: string, path: string, value: Object): Promise<void> {
+    const roomId = this.enforceInRoom();
+    await this.strategy.updateChild(type, roomId, path, value);
+  }
   async remove(type: string): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.remove(type, roomId);
@@ -112,6 +116,13 @@ export default class Backend {
     return uid;
   }
 
+  getDefaultMember(): Object {
+    return {
+      name: 'ななしさん',
+      timestamp: Date.now(),
+    };
+  }
+
   /* API Adapters */
   async joinLobby(handler: Handler): Promise<void> {
     await this.strategy.watchLobby(handler);
@@ -132,7 +143,7 @@ export default class Backend {
       };
     }
 
-    const loginResult = await this.strategy.loginRoom(roomId);
+    const loginResult = await this.strategy.loginRoom(roomId, null, this.getDefaultMember());
     if (!loginResult) {
       const {
         isLocked,
@@ -145,7 +156,11 @@ export default class Backend {
         };
       }
 
-      const passwordLoginResult = await this.strategy.loginRoom(roomId, password);
+      const passwordLoginResult = await this.strategy.loginRoom(
+        roomId,
+        password,
+        this.getDefaultMember(),
+      );
       if (!passwordLoginResult) {
         return {
           result: JoinResult.IncorrectPassword,
@@ -180,9 +195,9 @@ export default class Backend {
   }
 
   async createRoom(room, map): Promise<string> {
-    const roomId = await this.strategy.createRoom(room);
+    const roomId = await this.strategy.createRoom(room, this.getDefaultMember());
 
-    await this.strategy.loginRoom(roomId, room.password);
+    await this.strategy.loginRoom(roomId, room.password, this.getDefaultMember());
     await this.strategy.update(DataKeys.maps, roomId, map);
 
     return roomId;
@@ -284,5 +299,15 @@ export default class Backend {
   }
   async removeMemo(id) {
     await this.removeChild('memos', id);
+  }
+
+  async updateMember(name, color) {
+    const data = {
+      color,
+      name,
+      timestamp: Date.now(),
+    };
+    const uid = await this.strategy.getUID();
+    await this.updateChild('members', uid, data);
   }
 }

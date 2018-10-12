@@ -220,6 +220,25 @@ export default class Client {
     const updatedValue = await this.update(type, null, roomId, value);
     this.emitMessage(['update', type, roomId], dataFilter(updatedValue));
   }
+  async onUpdateChild(type: string, roomId: string, childId: string, value: Object) {
+    await this.enforceMember(roomId);
+
+    const oldValue = await datastore.findOne(type, null, { roomId });
+
+    const newValue = _.merge(
+      oldValue,
+      {
+        roomId,
+        [type]: {
+          [childId]: value,
+        },
+      },
+    );
+
+    await datastore.updateOne(type, null, { roomId }, newValue);
+
+    this.emitMessage(['update', type, roomId], newValue[type]);
+  }
   async onRemove(type: string, roomId: string) {
     await this.enforceMember(roomId);
 

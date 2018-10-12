@@ -39,6 +39,9 @@ export default class BackendStrategy {
   async update(type: string, roomId: string, value: Object): Promise<void> {
     throw new Error('Abstract method called');
   }
+  async updateChild(type: string, roomId: string, path: string, value: Object): Promise<void> {
+    throw new Error('Abstract method called');
+  }
   async remove(type: string, roomId: string): Promise<void> {
     throw new Error('Abstract method called');
   }
@@ -68,7 +71,7 @@ export default class BackendStrategy {
     throw new Error('Abstract method called');
   }
 
-  async createRoom(room: Object): Promise<string> {
+  async createRoom(room: Object, member: Object): Promise<string> {
     throw new Error('Abstract method called');
   }
   async getRoom(roomId: string): Promise<?Object> {
@@ -77,7 +80,7 @@ export default class BackendStrategy {
   async updateRoom(roomId: string, value: Object): Promise<void> {
     throw new Error('Abstract method called');
   }
-  async loginRoom(roomId: string, password: ?string): Promise<boolean> {
+  async loginRoom(roomId: string, password: ?string, member: Object): Promise<boolean> {
     throw new Error('Abstract method called');
   }
   async removeRoom(roomId: string): Promise<void> {

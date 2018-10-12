@@ -111,10 +111,6 @@ export default class FirebaseStrategy extends BackendStrategy {
 
     return user;
   }
-  async updateMemberCount(roomId: string): Promise<void> {
-    const data = await this.childRef('members', roomId).once('value');
-    this.update('rooms', roomId, { players: Object.keys(data.val()).length });
-  }
 
   /* Strategy Implements */
 
@@ -158,6 +154,10 @@ export default class FirebaseStrategy extends BackendStrategy {
 
   async update(type: string, roomId: string, value: Object) {
     const ref = this.childRef(type, roomId);
+    await ref.update(value);
+  }
+  async updateChild(type: string, roomId: string, path: string, value: Object) {
+    const ref = this.childRef(type, roomId, path);
     await ref.update(value);
   }
   async remove(type: string, roomId: string) {
@@ -216,7 +216,7 @@ export default class FirebaseStrategy extends BackendStrategy {
   async updateRoom(roomId: string, value: Object) {
     await this.update('rooms', roomId, value);
   }
-  async loginRoom(roomId: string, password: ?string) {
+  async loginRoom(roomId: string, password: ?string, member: Object) {
     const uid = await this.getUID();
 
     if (password) {
@@ -224,9 +224,7 @@ export default class FirebaseStrategy extends BackendStrategy {
     }
 
     try {
-      await this.childRef('members', roomId, uid).set(Date.now());
-
-      this.updateMemberCount(roomId);
+      await this.childRef('members', roomId, uid).set(member);
 
       return true;
     } catch (e) {
