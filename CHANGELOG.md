@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [1.1.0] - 2018-11-06
 ### 追加
 - YouTube埋め込み再生
 
