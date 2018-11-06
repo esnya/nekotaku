@@ -15,7 +15,7 @@
       :video-id="youtubeId"
     )
   div(v-else-if="isurl")
-    iframe(:src="`http://hatenablog.com/embed?url=${uriEncodedText}`")
+    a(:href="node.text" target="_blank") {{node.text}}
   div(v-else) {{node.text}}
 </template>
 
