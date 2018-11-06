@@ -143,6 +143,14 @@ export default {
         },
         {
           type: 'text',
+          text: 'https://twitter.com',
+        },
+        {
+          type: 'text',
+          text: 'https://www.youtube.com/watch?v=4aMLQ-8Cuxs',
+        },
+        {
+          type: 'text',
           text: 'メッセージ05',
         },
       ],

@@ -11,7 +11,7 @@
         from-now.caption(:time="message.createdAt")
       v-divider
       v-card-text.pa-2
-        message-body(:nodes="message.body")
+        message-body(:nodes="message.body" :createdAt="message.createdAt")
 </template>
 
 <script>
