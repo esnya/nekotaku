@@ -65,7 +65,7 @@
     "eslint-plugin-vue-libs": "^2.0.1",
     "eslint-watch": "^3.1.2",
     "file-loader": "^2.0.0",
-    "firebase-tools": "^3.10.1",
+    "firebase-tools": "^6.0.1",
     "flow-bin": "^0.61.0",
     "jest": "^21.1.0",
     "nodemon": "^1.12.0",
