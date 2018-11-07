@@ -70,6 +70,7 @@
 import _ from 'lodash';
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import backend from '../backend';
+import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
 import { IntervalTimer } from '../utilities/timer';
@@ -129,6 +130,9 @@ export default {
     password() {
       return this.roomJoinInfo && this.roomJoinInfo[this.id] && this.roomJoinInfo[this.id].password;
     },
+    title() {
+      return this.room ? `${this.room.title} - ${config.title}` : config.title;
+    },
   },
   methods: {
     ...mapActions([
@@ -150,6 +154,8 @@ export default {
   },
   watch: {
     room({ id }) {
+      document.title = this.title;
+
       const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
       if (roomTab) this.roomTab = roomTab;
     },

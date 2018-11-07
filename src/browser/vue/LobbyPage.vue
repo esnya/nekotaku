@@ -2,7 +2,7 @@
   .app
     v-toolbar.primary(dark fixed)
       img(src="/img/nekokoro32.png")
-      v-toolbar-title ねこ卓
+      v-toolbar-title {{title}}
       v-spacer
       v-menu.mr-0(offset-y)
         v-btn(icon slot="activator")
@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import config from '../config';
 import ChangelogDialog from './ChangelogDialog.vue';
 import FeedbackDialog from './FeedbackDialog.vue';
 import RoomCreateDialog from './RoomCreateDialog.vue';
@@ -40,6 +41,9 @@ export default {
     RoomCreateDialog,
     RoomList,
   },
+  computed: {
+    title: () => config.title,
+  },
   data() {
     return {
       cdOpen: false,
@@ -51,6 +55,7 @@ export default {
     'leaveLobby',
   ]),
   mounted() {
+    document.title = this.title;
     this.joinLobby();
   },
   beforeDestroy() {

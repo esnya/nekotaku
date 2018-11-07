@@ -1,0 +1,21 @@
+{
+  "welcomeMessage": {
+    "id": "201811071707",
+    "title": "「ねこ卓」へようこそ",
+    "body": [
+      "ご意見・ご要望・バグ報告歓迎です。詳細はメニューの「フィードバック」を御覧ください"
+    ],
+    "forceVisible": false
+  },
+  "feedbackFormURL": "https://docs.google.com/forms/d/12MXZ41UemyIqGIjEKqxe-k5fF5tZNHT0HbPwDU6gMS4",  
+  "theme": {
+    "primary": "blue.darken2",
+    "secondary": "grey.darken3",
+    "accent": "blue.accent1",
+    "error": "red.accent2",
+    "info": "blue.base",
+    "success": "green.base",
+    "warning": "amber.base"
+  },
+  "title": "ねこ卓"
+}

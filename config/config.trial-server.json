@@ -21,5 +21,9 @@
   "googleAnalytics": {
     "id": "GOOGLE_ANALYTICS_ID"
   },
-  "feedbackFormURL": "https://docs.google.com/forms/d/12MXZ41UemyIqGIjEKqxe-k5fF5tZNHT0HbPwDU6gMS4"
+  "feedbackFormURL": "https://docs.google.com/forms/d/12MXZ41UemyIqGIjEKqxe-k5fF5tZNHT0HbPwDU6gMS4",
+  "theme": {
+    "primary": "blue.base"
+  },
+  "title": "ねこ卓お試し鯖"
 }
