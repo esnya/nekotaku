@@ -20,20 +20,25 @@ import config from '../config';
 
 const StorageKey = 'nekotaku:welco-memessage:hidden-id';
 
+function getDontShowAgain() {
+  return localStorage.getItem(StorageKey) === config.welcomeMessage.id;
+}
+
 export default {
   computed: {
     welcomeMessage: () => config.welcomeMessage,
-  },
-  data: () => ({
-    open: config.welcomeMessage.forceVisible ||
-      (config.welcomeMessage && localStorage.getItem(StorageKey) !== config.welcomeMessage.id),
-    dontShowAgain: false,
-  }),
-  watch: {
-    dontShowAgain(b) {
-      if (b) localStorage.setItem(StorageKey, this.id);
-      else localStorage.removeItem(StorageKey);
+    dontShowAgain: {
+      get: getDontShowAgain,
+      set(b) {
+        if (b) localStorage.setItem(StorageKey, config.welcomeMessage.id);
+        else localStorage.removeItem(StorageKey);
+      },
     },
+  },
+  data() {
+    return {
+      open: config.welcomeMessage.forceVisible || !getDontShowAgain(),
+    };
   },
 };
 </script>
