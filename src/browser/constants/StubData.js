@@ -147,7 +147,7 @@ export default {
         },
         {
           type: 'text',
-          text: 'https://www.youtube.com/watch?v=4aMLQ-8Cuxs',
+          text: 'https://www.youtube.com',
         },
         {
           type: 'text',

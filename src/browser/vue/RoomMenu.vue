@@ -24,6 +24,12 @@
           v-icon lock_open
         v-list-tile-content
           v-list-tile-title パスワード解除
+      v-list-tile(@click="taspdOpen = true")
+        v-list-tile-action
+          v-icon music_note
+        v-list-tile-content
+          v-list-tile-title TabletopAudio連携
+      v-divider
       v-list-tile(@click="rrdOpen = true")
         v-list-tile-action
           v-icon mdi-settings
@@ -58,6 +64,7 @@
     room-remove-dialog(v-model="rrdOpen")
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
+    tabletop-audio-sound-pad-dialog(v-model="taspdOpen")
 </template>
 
 <script>
@@ -70,6 +77,7 @@ import RoomEditDialog from './RoomEditDialog.vue';
 import RoomPasswordClearDialog from './RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from './RoomPasswordEditDialog.vue';
 import RoomRemoveDialog from './RoomRemoveDialog.vue';
+import TabletopAudioSoundPadDialog from './TabletopAudioSoundPadDialog.vue';
 
 export default {
   components: {
@@ -79,6 +87,7 @@ export default {
     RoomPasswordClearDialog,
     RoomPasswordEditDialog,
     RoomRemoveDialog,
+    TabletopAudioSoundPadDialog,
   },
   computed: mapState([
     'room',
@@ -92,6 +101,7 @@ export default {
       rrdOpen: false,
       cdOpen: false,
       fdOpen: false,
+      taspdOpen: false,
     };
   },
   methods: {

@@ -1,21 +1,17 @@
 <template lang="pug">
-  v-card.my-2(v-if="node.type === 'dice'", v-bind:class="colorOptions.classNames", :dark="colorOptions.dark")
+  v-card.my-2(v-if="mode === 'dice'", v-bind:class="colorOptions.classNames", :dark="colorOptions.dark")
     v-card-title.caption.px-2.pt-2.pb-0 {{node.dice}}
     v-card-text.pa-2 {{node.text}}
-  v-card.my-2(v-else-if="node.type === 'memoOpen'")
+  v-card.my-2(v-else-if="mode === 'memoOpen'")
     v-card-title.caption.px-2.pt-2.pb-0
       v-icon mdi-note
       span {{node.title}}
     v-card-text.pa-2 {{node.text}}
-  div(v-else-if="youtubeId")
-    youtube(
-      ref="youtube"
-      width="100%"
-      :resize="true"
-      :video-id="youtubeId"
-    )
-  div(v-else-if="isurl")
-    a(:href="node.text" target="_blank") {{node.text}}
+  div(v-else-if="mode === 'youtube'")
+    message-body-node-youtube-player(:video-id="youtubeId")
+  div(v-else-if="mode === 'link'")
+    iframe(:src="`https://hatenablog-parts.com/embed?url=${uriEncodedText}`")
+    //- a(:href="node.text" target="_blank") {{node.text}}
   div(v-else) {{node.text}}
 </template>
 
@@ -28,8 +24,12 @@ iframe
 <script>
 import isUrl from 'is-url';
 import getYoutubeId from 'get-youtube-id';
+import MessageBodyNodeYoutubePlayer from './MessageBodyNodeYoutubePlayer.vue';
 
 export default {
+  components: {
+    MessageBodyNodeYoutubePlayer,
+  },
   computed: {
     colorOptions() {
       const { node } = this;
@@ -50,12 +50,18 @@ export default {
     uriEncodedText() {
       return encodeURIComponent(this.node.text);
     },
+    mode() {
+      if (this.node.type === 'dice') return 'dice';
+      else if (this.node.type === 'memoOpen') return 'memoOpen';
+      else if (this.youtubeId) return 'youtube';
+      else if (this.isurl) return 'link';
+      return 'text';
+    },
   },
-  mounted() {
-    this.$nextTick(() => {
-      const isNewMessage = Date.now() - this.createdAt < 1000 * 30;
-      if (isNewMessage && this.$refs.youtube) this.$refs.youtube.player.playVideo();
-    });
+  data() {
+    return {
+      play: Date.now() - this.createdAt < 1000 * 30,
+    };
   },
   props: {
     node: {
