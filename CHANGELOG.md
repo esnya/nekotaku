@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [1.2.0] - 2018-11-07
 ### 新機能
 - 設定項目の追加
   - `welcomeMessage.forceVisible` : ウェルカムメッセージを必ず表示させませす。
