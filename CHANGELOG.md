@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [1.3.0] - 2018-11-08
 ### 新機能
 - URLのブログカード表示を追加
 - 卓に TabletopAudio SoundPad 連携追加
