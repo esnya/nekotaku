@@ -111,3 +111,63 @@ https://nekotaku.nekometer.info
   ```
   $ node index.js
   ```
+
+## 設定 / Configuration
+### `config/config.json`
+```js
+{
+  "backend": { // Required
+    "type": "stub", // "stub" or "firebase" or "socket"
+
+    // Firebase Configuration
+    "apiKey": "Your API Key",
+    "authDomain": "Your Auth Domain",
+    "databaseURL": "Your Database URL",
+    "projectId": "Your Project Id",
+    "storageBucket": "Your Storage Bucket",
+    "messagingSenderId": "Your Messaging Sender Id"
+  },
+  "welcomeMessage": { // Optional
+    "id": "201709130610", // Update to new id to visible message again
+    "title": "「ねこ卓」へようこそ",
+    "body": [
+      "ご意見・ご要望・バグ報告歓迎です。詳細はメニューの「フィードバック」を御覧ください"
+    ],
+    "forceVisible": false
+  },
+  "feedbackFormURL": "http://url.to.your.form",
+  "theme": { // Optional
+    "primary": "blue.darken2", // or hex color code "#FF0000"
+    "secondary": "grey.darken3",
+    "accent": "blue.accent1",
+    "error": "red.accent2",
+    "info": "blue.base",
+    "success": "green.base",
+    "warning": "amber.base"
+  },
+  "googleAnalytics": { // Optional
+    "id": "GOOGLE_ANALYTICS_ID"
+  },
+  "title": "ねこ卓" // Optional
+}
+```
+
+### `config/server.json`
+```js
+{
+  "datastore": { // Required
+    "type": "mongodb",
+
+    "url": "mongodb://localhost:27017/nekotaku"
+  },
+  "http": { // Required
+    "host": "0.0.0.0",
+    "port": 8080
+  },
+  "file": { // Required
+    "path": "./data/files",
+    "maxSize": "10MB"
+  },
+  "loglevel": "INFO" // Required
+}
+```
