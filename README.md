@@ -82,7 +82,7 @@ https://nekotaku.nekometer.info
   $ NODE_ENV=production yarn build
   ```
 
-6. Deploy `<your-nekitaku-directory>/public` into your server.
+6. Deploy `<your-nekotaku-directory>/public` into your server.
 
 ### D. Standalone Server with MongoDB
 1. Requirements:
