@@ -68,7 +68,9 @@
 
 <script>
 import _ from 'lodash';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import {
+  mapActions, mapGetters, mapMutations, mapState,
+} from 'vuex';
 import backend from '../backend';
 import config from '../config';
 import * as RouteNames from '../constants/route';

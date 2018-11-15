@@ -2,7 +2,9 @@
   "datastore": {
     "type": "mongodb",
 
-    "url": "mongodb://localhost:27017/nekotaku"
+    "url": "mongodb://localhost:27017",
+    "dbname": "nekotaku",
+    "useNewUrlParser": true
   },
   "http": {
     "host": "localhost",

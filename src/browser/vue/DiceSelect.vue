@@ -5,9 +5,9 @@
     item-text="gameName"
     item-value="filename"
     :items="diceBotDescs"
+    :menu-props="{zIndex:10000}"
     :rules="[notEmpty]"
     :value="value"
-    :z-index="10000"
     @input="$emit('input', $event)"
   )
 </template>

@@ -1,7 +1,7 @@
+import '@babel/polyfill';
 import 'vue-dice-component/lib/dice.css';
 import 'vue-simple-markdown/dist/vue-simple-markdown.css';
-import 'vuetify/src/stylus/main.styl';
-import 'mdi/css/materialdesignicons.min.css';
+import 'vuetify/dist/vuetify.min.css';
 
 import _ from 'lodash';
 import moment from 'moment';
@@ -60,6 +60,6 @@ main();
 
 window.addEventListener('load', () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/serviceWorker.js');
+    navigator.serviceWorker.register('/service-worker.js');
   }
 });

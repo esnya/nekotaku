@@ -29,6 +29,7 @@ export default class MapCreateModeStrategy extends MapModeStrategy {
       offset,
     });
   }
+
   onMapMove(e: MouseTouchEvent) {
     const { selected } = this.c.mapControl;
     if (!selected) return;

@@ -1,6 +1,6 @@
-describe('BackendStrategy', () => {
-  const BackendStrategy = require('./BackendStrategy').default;
+import BackendStrategy from '@/browser/backend/BackendStrategy';
 
+describe('BackendStrategy', () => {
   const strategy = new BackendStrategy({ type: 'test' });
   (Object.getOwnPropertyNames(BackendStrategy.prototype))
     .filter(key => key !== 'constructor')

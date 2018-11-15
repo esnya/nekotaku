@@ -35,11 +35,10 @@ export default {
       'messages',
     ]),
     portraits: _.throttle(function portraits() {
-      const characterPortraits =
-        _(this.characters)
-          .map(c => [c.name, _.mapValues(c.portrait, p => p && p.url)])
-          .fromPairs()
-          .value();
+      const characterPortraits = _(this.characters)
+        .map(c => [c.name, _.mapValues(c.portrait, p => p && p.url)])
+        .fromPairs()
+        .value();
 
       return _(this.messages.slice())
         .reverse()

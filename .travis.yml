@@ -10,13 +10,13 @@ before_script:
 - cp config/server.mongodb.json config/server.json
 script:
 - yarn lint
-- yarn test -- --coverage --coverageReporters lcov
+- yarn cover
 - yarn build
 after_success:
 - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls;
   fi
 before_deploy:
-- rm -rf public/assets
+- rm -rf dist
 - node scripts/genFirebaseConfig.js > config/config.json
 - NODE_ENV=production yarn build
 deploy:

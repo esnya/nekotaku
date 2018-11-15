@@ -41,6 +41,8 @@
 </template>
 
 <script>
+/* eslint vue/no-side-effects-in-computed-properties: warn */
+
 import { mapActions, mapMutations, mapState } from 'vuex';
 import getMapModeStrategy from '../map';
 import Loading from './Loading.vue';

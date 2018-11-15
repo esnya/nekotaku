@@ -6,7 +6,7 @@
       v-tabs(
         light
         :value="chatConfigList.findIndex(c => c.id === selectedChatId)"
-        @input="selectChatConfig(chatConfigList[$event].id)"
+        @change="selectChatConfig(chatConfigList[$event].id)"
       )
         v-tabs-slider(color="primary")
         v-tab(

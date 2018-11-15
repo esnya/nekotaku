@@ -1,4 +1,6 @@
-import { configure, connectLogger, getLogger, levels } from 'log4js';
+import {
+  configure, connectLogger, getLogger, levels,
+} from 'log4js';
 import config from './config';
 
 configure({

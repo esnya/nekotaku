@@ -1,8 +1,11 @@
+/* eslint class-methods-use-this: off */
+
 import { align } from '../utilities/entity';
 import Vec2 from '../utilities/Vec2';
 
 class ShapeCreateStrategy {
   onCreate() {}
+
   onMove() {}
 }
 
@@ -13,6 +16,7 @@ class LineCreateStrategy extends ShapeCreateStrategy {
       ry: 0,
     };
   }
+
   onMove(shape: Object, pos: Vec2, offset: Vec2) {
     const size = pos.sub(offset).map(a => align(a, 0.5));
     const [x, y] = offset.add(size.div(2)).v;
@@ -31,6 +35,7 @@ class CircleCreateStrategy extends ShapeCreateStrategy {
       radius: 0.5,
     };
   }
+
   onMove(shape: Object, pos: Vec2) {
     const { x, y } = shape;
     const radius = Math.max(align(pos.sub(new Vec2(x, y)).len(), 0.5));
@@ -47,6 +52,7 @@ class RectCreateStrategy extends ShapeCreateStrategy {
       height: 1,
     };
   }
+
   onMove(shape: Object, pos: Vec2, offset: Vec2) {
     const size = pos.sub(offset).map(a => Math.max(align(Math.abs(a), 1), 1));
     const rectPos = offset.add(size.div(2));

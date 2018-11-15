@@ -1,3 +1,5 @@
+/* eslint class-methods-use-this: off */
+
 import BackendStrategy, { Handler } from './BackendStrategy';
 import * as JoinResult from './JoinResult';
 
@@ -68,27 +70,33 @@ export default class Backend {
     const roomId = this.enforceInRoom();
     await this.strategy.update(type, roomId, value);
   }
+
   async updateChild(type: string, path: string, value: Object): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.updateChild(type, roomId, path, value);
   }
+
   async remove(type: string): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.remove(type, roomId);
   }
+
   async addChild(type: string, value: Object): Promise<string> {
     const roomId = this.enforceInRoom();
     const childId = await this.strategy.addChild(type, roomId, value);
     return childId;
   }
+
   async changeChild(type: string, childId: string, value: Object): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.changeChild(type, roomId, childId, value);
   }
+
   async changeChildValue(type: string, childId: string, key: string, value: any): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.changeChildValue(type, roomId, childId, key, value);
   }
+
   async removeChild(type: string, childId: string): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.removeChild(type, roomId, childId);
@@ -99,6 +107,7 @@ export default class Backend {
     const url = await this.strategy.uploadFile(roomId, path, file);
     return url;
   }
+
   async deleteFile(path: string): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.deleteFile(roomId, path);
@@ -127,6 +136,7 @@ export default class Backend {
   async joinLobby(handler: Handler): Promise<void> {
     await this.strategy.watchLobby(handler);
   }
+
   async leaveLobby(): Promise<void> {
     await this.strategy.unwatchLobby();
   }
@@ -179,6 +189,7 @@ export default class Backend {
       result: JoinResult.OK,
     };
   }
+
   async leaveRoom(): Promise<void> {
     const roomId = this.enforceInRoom();
 
@@ -188,6 +199,7 @@ export default class Backend {
 
     this.roomId = null;
   }
+
   async leaveRoomHard(): Promise<void> {
     const roomId = this.enforceInRoom();
     await this.strategy.removeMe(roomId);
@@ -202,6 +214,7 @@ export default class Backend {
 
     return roomId;
   }
+
   async removeRoom(map: { backgroundImage: ?string }, characters: { id: string }[]): Promise<void> {
     const roomId = await this.enforceInRoom();
 
@@ -217,13 +230,16 @@ export default class Backend {
 
     await this.strategy.removeRoom(roomId);
   }
+
   async updateRoom(key, value): Promise<void> {
     const roomId = await this.enforceInRoom();
     await this.strategy.updateRoom(roomId, { [key]: value });
   }
+
   async clearRoomPassword(): Promise<void> {
     await this.updateRoomPassword(null);
   }
+
   async updateRoomPassword(password): Promise<void> {
     await this.updateRoom('password', password);
   }
@@ -231,10 +247,12 @@ export default class Backend {
   async updateMap(key, value): Promise<void> {
     await this.update(DataKeys.maps, { [key]: value });
   }
+
   async clearMapBackgroundImage(): Promise<void> {
     this.deleteFile(FileKeys.mapBackgroundImage);
     await this.update(DataKeys.maps, { backgroundImage: null });
   }
+
   async updateMapBackgroundImage(file): Promise<void> {
     const url = await this.uploadFile(FileKeys.mapBackgroundImage, file);
     await this.update(DataKeys.maps, { backgroundImage: url });
@@ -249,28 +267,35 @@ export default class Backend {
     const id = await this.addChild(DataKeys.characters, character);
     return id;
   }
+
   async updateCharacter(id, key, value): Promise<string> {
     await this.changeChild(DataKeys.characters, id, { [key]: value });
   }
+
   async removeCharacter(id): Promise<void> {
     await this.clearCharacterFiles(id);
     await this.removeChild(DataKeys.characters, id);
   }
+
   async moveCharacter(id, x, y, z): Promise<void> {
     await this.changeChild(DataKeys.characters, id, { x, y, z });
   }
+
   async clearCharacterIcon(id): Promise<void> {
     await this.deleteFile(FileKeys.characterIcon(id));
     await this.updateCharacter(id, 'icon', null);
   }
+
   async clearCharacterPortrait(id, key): Promise<void> {
     await this.deleteFile(FileKeys.characterPortrait(id, key));
     await this.changeChildValue(DataKeys.characters, id, DataKeys.characterPortraitKey(key), null);
   }
+
   async updateCharacterIcon(id, file) {
     const url = await this.uploadFile(FileKeys.characterIcon(id), file);
     await this.updateCharacter(id, 'icon', url);
   }
+
   async updateCharacterPortrait(id, key, file) {
     const url = await this.uploadFile(FileKeys.characterPortrait(id, key), file);
     await this.changeChildValue(DataKeys.characters, id, DataKeys.characterPortraitKey(key), url);
@@ -280,12 +305,15 @@ export default class Backend {
     const id = await this.addChild('shapes', data);
     return id;
   }
+
   async updateShape(id, data) {
     await this.changeChild('shapes', id, data);
   }
+
   async removeShape(id) {
     await this.removeChild('shapes', id);
   }
+
   async moveShape(id, x, y, z) {
     await this.updateShape(id, { x, y, z });
   }
@@ -294,9 +322,11 @@ export default class Backend {
     const id = await this.addChild('memos', data);
     return id;
   }
+
   async updateMemo(id, data) {
     await this.changeChild('memos', id, data);
   }
+
   async removeMemo(id) {
     await this.removeChild('memos', id);
   }

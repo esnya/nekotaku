@@ -1,8 +1,11 @@
+/* eslint class-methods-use-this: off */
+
 import { EventEmitter } from 'events';
 import _ from 'lodash';
 import shortid from 'shortid';
+import { fake } from 'sinon';
 
-const initializeApp = jest.fn();
+export const initializeApp = fake();
 
 const UID = 'local-uid';
 const authEventBus = new EventEmitter();
@@ -10,10 +13,10 @@ const mockUser = {
   uid: UID,
 };
 const mockAuth = {
-  signInAnonymously: jest.fn(() => authEventBus.emit('auth_state_changed', mockUser)),
-  onAuthStateChanged: jest.fn((listener: any => any) => authEventBus.on('auth_state_changed', listener)),
+  signInAnonymously: fake(() => authEventBus.emit('auth_state_changed', mockUser)),
+  onAuthStateChanged: fake((listener: any => any) => authEventBus.on('auth_state_changed', listener)),
 };
-const auth = jest.fn().mockReturnValue(mockAuth);
+export const auth = fake.returns(mockAuth);
 
 function getKeys(path: string): string[] {
   return path.replace(/^\//, '').split(/\//g);
@@ -27,6 +30,7 @@ function getParent(path: string): string {
 
 class DatabaseStore {
   data: Object;
+
   constructor() {
     this.data = {};
   }
@@ -36,6 +40,7 @@ class DatabaseStore {
 
     return getKeys(path).reduce((prev, curr) => (prev || {})[curr], this.data);
   }
+
   set(path: string, data: any) {
     // console.log('store.set', path, data);
 
@@ -59,6 +64,7 @@ class DatabaseStore {
         : data;
     }
   }
+
   remove(path: string) {
     const target = this.get(getParent(path));
     const lastKey = getLastKey(path);
@@ -69,6 +75,7 @@ const databaseStore = new DatabaseStore();
 const databaseEventBus = new EventEmitter();
 class DatabaseSnapshot {
   path: string;
+
   constructor(path: string, data: any) {
     this.path = path;
     this.data = data;
@@ -110,9 +117,11 @@ class DatabaseReference {
   getEventName(event: string) {
     return `${this.path}@${event}`;
   }
+
   emit(event: string, snapshot: DatabaseSnapshot) {
     databaseEventBus.emit(this.getEventName(event), snapshot);
   }
+
   getSnapshot() {
     return new DatabaseSnapshot(this.path, databaseStore.get(this.path));
   }
@@ -125,6 +134,7 @@ class DatabaseReference {
     if (!this.path || this.path === '/') return null;
     return new DatabaseReference(getParent(this.path));
   }
+
   child(path: string) {
     return new DatabaseReference(`${this.path}/${path}`);
   }
@@ -136,6 +146,7 @@ class DatabaseReference {
   push(): DatabaseReference {
     return new DatabaseReference(`${this.path}/${shortid()}`);
   }
+
   async set(data: any) {
     if (!this.isWritable()) throw new Error('Can not write');
 
@@ -154,6 +165,7 @@ class DatabaseReference {
       target = target.parent();
     }
   }
+
   async update(data: any) {
     const oldData = databaseStore.get(this.path);
     await this.set({
@@ -161,6 +173,7 @@ class DatabaseReference {
       ...data,
     });
   }
+
   async remove() {
     if (!this.isWritable()) throw new Error('Can not write');
 
@@ -174,7 +187,7 @@ class DatabaseReference {
     if (event === 'value') {
       listener(this.getSnapshot());
       return true;
-    } else if (event === 'child_added') {
+    } if (event === 'child_added') {
       _(databaseStore.get(this.path)).forEach((data, key) => {
         listener(new DatabaseSnapshot(`${this.path}/${key}`, data));
       });
@@ -182,10 +195,12 @@ class DatabaseReference {
     }
     return false;
   }
+
   on(event: string, listener: any => any) {
     databaseEventBus.on(this.getEventName(event), listener);
     this.emitImmediateEvent(event, listener);
   }
+
   once(event: string, listener: Function): Promise<any> {
     let listenerWithPromise;
     const promise = new Promise((resolve) => {
@@ -201,6 +216,7 @@ class DatabaseReference {
 
     return promise;
   }
+
   off(event: string, listener?: any => any) {
     if (listener) {
       databaseEventBus.removeListener(event, listener);
@@ -210,9 +226,9 @@ class DatabaseReference {
   }
 }
 const mockDatabase = {
-  ref: jest.fn(path => new DatabaseReference(path)),
+  ref: fake(path => new DatabaseReference(path)),
 };
-const database = jest.fn().mockReturnValue(mockDatabase);
+export const database = fake.returns(mockDatabase);
 
 const storageStore = {};
 class StorageObjectNotFoundError extends Error {
@@ -223,6 +239,7 @@ class StorageObjectNotFoundError extends Error {
 }
 class StorageReference {
   path: string;
+
   constructor(path?: string) {
     this.path = path || '/';
   }
@@ -232,6 +249,7 @@ class StorageReference {
     storageStore[this.path] = true;
     return {};
   }
+
   async delete() {
     // console.log('storage.delete', this.path);
     if (!storageStore[this.path]) throw new StorageObjectNotFoundError('File not found');
@@ -244,11 +262,4 @@ class StorageReference {
 const mockStorage = {
   ref: (path?: string) => new StorageReference(path),
 };
-const storage = jest.fn().mockReturnValue(mockStorage);
-
-module.exports = {
-  initializeApp,
-  database,
-  auth,
-  storage,
-};
+export const storage = fake.returns(mockStorage);

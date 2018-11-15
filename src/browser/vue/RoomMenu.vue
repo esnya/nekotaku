@@ -19,7 +19,10 @@
           v-icon lock
         v-list-tile-content
           v-list-tile-title パスワード設定
-      v-list-tile(:disabled="!room.isLocked", @click="() => { if (room.isLocked) { rpcdOpen = true; } }")
+      v-list-tile(
+        :disabled="!room.isLocked"
+        @click="() => { if (room.isLocked) { rpcdOpen = true; } }"
+      )
         v-list-tile-action
           v-icon lock_open
         v-list-tile-content

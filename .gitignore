@@ -1,7 +1,9 @@
 /.firebase
+/.nyc_output
 /config/config.json
 /config/server.json
 /coverage
+/dist
 /lib
 /node_modules
 /public/assets

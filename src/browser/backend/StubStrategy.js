@@ -1,4 +1,4 @@
-/* eslint no-console: off */
+/* eslint no-console: off, class-methods-use-this: off */
 
 import _ from 'lodash';
 import EventEmitter from 'eventemitter3';
@@ -60,39 +60,48 @@ export default class StubStrategy extends BackendStrategy {
   on(event: string, handler: Handler) {
     this.eventBus.on(event, handler);
   }
+
   emit(event: string, data: any) {
     this.eventBus.emit(event, data);
   }
+
   off(event: string) {
     this.eventBus.off(event);
   }
+
   get(type: string, roomId: string): Object | Object[] {
     return this.data[type][roomId];
   }
+
   getObject(type: string, roomId: string): Object {
     const data = this.get(type, roomId);
     if (!(data instanceof Object)) throw new TypeError(`${type}.${roomId} is not Object`);
     return data;
   }
+
   getList(type: string, roomId: string): Object[] {
     const data = this.get(type, roomId);
     if (!(Array.isArray(data))) throw new TypeError(`${type}.${roomId} is not Array`);
     return data;
   }
+
   set(type: string, roomId: string, value: Object | Object[]) {
     this.data[type][roomId] = value;
     // console.log(this.data);
   }
+
   setObject(type: string, roomId: string, value: Object) {
     if (!(value instanceof Object)) throw new TypeError(`${type}.${roomId} is not Object`);
     this.set(type, roomId, value);
     // console.log(this.data);
   }
+
   setList(type: string, roomId: string, value: Object[]) {
     if (!(Array.isArray(value))) throw new TypeError(`${type}.${roomId} is not Array`);
     this.set(type, roomId, value);
     // console.log(this.data);
   }
+
   findChild(type: string, roomId: string, childId: string): Object {
     return this.getList(type, roomId).find(i => i.id === childId);
   }
@@ -117,28 +126,34 @@ export default class StubStrategy extends BackendStrategy {
       });
     }, Delay);
   }
+
   async unwatchLobby() {
     ListEvents.forEach((key) => {
       const event = `rooms:${key}`;
       this.off(event);
     });
   }
+
   async watchRoom(roomId: string, handler: Handler) {
     this.on('room:update', v => handler('room:update', roomFilter(v)));
     handler('room:update', roomFilter(this.findRoom(roomId)));
   }
+
   async unwatchRoom() {
     this.off('room:update');
   }
+
   async watchObject(type: string, roomId: string, handler: Handler) {
     const event = `${type}:update`;
     this.on(event, v => handler(event, v));
     handler(event, this.getObject(type, roomId));
   }
+
   async unwatchObject(type: string) {
     const event = `${type}:update`;
     this.off(event);
   }
+
   async watchList(type: string, roomId: string, handler: Handler) {
     ListEvents.forEach((key) => {
       const event = `${type}:${key}`;
@@ -150,6 +165,7 @@ export default class StubStrategy extends BackendStrategy {
       });
     }, Delay);
   }
+
   async unwatchList(type: string) {
     ListEvents.forEach((key) => {
       const event = `${type}:${key}`;
@@ -164,14 +180,17 @@ export default class StubStrategy extends BackendStrategy {
     });
     this.emit(`${type}:update`, this.getObject(type, roomId));
   }
+
   async remove(type: string, roomId: string) {
     this.data[type][roomId] = null;
   }
+
   async updateChild(type: string, roomId: string, path: string, value: Object) {
     const key = `${type}/${roomId}/${path}`.replace(/\//g, '.');
     _.set(this.data, key, value);
     this.emit(`${type}:update`, _.get(this.data, `${type}.${roomId}`));
   }
+
   async addChild(type: string, roomId: string, value: any) {
     const id = shortid();
 
@@ -188,6 +207,7 @@ export default class StubStrategy extends BackendStrategy {
 
     return id;
   }
+
   async changeChild(type: string, roomId: string, childId: string, value: any) {
     const data = {
       ...this.findChild(type, roomId, childId),
@@ -198,6 +218,7 @@ export default class StubStrategy extends BackendStrategy {
 
     // console.log(this.data);
   }
+
   async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
     const data = {
       ...this.findChild(type, roomId, childId),
@@ -207,6 +228,7 @@ export default class StubStrategy extends BackendStrategy {
 
     // console.log(this.data);
   }
+
   async removeChild(type: string, roomId: string, childId: string) {
     const data = this.findChild(type, roomId, childId);
     this.setList(type, roomId, this.getList(type, roomId).filter(i => i.id !== childId));
@@ -220,6 +242,7 @@ export default class StubStrategy extends BackendStrategy {
     this.files[`${roomId}/${path}`] = url;
     return url;
   }
+
   async deleteFile(roomId: string, path: string) {
     const key = `${roomId}/${path}`;
     const url = this.files[key];
@@ -258,11 +281,13 @@ export default class StubStrategy extends BackendStrategy {
 
     return id;
   }
+
   async getRoom(roomId: string) {
     const room = this.findRoom(roomId);
     if (!room) return null;
     return roomFilter(room);
   }
+
   async updateRoom(roomId: string, value: Object) {
     const data = {
       ...this.findRoom(roomId),
@@ -272,6 +297,7 @@ export default class StubStrategy extends BackendStrategy {
     this.emit('rooms:change', data);
     this.emit('room:update', data);
   }
+
   async loginRoom(roomId: string, password: ?string, member: Object) {
     const uid = await this.getUID();
     const room = this.findRoom(roomId);
@@ -284,6 +310,7 @@ export default class StubStrategy extends BackendStrategy {
 
     return true;
   }
+
   async removeRoom(roomId: string) {
     const room = this.findRoom(roomId);
     this.data.rooms = this.data.rooms.filter(r => r.id !== roomId);

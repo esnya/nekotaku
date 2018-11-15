@@ -9,7 +9,7 @@ export default app;
 
 app.use(connect);
 
-const PublicPath = path.join(__dirname, '../../public');
+const PublicPath = path.join(__dirname, '../../dist');
 const FilePath = config.file.path;
 
 app.use(express.static(PublicPath));

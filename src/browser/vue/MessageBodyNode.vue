@@ -1,5 +1,9 @@
 <template lang="pug">
-  v-card.my-2(v-if="mode === 'dice'", v-bind:class="colorOptions.classNames", :dark="colorOptions.dark")
+  v-card.my-2(
+    :class="colorOptions.classNames"
+    :dark="colorOptions.dark"
+    v-if="mode === 'dice'"
+  )
     v-card-title.caption.px-2.pt-2.pb-0 {{node.dice}}
     v-card-text.pa-2 {{node.text}}
   v-card.my-2(v-else-if="mode === 'memoOpen'")
@@ -36,7 +40,7 @@ export default {
 
       if (node.type === 'dice') {
         if (node.text.match(/成功$/)) return { classNames: { green: true }, dark: true };
-        else if (node.text.match(/失敗$/)) return { classNames: { red: true }, dark: true };
+        if (node.text.match(/失敗$/)) return { classNames: { red: true }, dark: true };
       }
 
       return {};
@@ -52,9 +56,9 @@ export default {
     },
     mode() {
       if (this.node.type === 'dice') return 'dice';
-      else if (this.node.type === 'memoOpen') return 'memoOpen';
-      else if (this.youtubeId) return 'youtube';
-      else if (this.isurl) return 'link';
+      if (this.node.type === 'memoOpen') return 'memoOpen';
+      if (this.youtubeId) return 'youtube';
+      if (this.isurl) return 'link';
       return 'text';
     },
   },

@@ -1,3 +1,5 @@
+/* eslint class-methods-use-this: off */
+
 import fs from 'mz/fs';
 import _ from 'lodash';
 import path from 'path';
@@ -83,10 +85,12 @@ export default class Client {
     system.trace('join', ...keys);
     this.socket.join(joinKeys(...keys));
   }
+
   leave(...keys: string[]) {
     system.trace('leave', ...keys);
     this.socket.leave(joinKeys(...keys));
   }
+
   emitMessage(eventKeys: string[], value: Object, broadcast: boolean = true) {
     const event = joinKeys(...eventKeys);
 
@@ -100,10 +104,12 @@ export default class Client {
       this.socket.emit('message', event, filtered);
     }
   }
+
   resolve(requestId: string, value: Object) {
     system.trace('emit', 'response:resolve', requestId, value);
     this.socket.emit('response:resolve', requestId, value);
   }
+
   reject(requestId: string, error: Error) {
     system.trace('emit', 'response:reject', requestId, error);
     this.socket.emit('response:reject', requestId, error.toString());
@@ -134,6 +140,7 @@ export default class Client {
     const updatedValue = await datastore.findOne(type, targetId, query);
     return updatedValue;
   }
+
   async insertMember(roomId: string): Promise<Object> {
     const uid = this.getUID();
     const now = Date.now();
@@ -166,6 +173,7 @@ export default class Client {
 
     return updatedValue;
   }
+
   async isMemberOf(roomId: string): Promise<?number> {
     const uid = this.getUID();
 
@@ -174,6 +182,7 @@ export default class Client {
 
     return value.members[uid];
   }
+
   async enforceMember(roomId: string) {
     const isMember = await this.isMemberOf(roomId);
     if (!isMember) {
@@ -181,6 +190,7 @@ export default class Client {
       throw new Error('Premission denied');
     }
   }
+
   async updateRoom(roomId: string, value: Object): Promise<void> {
     await this.enforceMember(roomId);
 
@@ -192,6 +202,7 @@ export default class Client {
   async onSetUID(uid: string) {
     this.uid = uid;
   }
+
   async onWatch(event: string, type: string, roomId: ?string, silent: boolean = false) {
     if (roomId) await this.enforceMember(roomId);
 
@@ -210,6 +221,7 @@ export default class Client {
       if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : filter(data), false);
     }
   }
+
   onUnwatch(event: string, type: string, roomId: ?string) {
     this.leave(event, type, roomId);
   }
@@ -220,6 +232,7 @@ export default class Client {
     const updatedValue = await this.update(type, null, roomId, value);
     this.emitMessage(['update', type, roomId], dataFilter(updatedValue));
   }
+
   async onUpdateChild(type: string, roomId: string, childId: string, value: Object) {
     await this.enforceMember(roomId);
 
@@ -239,12 +252,14 @@ export default class Client {
 
     this.emitMessage(['update', type, roomId], newValue[type]);
   }
+
   async onRemove(type: string, roomId: string) {
     await this.enforceMember(roomId);
 
     await datastore.remove(type, null, { roomId });
     this.emitMessage(['update', type, roomId], null);
   }
+
   async onAddChild(type: string, roomId: string, value: Object) {
     await this.enforceMember(roomId);
 
@@ -258,6 +273,7 @@ export default class Client {
 
     return childId;
   }
+
   async onChangeChild(type: string, roomId: string, childId: string, value: Object) {
     await this.enforceMember(roomId);
 
@@ -276,6 +292,7 @@ export default class Client {
     await datastore.updateOne(type, childId, { roomId }, newValue);
     this.emitMessage(['change', type, roomId], itemFilter(newValue));
   }
+
   async onChangeChildValue(
     type: string,
     roomId: string,
@@ -286,6 +303,7 @@ export default class Client {
     const newValue = key2obj(key, value);
     await this.onChangeChild(type, roomId, childId, newValue);
   }
+
   async onRemoveChild(type: string, roomId: string, childId: string) {
     await this.enforceMember(roomId);
 
@@ -306,6 +324,7 @@ export default class Client {
 
     return `/files/${fileId}`;
   }
+
   async onDeleteFile(roomId: string, filePath: string) {
     await this.enforceMember(roomId);
 
@@ -341,13 +360,16 @@ export default class Client {
 
     return roomId;
   }
+
   async onGetRoom(roomId: string) {
     const room = await datastore.findOne('rooms', roomId);
     return room && roomFilter(room);
   }
+
   async onUpdateRoom(roomId: string, value: Object) {
     await this.updateRoom(roomId, value);
   }
+
   async onLoginRoom(roomId: string, password: ?string) {
     const member = await this.isMemberOf(roomId);
     if (member) {
@@ -364,6 +386,7 @@ export default class Client {
 
     return true;
   }
+
   async onRemoveRoom(roomId: string) {
     await this.enforceMember(roomId);
 

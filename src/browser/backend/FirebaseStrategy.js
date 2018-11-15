@@ -1,7 +1,10 @@
 /* eslint no-return-await: off */
 import EventEmitter from 'eventemitter3';
 import _ from 'lodash';
-import firebase from 'firebase';
+import firebase from '@firebase/app';
+import '@firebase/auth';
+import '@firebase/database';
+import '@firebase/storage';
 import BackendStrategy, { type Handler } from './BackendStrategy';
 
 function dataFilter(data) {
@@ -84,6 +87,7 @@ export default class FirebaseStrategy extends BackendStrategy {
   databaseRef(path: string): firebase.database.Reference {
     return this.database.ref(path);
   }
+
   childRef(
     type: string,
     roomId: string,
@@ -92,16 +96,20 @@ export default class FirebaseStrategy extends BackendStrategy {
   ): firebase.database.Reference {
     return this.databaseRef([type, roomId, childId, key].filter(a => a).join('/'));
   }
+
   roomRef(roomId: string): firebase.database.Referenct {
     return this.childRef('rooms', roomId);
   }
+
   async getRoomSnapshot(roomId: string): Promise<firebase.database.DataSnapshot> {
     const dataSnapshot = await this.roomRef(roomId).once('value');
     return dataSnapshot;
   }
+
   storageRef(roomId: string, path: string): firebase.storeage.Reference {
     return this.storage.ref(`${roomId}/${path}`);
   }
+
   async getUser(): Promise<firebase.auth.UserCredential> {
     if (this.user) return this.user;
 
@@ -122,31 +130,38 @@ export default class FirebaseStrategy extends BackendStrategy {
   async watchLobby(handler: Handler) {
     watchList(this.roomsRef, 'rooms', handler, roomFilter);
   }
+
   async unwatchLobby() {
     unwatchList(this.roomsRef);
   }
+
   async watchRoom(roomId: string, handler: Handler) {
     const ref = this.childRef('rooms', roomId);
     const event = 'room:update';
     ref.on('value', v => handler(event, roomFilter(v)));
   }
+
   async unwatchRoom(roomId: string) {
     const ref = this.childRef('rooms', roomId);
     ref.off('value');
   }
+
   async watchObject(type: string, roomId: string, handler: Handler) {
     const ref = this.childRef(type, roomId);
     const event = `${type}:update`;
     ref.on('value', v => handler(event, dataFilter(v)));
   }
+
   async unwatchObject(type: string, roomId: string) {
     const ref = this.childRef(type, roomId);
     ref.off('value');
   }
+
   async watchList(type: string, roomId: string, handler: Handler) {
     const ref = this.childRef(type, roomId);
     watchList(ref, type, handler);
   }
+
   async unwatchList(type: string, roomId: string) {
     const ref = this.childRef(type, roomId);
     unwatchList(ref);
@@ -156,27 +171,33 @@ export default class FirebaseStrategy extends BackendStrategy {
     const ref = this.childRef(type, roomId);
     await ref.update(value);
   }
+
   async updateChild(type: string, roomId: string, path: string, value: Object) {
     const ref = this.childRef(type, roomId, path);
     await ref.update(value);
   }
+
   async remove(type: string, roomId: string) {
     const ref = this.childRef(type, roomId);
     await ref.remove();
   }
+
   async addChild(type: string, roomId: string, value: string) {
     const ref = this.childRef(type, roomId).push();
     ref.set(value);
     return ref.key;
   }
+
   async changeChild(type: string, roomId: string, childId: string, value: Object) {
     const ref = this.childRef(type, roomId, childId);
     await ref.update(value);
   }
+
   async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
     const ref = this.childRef(type, roomId, childId, key);
     await ref.set(value);
   }
+
   async removeChild(type: string, roomId: string, childId: string): Promise<void> {
     const ref = this.childRef(type, roomId, childId);
     await ref.remove();
@@ -187,6 +208,7 @@ export default class FirebaseStrategy extends BackendStrategy {
     await ref.put(file, { contentType: file.type });
     return ref.getDownloadURL();
   }
+
   async deleteFile(roomId: string, path: string) {
     try {
       const ref = this.storageRef(roomId, path);
@@ -209,13 +231,16 @@ export default class FirebaseStrategy extends BackendStrategy {
     });
     return ref.key;
   }
+
   async getRoom(roomId: string) {
     const room = await this.getRoomSnapshot(roomId);
     return room.exists() ? roomFilter(room) : null;
   }
+
   async updateRoom(roomId: string, value: Object) {
     await this.update('rooms', roomId, value);
   }
+
   async loginRoom(roomId: string, password: ?string, member: Object) {
     const uid = await this.getUID();
 
@@ -231,6 +256,7 @@ export default class FirebaseStrategy extends BackendStrategy {
       return false;
     }
   }
+
   async removeRoom(roomId: string) {
     const ref = this.roomRef(roomId);
     await ref.set({ canRemove: true });

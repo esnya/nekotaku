@@ -1,13 +1,13 @@
 <template lang="pug">
   div.room-list-info
     v-chip.pl-0.mr-0.indigo(small @click="helpOpen = true")
-      v-icon.mx-1(dark) mdi-dice-multiple
+      v-icon.mx-1(color="white") mdi-dice-multiple
       span.white--text {{dice || room.dice}}
     v-chip.pl-0.mr-0.green(small v-if="showMembers" @click="membersOpen = true")
-      v-icon.mx-1(dark) mdi-account-multiple
+      v-icon.mx-1(color="white") mdi-account-multiple
       span.white--text {{memberList.length}}
     v-chip.pl-0.mr-0.orange(small)
-      v-icon.mx-1(dark) mdi-clock
+      v-icon.mx-1(color="white") mdi-clock
       span.white--text {{time}}
     //- v-chip.pl-0.orange(small)
     //-   v-icon.mx-1(dark) mdi-binoculars
@@ -32,7 +32,10 @@
             v-for="member in memberList"
           )
             v-list-tile-action
-              v-icon(color="success" v-if="(Date.now() - member.timestamp) <= 60 * 1000") mdi-account
+              v-icon(
+                color="success"
+                v-if="(Date.now() - member.timestamp) <= 60 * 1000"
+              ) mdi-account
               v-icon(v-else) mdi-account-outline
             v-list-tile-content
               v-list-tile-title
@@ -88,10 +91,17 @@ export default {
   created() {
     this.updateDice(this.room);
   },
-  props: [
-    'room',
-    'showMembers',
-  ],
+  props: {
+    room: {
+      required: true,
+      type: Object,
+    },
+    showMembers: {
+      default: false,
+      required: false,
+      type: Boolean,
+    },
+  },
 };
 </script>
 

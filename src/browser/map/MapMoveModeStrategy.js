@@ -19,9 +19,11 @@ export default class MapMoveModeStrategy extends MapModeStrategy {
   onShapeTouch(e: MouseTouchEvent, shape: Object) {
     this.onEntityTouch(e, shape, 'shape');
   }
+
   onCharacterTouch(e: MouseTouchEvent, character: Object) {
     this.onEntityTouch(e, character, 'character');
   }
+
   onMapDrag(e: MouseTouchEvent) {
     if (e.buttons !== 1 || this.c.mapControl.selected) return;
 
@@ -38,6 +40,7 @@ export default class MapMoveModeStrategy extends MapModeStrategy {
     scrollable.scrollLeft += d.v[0];
     scrollable.scrollTop += d.v[1];
   }
+
   onMapMove(e: MouseTouchEvent) {
     const {
       selected,
@@ -54,6 +57,7 @@ export default class MapMoveModeStrategy extends MapModeStrategy {
     if (type === 'shape') this.c.moveShape({ ...pos.toObject(), id });
     else if (type === 'character') this.c.moveCharacter({ ...pos.toObject(), id });
   }
+
   onMoveEnd(e: MouseTouchEvent) {
     this.scrollOffset = null;
 
