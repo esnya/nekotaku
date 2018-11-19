@@ -28,8 +28,10 @@
             shape-entity(v-if="showHolder", :shape="shape", holder)
         .layer
           .character.elevation-2(
-            v-for="character in characters"
+            :key="character.id"
             :style="character.style"
+            v-for="character in characters"
+            v-if="!character.hideIcon"
           )
             .character-inner(
               :style="character.innerStyle"

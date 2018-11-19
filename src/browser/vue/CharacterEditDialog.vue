@@ -64,6 +64,10 @@
               type="number"
               v-model="iconSize"
             )
+            v-checkbox(
+              label="マップに表示しない"
+              v-model="hideIcon"
+            )
         v-tab-item
           v-card-text
             v-layout(row align-center)
@@ -141,13 +145,14 @@ export default {
     initiative: inputValue('initiative'),
     attributes: inputValue('attributes'),
     iconSize: inputValue('iconSize', 1),
+    hideIcon: inputValue('hideIcon'),
   },
   data() {
     const faces = Object.keys(this.character.portrait || {});
     return {
       open: false,
       rdOpen: false,
-      tab: 'basis',
+      tab: 0,
       face: 'default',
       faces: filterFaces(faces),
     };
