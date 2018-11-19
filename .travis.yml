@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-# - node
-- 10
+- node
 - lts/*
 services:
 - mongodb
@@ -26,7 +25,7 @@ deploy:
   project: prod
   on:
     branch: master
-    condition: "$TRAVIS_NODE_VERSION = 10"
+    condition: "$TRAVIS_NODE_VERSION = node"
 notifications:
   email: false
   slack:
