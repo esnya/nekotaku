@@ -19,6 +19,6 @@ export default class ObjectModel extends Model {
   }
 
   async update(roomId: string, data: Object): Promise<void> {
-    await this.backend.update2(this.getPath(roomId), data);
+    await this.backend.update(this.getPath(roomId), data);
   }
 }

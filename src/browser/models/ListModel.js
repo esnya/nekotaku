@@ -33,10 +33,10 @@ export default class ListModel extends Model {
   }
 
   async update(roomId: string, childId: string, data: Object): Promise<void> {
-    await this.backend.update2(this.getChildPath(roomId, childId), data);
+    await this.backend.update(this.getChildPath(roomId, childId), data);
   }
 
   async remove(roomId: string, childId: string): Promise<void> {
-    await this.backend.remove2(this.getChildPath(roomId, childId));
+    await this.backend.remove(this.getChildPath(roomId, childId));
   }
 }
