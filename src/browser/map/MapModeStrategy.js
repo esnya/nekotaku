@@ -14,11 +14,11 @@ export default class MapModeStrategy {
 
   shapeType: ?string;
 
-  constructor(c: any) {
+  constructor(mode: string, c: any) {
+    this.mode = mode;
     this.c = c;
 
     if (c.mapControl) {
-      this.mode = c.mapControl.mode;
       this.shapeType = c.mapControl.shapeType;
     }
 

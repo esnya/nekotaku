@@ -43,8 +43,6 @@
 </template>
 
 <script>
-/* eslint vue/no-side-effects-in-computed-properties: warn */
-
 import { mapActions, mapMutations, mapState } from 'vuex';
 import getMapModeStrategy from '../map';
 import Loading from '@/browser/components/Loading.vue';
@@ -114,22 +112,9 @@ export default {
       return mode === 'move' || mode === 'erase';
     },
     mms() {
-      const {
-        mode,
-        shapeType,
-      } = this.mapControl;
-
-      if (!this.mmsCache || mode !== this.mmsCache.mode || shapeType !== this.mmsCache.shapeType) {
-        this.mmsCache = getMapModeStrategy(this);
-      }
-
-      return this.mmsCache;
+      const { mode } = this.mapControl;
+      return getMapModeStrategy(mode || 'move', this);
     },
-  },
-  data() {
-    return {
-      mmsCache: null,
-    };
   },
   methods: {
     ...mapActions([

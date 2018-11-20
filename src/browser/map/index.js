@@ -8,13 +8,9 @@ const Constructors = {
   move,
 };
 
-export default function getMapModeStrategy(c) {
-  const {
-    mode,
-  } = c.mapControl;
-
+export default function getMapModeStrategy(mode, c) {
   const Constructor = Constructors[mode];
   if (!Constructor) throw new TypeError(`Invalid map edit mode: ${mode}`);
 
-  return new Constructor(c);
+  return new Constructor(mode, c);
 }
