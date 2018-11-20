@@ -1,7 +1,6 @@
 <template lang="pug">
   v-dialog(v-model="open")
     v-btn(
-      dark
       fab
       fixed
       bottom right
@@ -13,58 +12,64 @@
       v-card-title
         span.headline 卓作成
       v-card-text
-        v-form(v-model="valid", @submit.prevent="submit")
+        form(@submit.prevent="submit")
           v-text-field(
-            label="タイトル"
-            v-model="title"
-            :rules="[notEmpty]"
             required
+            label="タイトル"
+            name="title"
+            :error-messages="errors.collect('title')"
+            v-model="title"
+            v-validate="'required'"
           )
-          dice-select(v-model="dice")
+          dice-select(
+            v-model="dice"
+          )
         form(@submit.prevent="submit")
           v-text-field(
             label="パスワード"
+            name="password"
             placeholder="空欄で公開卓"
             type="password"
+            :error-messages="errors.collect('password')"
             v-model="password"
           )
           transition(name="neko-field")
             v-text-field(
               required
+              name="passwordConfirm"
               label="パスワード確認"
               type="password"
-              :rules="[notEmpty, passwordConfirmRule]"
+              :error-messages="errors.collect('passwordConfirm')"
               v-if="password"
               v-model="passwordConfirm"
+              v-validate="{ required: true, is: password }"
             )
           v-text-field(
+            name="characterAttributes"
             label="キャラクター属性"
             placeholder="例: HP,MP,SP"
+            :error-messages="errors.collect('characterAttributes')"
             v-model="characterAttributes"
           )
       v-card-actions
         v-spacer
-        v-btn(color="primary" :disabled="!canSubmit",@click="submit") 作成
+        v-btn(
+          color="primary"
+          @click="submit"
+        ) 作成
         v-btn(@click.native="open = false") キャンセル
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import DiceSelect from '@/browser/components/DiceSelect.vue';
 
 export default {
   components: {
     DiceSelect,
   },
-  computed: {
-    canSubmit() {
-      return this.valid && (!this.password || this.password === this.passwordConfirm);
-    },
-  },
   data() {
     return {
       open: false,
-      valid: false,
       title: null,
       dice: 'DiceBot',
       characterAttributes: null,
@@ -73,19 +78,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      'createRoom',
-    ]),
-    notEmpty(v) {
-      return v ? true : '入力して下さい。';
-    },
-    passwordConfirmRule(v) {
-      if (!this.password) return true;
-
-      return this.password === v ? true : '確認パスワードが一致しません。';
-    },
-    submit() {
-      if (!this.canSubmit) return;
+    async submit() {
+      if (!await this.$validator.validateAll()) return;
 
       const {
         title,
@@ -94,21 +88,13 @@ export default {
         password,
       } = this;
 
-      this.createRoom({
+      this.$emit('submit', {
         title,
         dice,
-        characterAttributes: characterAttributes ? characterAttributes.split(',') : [],
+        characterAttributes,
         password,
-        router: this.$router,
       });
     },
   },
 };
 </script>
-
-<style lang="stylus" scoped>
-.btn-create-room
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-</style>

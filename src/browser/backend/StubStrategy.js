@@ -324,4 +324,57 @@ export default class StubStrategy extends BackendStrategy {
     await this.updateRoom(roomId, { players: 0 });
     this.emit('members:update', this.data.members);
   }
+
+  /* New Utilities */
+  get2(path: string) {
+    return _.get(this.data, path.replace(/\//g, '.'));
+  }
+
+  set2(path: string) {
+    return _.set(this.data, path.replace(/\//g, '.'));
+  }
+
+  /* New APIs */
+  async subscribe(
+    path: string,
+    event: String,
+    callback: Object => void,
+  ): Promise<() => Promise<void>> {
+    console.log('[StubStrategy]', 'subscribe', path, event, callback);
+
+    const eventPath = `${path}:${event}`;
+    this.on(eventPath, callback);
+
+    if (event === 'child_added') {
+      setTimeout(() => {
+        this.get2(path).forEach(item => callback(item));
+      });
+    }
+
+    return () => {
+      console.log('[StubStrategy]', 'unsubscribe', path, event, callback);
+      this.off(eventPath, callback);
+    };
+  }
+
+  async push(
+    path: string,
+    data: string,
+  ): Promise<string> {
+    console.log('[StubStrategy]', 'push', path, data);
+
+    const id = shortid();
+    const newData = {
+      ...data,
+      id,
+    };
+
+    this.get2(path).push(newData);
+
+    setTimeout(() => {
+      this.emit(`${path}:child_added`, newData);
+    });
+
+    return id;
+  }
 }

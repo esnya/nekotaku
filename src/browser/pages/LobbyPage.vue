@@ -20,21 +20,26 @@
               v-list-tile-title 更新履歴
     main
       v-container(fluid :grid-list-md="true")
-        room-list
-      room-create-dialog
+        room-list(:rooms="rooms")
+      room-create-dialog(@submit="createRoom")
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import config from '../config';
 import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/components/RoomList.vue';
+import * as RouteNames from '@/browser/constants/route';
+import { bindAsList } from '@/browser/mixins/models';
+import RoomsModel from '@/browser/models/RoomsModel';
 
 export default {
+  mixins: [
+    bindAsList(RoomsModel, true),
+  ],
   components: {
     ChangelogDialog,
     FeedbackDialog,
@@ -44,22 +49,31 @@ export default {
   computed: {
     title: () => config.title,
   },
-  data() {
-    return {
-      cdOpen: false,
-      fdOpen: false,
-    };
+  data: () => ({
+    cdOpen: false,
+    fdOpen: false,
+  }),
+  methods: {
+    async createRoom(data) {
+      const {
+        characterAttributes,
+        dice,
+        title,
+        password,
+      } = data;
+
+      const id = await this.roomsModel.push({
+        characterAttributes,
+        dice,
+        title,
+        password,
+      });
+
+      this.$router.push({ name: RouteNames.Room, params: { id } });
+    },
   },
-  methods: mapActions([
-    'joinLobby',
-    'leaveLobby',
-  ]),
-  mounted() {
+  created() {
     document.title = this.title;
-    this.joinLobby();
-  },
-  beforeDestroy() {
-    this.leaveLobby();
   },
 };
 </script>

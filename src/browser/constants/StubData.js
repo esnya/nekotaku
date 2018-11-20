@@ -188,8 +188,6 @@ export default {
       id: '-room01',
       title: '卓01 (パスワード:pass)',
       dice: 'SwordWorld2_0',
-      players: 3,
-      visitors: 1,
       characterAttributes: ['HP', 'MP'],
       password: 'pass',
     },
@@ -197,8 +195,6 @@ export default {
       id: '-room02',
       title: '卓02',
       dice: 'SwordWorld2_0',
-      players: 3,
-      visitors: 0,
       characterAttributes: ['HP', 'MP'],
     },
     {

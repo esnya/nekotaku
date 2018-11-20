@@ -1,14 +1,16 @@
 <template lang="pug">
   v-autocomplete(
     required
-    label="ダイスの種類"
+    name="dice"
     item-text="gameName"
     item-value="filename"
+    label="ダイスの種類"
+    :error-messages="errors.collect('dice')"
     :items="diceBotDescs"
     :menu-props="{zIndex:10000}"
-    :rules="[notEmpty]"
     :value="value"
     @input="$emit('input', $event)"
+    v-validate="'required'"
   )
 </template>
 
@@ -22,11 +24,6 @@ export default {
   async created() {
     const { getDiceBotDescs } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
     this.diceBotDescs = getDiceBotDescs();
-  },
-  methods: {
-    notEmpty(v) {
-      return v ? true : '入力して下さい。';
-    },
   },
   props: {
     value: {

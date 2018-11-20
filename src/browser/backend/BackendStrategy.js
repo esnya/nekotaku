@@ -108,4 +108,20 @@ export default class BackendStrategy {
   async removeMe(roomId: string): Promise<void> {
     throw new Error('Abstract method called');
   }
+
+  /* new API */
+  async subscribe(
+    path: string,
+    event: string,
+    callback: Object => void,
+  ): Promise<() => Promise<void>> {
+    throw new Error('Abstract method called');
+  }
+
+  async push(
+    path: string,
+    data: string,
+  ): Promise<string> {
+    throw new Error('Abstract method called');
+  }
 }

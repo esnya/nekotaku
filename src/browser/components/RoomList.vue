@@ -1,38 +1,34 @@
 <template lang="pug">
-  v-layout.row.wrap.pb-5
-    v-flex.px-2.pb-4(xs12)
-      v-text-field(
-        single-line
-        hide-details
-        label="検索"
-        v-model="search"
-        append-icon="search"
-      )
-    loading(v-if="roomsLoading")
-    v-flex(
-      sm12 md6
-      v-for="room in results"
-      :key="room.id"
-      v-else
+  v-data-iterator.mb-5(
+    row
+    wrap
+    content-tag="v-layout"
+    :items="results"
+    :pagination.sync="pagination"
+  )
+    v-text-field(
+      append-icon="search"
+      label="検索"
+      slot="header"
+      v-model="search"
     )
-      room-list-item(:room="room")
+    v-flex(
+      sm12
+      md6
+      slot="item"
+      slot-scope="props"
+    )
+      room-list-item(:room="props.item")
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Loading from '@/browser/components/Loading.vue';
 import RoomListItem from '@/browser/components/RoomListItem.vue';
 
 export default {
   components: {
-    Loading,
     RoomListItem,
   },
   computed: {
-    ...mapState([
-      'rooms',
-      'roomsLoading',
-    ]),
     results() {
       const {
         search,
@@ -42,10 +38,18 @@ export default {
       return search ? rooms.filter(r => r.title.match(search)) : rooms;
     },
   },
-  data() {
-    return {
-      search: null,
-    };
+  data: () => ({
+    search: null,
+    pagination: {
+      page: 0,
+      rowsPerPage: 25,
+    },
+  }),
+  props: {
+    rooms: {
+      required: true,
+      type: Array,
+    },
   },
 };
 </script>

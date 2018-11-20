@@ -5,6 +5,7 @@ import 'vuetify/dist/vuetify.min.css';
 
 import _ from 'lodash';
 import moment from 'moment';
+import VeeValidate from 'vee-validate';
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import Dice from 'vue-dice-component';
@@ -29,6 +30,7 @@ async function main() {
   });
 
   Vue.use(Dice);
+  Vue.use(VeeValidate);
   Vue.use(Vuetify, { theme });
   Vue.use(VueSimpleMarkdown);
   Vue.use(VueYoutube);
