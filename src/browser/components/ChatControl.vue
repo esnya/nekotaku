@@ -71,8 +71,8 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
-import ChatConfigDialog from './ChatConfigDialog.vue';
-import ChatPaletteDialog from './ChatPaletteDialog.vue';
+import ChatConfigDialog from '@/browser/components/ChatConfigDialog.vue';
+import ChatPaletteDialog from '@/browser/components/ChatPaletteDialog.vue';
 
 export default {
   components: {

@@ -15,7 +15,7 @@
 
 <script>
 import Changelog from '../../../CHANGELOG.md';
-import Loading from './Loading.vue';
+import Loading from '@/browser/components/Loading.vue';
 
 export default {
   components: {

@@ -19,8 +19,8 @@ import { mapGetters } from 'vuex';
 import { inOutSign } from 'ease-component';
 import scroll from 'scroll';
 import playNoticeSound from '../utilities/noticeSound';
-import FromNow from './FromNow.vue';
-import MessageBody from './MessageBody.vue';
+import FromNow from '@/browser/components/FromNow.vue';
+import MessageBody from '@/browser/components/MessageBody.vue';
 
 export default {
   components: {

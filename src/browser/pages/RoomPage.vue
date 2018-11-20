@@ -76,17 +76,17 @@ import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
 import { IntervalTimer } from '../utilities/timer';
-import ChatControl from './ChatControl.vue';
-import CharacterList from './CharacterList.vue';
-import DicePanel from './DicePanel.vue';
-import Loading from './Loading.vue';
-import MapControl from './MapControl.vue';
-import MapView from './MapView.vue';
-import MemoList from './MemoList.vue';
-import MessageList from './MessageList.vue';
-import PortraitPanel from './PortraitPanel.vue';
-import RoomInfoList from './RoomInfoList.vue';
-import RoomMenu from './RoomMenu.vue';
+import ChatControl from '@/browser/components/ChatControl.vue';
+import CharacterList from '@/browser/components/CharacterList.vue';
+import DicePanel from '@/browser/components/DicePanel.vue';
+import Loading from '@/browser/components/Loading.vue';
+import MapControl from '@/browser/components/MapControl.vue';
+import MapView from '@/browser/components/MapView.vue';
+import MemoList from '@/browser/components/MemoList.vue';
+import MessageList from '@/browser/components/MessageList.vue';
+import PortraitPanel from '@/browser/components/PortraitPanel.vue';
+import RoomInfoList from '@/browser/components/RoomInfoList.vue';
+import RoomMenu from '@/browser/components/RoomMenu.vue';
 
 const saveRoomTab = _.debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);

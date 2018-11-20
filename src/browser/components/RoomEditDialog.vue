@@ -24,8 +24,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import Loading from './Loading.vue';
-import DiceSelect from './DiceSelect.vue';
+import Loading from '@/browser/components/Loading.vue';
+import DiceSelect from '@/browser/components/DiceSelect.vue';
 
 function genInputValue(key) {
   return {

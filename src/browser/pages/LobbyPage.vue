@@ -29,10 +29,10 @@
 <script>
 import { mapActions } from 'vuex';
 import config from '../config';
-import ChangelogDialog from './ChangelogDialog.vue';
-import FeedbackDialog from './FeedbackDialog.vue';
-import RoomCreateDialog from './RoomCreateDialog.vue';
-import RoomList from './RoomList.vue';
+import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
+import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
+import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
+import RoomList from '@/browser/components/RoomList.vue';
 
 export default {
   components: {

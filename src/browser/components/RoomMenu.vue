@@ -74,13 +74,13 @@
 import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
-import ChangelogDialog from './ChangelogDialog.vue';
-import FeedbackDialog from './FeedbackDialog.vue';
-import RoomEditDialog from './RoomEditDialog.vue';
-import RoomPasswordClearDialog from './RoomPasswordClearDialog.vue';
-import RoomPasswordEditDialog from './RoomPasswordEditDialog.vue';
-import RoomRemoveDialog from './RoomRemoveDialog.vue';
-import TabletopAudioSoundPadDialog from './TabletopAudioSoundPadDialog.vue';
+import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
+import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
+import RoomEditDialog from '@/browser/components/RoomEditDialog.vue';
+import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialog.vue';
+import RoomPasswordEditDialog from '@/browser/components/RoomPasswordEditDialog.vue';
+import RoomRemoveDialog from '@/browser/components/RoomRemoveDialog.vue';
+import TabletopAudioSoundPadDialog from '@/browser/components/TabletopAudioSoundPadDialog.vue';
 
 export default {
   components: {

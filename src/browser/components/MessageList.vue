@@ -11,8 +11,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import Loading from './Loading.vue';
-import MessageListItem from './MessageListItem.vue';
+import Loading from '@/browser/components/Loading.vue';
+import MessageListItem from '@/browser/components/MessageListItem.vue';
 
 export default {
   components: {

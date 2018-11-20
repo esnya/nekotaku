@@ -47,8 +47,8 @@
 
 import { mapActions, mapMutations, mapState } from 'vuex';
 import getMapModeStrategy from '../map';
-import Loading from './Loading.vue';
-import ShapeEntity from './ShapeEntity.vue';
+import Loading from '@/browser/components/Loading.vue';
+import ShapeEntity from '@/browser/components/ShapeEntity.vue';
 
 export default {
   components: {

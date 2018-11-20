@@ -28,7 +28,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import FileInput from './FileInput.vue';
+import FileInput from '@/browser/components/FileInput.vue';
 
 export default {
   components: {

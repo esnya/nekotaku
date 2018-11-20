@@ -25,9 +25,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import CharacterCreateDialog from './CharacterCreateDialog.vue';
-import CharacterEditDialog from './CharacterEditDialog.vue';
-import Loading from './Loading.vue';
+import CharacterCreateDialog from '@/browser/components/CharacterCreateDialog.vue';
+import CharacterEditDialog from '@/browser/components/CharacterEditDialog.vue';
+import Loading from '@/browser/components/Loading.vue';
 
 export default {
   components: {

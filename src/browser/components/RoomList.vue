@@ -20,8 +20,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import Loading from './Loading.vue';
-import RoomListItem from './RoomListItem.vue';
+import Loading from '@/browser/components/Loading.vue';
+import RoomListItem from '@/browser/components/RoomListItem.vue';
 
 export default {
   components: {

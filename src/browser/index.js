@@ -13,12 +13,12 @@ import VueYoutube from 'vue-youtube';
 import Vuetify from 'vuetify';
 import colors from 'vuetify/es5/util/colors';
 import { sync } from 'vuex-router-sync';
-import App from './vue/App.vue';
-import config from './config';
-import router from './router';
-import store from './store';
+import App from '@/browser/App.vue';
+import config from '@/browser/config';
+import router from '@/browser/router';
+import store from '@/browser/store';
 
-import './styles/main.styl';
+import '@/browser/styles/main.styl';
 
 async function main() {
   moment.locale('ja');

@@ -15,7 +15,7 @@
 
 <script>
 import * as RouteNames from '../constants/route';
-import RoomInfoList from './RoomInfoList.vue';
+import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 
 export default {
   components: {

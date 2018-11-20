@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import MessageBodyNode from './MessageBodyNode.vue';
+import MessageBodyNode from '@/browser/components/MessageBodyNode.vue';
 
 export default {
   components: {

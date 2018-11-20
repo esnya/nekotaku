@@ -105,9 +105,9 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import CharacterFaceAppendDialog from './CharacterFaceAppendDialog.vue';
-import RemoveConfirmationDialog from './RemoveConfirmationDialog.vue';
-import FileInput from './FileInput.vue';
+import CharacterFaceAppendDialog from '@/browser/components/CharacterFaceAppendDialog.vue';
+import RemoveConfirmationDialog from '@/browser/components/RemoveConfirmationDialog.vue';
+import FileInput from '@/browser/components/FileInput.vue';
 
 function inputValue(key, defaultValue) {
   return {

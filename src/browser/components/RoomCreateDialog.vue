@@ -50,7 +50,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import DiceSelect from './DiceSelect.vue';
+import DiceSelect from '@/browser/components/DiceSelect.vue';
 
 export default {
   components: {

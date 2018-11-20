@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import WelcomeMessage from './WelcomeMessage.vue';
+import WelcomeMessage from '@/browser/components/WelcomeMessage.vue';
 
 export default {
   components: {

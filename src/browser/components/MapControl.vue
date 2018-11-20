@@ -40,10 +40,10 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import ButtonGroup from './ButtonGroup.vue';
-import MapEditDialog from './MapEditDialog.vue';
-import MapStyleDialog from './MapStyleDialog.vue';
-import SvgIcon from './SvgIcon.vue';
+import ButtonGroup from '@/browser/components/ButtonGroup.vue';
+import MapEditDialog from '@/browser/components/MapEditDialog.vue';
+import MapStyleDialog from '@/browser/components/MapStyleDialog.vue';
+import SvgIcon from '@/browser/components/SvgIcon.vue';
 
 export default {
   components: {

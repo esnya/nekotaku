@@ -29,8 +29,8 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { parseText, InitialText } from '../utilities/memo';
-import Loading from './Loading.vue';
-import MemoListItem from './MemoListItem.vue';
+import Loading from '@/browser/components/Loading.vue';
+import MemoListItem from '@/browser/components/MemoListItem.vue';
 
 export default {
   components: {
