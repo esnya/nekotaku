@@ -21,7 +21,6 @@
 
 <script>
 import _ from 'lodash';
-import { mapState } from 'vuex';
 import palette from 'google-material-color';
 
 function hash(data) {
@@ -35,9 +34,6 @@ function selectColorName(n) {
 }
 
 export default {
-  computed: mapState([
-    'messages',
-  ]),
   data() {
     return {
       color: palette.get('White', 'Secondary'),
@@ -83,6 +79,12 @@ export default {
         })
         .flatten()
         .value();
+    },
+  },
+  props: {
+    messages: {
+      required: true,
+      type: Array,
     },
   },
 };

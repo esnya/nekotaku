@@ -23,17 +23,12 @@
 
 <script>
 import _ from 'lodash';
-import { mapState } from 'vuex';
 
 const N = 3;
 const Wait = 40;
 
 export default {
   computed: {
-    ...mapState([
-      'characters',
-      'messages',
-    ]),
     portraits: _.throttle(function portraits() {
       const characterPortraits = _(this.characters)
         .map(c => [c.name, _.mapValues(c.portrait, p => p && p.url)])
@@ -63,6 +58,16 @@ export default {
       N,
       open: true,
     };
+  },
+  props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
+    messages: {
+      required: true,
+      type: Array,
+    },
   },
 };
 </script>

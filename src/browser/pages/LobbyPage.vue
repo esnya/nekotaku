@@ -21,7 +21,7 @@
     main
       v-container(fluid :grid-list-md="true")
         room-list(:rooms="rooms")
-      room-create-dialog(@submit="createRoom")
+      room-create-dialog
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
 </template>
@@ -33,12 +33,11 @@ import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/components/RoomList.vue';
 import * as RouteNames from '@/browser/constants/route';
-import { bindAsList } from '@/browser/mixins/models';
-import RoomsModel from '@/browser/models/RoomsModel';
+import { bindAsList } from '@/browser/models';
 
 export default {
   mixins: [
-    bindAsList(RoomsModel, true),
+    bindAsList('rooms', true),
   ],
   components: {
     ChangelogDialog,

@@ -39,7 +39,7 @@
       v-btn.my-0.pl-1(icon color="primary" dark  @click="submit")
         v-icon send
     chat-config-dialog(v-model="ccdOpen")
-    chat-palette-dialog(v-model="cpdOpen")
+    chat-palette-dialog(:room="room" v-model="cpdOpen")
     v-dialog(v-model="cwdOpen")
       v-card
         v-card-title(primary-title)
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import ChatConfigDialog from '@/browser/components/ChatConfigDialog.vue';
 import ChatPaletteDialog from '@/browser/components/ChatPaletteDialog.vue';
 
@@ -113,35 +113,66 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      'sendMessage',
-    ]),
-    submit() {
+    async submit() {
+      if (!this.body) return;
+
       const {
-        body,
         face,
         name,
-        chatControl,
       } = this;
-      if (!body) return;
-
-      this.body = null;
+      const {
+        color,
+      } = this.chatControl;
+      const {
+        dice,
+      } = this.room;
 
       const to = this.to ? this.to.split(/\s*,\s*/) : null;
 
-      this.sendMessage({
-        color: chatControl.color,
-        name,
-        face,
-        body,
-        to,
-      });
+      const {
+        executeDice,
+        getDiceBotDescByFilename,
+      } = await import(/* webpackChunkName: "bcdice" */ '@/browser/utilities/bcdice');
+
+      const {
+        result,
+        diceResults,
+      } = await executeDice(this.body, dice);
+
+      const diceBotDesc = getDiceBotDescByFilename(dice);
+
+      const body = this.body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
+        type: 'dice',
+        dice: diceBotDesc ? diceBotDesc.gameType : dice,
+        text: result.replace(/^: /, ''),
+        diceResults,
+      }]);
+
+      this.body = null;
+
+      this.$models.messages.push(
+        this.room.id,
+        {
+          color,
+          name,
+          face,
+          body,
+          to,
+          createdAt: Date.now(),
+        },
+      );
     },
     enter(e) {
       if (e.shiftKey) return;
 
       e.preventDefault();
       this.submit();
+    },
+  },
+  props: {
+    room: {
+      required: true,
+      type: Object,
     },
   },
 };

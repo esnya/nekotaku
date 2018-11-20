@@ -1,5 +1,5 @@
 <template lang="pug">
-  .app
+  .app(v-if="room")
     v-toolbar.primary.app-bar(dark, fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title
@@ -8,7 +8,10 @@
             v-icon(dark) lock_outline
           div {{room && room.title}}
       v-spacer
-      room-menu.mr-0
+      room-menu.mr-0(
+        :messages="messages"
+        :room="room"
+      )
     transition(name="neko-slide")
       main(v-if="room && room.locked")
         v-container
@@ -27,23 +30,48 @@
             v-spacer
       main(v-else-if="room && !room.locked")
         .floating.fixed.ignore-toolbar-padding
-          room-info-list.room-info-list(showMembers :room="room")
+          room-info-list.room-info-list(:members="members" :room="room")
         div.room-slider(:style="{ transform: `translateX(${Number(roomTab) * -100}%)` }")
           .room-slider-item.scroll
-            message-list
+            message-list(:messages="messages")
           .room-slider-item.scroll
-            memo-list
+            memo-list(
+              :memos="memos"
+              :room-id="room.id"
+            )
           .room-slider-item.scroll
-            character-list
+            character-list(
+              :characters="characters"
+              :room="room"
+            )
           .room-slider-item
-            map-view
+            map-view(
+              :characters="characters"
+              :map="map"
+              :room-id="room.id"
+              :shapes="shapes"
+            )
         transition(name="neko-slide-right")
-          portrait-panel(v-if="roomTab === '0'")
+          portrait-panel(
+            :characters="characters"
+            :messages="messages"
+            v-if="roomTab === '0'"
+          )
         transition(name="neko-fade")
-          dice-panel(v-if="roomTab === '0'")
+          dice-panel(
+            :messages="messages"
+            v-if="roomTab === '0'"
+          )
         transition(name="neko-slide-bottom")
-          chat-control(v-if="roomTab === '0'")
-          map-control(v-else-if="roomTab === '3'")
+          chat-control(
+            :room="room"
+            v-if="roomTab === '0'"
+          )
+          map-control(
+            :map="map"
+            :room-id="room.id"
+            v-else-if="roomTab === '3'"
+          )
         v-bottom-nav(
           color="white"
           :active.sync="roomTab"
@@ -68,10 +96,7 @@
 
 <script>
 import _ from 'lodash';
-import {
-  mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex';
-import backend from '../backend';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
@@ -87,12 +112,22 @@ import MessageList from '@/browser/components/MessageList.vue';
 import PortraitPanel from '@/browser/components/PortraitPanel.vue';
 import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
+import { bindAsList, bindAsObject } from '@/browser/models';
 
 const saveRoomTab = _.debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
 }, 1000);
 
 export default {
+  mixins: [
+    bindAsList('characters'),
+    bindAsList('memos'),
+    bindAsList('messages'),
+    bindAsList('shapes'),
+    bindAsObject('map'),
+    bindAsObject('members'),
+    bindAsObject('room'),
+  ],
   components: {
     ChatControl,
     CharacterList,
@@ -117,13 +152,15 @@ export default {
   },
   computed: {
     ...mapState([
-      'room',
       'roomJoinInfo',
     ]),
     ...mapGetters([
       'chatControl',
     ]),
     id() {
+      return this.$route.params.id;
+    },
+    roomId() {
       return this.$route.params.id;
     },
     joinInfo() {
@@ -137,10 +174,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      'joinRoom',
-      'leaveRoom',
-    ]),
     ...mapMutations([
       'setJoinRoomPassword',
     ]),
@@ -150,7 +183,6 @@ export default {
       return this.room.passwordIncorrect ? 'パスワードが間違っています。' : true;
     },
     leave() {
-      this.leaveRoom();
       this.$router.push({ name: RouteNames.Lobby });
     },
   },
@@ -168,12 +200,6 @@ export default {
     },
   },
   created() {
-    const {
-      id,
-    } = this.$route.params;
-
-    this.joinRoom({ id, router: this.$router });
-
     this.width = window.innerWidth;
 
     this.timer = new IntervalTimer(() => {
@@ -181,12 +207,11 @@ export default {
         name,
         color,
       } = this.chatControl;
-      backend.updateMember(name, color);
+      this.$models.members.update(this.roomId, { name, color });
     }, 5 * 1000);
   },
-  beforeDestroy() {
+  destroyed() {
     this.timer.stop();
-    this.leaveRoom();
   },
 };
 </script>

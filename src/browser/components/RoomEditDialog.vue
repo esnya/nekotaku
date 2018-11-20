@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
 import Loading from '@/browser/components/Loading.vue';
 import DiceSelect from '@/browser/components/DiceSelect.vue';
 
@@ -33,7 +32,10 @@ function genInputValue(key) {
       return this.room[key];
     },
     set(value) {
-      this.updateRoom({ key, value });
+      this.$models.room.update(
+        this.room.id,
+        { [key]: value },
+      );
     },
   };
 }
@@ -52,9 +54,6 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'room',
-    ]),
     open: {
       get() {
         return this.value;
@@ -70,19 +69,23 @@ export default {
         return this.room.characterAttributes ? this.room.characterAttributes.join(',') : null;
       },
       set(newValue) {
-        this.updateRoom({
-          key: 'characterAttributes',
-          value: newValue ? newValue.split(',') : [],
-        });
+        this.$models.room.update(
+          this.room.id,
+          { characterAttributes: newValue ? newValue.split(',') : [] },
+        );
       },
     },
   },
-  methods: mapActions([
-    'updateRoom',
-  ]),
-  props: [
-    'value',
-  ],
+  props: {
+    room: {
+      required: true,
+      type: Object,
+    },
+    value: {
+      required: true,
+      type: Boolean,
+    },
+  },
 };
 </script>
 

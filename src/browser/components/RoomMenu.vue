@@ -66,19 +66,18 @@
           v-icon mdi-update
         v-list-tile-content
           v-list-tile-title 更新履歴
-    room-edit-dialog(v-model="redOpen")
+    room-edit-dialog(v-model="redOpen" :room="room")
     room-password-clear-dialog(v-model="rpcdOpen")
     room-password-edit-dialog(v-model="rpedOpen")
     room-remove-dialog(v-model="rrdOpen")
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
-    tabletop-audio-sound-pad-dialog(v-model="taspdOpen")
+    tabletop-audio-sound-pad-dialog(:room="room" v-model="taspdOpen")
     chat-view-dialog(v-model="vdOpen")
     log-export-dialog(:messages="messages" :room="room" v-model="ledOpen")
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
 import ChatViewDialog from '@/browser/components/ChatViewDialog.vue';
@@ -102,10 +101,6 @@ export default {
     RoomRemoveDialog,
     TabletopAudioSoundPadDialog,
   },
-  computed: mapState([
-    'room',
-    'messages',
-  ]),
   data() {
     return {
       cdOpen: false,
@@ -131,7 +126,16 @@ export default {
       );
     },
   },
-  props: ['value'],
+  props: {
+    messages: {
+      required: true,
+      type: Array,
+    },
+    room: {
+      required: true,
+      type: Object,
+    },
+  },
 };
 </script>
 

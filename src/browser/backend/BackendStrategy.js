@@ -7,10 +7,6 @@ export default class BackendStrategy {
     this.type = config.type;
   }
 
-  async getUID(): Promise<string> {
-    throw new Error('Abstract method called');
-  }
-
   async watchLobby(handler: Handler): Promise<void> {
     throw new Error('Abstract method called');
   }
@@ -110,6 +106,10 @@ export default class BackendStrategy {
   }
 
   /* new API */
+  async getUID(): Promise<string> {
+    throw new Error('Abstract method called');
+  }
+
   async subscribe(
     path: string,
     event: string,
@@ -121,6 +121,26 @@ export default class BackendStrategy {
   async push(
     path: string,
     data: string,
+  ): Promise<string> {
+    throw new Error('Abstract method called');
+  }
+
+  async update2(
+    path: string,
+    data: Object,
+  ): Promise<string> {
+    throw new Error('Abstract method called');
+  }
+
+  async remove2(
+    path: string,
+  ): Promise<string> {
+    throw new Error('Abstract method called');
+  }
+
+  async pushFile(
+    path: string,
+    file: File,
   ): Promise<string> {
     throw new Error('Abstract method called');
   }

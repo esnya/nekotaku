@@ -3,15 +3,12 @@
     v-chip.pl-0.mr-0.indigo(small @click="helpOpen = true")
       v-icon.mx-1(color="white") mdi-dice-multiple
       span.white--text {{dice || room.dice}}
-    v-chip.pl-0.mr-0.green(small v-if="showMembers" @click="membersOpen = true")
+    v-chip.pl-0.mr-0.green(small v-if="members" @click="membersOpen = true")
       v-icon.mx-1(color="white") mdi-account-multiple
       span.white--text {{memberList.length}}
     v-chip.pl-0.mr-0.orange(small)
       v-icon.mx-1(color="white") mdi-clock
       span.white--text {{time}}
-    //- v-chip.pl-0.orange(small)
-    //-   v-icon.mx-1(dark) mdi-binoculars
-    //-   span.white--text  {{room.visitors}}
     v-dialog(v-model="helpOpen" width="auto")
       v-card(v-scroll="'y'")
         v-card-title
@@ -21,7 +18,7 @@
         v-card-actions
           v-spacer
           v-btn(@click="helpOpen = false") 閉じる
-    v-dialog(v-if="showMembers" v-model="membersOpen" width="auto")
+    v-dialog(v-if="members" v-model="membersOpen" width="auto")
       v-card(v-scroll="'y'")
         v-card-title
           span.headline メンバー
@@ -48,16 +45,14 @@
 <script>
 import _ from 'lodash';
 import moment from 'moment';
-import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['members']),
     time() {
       return moment(this.room.createdAt).format('lll');
     },
     memberList() {
-      return _(this.members)
+      return this.members && _(this.members)
         .filter(v => (typeof v === 'object'))
         .map((value, uid) => ({ ...value, uid }))
         .sortBy(['timestamp'])
@@ -80,6 +75,9 @@ export default {
         this.helpMessage = (await getHelpMessage(this.room.dice)).split(/\n/g);
       }
     },
+    room(room) {
+      this.updateDice(room);
+    },
   },
   methods: {
     async updateDice(room) {
@@ -92,14 +90,14 @@ export default {
     this.updateDice(this.room);
   },
   props: {
+    members: {
+      default: null,
+      required: false,
+      type: Object,
+    },
     room: {
       required: true,
       type: Object,
-    },
-    showMembers: {
-      default: false,
-      required: false,
-      type: Boolean,
     },
   },
 };

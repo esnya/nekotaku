@@ -4,41 +4,38 @@
       v-card-title
         .headline キャラクター追加
       v-card-text
-        v-form(v-model="valid", @submit.prevent="submit")
+        form(@submit.prevent="submit")
           v-text-field(
-            label="名前"
-            v-model="name"
-            :rules="[requiredRule]"
             required
+            label="名前"
+            name="name"
+            :error-messages="errors.collect('name')"
+            v-model="name"
+            v-validate="'required'"
           )
         v-form(@submit.prevent="submit")
           v-text-field(
             label="イニシアチブ"
             type="number"
-            :rules="[requiredRule]"
+            name="initiative"
+            :error-messages="errors.collect('initiative')"
             v-model="initiative"
-            required
+            v-validate="'required|numeric'"
           )
           v-text-field(
-            v-if="room"
-            v-for="(attr, index) in room.characterAttributes"
-            v-model="attributes[index]"
             :key="index"
             :label="attr"
+            v-for="(attr, index) in room.characterAttributes"
+            v-model="attributes[index]"
           )
       v-card-actions
         v-spacer
-        v-btn(color="primary" :disabled="!valid" @click="submit") 作成
+        v-btn(color="primary" @click="submit") 作成
         v-btn(@click.native="close()") キャンセル
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-
 export default {
-  computed: mapState([
-    'room',
-  ]),
   data() {
     return {
       open: false,
@@ -49,24 +46,26 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      'createCharacter',
-    ]),
-    requiredRule(v) {
-      return v ? true : '入力して下さい。';
-    },
-    submit() {
+    async submit() {
+      if (!await this.$validator.validateAll()) return;
+
       const {
         name,
         initiative,
         attributes,
       } = this;
 
-      this.createCharacter({
-        name,
-        initiative,
-        attributes: [...attributes],
-      });
+      this.$models.characters.push(
+        this.room.id,
+        {
+          x: 0.5,
+          y: 0.5,
+          z: Date.now(),
+          name,
+          initiative,
+          attributes: [...attributes],
+        },
+      );
 
       this.close();
     },
@@ -75,9 +74,13 @@ export default {
     },
   },
   props: {
-    value: {
-      type: Boolean,
+    room: {
+      type: Object,
       required: true,
+    },
+    value: {
+      required: true,
+      type: Boolean,
     },
   },
 };

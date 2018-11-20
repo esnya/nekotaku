@@ -18,21 +18,24 @@ export function bindAsList(M: Model, isReversed: boolean = false) {
       [unsubscribeKey]: null,
     }),
     async created() {
-      this[unsubscribeKey] = await model.subscribe((event: string, newData: Object) => {
-        switch (event) {
-          case ListEvent.ChildAdded:
-            if (isReversed) this[name].unshift(newData);
-            else this[name].push(newData);
-            break;
-          case ListEvent.ChildChanged:
-            this[name] = this[name].map(item => (item.id === newData.id ? newData : item));
-            break;
-          case ListEvent.ChildRemoved:
-            this[name] = this[name].filter(item => item.id !== newData);
-            break;
-          default:
-        }
-      });
+      this[unsubscribeKey] = await model.subscribe(
+        this.roomId || null,
+        (event: string, newData: Object) => {
+          switch (event) {
+            case ListEvent.ChildAdded:
+              if (isReversed) this[name].unshift(newData);
+              else this[name].push(newData);
+              break;
+            case ListEvent.ChildChanged:
+              this[name] = this[name].map(item => (item.id === newData.id ? newData : item));
+              break;
+            case ListEvent.ChildRemoved:
+              this[name] = this[name].filter(item => item.id !== newData);
+              break;
+            default:
+          }
+        },
+      );
     },
     async destroyed() {
       await this[unsubscribeKey]();

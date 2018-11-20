@@ -29,7 +29,7 @@
 
 <script>
 import _ from 'lodash';
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import localStorage from '../utilities/localStorage';
 
 function getStorageKey(roomId) {
@@ -57,9 +57,6 @@ export default {
     ...mapGetters([
       'chatControl',
     ]),
-    ...mapState([
-      'room',
-    ]),
     color() {
       return this.chatControl.color;
     },
@@ -77,9 +74,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions([
-      'sendMessage',
-    ]),
     isSelected(tab, line) {
       return this.selectedTab === tab && this.selectedLine === line;
     },
@@ -96,11 +90,14 @@ export default {
       this.tabs[tab].palette = text.split(/\n/g);
       saveTabs(this.room.id, this.tabs);
     },
-    send(tab, line) {
+    async send(tab, line) {
       const {
         color,
         name,
       } = this;
+      const {
+        dice,
+      } = this.room.dice;
 
       const { palette } = this.tabs[tab];
       const attrs = _(palette)
@@ -109,18 +106,42 @@ export default {
         .map(m => [`{${m[1]}}`, m[2]]);
       const body = attrs.reduce((prev, curr) => prev.replace(curr[0], curr[1]), line);
 
-      this.sendMessage({
-        body,
+      const {
+        executeDice,
+        getDiceBotDescByFilename,
+      } = await import(/* webpackChunkName: "bcdice" */ '@/browser/utilities/bcdice');
+
+      const {
+        result,
+        diceResults,
+      } = await executeDice(body, dice);
+
+      const diceBotDesc = getDiceBotDescByFilename(dice);
+
+      const parsed = body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
+        type: 'dice',
+        dice: diceBotDesc ? diceBotDesc.gameType : dice,
+        text: result.replace(/^: /, ''),
+        diceResults,
+      }]);
+
+      this.$models.messages.push(this.room.id, {
+        body: parsed,
         color,
         face: 'default',
         name,
+        createdAt: Date.now(),
       });
     },
   },
   props: {
-    value: {
-      type: Boolean,
+    room: {
+      type: Object,
       required: true,
+    },
+    value: {
+      required: true,
+      type: Boolean,
     },
   },
   created() {

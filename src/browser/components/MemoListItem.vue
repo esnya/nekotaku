@@ -22,11 +22,9 @@
           span.headline メモを編集
         v-card-text.pt-0.pb-0
           v-textarea.pa-0(
-            :full-width="true"
-            :hide-details="true"
+            hide-details
             :placeholder="InitialText"
-            :value="text"
-            @input="v => updateMemo({ id: memo.id, data: parseText(v) })"
+            v-model="memoText"
           )
         v-card-actions
           v-spacer
@@ -38,12 +36,12 @@
         v-card-text 本当にメモを削除しますか？
         v-card-actions
           v-spacer
-          v-btn(flat color="red" @click="removeMemo(memo.id)") 削除
+          v-btn(flat color="red" @click="remove") 削除
           v-btn(flat @click="removeDialog = false") キャンセル
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import { parseText, toText, InitialText } from '../utilities/memo';
 
 function byLine(text) {
@@ -69,14 +67,15 @@ export default {
       editDialog: false,
       open: false,
       removeDialog: false,
+      memoText: toText(this.memo),
       InitialText,
     };
   },
   methods: {
-    ...mapActions(['updateMemo', 'removeMemo', 'sendStructuredMessage']),
     parseText,
     toggle(open) {
       this.open = open;
+
       if (open) {
         const {
           name,
@@ -85,19 +84,45 @@ export default {
           title,
         } = this.memo;
 
-        this.sendStructuredMessage({
-          name,
-          title,
-          body: [{
-            type: 'memoOpen',
-            text: `${title}の裏面を開きました。`,
-          }],
-        });
+        this.$models.messages.push(
+          this.roomId,
+          {
+            name,
+            title,
+            body: [{
+              type: 'memoOpen',
+              text: `${title}の裏面を開きました。`,
+            }],
+            createdAt: Date.now(),
+          },
+        );
+      }
+    },
+    async update() {
+      const data = parseText(this.memoText);
+      await this.$models.memos.update(this.roomId, this.memo.id, data);
+    },
+    async remove() {
+      await this.$models.memos.remove(this.roomId, this.memo.id);
+    },
+  },
+  watch: {
+    editDialog(open) {
+      if (open) this.memoText = this.text;
+      else {
+        this.update();
       }
     },
   },
   props: {
-    memo: Object,
+    memo: {
+      required: true,
+      type: Object,
+    },
+    roomId: {
+      required: true,
+      type: String,
+    },
   },
 };
 </script>

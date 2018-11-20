@@ -88,7 +88,7 @@ export default {
         password,
       } = this;
 
-      this.$emit('submit', {
+      this.$models.rooms.push({
         title,
         dice,
         characterAttributes,

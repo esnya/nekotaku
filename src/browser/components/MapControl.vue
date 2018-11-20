@@ -2,7 +2,11 @@
   v-card.px-0.py-1.room-tab-control
     v-layout(row align-center v-scroll="'x'")
       map-style-dialog(v-model="msdOpen")
-      map-edit-dialog(v-model="medOpen")
+      map-edit-dialog(
+        :map="map"
+        :room-id="roomId"
+        v-model="medOpen"
+      )
       v-btn(icon @click="addMapZoom(0.2)")
         v-icon zoom_in
       v-btn(icon @click="addMapZoom(-0.2)")
@@ -85,6 +89,16 @@ export default {
       msdOpen: false,
       medOpen: false,
     };
+  },
+  props: {
+    map: {
+      required: true,
+      type: Object,
+    },
+    roomId: {
+      required: true,
+      type: String,
+    },
   },
 };
 </script>

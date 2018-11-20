@@ -28,29 +28,25 @@
 </style>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-
 export default {
   computed: {
-    ...mapState([
-      'room',
-    ]),
     isValidUrl() {
       return this.room && this.room.taspdUrl && this.room.taspdUrl.match(/https:\/\/tabletopaudio\.com\/[a-z0-9_]+\.html\?jointabletopgameid=[0-9]+$/);
     },
   },
   methods: {
-    ...mapActions([
-      'updateRoom',
-    ]),
     onInput(value) {
-      this.updateRoom({ key: 'taspdUrl', value });
+      this.$models.room.update(this.room.id, { taspdUrl: value });
     },
   },
   props: {
-    value: {
-      type: Boolean,
+    room: {
       required: true,
+      type: Object,
+    },
+    value: {
+      required: true,
+      type: Boolean,
     },
   },
 };

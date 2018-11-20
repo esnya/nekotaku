@@ -14,6 +14,7 @@ import VueYoutube from 'vue-youtube';
 import Vuetify from 'vuetify';
 import colors from 'vuetify/es5/util/colors';
 import { sync } from 'vuex-router-sync';
+import Models from '@/browser/models';
 import App from '@/browser/App.vue';
 import config from '@/browser/config';
 import router from '@/browser/router';
@@ -34,6 +35,8 @@ async function main() {
   Vue.use(Vuetify, { theme });
   Vue.use(VueSimpleMarkdown);
   Vue.use(VueYoutube);
+  Vue.use(Models);
+
   Vue.directive('scroll', {
     inserted(el, binding) {
       el.classList.add('scroll');

@@ -20,7 +20,7 @@
           div.tile.text-xs-center(v-for="x in map.width", :v-key="x") {{x}}-{{y}}
         svg.layer(:width="map.width * 50", :height="map.width * 50")
           g(
-            v-for="shape in shapes"
+            v-for="shape in sortedShapes"
             :key="shape.id"
             @mousedown="e => mms.onShapeTouch(e, shape)"
             @touchstart="e => mms.onShapeTouch(e, shape)"
@@ -28,11 +28,11 @@
             shape-entity(:shape="shape")
             shape-entity(v-if="showHolder", :shape="shape", holder)
         .layer
-          .character.elevation-2(
+          map-character-item(
             :key="character.id"
-            :style="character.style"
-            v-for="character in characters"
-            v-if="!character.hideIcon"
+            :character="character"
+            v-for="character in sortedCharacters"
+            @touch="e => mms.onCharacterTouch(e, character)"
           )
             v-tooltip(bottom)
               .character-inner(
@@ -47,26 +47,23 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
-import getMapModeStrategy from '../map';
+import { mapMutations, mapState } from 'vuex';
 import Loading from '@/browser/components/Loading.vue';
+import MapCharacterItem from '@/browser/components/MapCharacterItem.vue';
 import ShapeEntity from '@/browser/components/ShapeEntity.vue';
+import getMapModeStrategy from '@/browser/map';
+import { align, limit } from '@/browser/utilities/entity';
 
 export default {
   components: {
     Loading,
+    MapCharacterItem,
     ShapeEntity,
   },
   computed: {
     ...mapState([
-      'room',
-      'map',
       'mapControl',
     ]),
-    ...mapState({
-      charactersState: 'characters',
-      shapeState: 'shapes',
-    }),
     scale() {
       return 2 ** this.mapControl.zoom;
     },
@@ -82,32 +79,11 @@ export default {
         },
       };
     },
-    characters() {
-      return this.charactersState.map((character) => {
-        const {
-          x, y,
-          icon,
-          iconSize,
-        } = character;
-
-        const iconUrl = character ? icon : null;
-        const size = `${(iconSize || 1) * 50}px`;
-
-        return {
-          ...character,
-          style: {
-            transform: `translate(${(x * 50) - 25}px, ${(y * 50) - 25}px)`,
-          },
-          innerStyle: {
-            backgroundImage: iconUrl ? `url(${iconUrl})` : null,
-            width: size,
-            height: size,
-          },
-        };
-      }).sort((a, b) => a.z > b.z);
+    sortedCharacters() {
+      return this.characters.slice().sort((a, b) => a.z > b.z);
     },
-    shapes() {
-      return this.shapeState.slice().sort((a, b) => a.z > b.z);
+    sortedShapes() {
+      return this.shapes.slice().sort((a, b) => a.z > b.z);
     },
     showHolder() {
       const {
@@ -122,15 +98,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      'alignCharacter',
-      'alignShape',
-      'createShape',
-      'moveCharacter',
-      'moveShape',
-      'removeShape',
-      'updateShape',
-    ]),
     ...mapMutations([
       'selectEntity',
       'deselectEntity',
@@ -147,6 +114,110 @@ export default {
         `イニシアチブ：${initiative}`,
         ...this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`),
       ];
+    },
+    async alignCharacter(characterId) {
+      const character = this.characters.find(i => i.id === characterId);
+      if (!character) return;
+
+      const { x, y } = character;
+
+      await this.$models.characters.update(
+        this.roomId,
+        characterId,
+        {
+          x: align(x),
+          y: align(y),
+          z: Date.now(),
+        },
+      );
+    },
+    async moveCharacter({ id, x, y }) {
+      const { width, height } = this.map;
+      await this.$models.characters.update(
+        this.roomId,
+        id,
+        {
+          x: limit(x, width),
+          y: limit(y, height),
+          z: Date.now(),
+        },
+      );
+    },
+    async alignShape(id) {
+      const shape = this.shapes.find(s => s.id === id);
+      if (!shape) return;
+
+      const { x, y } = shape;
+      await this.$models.shapes.update(
+        this.roomId,
+        id,
+        {
+          x: align(x),
+          y: align(y),
+          z: Date.now(),
+        },
+      );
+    },
+    async moveShape({ id, x, y }) {
+      const { width, height } = this.map;
+      await this.$models.shapes.update(
+        this.roomId,
+        id,
+        {
+          x: limit(x, width),
+          y: limit(y, height),
+          z: Date.now(),
+        },
+      );
+    },
+    async createShape({
+      offset, stroke, fill, ...shape
+    }) {
+      const id = await this.$models.shapes.push(
+        this.roomId,
+        {
+          ...shape,
+          stroke,
+          fill,
+        },
+      );
+
+      this.selectEntity({
+        id,
+        type: 'entity',
+        offset,
+      });
+    },
+    async updateShape({ id, ...data }) {
+      await this.$models.shapes.update(
+        this.roomId,
+        id,
+        data,
+      );
+    },
+    async removeShape(id) {
+      await this.$models.shapes.remove(
+        this.roomId,
+        id,
+      );
+    },
+  },
+  props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
+    map: {
+      required: true,
+      type: Object,
+    },
+    roomId: {
+      required: true,
+      type: String,
+    },
+    shapes: {
+      required: true,
+      type: Array,
     },
   },
   created() {
@@ -227,62 +298,10 @@ html.no-scroll {
 svg g *
   box-shadow 0 0 5px rgba(0, 0, 0, 0.5)
 
-.character
-  position absolute
-
-  .character-inner
-    width 50px
-    height 50px
-    background-color rgba(255, 255, 255, 0.5)
-    background-size cover
-    display flex
-    flex-direction column
-    align-items stretch
-    justify-content flex-end
-    border 1px solid black
-    transform-origin bottom
-    transition transform 0.4s ease-in-out
-    transform translateZ(0.5px)
-
-  .name
-    background-color rgba(255, 255, 255, 0.5)
-    text-overflow ellipsis
-    white-space nowrap
-    overflow hidden
-    transition transform 0.4s ease-in-out
-
 .editor
   position absolute
   top 100px
   left 100px
   right 100px
   bottom 100px
-
-.perspective
-  .map-inner
-    transform rotateX(90deg)
-
-  .character
-    box-shadow none !important
-
-    &:after
-      content: ' '
-      width 40px
-      height 10px
-      position absolute
-      top 46px
-      left 5px
-      border-radius 50%
-      background rgba(0, 0, 0, 0.6)
-      box-shadow 0 0 10px rgba(0, 0, 0, 0.6)
-
-  .character-inner
-    transform rotateX(-90deg)
-
-    background-color transparent
-    border: none
-
-  .name
-    border 1px solid black
-    transform translateY(-50px)
 </style>
