@@ -4,13 +4,13 @@
     message-list-item(
       :key="message.id"
       :message="message"
-      v-for="message in messages",
+      v-for="message in messages.slice(-(messagesLimit || 100))",
       v-else
     )
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Loading from '@/browser/components/Loading.vue';
 import MessageListItem from '@/browser/components/MessageListItem.vue';
 
@@ -19,10 +19,15 @@ export default {
     Loading,
     MessageListItem,
   },
-  computed: mapState([
-    'messages',
-    'messagesLoading',
-  ]),
+  computed: {
+    ...mapGetters([
+      'messagesLimit',
+    ]),
+    ...mapState([
+      'messages',
+      'messagesLoading',
+    ]),
+  },
 };
 </script>
 

@@ -5,7 +5,7 @@
   )
     div(v-if="isVisible")
       v-card-title.px-2.pt-2.pb-1
-        div(v-if="message.to") ㊙ {{message.name}} >> {{message.to.join(', ')}}
+        div(v-if="message.to") {{message.name}} >> {{message.to.join(', ')}}
         div(v-else) {{message.name}}
         v-spacer
         from-now.caption(:time="message.createdAt")

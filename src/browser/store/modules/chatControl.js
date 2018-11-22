@@ -27,6 +27,7 @@ const DefaultConfig = {
 const DefaultState = {
   configList: [DefaultConfig],
   selectedId: DefaultId,
+  messagesLimit: 100,
 };
 
 function getRoomId(state) {
@@ -53,6 +54,10 @@ export default {
     },
     setChatColor({ state, rootState, commit }, color) {
       commit('setChatColor', color);
+      save(getRoomId(rootState), state);
+    },
+    setMessagesLimit({ state, rootState, commit }, limit) {
+      commit('setMessagesLimit', limit);
       save(getRoomId(rootState), state);
     },
     loadChatConfig({ commit }, roomId: string) {
@@ -101,6 +106,9 @@ export default {
           : config
       ));
     },
+    setMessagesLimit(state, limit) {
+      state.messagesLimit = limit;
+    },
   },
   state: DefaultState,
   getters: {
@@ -112,6 +120,9 @@ export default {
     },
     selectedChatId(state) {
       return state.selectedId;
+    },
+    messagesLimit(state) {
+      return state.messagesLimit || 100;
     },
   },
 };

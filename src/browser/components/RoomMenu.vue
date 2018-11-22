@@ -9,6 +9,11 @@
         v-list-tile-content
           v-list-tile-title 新しいウィンドウ
       v-divider
+      v-list-tile(@click="vdOpen = true")
+        v-list-tile-action
+          v-icon mdi-settings
+        v-list-tile-content
+          v-list-tile-title 表示設定
       v-list-tile(@click="redOpen = true")
         v-list-tile-action
           v-icon mdi-settings
@@ -68,6 +73,7 @@
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
     tabletop-audio-sound-pad-dialog(v-model="taspdOpen")
+    chat-view-dialog(v-model="vdOpen")
 </template>
 
 <script>
@@ -75,6 +81,7 @@ import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
+import ChatViewDialog from '@/browser/components/ChatViewDialog.vue';
 import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
 import RoomEditDialog from '@/browser/components/RoomEditDialog.vue';
 import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialog.vue';
@@ -85,6 +92,7 @@ import TabletopAudioSoundPadDialog from '@/browser/components/TabletopAudioSound
 export default {
   components: {
     ChangelogDialog,
+    ChatViewDialog,
     FeedbackDialog,
     RoomEditDialog,
     RoomPasswordClearDialog,
@@ -98,13 +106,14 @@ export default {
   ]),
   data() {
     return {
-      redOpen: false,
-      rpedOpen: false,
-      rpcdOpen: false,
-      rrdOpen: false,
       cdOpen: false,
       fdOpen: false,
+      redOpen: false,
+      rpcdOpen: false,
+      rpedOpen: false,
+      rrdOpen: false,
       taspdOpen: false,
+      vdOpen: false,
     };
   },
   methods: {
