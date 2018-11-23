@@ -46,6 +46,16 @@
         :x2="ruler.length * 25"
         y2="8"
       )
+    polyline(
+      :points="shape.points.map(a => a.map(b => b * 50).join(' ')).join(' ')"
+      v-else-if="shape.type === 'polyline'"
+    )
+    text(
+      :x="shape.x"
+      :y="shape.x"
+      :style="textStyle"
+      v-else-if="shape.type === 'text'"
+    ) {{shape.text}}
 </template>
 
 <script>
@@ -97,6 +107,20 @@ export default {
           strokeWidth: strokeWidth || null,
         }),
         transform: `translate(${x * 50}px, ${y * 50}px)`,
+      };
+    },
+    textStyle() {
+      const {
+        fill,
+        fillOpacity,
+        fontSize,
+      } = this.shape;
+
+      return {
+        fill,
+        fillOpacity,
+        fontSize,
+        stroke: 'none',
       };
     },
   },

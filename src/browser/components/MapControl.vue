@@ -27,6 +27,10 @@
         v-btn(icon value="circle")
           svg-icon
             circle(cx="0", cy="0", r="10")
+        v-btn(icon, value="polyline")
+          v-icon mdi-hexagon-outline
+        v-btn(icon, value="text")
+          v-icon mdi-format-text
         v-btn(icon, value="ruler")
           v-icon mdi-ruler
       .vertical-divider

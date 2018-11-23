@@ -64,11 +64,43 @@ class RectCreateStrategy extends ShapeCreateStrategy {
   }
 }
 
+class TextCreateStrategy extends ShapeCreateStrategy {
+  onCreate(x, y) {
+    return {
+      x,
+      y,
+      text: prompt('テキスト'),
+      fontSize: 30,
+    };
+  }
+}
+
+class PloyCreateStrategy extends ShapeCreateStrategy {
+  onCreate(x, y) {
+    return {
+      x,
+      y,
+      points: [[0, 0]],
+    };
+  }
+
+  onMove(shape: Object, pos: Vec2, offset: Vec2) {
+    const { points } = shape;
+    const rpos = pos.sub(offset);
+    points.push([rpos.x, rpos.y]);
+    return {
+      points,
+    };
+  }
+}
+
 const Constructors = {
-  line: LineCreateStrategy,
   circle: CircleCreateStrategy,
+  line: LineCreateStrategy,
+  polyline: PloyCreateStrategy,
   rect: RectCreateStrategy,
   ruler: LineCreateStrategy,
+  text: TextCreateStrategy,
 };
 export default function getShapeCreateStrategy(shapeType: string) {
   if (!(shapeType in Constructors)) throw new Error(`Invalid shape type: ${shapeType}`);
