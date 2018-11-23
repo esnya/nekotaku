@@ -21,6 +21,11 @@
         .neko-flex-row
           file-input.success(accept="image/*", @input="updateMapBackgroundImage") 背景変更
           v-btn.warning(@click="clearMapBackgroundImage") 背景クリア
+        v-checkbox(
+          label="グリッドを非表示"
+          :value="Boolean(map.hideGrid)"
+          @click="updateMap({ key: 'hideGrid', value: !map.hideGrid })"
+        )
       v-card-actions
         v-spacer
         v-btn(@click="$emit('input', false)") 閉じる

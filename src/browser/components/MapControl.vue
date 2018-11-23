@@ -80,6 +80,7 @@ export default {
     'resetMapZoom',
     'setMapMode',
     'togglePerspective',
+    'setGridVisibility',
   ]),
   data() {
     return {

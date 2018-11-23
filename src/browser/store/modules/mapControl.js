@@ -36,6 +36,7 @@ export default {
     mode: 'move',
     shapeType: null,
     selected: null,
+    gridVisibility: true,
     style: {
       stroke: colors.red.base,
       strokeOpacity: 1.0,

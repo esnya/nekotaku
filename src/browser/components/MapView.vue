@@ -13,8 +13,9 @@
     )
       div.map-inner(:style="styles.mapInner")
         div.row(
-          v-for="y in map.height"
           :v-key="y"
+          v-for="y in map.height"
+          v-if="!map.hideGrid"
         )
           div.tile.text-xs-center(v-for="x in map.width", :v-key="x") {{x}}-{{y}}
         svg.layer(:width="map.width * 50", :height="map.width * 50")
