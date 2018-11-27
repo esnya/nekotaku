@@ -8,24 +8,29 @@
         div ※元には戻せません。
       v-card-actions
         v-spacer
-        v-btn(color="error" @click="() => { close(); removeRoom($router); }") 削除
+        v-btn(color="error" @click="remove") 削除
         v-btn(@click="close") やめる
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import * as RouteNames from '@/browser/constants/route';
 
 export default {
   methods: {
-    ...mapActions([
-      'removeRoom',
-    ]),
     close() {
       this.$emit('input', false);
     },
+    async remove() {
+      await this.$models.room.remove(this.$route.params.id);
+      this.close();
+      this.$router.push({ name: RouteNames.Lobby });
+    },
   },
-  props: [
-    'value',
-  ],
+  props: {
+    value: {
+      required: true,
+      type: Boolean,
+    },
+  },
 };
 </script>

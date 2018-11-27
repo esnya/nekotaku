@@ -38,7 +38,12 @@ export default {
   },
 };
 
-function bind(name: string, init: void => any, callback: (string, Object | string) => void) {
+function bind(
+  name: string,
+  autoBind: boolean,
+  init: void => any,
+  callback: (string, Object | string) => void,
+) {
   const unsubscribeKey = shortid();
 
   return {
@@ -46,13 +51,25 @@ function bind(name: string, init: void => any, callback: (string, Object | strin
       [name]: init(),
       [unsubscribeKey]: null,
     }),
+    methods: autoBind ? {} : {
+      async bindModels() {
+        await Promise.all(this.$modelBinders.map(f => f()));
+      },
+    },
     async created() {
-      if (!this.$models[name]) throw new Error(`Model ${name} is not defined`);
+      const binder = async () => {
+        if (!this.$models[name]) throw new Error(`Model ${name} is not defined`);
 
-      this[unsubscribeKey] = await this.$models[name].subscribe(
-        this.roomId || null,
-        callback.bind(this),
-      );
+        this[unsubscribeKey] = await this.$models[name].subscribe(
+          this.roomId || null,
+          callback.bind(this),
+        );
+      };
+      if (autoBind) await binder();
+      else {
+        if (!this.$modelBinders) this.$modelBinders = [];
+        this.$modelBinders.push(binder);
+      }
     },
     async destroyed() {
       await this[unsubscribeKey]();
@@ -60,8 +77,8 @@ function bind(name: string, init: void => any, callback: (string, Object | strin
   };
 }
 
-export function bindAsList(name: string, isReversed: boolean = false) {
-  return bind(name, () => [], function callback(event: string, newData: Object | string) {
+export function bindAsList(name: string, isReversed: boolean = false, autoBind: boolean = true) {
+  return bind(name, autoBind, () => [], function callback(event: string, newData: Object | string) {
     switch (event) {
       case ListEvent.ChildAdded:
         if (isReversed) this[name].unshift(newData);
@@ -78,13 +95,18 @@ export function bindAsList(name: string, isReversed: boolean = false) {
   });
 }
 
-export function bindAsObject(name: string) {
-  return bind(name, () => null, function callback(event: string, newData: Object | string) {
-    switch (event) {
-      case ObjectEvent.Value:
-        this[name] = newData;
-        break;
-      default:
-    }
-  });
+export function bindAsObject(name: string, autoBind: boolean = true) {
+  return bind(
+    name,
+    autoBind,
+    () => null,
+    function callback(event: string, newData: Object | string) {
+      switch (event) {
+        case ObjectEvent.Value:
+          this[name] = newData;
+          break;
+        default:
+      }
+    },
+  );
 }

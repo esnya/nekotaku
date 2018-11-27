@@ -120,13 +120,13 @@ const saveRoomTab = _.debounce((roomId, roomTab) => {
 
 export default {
   mixins: [
-    bindAsList('characters'),
-    bindAsList('memos'),
-    bindAsList('messages'),
-    bindAsList('shapes'),
-    bindAsObject('map'),
-    bindAsObject('members'),
-    bindAsObject('room'),
+    bindAsList('characters', false, false),
+    bindAsList('memos', false, false),
+    bindAsList('messages', false, false),
+    bindAsList('shapes', false, false),
+    bindAsObject('map', false),
+    bindAsObject('members', false),
+    bindAsObject('room', false),
   ],
   components: {
     ChatControl,
@@ -185,6 +185,13 @@ export default {
     leave() {
       this.$router.push({ name: RouteNames.Lobby });
     },
+    async updateMember() {
+      const {
+        name,
+        color,
+      } = this.chatControl;
+      await this.$models.members.update(this.roomId, { name, color });
+    },
   },
   watch: {
     room({ id }) {
@@ -199,16 +206,11 @@ export default {
       saveRoomTab(this.room.id, roomTab);
     },
   },
-  created() {
+  async created() {
     this.width = window.innerWidth;
-
-    this.timer = new IntervalTimer(() => {
-      const {
-        name,
-        color,
-      } = this.chatControl;
-      this.$models.members.update(this.roomId, { name, color });
-    }, 5 * 1000);
+    this.timer = new IntervalTimer(() => this.updateMember(), 5 * 1000);
+    await this.updateMember();
+    await this.bindModels();
   },
   destroyed() {
     this.timer.stop();

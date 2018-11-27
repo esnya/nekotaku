@@ -21,4 +21,8 @@ export default class ObjectModel extends Model {
   async update(roomId: string, data: Object): Promise<void> {
     await this.backend.update(this.getPath(roomId), data);
   }
+
+  async remove(roomId: string): Promise<void> {
+    await this.backend.remove(this.getPath(roomId));
+  }
 }

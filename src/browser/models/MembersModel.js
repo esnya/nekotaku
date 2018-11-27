@@ -7,6 +7,6 @@ export default class MembersModel extends ObjectModel {
 
   async update(roomId: string, data: Object): Promise<void> {
     const uid = await this.backend.getUID();
-    await super.update(roomId, { [uid]: data });
+    await super.update(`${roomId}/${uid}`, data);
   }
 }

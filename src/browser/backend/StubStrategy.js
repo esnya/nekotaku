@@ -57,12 +57,21 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   /* Utilities */
-  get2(path: string, defaultValue = null): any {
+  get(path: string, defaultValue = null): any {
     return _.get(this.data, path.replace(/\//g, '.'), defaultValue);
   }
 
-  set2(path: string, data: Object): Object {
+  set(path: string, data: Object): Object {
     _.set(this.data, path.replace(/\//g, '.'), data);
+  }
+
+  on(path, event, callback) {
+    this.eventBus.off(`${path}:${event}`, callback);
+    return callback;
+  }
+
+  off(path, event, callback) {
+    this.eventBus.off(`${path}:${event}`, callback);
   }
 
   emit(path, event, data) {
@@ -75,7 +84,7 @@ export default class StubStrategy extends BackendStrategy {
 
     if (!path) return;
 
-    const emitData = this.get2(path);
+    const emitData = this.get(path);
 
     this.emit(path, ObjectEvent.Value, emitData);
 
@@ -85,6 +94,28 @@ export default class StubStrategy extends BackendStrategy {
     if (emitData !== null) this.emit(parentPath, ListEvent.ChildChanged, emitData);
 
     this.emitUpdate(parentPath);
+  }
+
+  checkPath(path: string) {
+    const [
+      model,
+      roomId,
+      childId,
+    ] = path.split(/\//g);
+
+    switch (model) {
+      case 'rooms':
+        if (!roomId) return;
+        break;
+      case 'members':
+        if (childId === UserId) return;
+        break;
+      default:
+        break;
+    }
+    if (roomId && this.get(`members/${roomId}/${UserId}`)) return;
+
+    throw new Error(`Access denied (${path})`);
   }
 
   /* APIs */
@@ -99,16 +130,17 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<() => Promise<void>> {
     console.log('[StubStrategy]', 'subscribe', { path, event, callback });
 
-    const eventPath = `${path}:${event}`;
-    this.on(eventPath, callback);
+    this.checkPath(path);
+
+    this.on(path, event, callback);
 
     setTimeout(() => {
       switch (event) {
         case ObjectEvent.Value:
-          callback(this.get2(path));
+          callback(this.get(path));
           break;
         case ListEvent.ChildAdded:
-          _(this.get2(path)).forEach(item => callback(item));
+          _(this.get(path)).forEach(item => callback(item));
           break;
         default:
       }
@@ -116,7 +148,7 @@ export default class StubStrategy extends BackendStrategy {
 
     return () => {
       console.log('[StubStrategy]', 'unsubscribe', { path, event, callback });
-      this.off(eventPath, callback);
+      this.off(path, event, callback);
     };
   }
 
@@ -126,13 +158,15 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<string> {
     console.log('[StubStrategy]', 'push', { path, data });
 
+    this.checkPath(path);
+
     const id = `${Date.now()}_${shortid()}`;
     const newData = {
       ...data,
       id,
     };
 
-    this.set2(`${path}/${id}`, newData);
+    this.set(`${path}/${id}`, newData);
 
     setTimeout(() => {
       this.emit(path, ListEvent.ChildAdded, newData);
@@ -148,13 +182,15 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<string> {
     console.log('[StubStrategy]', 'update', { path, data });
 
-    const oldData = this.get2(path, {});
+    this.checkPath(path);
+
+    const oldData = this.get(path, {});
     const newData = {
       ...oldData,
       ...data,
       id: oldData.id,
     };
-    this.set2(path, newData);
+    this.set(path, newData);
 
     setTimeout(() => this.emitUpdate(path));
   }
@@ -166,8 +202,10 @@ export default class StubStrategy extends BackendStrategy {
 
     console.log('[StubStrategy]', 'remove', { path, key });
 
+    this.checkPath(path);
+
     const parentPath = getParentPath(path);
-    delete this.get2(parentPath)[key];
+    delete this.get(parentPath)[key];
 
     setTimeout(() => {
       this.emit(parentPath, ListEvent.ChildRemoved, key);
@@ -184,7 +222,7 @@ export default class StubStrategy extends BackendStrategy {
     const url = URL.createObjectURL(file);
     const id = shortid();
 
-    this.set2(`files/${path}/${id}`, url);
+    this.set(`files/${path}/${id}`, url);
 
     return url;
   }
