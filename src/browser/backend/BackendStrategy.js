@@ -46,4 +46,16 @@ export default class BackendStrategy {
   ): Promise<string> {
     throw new Error('Abstract method called');
   }
+
+  async removeFile(
+    path: string,
+  ): Promise<void> {
+    throw new Error('Abstract method called');
+  }
+
+  async removeFiles(
+    path: string,
+  ): Promise<void> {
+    throw new Error('Abstract method called');
+  }
 }

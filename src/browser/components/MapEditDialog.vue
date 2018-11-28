@@ -50,11 +50,10 @@ export default {
       );
     },
     async updateBG(file) {
-      const url = await this.$models.map.pushFile(this.roomId, file);
-      await this.update('backgroundImage', url);
+      await this.$models.map.updateBackgroundImage(this.roomId, file);
     },
     async clearBG() {
-      await this.update('backgroundImage', null);
+      await this.$models.map.removeBackgroundImage(this.roomId);
     },
   },
   props: {

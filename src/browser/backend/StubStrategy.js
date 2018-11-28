@@ -196,8 +196,8 @@ export default class StubStrategy extends BackendStrategy {
 
     this.checkPath(path, 'write');
 
-    const oldData = this.get(path, {});
-    const newData = (typeof data === 'object') ? {
+    const oldData = this.get(path);
+    const newData = (typeof data === 'object' && oldData && oldData.id) ? {
       ...oldData,
       ...data,
       id: oldData.id,
@@ -231,11 +231,39 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<string> {
     console.log('[StubStrategy]', 'putFile', { path, file });
 
-    const url = URL.createObjectURL(file);
-    const id = shortid();
+    const filePath = `files/${path}`;
+    const oldUrl = this.get(filePath);
+    if (oldUrl) URL.revokeObjectURL(oldUrl);
 
-    this.set(`files/${path}/${id}`, url);
+    const url = URL.createObjectURL(file);
+
+    this.set(filePath, url);
 
     return url;
+  }
+
+  async removeFile(
+    path: string,
+  ): Promise<void> {
+    console.log('[StubStrategy]', 'removeFile', { path });
+
+    const filePath = `files/${path}`;
+    const url = this.get(filePath);
+    if (url) {
+      URL.revokeObjectURL(url);
+      this.set(filePath, null);
+    }
+  }
+
+  async removeFiles(
+    path: string,
+  ): Promise<void> {
+    console.log('[StubStrategy]', 'removeFiles', { path });
+
+    const data = this.get(`files/${path}`);
+    if (typeof data === 'string') await this.removeFile(path);
+    else if (data && typeof data === 'object') {
+      await Promise.all(Object.keys(data).map(key => this.removeFiles(`${path}/${key}`)));
+    }
   }
 }

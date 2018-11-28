@@ -7,10 +7,12 @@
         span.headline 表情の追加
       v-card-text
         v-text-field(
-          full-width
+          required
           name="face"
           label="表情の名前"
+          :error-messages="errors.collect('face')"
           v-model="value"
+          v-validate="'required'"
         )
       v-card-actions
         v-spacer

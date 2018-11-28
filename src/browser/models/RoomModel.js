@@ -26,6 +26,8 @@ export default class RoomModel extends ObjectModel {
     const mapModel = new MapModel(this.backend);
     await mapModel.remove(roomId);
 
+    await this.backend.removeFiles(roomId);
+
     await super.remove(roomId);
   }
 }

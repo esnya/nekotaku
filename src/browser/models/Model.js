@@ -8,9 +8,4 @@ export default class Model {
   getPath(roomId: string): string {
     return `${this.name}/${roomId}`;
   }
-
-  async pushFile(roomId: string, file: File): Promise<string> {
-    const url = await this.backend.pushFile(roomId, file);
-    return url;
-  }
 }

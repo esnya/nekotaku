@@ -74,7 +74,6 @@
             v-layout(row align-center)
               v-flex
                 v-select(
-                  full-width
                   hide-details
                   label="表情"
                   :items="faces"
@@ -83,15 +82,16 @@
               character-face-append-dialog(@input="appendFace")
               remove-confirmation-dialog(:disabled="face === 'default'" @remove="removeFace")
           v-img(
+            :key="face"
             :src="character.portrait[face].url"
             v-if="character.portrait && character.portrait[face]"
           )
           v-card-actions
             v-spacer
-            file-input.success(@input="updatePortrait(face, $event)")
+            file-input.success(@input="file => updatePortrait(face, file)")
               span(v-if="character.portrait && character.portrait[face]") 変更
               span(v-else) 登録
-            v-btn.warning(@click="clearPortrait({ id, key: face })") クリア
+            v-btn.warning(@click="() => clearPortrait(face)") クリア
             v-spacer
         v-tab-item
           v-card-text.text-xs-center {{character.name}}を削除しますか？
@@ -136,9 +136,6 @@ export default {
     FileInput,
   },
   computed: {
-    id() {
-      return this.character.id;
-    },
     characterId() {
       return this.character.id;
     },
@@ -172,40 +169,25 @@ export default {
       );
     },
     async updateIcon(file) {
-      const url = await this.$models.characters.pushFile(this.roomId, file);
-      this.$models.characters.update(
-        this.roomId,
-        this.characterId,
-        { icon: url },
-      );
+      await this.$models.characters.updateIcon(this.roomId, this.characterId, file);
     },
-    async updatePortralt(face, file) {
-      const url = await this.$models.characters.pushFile(this.roomId, file);
-      this.$models.characters.update(
-        this.roomId,
-        `${this.characterId}/${face}`,
-        { url },
-      );
+    async updatePortrait(face, file) {
+      await this.$models.characters.updatePortrait(this.roomId, this.characterId, face, file);
+    },
+    async clearIcon() {
+      await this.$models.characters.removeIcon(this.roomId, this.characterId);
+    },
+    async clearPortrait(face) {
+      await this.$models.characters.removePortrait(this.roomId, this.characterId, face);
     },
     appendFace(face) {
       this.faces.push(face);
       this.face = face;
     },
-    async clearIcon() {
-      await this.$models.characters.update(
-        this.roomId,
-        this.characterId,
-        { icon: null },
-      );
-    },
     async removeFace() {
       const { face } = this;
 
-      await this.$models.characters.update(
-        this.roomId,
-        `${this.characterId}/${face}`,
-        null,
-      );
+      await this.removeFace(face);
 
       this.faces = filterFaces(this.faces.filter(f => f !== face));
       this.face = 'default';
