@@ -66,7 +66,7 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   on(path, event, callback) {
-    this.eventBus.off(`${path}:${event}`, callback);
+    this.eventBus.on(`${path}:${event}`, callback);
     return callback;
   }
 
@@ -96,7 +96,7 @@ export default class StubStrategy extends BackendStrategy {
     this.emitUpdate(parentPath);
   }
 
-  checkPath(path: string) {
+  checkPath(path: string, mode: string) {
     const [
       model,
       roomId,
@@ -105,10 +105,17 @@ export default class StubStrategy extends BackendStrategy {
 
     switch (model) {
       case 'rooms':
-        if (!roomId) return;
+        if (mode === 'read' && !roomId) return;
         break;
       case 'members':
-        if (childId === UserId) return;
+        if (
+          mode === 'write'
+          && childId === UserId
+          && (!this.get(`rooms/${roomId}/password`) || this.get(`rooms/${roomId}/password`) === this.get(`passwords/${roomId}/${UserId}`))
+        ) return;
+        break;
+      case 'passwords':
+        if (mode === 'write' && childId === UserId) return;
         break;
       default:
         break;
@@ -130,7 +137,7 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<() => Promise<void>> {
     console.log('[StubStrategy]', 'subscribe', { path, event, callback });
 
-    this.checkPath(path);
+    this.checkPath(path, 'read');
 
     this.on(path, event, callback);
 
@@ -158,9 +165,10 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<string> {
     console.log('[StubStrategy]', 'push', { path, data });
 
-    this.checkPath(path);
-
     const id = `${Date.now()}_${shortid()}`;
+
+    this.checkPath(`${path}/${id}`, 'write');
+
     const newData = {
       ...data,
       id,
@@ -178,18 +186,18 @@ export default class StubStrategy extends BackendStrategy {
 
   async update(
     path: string,
-    data: string,
+    data: any,
   ): Promise<string> {
     console.log('[StubStrategy]', 'update', { path, data });
 
-    this.checkPath(path);
+    this.checkPath(path, 'write');
 
     const oldData = this.get(path, {});
-    const newData = {
+    const newData = (typeof data === 'object') ? {
       ...oldData,
       ...data,
       id: oldData.id,
-    };
+    } : data;
     this.set(path, newData);
 
     setTimeout(() => this.emitUpdate(path));
@@ -202,7 +210,7 @@ export default class StubStrategy extends BackendStrategy {
 
     console.log('[StubStrategy]', 'remove', { path, key });
 
-    this.checkPath(path);
+    this.checkPath(path, 'write');
 
     const parentPath = getParentPath(path);
     delete this.get(parentPath)[key];

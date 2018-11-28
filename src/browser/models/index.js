@@ -8,6 +8,7 @@ import MembersModel from '@/browser/models/MembersModel';
 import MemosModel from '@/browser/models/MemosModel';
 import MessagesModel from '@/browser/models/MessagesModel';
 import { ObjectEvent } from './ObjectModel';
+import PasswordsModel from '@/browser/models/PasswordsModel';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import ShapesModel from '@/browser/models/ShapesModel';
@@ -18,6 +19,7 @@ const Models = [
   MembersModel,
   MemosModel,
   MessagesModel,
+  PasswordsModel,
   RoomModel,
   RoomsModel,
   ShapesModel,
@@ -44,12 +46,11 @@ function bind(
   init: void => any,
   callback: (string, Object | string) => void,
 ) {
-  const unsubscribeKey = shortid();
+  const unsubscribeKey = `$${shortid()}`;
 
   return {
     data: () => ({
       [name]: init(),
-      [unsubscribeKey]: null,
     }),
     methods: autoBind ? {} : {
       async bindModels() {
@@ -57,9 +58,9 @@ function bind(
       },
     },
     async created() {
-      const binder = async () => {
-        if (!this.$models[name]) throw new Error(`Model ${name} is not defined`);
+      if (!this.$models[name]) throw new Error(`Model ${name} is not defined`);
 
+      const binder = async () => {
         this[unsubscribeKey] = await this.$models[name].subscribe(
           this.roomId || null,
           callback.bind(this),
@@ -72,7 +73,9 @@ function bind(
       }
     },
     async destroyed() {
-      await this[unsubscribeKey]();
+      if (this[unsubscribeKey]) {
+        await this[unsubscribeKey]();
+      }
     },
   };
 }

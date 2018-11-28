@@ -27,6 +27,14 @@ export default new VueRouter({
       }),
     },
     {
+      path: '/:id/password',
+      name: RouteNames.RoomPassword,
+      component: () => ({
+        component: import('@/browser/pages/RoomPasswordPage.vue' /* webpackChunkName: "RoomPasswordPage" */),
+        loading: Loading,
+      }),
+    },
+    {
       path: '/404',
       name: RouteNames.NotFound,
       component: NotFound,

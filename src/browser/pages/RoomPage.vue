@@ -209,8 +209,13 @@ export default {
   async created() {
     this.width = window.innerWidth;
     this.timer = new IntervalTimer(() => this.updateMember(), 5 * 1000);
-    await this.updateMember();
-    await this.bindModels();
+
+    try {
+      await this.updateMember();
+      await this.bindModels();
+    } catch (e) {
+      this.$router.push({ name: RouteNames.RoomPassword });
+    }
   },
   destroyed() {
     this.timer.stop();

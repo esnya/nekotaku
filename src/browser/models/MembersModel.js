@@ -1,12 +1,7 @@
-import ObjectModel from '@/browser/models/ObjectModel';
+import UserDataModel from '@/browser/models/UserDataModel';
 
-export default class MembersModel extends ObjectModel {
+export default class MembersModel extends UserDataModel {
   constructor(backend) {
     super(backend, 'members');
-  }
-
-  async update(roomId: string, data: Object): Promise<void> {
-    const uid = await this.backend.getUID();
-    await super.update(`${roomId}/${uid}`, data);
   }
 }
