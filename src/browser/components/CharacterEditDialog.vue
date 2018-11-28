@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="open")
+  v-dialog(v-model="open" v-if="room")
     v-btn(icon, slot="activator")
       v-icon edit
     v-card(v-scroll="'y'")
@@ -43,7 +43,7 @@
                 :key="index"
                 :label="attr"
                 :value="attributes && attributes[index]"
-                v-if="room && room.characterAttributes"
+                v-if="room.characterAttributes"
                 v-for="(attr, index) in room.characterAttributes"
                 @input="value => updateAttribute(index, value)"
               )
@@ -109,6 +109,7 @@
 import CharacterFaceAppendDialog from '@/browser/components/CharacterFaceAppendDialog.vue';
 import RemoveConfirmationDialog from '@/browser/components/RemoveConfirmationDialog.vue';
 import FileInput from '@/browser/components/FileInput.vue';
+import { bindAsObject } from '@/browser/models';
 
 function inputValue(key, defaultValue) {
   return {
@@ -126,6 +127,9 @@ function filterFaces(faces) {
 }
 
 export default {
+  mixins: [
+    bindAsObject('room'),
+  ],
   components: {
     RemoveConfirmationDialog,
     CharacterFaceAppendDialog,
@@ -137,9 +141,6 @@ export default {
     },
     characterId() {
       return this.character.id;
-    },
-    roomId() {
-      return this.room.id;
     },
     attributes: inputValue('attributes'),
     hideIcon: inputValue('hideIcon'),
@@ -223,10 +224,6 @@ export default {
   },
   props: {
     character: {
-      required: true,
-      type: Object,
-    },
-    room: {
       required: true,
       type: Object,
     },

@@ -1,5 +1,9 @@
 <template lang="pug">
-  v-dialog(:value="value" @input="v => $emit('input', v)")
+  v-dialog(
+    :value="value"
+    v-if="room"
+    @input="v => $emit('input', v)"
+  )
     v-card(v-scroll="'y'")
       v-card-title
         .headline キャラクター追加
@@ -35,7 +39,12 @@
 </template>
 
 <script>
+import { bindAsObject } from '@/browser/models';
+
 export default {
+  mixins: [
+    bindAsObject('room'),
+  ],
   data() {
     return {
       open: false,
@@ -74,10 +83,6 @@ export default {
     },
   },
   props: {
-    room: {
-      type: Object,
-      required: true,
-    },
     value: {
       required: true,
       type: Boolean,

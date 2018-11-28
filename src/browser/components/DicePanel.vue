@@ -22,6 +22,7 @@
 <script>
 import _ from 'lodash';
 import palette from 'google-material-color';
+import { bindAsList } from '@/browser/models';
 
 function hash(data) {
   // eslint-disable-next-line no-bitwise
@@ -34,6 +35,9 @@ function selectColorName(n) {
 }
 
 export default {
+  mixins: [
+    bindAsList('messages'),
+  ],
   data() {
     return {
       color: palette.get('White', 'Secondary'),
@@ -79,12 +83,6 @@ export default {
         })
         .flatten()
         .value();
-    },
-  },
-  props: {
-    messages: {
-      required: true,
-      type: Array,
     },
   },
 };

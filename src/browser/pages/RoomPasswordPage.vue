@@ -24,11 +24,6 @@
 import * as RouteNames from '@/browser/constants/route';
 
 export default {
-  computed: {
-    roomId() {
-      return this.$route.params.id;
-    },
-  },
   data: () => ({
     password: null,
   }),
@@ -39,7 +34,7 @@ export default {
       const { password, roomId } = this;
 
       await this.$models.passwords.update(roomId, password);
-      this.$router.push({ name: RouteNames.Room, params: { id: roomId } });
+      this.$router.push({ name: RouteNames.Room, params: { roomId } });
     },
     cancel() {
       this.$router.push({ name: RouteNames.Lobby });

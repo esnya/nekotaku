@@ -39,4 +39,8 @@ export default class ListModel extends Model {
   async remove(roomId: string, childId: string): Promise<void> {
     await this.backend.remove(this.getChildPath(roomId, childId));
   }
+
+  async removeAll(roomId: string): Promise<void> {
+    await this.backend.remove(this.getPath(roomId));
+  }
 }

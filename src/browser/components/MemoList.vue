@@ -4,7 +4,6 @@
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(
           :memo="memo"
-          :room-id="roomId"
         )
       v-flex.pa-2(xs12)
         v-card
@@ -31,8 +30,12 @@
 <script>
 import { parseText, InitialText } from '../utilities/memo';
 import MemoListItem from '@/browser/components/MemoListItem.vue';
+import { bindAsList } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsList('memos'),
+  ],
   components: {
     MemoListItem,
   },
@@ -51,16 +54,6 @@ export default {
 
       this.addDialog = false;
       this.addText = InitialText;
-    },
-  },
-  props: {
-    memos: {
-      required: true,
-      type: Array,
-    },
-    roomId: {
-      required: true,
-      type: String,
     },
   },
 };

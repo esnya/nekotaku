@@ -10,8 +10,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import MessageListItem from '@/browser/components/MessageListItem.vue';
+import { bindAsList } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsList('messages'),
+  ],
   components: {
     MessageListItem,
   },
@@ -19,12 +23,6 @@ export default {
     ...mapGetters([
       'messagesLimit',
     ]),
-  },
-  props: {
-    messages: {
-      required: true,
-      type: Array,
-    },
   },
 };
 </script>

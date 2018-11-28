@@ -53,8 +53,14 @@ import MapCharacterItem from '@/browser/components/MapCharacterItem.vue';
 import ShapeEntity from '@/browser/components/ShapeEntity.vue';
 import getMapModeStrategy from '@/browser/map';
 import { align, limit } from '@/browser/utilities/entity';
+import { bindAsList, bindAsObject } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsList('characters'),
+    bindAsList('shapes'),
+    bindAsObject('map'),
+  ],
   components: {
     Loading,
     MapCharacterItem,
@@ -202,24 +208,6 @@ export default {
       );
     },
   },
-  props: {
-    characters: {
-      required: true,
-      type: Array,
-    },
-    map: {
-      required: true,
-      type: Object,
-    },
-    roomId: {
-      required: true,
-      type: String,
-    },
-    shapes: {
-      required: true,
-      type: Array,
-    },
-  },
   created() {
     const unsubscribers = [];
 
@@ -304,4 +292,8 @@ svg g *
   left 100px
   right 100px
   bottom 100px
+
+.perspective
+  .map-inner
+    transform rotateX(90deg)
 </style>

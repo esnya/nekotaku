@@ -4,7 +4,6 @@
       map-style-dialog(v-model="msdOpen")
       map-edit-dialog(
         :map="map"
-        :room-id="roomId"
         v-model="medOpen"
       )
       v-btn(icon @click="addMapZoom(0.2)")
@@ -49,8 +48,12 @@ import { mapMutations, mapState } from 'vuex';
 import MapEditDialog from '@/browser/components/MapEditDialog.vue';
 import MapStyleDialog from '@/browser/components/MapStyleDialog.vue';
 import SvgIcon from '@/browser/components/SvgIcon.vue';
+import { bindAsObject } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsObject('map'),
+  ],
   components: {
     MapEditDialog,
     MapStyleDialog,
@@ -89,16 +92,6 @@ export default {
       msdOpen: false,
       medOpen: false,
     };
-  },
-  props: {
-    map: {
-      required: true,
-      type: Object,
-    },
-    roomId: {
-      required: true,
-      type: String,
-    },
   },
 };
 </script>

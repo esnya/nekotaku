@@ -8,24 +8,26 @@
         div 誰でも卓に入れるようになります。
       v-card-actions
         v-spacer
-        v-btn.warning(@click="() => { this.close(); clearRoomPassword(); }") 解除
+        v-btn.warning(@click="clear") 解除
         v-btn(@click="close") キャンセル
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   methods: {
-    ...mapActions([
-      'clearRoomPassword',
-    ]),
+    async clear() {
+      this.close();
+      await this.$models.room.update(this.roomId, { password: undefined });
+    },
     close() {
       this.$emit('input', false);
     },
   },
-  props: [
-    'value',
-  ],
+  props: {
+    value: {
+      required: true,
+      type: Boolean,
+    },
+  },
 };
 </script>

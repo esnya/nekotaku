@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-dialog(v-model="open")
+  v-dialog(v-model="value")
     v-btn(
       fab
       fixed
@@ -9,8 +9,7 @@
     )
       v-icon add
     v-card(v-scroll="'y'")
-      v-card-title
-        span.headline 卓作成
+      v-card-title.headline 卓作成
       v-card-text
         form(@submit.prevent="submit")
           v-text-field(
@@ -53,15 +52,14 @@
           )
       v-card-actions
         v-spacer
-        v-btn(
-          color="primary"
-          @click="submit"
-        ) 作成
-        v-btn(@click.native="open = false") キャンセル
+        v-btn(color="primary" @click="submit") 作成
+        v-btn(@click.native="value = false") キャンセル
 </template>
 
 <script>
 import DiceSelect from '@/browser/components/DiceSelect.vue';
+import * as RouteNames from '@/browser/constants/route';
+import run from '@/browser/task';
 
 export default {
   components: {
@@ -69,7 +67,7 @@ export default {
   },
   data() {
     return {
-      open: false,
+      value: false,
       title: null,
       dice: 'DiceBot',
       characterAttributes: null,
@@ -78,21 +76,27 @@ export default {
     };
   },
   methods: {
-    async submit() {
-      if (!await this.$validator.validateAll()) return;
+    submit() {
+      run(async () => {
+        if (!await this.$validator.validateAll()) return;
 
-      const {
-        title,
-        dice,
-        characterAttributes,
-        password,
-      } = this;
+        const {
+          title,
+          dice,
+          characterAttributes,
+          password,
+        } = this;
 
-      this.$models.rooms.push({
-        title,
-        dice,
-        characterAttributes,
-        password,
+        const roomId = await this.$models.rooms.push({
+          title,
+          dice,
+          characterAttributes,
+          password,
+        });
+
+        this.value = false;
+
+        this.$router.push({ name: RouteNames.Room, params: { roomId } });
       });
     },
   },

@@ -36,6 +36,13 @@ async function main() {
   Vue.use(VueSimpleMarkdown);
   Vue.use(VueYoutube);
   Vue.use(Models);
+  Vue.mixin({
+    computed: {
+      roomId() {
+        return this.$route.params.roomId;
+      },
+    },
+  });
 
   Vue.directive('scroll', {
     inserted(el, binding) {

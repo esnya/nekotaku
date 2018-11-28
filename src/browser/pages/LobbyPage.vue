@@ -20,7 +20,7 @@
               v-list-tile-title 更新履歴
     main
       v-container(fluid :grid-list-md="true")
-        room-list(:rooms="rooms")
+        room-list
       room-create-dialog
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
@@ -33,12 +33,8 @@ import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/components/RoomList.vue';
 import * as RouteNames from '@/browser/constants/route';
-import { bindAsList } from '@/browser/models';
 
 export default {
-  mixins: [
-    bindAsList('rooms', true),
-  ],
   components: {
     ChangelogDialog,
     FeedbackDialog,
@@ -61,14 +57,14 @@ export default {
         password,
       } = data;
 
-      const id = await this.roomsModel.push({
+      const roomId = await this.$models.rooms.push({
         characterAttributes,
         dice,
         title,
         password,
       });
 
-      this.$router.push({ name: RouteNames.Room, params: { id } });
+      this.$router.push({ name: RouteNames.Room, params: { roomId } });
     },
   },
   created() {

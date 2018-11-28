@@ -14,16 +14,19 @@
 
 <script>
 import * as RouteNames from '@/browser/constants/route';
+import run from '@/browser/task';
 
 export default {
   methods: {
     close() {
       this.$emit('input', false);
     },
-    async remove() {
-      await this.$models.room.remove(this.$route.params.id);
-      this.close();
-      this.$router.push({ name: RouteNames.Lobby });
+    remove() {
+      run(async () => {
+        await this.$models.room.remove(this.roomId);
+        this.close();
+        this.$router.push({ name: RouteNames.Lobby });
+      });
     },
   },
   props: {

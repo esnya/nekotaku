@@ -23,11 +23,16 @@
 
 <script>
 import _ from 'lodash';
+import { bindAsList } from '@/browser/models';
 
 const N = 3;
 const Wait = 40;
 
 export default {
+  mixins: [
+    bindAsList('characters'),
+    bindAsList('messages'),
+  ],
   computed: {
     portraits: _.throttle(function portraits() {
       const characterPortraits = _(this.characters)
@@ -55,19 +60,8 @@ export default {
   },
   data() {
     return {
-      N,
       open: true,
     };
-  },
-  props: {
-    characters: {
-      required: true,
-      type: Array,
-    },
-    messages: {
-      required: true,
-      type: Array,
-    },
   },
 };
 </script>

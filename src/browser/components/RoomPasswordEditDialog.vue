@@ -4,58 +4,56 @@
       v-card-title
         span.headline パスワード設定
       v-card-text
-        v-form(v-model="valid", @submit.prevent="submit")
+        form(@submit.prevent="submit")
           v-text-field(
-            v-model="password"
             required
             label="新しいパスワード"
+            name="password"
             type="password"
-            :rules="[notEmpty]"
+            :error-messages="errors.collect('password')"
+            v-model="password"
+            v-validate="'required'"
           )
           v-text-field(
-            v-model="passwordConfirm"
             required
             label="パスワードの確認"
             type="password"
-            :rules="[notEmpty, equal]"
+            name="passwordConfirm"
+            :error-messages="errors.collect('passwordConfirm')"
+            v-model="passwordConfirm"
+            v-validate="{ required: true, is: password }"
           )
       v-card-actions
         v-spacer
-        v-btn(color="primary" :disabled="!valid" @click="submit") 設定
+        v-btn(color="primary" @click="submit") 設定
         v-btn(@click="close") キャンセル
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   data() {
     return {
       password: null,
       passwordConfirm: null,
-      valid: false,
     };
   },
   methods: {
-    ...mapActions([
-      'updateRoomPassword',
-    ]),
-    notEmpty(v) {
-      return v ? true : 'パスワードを入力して下さい。';
-    },
-    equal(v) {
-      return v === this.password ? true : 'パスワードが一致しません。';
-    },
     close() {
       this.$emit('input', false);
     },
-    submit() {
+    async submit() {
+      if (!await this.$validator.validateAll()) return;
+
+      const { password } = this;
       this.close();
-      this.updateRoomPassword(this.password);
+      await this.$models.room.update(this.roomId, { password });
     },
   },
-  props: [
-    'value',
-  ],
+  props: {
+    value: {
+      required: true,
+      type: Boolean,
+    },
+  },
 };
 </script>

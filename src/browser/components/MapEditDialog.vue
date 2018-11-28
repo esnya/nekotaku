@@ -33,8 +33,12 @@
 
 <script>
 import FileInput from '@/browser/components/FileInput.vue';
+import { bindAsObject } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsObject('map'),
+  ],
   components: {
     FileInput,
   },
@@ -54,14 +58,6 @@ export default {
     },
   },
   props: {
-    map: {
-      required: true,
-      type: Object,
-    },
-    roomId: {
-      required: true,
-      type: String,
-    },
     value: {
       required: true,
       type: Boolean,

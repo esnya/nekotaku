@@ -30,7 +30,8 @@
 <script>
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
-import localStorage from '../utilities/localStorage';
+import localStorage from '@/browser/utilities/localStorage';
+import { bindAsObject } from '@/browser/models';
 
 function getStorageKey(roomId) {
   return `nekotaku:chat-palette:${roomId}`;
@@ -53,6 +54,9 @@ const saveTabs = _.debounce(
 );
 
 export default {
+  mixins: [
+    bindAsObject('room'),
+  ],
   computed: {
     ...mapGetters([
       'chatControl',
@@ -88,7 +92,7 @@ export default {
     },
     update(tab, text) {
       this.tabs[tab].palette = text.split(/\n/g);
-      saveTabs(this.room.id, this.tabs);
+      saveTabs(this.roomId, this.tabs);
     },
     async send(tab, line) {
       const {
@@ -125,7 +129,7 @@ export default {
         diceResults,
       }]);
 
-      this.$models.messages.push(this.room.id, {
+      this.$models.messages.push(this.roomId, {
         body: parsed,
         color,
         face: 'default',
@@ -135,17 +139,13 @@ export default {
     },
   },
   props: {
-    room: {
-      type: Object,
-      required: true,
-    },
     value: {
       required: true,
       type: Boolean,
     },
   },
   created() {
-    const data = localStorage.getItem(getStorageKey(this.room.id));
+    const data = localStorage.getItem(getStorageKey(this.roomId));
     this.tabs = data ? JSON.parse(data) : InitialData;
   },
 };

@@ -23,8 +23,12 @@
 
 <script>
 import RoomListItem from '@/browser/components/RoomListItem.vue';
+import { bindAsList } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsList('rooms', true),
+  ],
   components: {
     RoomListItem,
   },
@@ -45,11 +49,5 @@ export default {
       rowsPerPage: 25,
     },
   }),
-  props: {
-    rooms: {
-      required: true,
-      type: Array,
-    },
-  },
 };
 </script>

@@ -12,17 +12,20 @@ function getParentPath(path: string): string {
   return path.replace(/\/?[^/]+$/, '') || null;
 }
 
-// function roomFilter(room) {
-//   const {
-//     password,
-//     ...others
-//   } = room;
+function filter(data: Object): Object {
+  if (data && data.password) {
+    const {
+      password,
+      ...others
+    } = data;
+    return {
+      ...others,
+      isLocked: Boolean(password),
+    };
+  }
 
-//   return {
-//     ...others,
-//     isLocked: Boolean(password),
-//   };
-// }
+  return data;
+}
 
 export const UserId = 'user';
 
@@ -76,7 +79,7 @@ export default class StubStrategy extends BackendStrategy {
 
   emit(path, event, data) {
     console.log('[StubStrategy]', 'emit', { path, event, data });
-    this.eventBus.emit(`${path}:${event}`, data);
+    this.eventBus.emit(`${path}:${event}`, filter(data));
   }
 
   emitUpdate(path) {
@@ -106,6 +109,7 @@ export default class StubStrategy extends BackendStrategy {
     switch (model) {
       case 'rooms':
         if (mode === 'read' && !roomId) return;
+        if (mode === 'write' && roomId && !this.get(`rooms/${roomId}`)) return;
         break;
       case 'members':
         if (
@@ -144,10 +148,10 @@ export default class StubStrategy extends BackendStrategy {
     setTimeout(() => {
       switch (event) {
         case ObjectEvent.Value:
-          callback(this.get(path));
+          callback(filter(this.get(path)));
           break;
         case ListEvent.ChildAdded:
-          _(this.get(path)).forEach(item => callback(item));
+          _(this.get(path)).forEach(item => callback(filter(item)));
           break;
         default:
       }

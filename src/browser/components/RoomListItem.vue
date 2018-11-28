@@ -9,8 +9,7 @@
       room-info-list(:room="room")
     v-card-actions
       v-spacer
-      v-btn(color="primary" :to="{ name: RouteNames.Room, params: { id: room.id } }") 参加
-      //- v-btn(secondary) 見学
+      v-btn(color="primary" @click="join") 参加
 </template>
 
 <script>
@@ -21,13 +20,16 @@ export default {
   components: {
     RoomInfoList,
   },
-  data() {
-    return {
-      RouteNames,
-    };
+  methods: {
+    join() {
+      this.$router.push({ name: RouteNames.Room, params: { roomId: this.room.id } });
+    },
   },
-  props: [
-    'room',
-  ],
+  props: {
+    room: {
+      required: true,
+      type: Object,
+    },
+  },
 };
 </script>

@@ -39,7 +39,7 @@
       v-btn.my-0.pl-1(icon color="primary" dark  @click="submit")
         v-icon send
     chat-config-dialog(v-model="ccdOpen")
-    chat-palette-dialog(:room="room" v-model="cpdOpen")
+    chat-palette-dialog(v-model="cpdOpen")
     v-dialog(v-model="cwdOpen")
       v-card
         v-card-title(primary-title)
@@ -70,11 +70,15 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import ChatConfigDialog from '@/browser/components/ChatConfigDialog.vue';
 import ChatPaletteDialog from '@/browser/components/ChatPaletteDialog.vue';
+import { bindAsObject } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsObject('room'),
+  ],
   components: {
     ChatConfigDialog,
     ChatPaletteDialog,
@@ -82,9 +86,6 @@ export default {
   computed: {
     ...mapGetters([
       'chatControl',
-    ]),
-    ...mapState([
-      'characters',
     ]),
     bodyRows() {
       return Math.max(1, this.body ? this.body.split(/\n/g).length : 1);
@@ -114,65 +115,39 @@ export default {
   },
   methods: {
     async submit() {
-      if (!this.body) return;
-
       const {
+        body,
         face,
         name,
+        to,
       } = this;
+
+      if (!body) return;
+
       const {
         color,
       } = this.chatControl;
+
       const {
         dice,
       } = this.room;
 
-      const to = this.to ? this.to.split(/\s*,\s*/) : null;
-
-      const {
-        executeDice,
-        getDiceBotDescByFilename,
-      } = await import(/* webpackChunkName: "bcdice" */ '@/browser/utilities/bcdice');
-
-      const {
-        result,
-        diceResults,
-      } = await executeDice(this.body, dice);
-
-      const diceBotDesc = getDiceBotDescByFilename(dice);
-
-      const body = this.body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
-        type: 'dice',
-        dice: diceBotDesc ? diceBotDesc.gameType : dice,
-        text: result.replace(/^: /, ''),
-        diceResults,
-      }]);
-
       this.body = null;
 
-      this.$models.messages.push(
-        this.room.id,
-        {
-          color,
-          name,
-          face,
-          body,
-          to,
-          createdAt: Date.now(),
-        },
-      );
+      this.$models.messages.push(this.roomId, {
+        color,
+        dice,
+        name,
+        face,
+        body,
+        to,
+      });
     },
     enter(e) {
       if (e.shiftKey) return;
 
       e.preventDefault();
       this.submit();
-    },
-  },
-  props: {
-    room: {
-      required: true,
-      type: Object,
     },
   },
 };

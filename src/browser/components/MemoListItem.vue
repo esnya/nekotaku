@@ -93,7 +93,6 @@ export default {
               type: 'memoOpen',
               text: `${title}の裏面を開きました。`,
             }],
-            createdAt: Date.now(),
           },
         );
       }
@@ -118,10 +117,6 @@ export default {
     memo: {
       required: true,
       type: Object,
-    },
-    roomId: {
-      required: true,
-      type: String,
     },
   },
 };

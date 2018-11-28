@@ -88,8 +88,13 @@ import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialo
 import RoomPasswordEditDialog from '@/browser/components/RoomPasswordEditDialog.vue';
 import RoomRemoveDialog from '@/browser/components/RoomRemoveDialog.vue';
 import TabletopAudioSoundPadDialog from '@/browser/components/TabletopAudioSoundPadDialog.vue';
+import { bindAsList, bindAsObject } from '@/browser/models';
 
 export default {
+  mixins: [
+    bindAsList('messages'),
+    bindAsObject('room'),
+  ],
   components: {
     ChangelogDialog,
     ChatViewDialog,
@@ -124,16 +129,6 @@ export default {
         `${Date.now()}${Math.random()}`,
         'location=no,resizable=yes,scrollbars=yes,status=no,toolbar=no',
       );
-    },
-  },
-  props: {
-    messages: {
-      required: true,
-      type: Array,
-    },
-    room: {
-      required: true,
-      type: Object,
     },
   },
 };
