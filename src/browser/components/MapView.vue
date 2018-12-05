@@ -34,12 +34,15 @@
             v-for="character in characters"
             v-if="!character.hideIcon"
           )
-            .character-inner(
-              :style="character.innerStyle"
-              @mousedown="e => mms.onCharacterTouch(e, character)"
-              @touchstart="e => mms.onCharacterTouch(e, character)"
-            )
-              div.name.text-xs-center.caption {{character.name}}
+            v-tooltip(bottom)
+              .character-inner(
+                slot="activator"
+                :style="character.innerStyle"
+                @mousedown="e => mms.onCharacterTouch(e, character)"
+                @touchstart="e => mms.onCharacterTouch(e, character)"
+              )
+                .name.text-xs-center.caption {{character.name}}
+              div(v-for="line in getCharacterDescription(character)") {{line}}
   loading(v-else)
 </template>
 
@@ -56,6 +59,7 @@ export default {
   },
   computed: {
     ...mapState([
+      'room',
       'map',
       'mapControl',
     ]),
@@ -131,6 +135,19 @@ export default {
       'selectEntity',
       'deselectEntity',
     ]),
+    getCharacterDescription(character) {
+      const {
+        name,
+        initiative,
+        attributes,
+      } = character;
+
+      return [
+        name,
+        `イニシアチブ：${initiative}`,
+        ...this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`),
+      ];
+    }
   },
   created() {
     const unsubscribers = [];
