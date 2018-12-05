@@ -147,7 +147,7 @@ export default {
         `イニシアチブ：${initiative}`,
         ...this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`),
       ];
-    }
+    },
   },
   created() {
     const unsubscribers = [];

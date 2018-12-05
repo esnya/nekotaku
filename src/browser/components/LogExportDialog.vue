@@ -5,9 +5,9 @@
       v-card-text
         form(@submit.prevent="save")
           v-radio-group(v-model="type")
-            v-radio(value="html" label="HTML") 
+            v-radio(value="html" label="HTML")
             v-radio(value="txt" label="テキスト")
-          v-checkbox(v-model="timestamp" label="日時を含める") 
+          v-checkbox(v-model="showTimestamp" label="日時を含める")
       v-card-actions
         v-spacer
         v-btn(color="primary" @click="save") 保存
@@ -50,18 +50,17 @@ const MessageTemplate = {
 export default {
   data: () => ({
     type: 'html',
-    timestamp: true,
+    showTimestamp: true,
   }),
   methods: {
     save() {
       const { type } = this;
-      const messages = this.messages.map(({ name, color, body, createdAt }) => {
+      const messages = this.messages.map((message) => {
         const data = {
-          name,
-          color,
-          message: body.map(b => b.text).join(' '),
-          messageWithBr: body.map(b => b.text).join('<br>'),
-          timestamp: this.timestamp ? moment(createdAt).format('lll') : '',
+          ...message,
+          message: message.body.map(b => b.text).join(' '),
+          messageWithBr: message.body.map(b => b.text).join('<br>'),
+          timestamp: this.showTimestamp ? moment(message.createdAt).format('lll') : '',
         };
         return _.template(MessageTemplate[type])(data);
       }).join('\r\n');
