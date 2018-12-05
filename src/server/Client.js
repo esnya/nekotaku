@@ -2,410 +2,281 @@
 
 import fs from 'mz/fs';
 import _ from 'lodash';
-import path from 'path';
+import { join as joinPath } from 'path';
 import SI from 'si-tools';
+import crypto from 'crypto';
 import * as SocketEvents from '../constants/SocketEvents';
+import * as ListEvent from '../constants/ListEvent';
+import * as ObjectEvent from '../constants/ObjectEvent';
 import config from './config';
 import datastore from './datastore';
 import { system } from './logger';
+
+function filter(value: ?Object) {
+  if (!value) return value;
+  const {
+    _id,
+    password,
+    ...others
+  } = value;
+
+  return _.pickBy({
+    ...others,
+    id: _id && _id.toString(),
+    isLocked: password ? true : undefined,
+  }, v => v !== undefined);
+}
+
+function getHash(data): string {
+  const sha1 = crypto.createHash('sha1');
+  sha1.update(data);
+  return sha1.digest('hex');
+}
 
 const ParsedFileSize = SI.parse(config.file.maxSize);
 const MaxFileSize = ParsedFileSize.number;
 const FilePath = config.file.path;
 
-function key2obj(key: string, value: any) {
-  const paths = key.split(/\//g);
-  return paths.reduceRight((obj, p) => ({
-    [p]: obj,
-  }), value);
+function getEventPath(path: string, event: string) {
+  return `${path}:${event}`;
 }
 
-function joinKeys(...keys) {
-  return keys.filter(a => a).join(':');
-}
+function parsePath(path: string): Object {
+  const [collection, roomId, childId, ...subPathArray] = path.split(/\//g);
+  const subPath = subPathArray.join('/');
 
-function itemFilter(value: ?Object) {
-  const {
-    _id,
-    roomId,
-    ...others
-  } = value;
-
-  return {
-    ...others,
-    ...(_id ? { id: _id.toString() } : {}),
-  };
-}
-function dataFilter(value: ?Object) {
-  const {
-    _id,
-    ...others
-  } = value;
-
-  return itemFilter(others);
-}
-function roomFilter(value: ?Object) {
-  if (!value) return value;
-
-  const {
-    password,
-    ...others
-  } = itemFilter(value);
-
-  return {
-    ...others,
-    isLocked: Boolean(password),
-  };
+  switch (collection) {
+    case 'rooms':
+      return {
+        collection,
+        roomId,
+        query: { id: roomId },
+      };
+    case 'members':
+    case 'passwords':
+      return {
+        collection,
+        roomId,
+        query: { roomId },
+        childId: undefined,
+        subPath: [childId, ...subPathArray].join('/'),
+      };
+    default:
+      return {
+        collection,
+        roomId,
+        query: {
+          id: childId,
+          roomId,
+        },
+        childId,
+        subPath,
+      };
+  }
 }
 
 export default class Client {
   connection(io, socket) {
     this.io = io;
     this.socket = socket;
+    this.subscribeCounter = {};
 
     system.info(`New socket connection ${socket.id}`);
 
     _(SocketEvents).forEach((event, key) => {
-      socket.on(event, async (requestId: string, ...args) => {
+      socket.on(`request:${event}`, async (requestId, ...args) => {
         try {
           system.trace('received', event, ...args);
+
           const methodKey = `on${key}`;
           if (!this[methodKey]) system.fatal(`Client.${methodKey} is not defined`);
+
           const result = await this[methodKey](...args);
-          this.resolve(requestId, result);
+          this.socket.emit(`response:${event}:${requestId}`, null, result);
         } catch (e) {
           system.error(e, requestId, args);
-          this.reject(requestId, e);
+          this.socket.emit(`response:${event}:${requestId}`, e, null);
         }
       });
     });
   }
 
-  join(...keys: string[]) {
-    system.trace('join', ...keys);
-    this.socket.join(joinKeys(...keys));
+  /* Utilities */
+  async get(path: string): Promise<Object> {
+    const { collection, query } = parsePath(path);
+    const data = await datastore.findOne(collection, query);
+    return data;
   }
 
-  leave(...keys: string[]) {
-    system.trace('leave', ...keys);
-    this.socket.leave(joinKeys(...keys));
+  async list(path: string): Promise<Object[]> {
+    const { collection, query } = parsePath(path);
+    const data = await datastore.findArray(collection, query);
+    return data;
   }
 
-  emitMessage(eventKeys: string[], value: Object, broadcast: boolean = true) {
-    const event = joinKeys(...eventKeys);
-
-    const filtered = eventKeys[1] === 'rooms' ? roomFilter(value) : value;
-
-    if (broadcast) {
-      system.trace('emit(io)', 'message', event, filtered);
-      this.io.emit('message', event, filtered);
-    } else {
-      system.trace('emit', 'message', event, filtered);
-      this.socket.emit('message', event, filtered);
-    }
-  }
-
-  resolve(requestId: string, value: Object) {
-    system.trace('emit', 'response:resolve', requestId, value);
-    this.socket.emit('response:resolve', requestId, value);
-  }
-
-  reject(requestId: string, error: Error) {
-    system.trace('emit', 'response:reject', requestId, error);
-    this.socket.emit('response:reject', requestId, error.toString());
-  }
-
-  getUID() {
-    if (!this.uid) throw new Error('Unautohrized');
-    return this.uid;
-  }
-
-  async update(type: string, targetId: ?string, roomId: ?string, value: Object) {
-    const query = roomId ? { roomId } : {};
-
-    const oldValue = await datastore.findOne(type, targetId, query);
-    const newValue = {
-      ...oldValue,
-      ...value,
-      ...query,
-    };
-    if (!oldValue) {
-      await datastore.insert(type, {
-        ...newValue,
-      });
-    } else {
-      await datastore.updateOne(type, targetId, query, newValue);
-    }
-
-    const updatedValue = await datastore.findOne(type, targetId, query);
-    return updatedValue;
-  }
-
-  async insertMember(roomId: string): Promise<Object> {
-    const uid = this.getUID();
-    const now = Date.now();
-
-    const oldValue = await datastore.findOne('members', null, { roomId });
-    const newValue = {
-      members: {
-        [uid]: now,
-      },
+  async update(path: string, data: any): Promise<void> {
+    const {
+      collection,
+      query,
       roomId,
-      updatedAt: now,
+      childId,
+      subPath,
+    } = parsePath(path);
+    const oldData = await datastore.findOne(collection, query);
+
+    const newData = subPath ? _.set(oldData || {}, subPath.replace(/\//g, '.'), data) : {
+      ...oldData,
+      ...data,
+      roomId: collection !== 'room' ? roomId : undefined,
     };
 
-    if (!oldValue) {
-      await datastore.insert('members', {
-        ...newValue,
-        createdAt: now,
-      });
+    if (!oldData) await datastore.insert(collection, newData);
+    else await datastore.updateOne(collection, query, newData);
+
+    const collectionData = await this.get(`${collection}/${roomId}`);
+    this.io.emit('event', `${collection}/${roomId}`, ObjectEvent.Value, filter(collectionData));
+    if (childId) {
+      const itemData = await this.get(`${collection}/${roomId}/${childId}`);
+      this.io.emit('event', `${collection}/${roomId}/${childId}`, ObjectEvent.Value, filter(itemData));
+      this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildChanged, filter(itemData));
+    }
+  }
+
+  async remove(path: string): Promise<void> {
+    const {
+      collection,
+      query,
+      roomId,
+      childId,
+      subPath,
+    } = parsePath(path);
+
+    if (subPath) {
+      await this.update(path, undefined);
     } else {
-      await datastore.updateOne('members', null, { roomId }, _.merge(
-        {},
-        oldValue,
-        newValue,
-      ));
-    }
-
-    const updatedValue = await datastore.findOne('members', null, { roomId });
-
-    this.emitMessage(['update', 'members', roomId], updatedValue.members);
-
-    return updatedValue;
-  }
-
-  async isMemberOf(roomId: string): Promise<?number> {
-    const uid = this.getUID();
-
-    const value = await datastore.findOne('members', null, { roomId });
-    if (!value || !value.members[uid]) return null;
-
-    return value.members[uid];
-  }
-
-  async enforceMember(roomId: string) {
-    const isMember = await this.isMemberOf(roomId);
-    if (!isMember) {
-      system.error('Permission denied', roomId);
-      throw new Error('Premission denied');
+      await datastore.remove(collection, query);
+      this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildRemoved, { id: childId });
     }
   }
 
-  async updateRoom(roomId: string, value: Object): Promise<void> {
-    await this.enforceMember(roomId);
+  async push(path: string, data: Object): Promise<string> {
+    const { collection, roomId } = parsePath(path);
+    const id = await datastore.insert(collection, {
+      ...data,
+      roomId,
+    });
 
-    const room = await this.update('rooms', roomId, null, value);
-    this.emitMessage(['update', 'rooms', roomId], room);
-    this.emitMessage(['change', 'rooms'], room);
+    const newData = await this.get(`${path}/${id}`);
+    this.io.emit('event', path, ListEvent.ChildAdded, filter(newData));
+    this.io.emit('event', `${path}/${id}`, ObjectEvent.Value, filter(newData));
+
+    return id;
   }
 
+  /* Event Listeners */
   async onSetUID(uid: string) {
     this.uid = uid;
   }
 
-  async onWatch(event: string, type: string, roomId: ?string, silent: boolean = false) {
-    if (roomId) await this.enforceMember(roomId);
+  async onSubscribe(
+    path: string,
+    event: string,
+  ): Promise<Object | Object[]> {
+    const eventPath = getEventPath(path, event);
 
-    this.join(event, type, roomId);
+    if (!this.subscribeCounter[eventPath]) {
+      this.subscribeCounter[eventPath] = 1;
+      this.socket.join(eventPath);
+    } else this.subscribeCounter[eventPath] += 1;
 
-    if (silent) return;
+    system.info('Subscribed', path, event);
 
-    if (event === 'add') {
-      const children = await datastore.findArray(type, roomId && { roomId });
-      children.forEach((child) => {
-        this.emitMessage([event, type, roomId], itemFilter(child), false);
-      });
-    } else if (event === 'update') {
-      const data = await datastore.findOne(type, type === 'rooms' ? roomId : null, type === 'rooms' ? null : { roomId });
-      const filter = type === 'rooms' ? roomFilter : dataFilter;
-      if (data) this.emitMessage([event, type, roomId], type === 'members' ? data.members : filter(data), false);
-    }
-  }
-
-  onUnwatch(event: string, type: string, roomId: ?string) {
-    this.leave(event, type, roomId);
-  }
-
-  async onUpdate(type: string, roomId: string, value: Object) {
-    await this.enforceMember(roomId);
-
-    const updatedValue = await this.update(type, null, roomId, value);
-    this.emitMessage(['update', type, roomId], dataFilter(updatedValue));
-  }
-
-  async onUpdateChild(type: string, roomId: string, childId: string, value: Object) {
-    await this.enforceMember(roomId);
-
-    const oldValue = await datastore.findOne(type, null, { roomId });
-
-    const newValue = _.merge(
-      oldValue,
+    switch (event) {
+      case ObjectEvent.Value:
       {
-        roomId,
-        [type]: {
-          [childId]: value,
-        },
-      },
-    );
-
-    await datastore.updateOne(type, null, { roomId }, newValue);
-
-    this.emitMessage(['update', type, roomId], newValue[type]);
-  }
-
-  async onRemove(type: string, roomId: string) {
-    await this.enforceMember(roomId);
-
-    await datastore.remove(type, null, { roomId });
-    this.emitMessage(['update', type, roomId], null);
-  }
-
-  async onAddChild(type: string, roomId: string, value: Object) {
-    await this.enforceMember(roomId);
-
-    const childId = await datastore.insert(type, {
-      ...value,
-      roomId,
-    });
-
-    const child = await datastore.findOne(type, childId, { roomId });
-    if (child) this.emitMessage(['add', type, roomId], itemFilter(child));
-
-    return childId;
-  }
-
-  async onChangeChild(type: string, roomId: string, childId: string, value: Object) {
-    await this.enforceMember(roomId);
-
-    const oldValue = await datastore.findOne(type, childId, { roomId });
-    if (!oldValue) {
-      system.error(new Error('child not found'), type, roomId, childId);
-      return;
+        const value = await this.get(path);
+        return filter(value);
+      }
+      case ListEvent.ChildAdded:
+      {
+        const children = await this.list(path);
+        return children.map(filter);
+      }
+      default:
+        return null;
     }
-
-    const newValue = _.merge(
-      {},
-      oldValue,
-      value,
-      { roomId },
-    );
-    await datastore.updateOne(type, childId, { roomId }, newValue);
-    this.emitMessage(['change', type, roomId], itemFilter(newValue));
   }
 
-  async onChangeChildValue(
-    type: string,
-    roomId: string,
-    childId: string,
-    key: string,
-    value: any,
-  ) {
-    const newValue = key2obj(key, value);
-    await this.onChangeChild(type, roomId, childId, newValue);
+  async onUnsubscribe(
+    path: string,
+    event: string,
+  ): Promise<() => Promise<void>> {
+    const eventPath = getEventPath(path, event);
+    this.subscribeCounter[eventPath] -= 1;
+
+    if (!this.subscribeCounter[eventPath]) {
+      this.socket.leave(eventPath);
+    }
   }
 
-  async onRemoveChild(type: string, roomId: string, childId: string) {
-    await this.enforceMember(roomId);
-
-    const data = await datastore.findOne(type, childId, { roomId });
-    if (!data) return;
-
-    await datastore.remove(type, childId, { roomId });
-    this.emitMessage(['remove', type, roomId], itemFilter(data));
+  async onPush(
+    path: string,
+    data: string,
+  ): Promise<string> {
+    const id = await this.push(path, data);
+    return id;
   }
 
-  async onUploadFile(roomId: string, filePath: string, type: string, file: Buffer) {
-    await this.enforceMember(roomId);
+  async onUpdate(
+    path: string,
+    data: Object,
+  ): Promise<void> {
+    await this.update(path, data);
+  }
 
+  async onRemove(
+    path: string,
+  ): Promise<void> {
+    await this.remove(path);
+  }
+
+  async onPushFile(
+    path: string,
+    file: File,
+  ): Promise<string> {
     if (file.length > MaxFileSize) throw new Error('Maximum file size exceeded');
 
-    const fileId = await datastore.insert('files', { roomId, type, path: filePath });
-    await fs.writeFile(path.join(FilePath, fileId), file);
+    const [roomId] = path.split(/\//g);
+    const hash = getHash(path);
+    const filePath = joinPath(FilePath, hash);
 
-    return `/files/${fileId}`;
+    await fs.writeFile(filePath, file);
+    await this.remove('files', { roomId, hash });
+    await this.insert('files', { roomId, hash, file });
+
+    return `/files/${hash}`;
   }
 
-  async onDeleteFile(roomId: string, filePath: string) {
-    await this.enforceMember(roomId);
-
-    const files = await datastore.findArray('files', { roomId, path: filePath });
-    files.forEach(async (file) => {
-      try {
-        // eslint-disable-next-line no-underscore-dangle
-        const fileId = file._id.toString();
-        await datastore.remove('files', fileId);
-        await fs.unlink(path.join(FilePath, fileId));
-      } catch (e) {
-        system.error(e);
-      }
-    });
+  async onRemoveFile(
+    path: string,
+  ): Promise<void> {
+    const [roomId] = path.split(/\//g);
+    const hash = getHash(path);
+    const filePath = joinPath(FilePath, hash);
+    await fs.unlink(filePath);
+    await this.remove('files', { roomId, hash });
   }
 
-  async onCreateRoom(room: Object) {
-    const uid = this.getUID();
-    const now = Date.now();
-    const newValue = {
-      ...room,
-      players: 1,
-      uid,
-      createdAt: now,
-      updatedAt: now,
-    };
+  async onRemoveFiles(
+    path: string,
+  ): Promise<void> {
+    const [roomId] = path.split(/\//g);
+    const data = await datastore.findArray('files', { roomId });
 
-    const roomId = await datastore.insert('rooms', newValue);
-    await this.insertMember(roomId);
+    await Promise.all(
+      data.map(item => fs.unlink(joinPath(FilePath, item.hash))),
+    );
 
-    const storedValue = await datastore.findOne('rooms', roomId);
-    this.emitMessage(['add', 'rooms'], storedValue);
-
-    return roomId;
-  }
-
-  async onGetRoom(roomId: string) {
-    const room = await datastore.findOne('rooms', roomId);
-    return room && roomFilter(room);
-  }
-
-  async onUpdateRoom(roomId: string, value: Object) {
-    await this.updateRoom(roomId, value);
-  }
-
-  async onLoginRoom(roomId: string, password: ?string) {
-    const member = await this.isMemberOf(roomId);
-    if (member) {
-      return true;
-    }
-
-    const room = await datastore.findOne('rooms', roomId);
-    if (!room || (room.password && room.password !== password)) {
-      return false;
-    }
-
-    const members = await this.insertMember(roomId);
-    this.updateRoom(roomId, { players: Object.keys(members.members).length });
-
-    return true;
-  }
-
-  async onRemoveRoom(roomId: string) {
-    await this.enforceMember(roomId);
-
-    await datastore.remove('rooms', roomId);
-
-    this.emitMessage(['remove', 'rooms'], { id: roomId });
-    this.emitMessage(['update', 'rooms', roomId], null);
-  }
-
-  async onRemoveMe(roomId: string) {
-    const uid = this.getUID();
-    await this.enforceMember(roomId);
-
-    const oldValue = await datastore.findOne('members', null, { roomId });
-    const newValue = {
-      ...oldValue,
-      members: _(oldValue.members).pickBy((v, k) => k !== uid).value(),
-    };
-
-    await datastore.updateOne('members', null, { roomId }, newValue);
+    await datastore.remove('files', null, { roomId });
   }
 }

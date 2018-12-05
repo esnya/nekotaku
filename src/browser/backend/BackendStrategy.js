@@ -30,13 +30,13 @@ export default class BackendStrategy {
   async update(
     path: string,
     data: Object,
-  ): Promise<string> {
+  ): Promise<void> {
     throw new Error('Abstract method called');
   }
 
   async remove(
     path: string,
-  ): Promise<string> {
+  ): Promise<void> {
     throw new Error('Abstract method called');
   }
 

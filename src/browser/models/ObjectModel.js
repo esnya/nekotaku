@@ -1,8 +1,5 @@
 import Model from '@/browser/models/Model';
-
-export const ObjectEvent = {
-  Value: 'value',
-};
+import * as ObjectEvent from '@/constants/ObjectEvent';
 
 export default class ObjectModel extends Model {
   async subscribe(

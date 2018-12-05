@@ -48,7 +48,7 @@
             label="キャラクター属性"
             placeholder="例: HP,MP,SP"
             :error-messages="errors.collect('characterAttributes')"
-            v-model="characterAttributes"
+            v-model="characterAttributesString"
           )
       v-card-actions
         v-spacer
@@ -65,12 +65,22 @@ export default {
   components: {
     DiceSelect,
   },
+  computed: {
+    characterAttributesString: {
+      get() {
+        return this.characterAttributes.join(',');
+      },
+      set(value) {
+        this.characterAttributes = value ? value.split(/\s*,\s*/g) : [];
+      },
+    },
+  },
   data() {
     return {
       value: false,
       title: null,
       dice: 'DiceBot',
-      characterAttributes: null,
+      characterAttributes: [],
       password: null,
       passwordConfirm: null,
     };

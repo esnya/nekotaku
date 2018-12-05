@@ -1,60 +1,24 @@
 /* eslint no-return-await: off */
-import EventEmitter from 'eventemitter3';
+
 import _ from 'lodash';
+import EventEmitter from 'eventemitter3';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 import '@firebase/database';
 import '@firebase/storage';
-import BackendStrategy, { type Handler } from './BackendStrategy';
+import BackendStrategy from './BackendStrategy';
 
-function dataFilter(data) {
-  return data.val();
-}
+function filter(snapshot) {
+  const val = snapshot.val();
 
-function itemFilter(data) {
-  if (!data) return data;
+  if (!val || typeof val !== 'object') return val;
 
-  return {
-    id: data.key,
-    ...dataFilter(data),
-  };
-}
-
-function roomFilter(data) {
-  if (!data) return data;
-
-  const {
-    password,
-    ...others
-  } = itemFilter(data);
-
-  return {
-    ...others,
-    isLocked: Boolean(password),
-  };
-}
-
-const ListEvents = {
-  add: 'child_added',
-  change: 'child_changed',
-  remove: 'child_removed',
-};
-function watchList(
-  ref: firebase.database.Reference,
-  type: string,
-  handler: Handler,
-  filter = itemFilter,
-) {
-  _(ListEvents).forEach((src, dst) => {
-    const event = `${type}:${dst}`;
-    ref.on(src, v => handler(event, filter(v)));
-  });
-}
-
-function unwatchList(ref: firebase.database.Reference) {
-  _(ListEvents).forEach((src) => {
-    ref.off(src);
-  });
+  return _.pickBy({
+    ...val,
+    id: snapshot.key,
+    password: undefined,
+    isLocked: val.password ? true : undefined,
+  }, v => v !== undefined);
 }
 
 export default class FirebaseStrategy extends BackendStrategy {
@@ -76,198 +40,89 @@ export default class FirebaseStrategy extends BackendStrategy {
     const database = firebase.database();
     this.database = database;
 
-    this.roomsRef = database.ref('rooms');
-
     const storage = firebase.storage();
     this.storage = storage;
   }
 
   /* Utilities */
-
-  databaseRef(path: string): firebase.database.Reference {
+  ref(path: string) {
     return this.database.ref(path);
   }
 
-  childRef(
-    type: string,
-    roomId: string,
-    childId: ?string = null,
-    key: ?string = null,
-  ): firebase.database.Reference {
-    return this.databaseRef([type, roomId, childId, key].filter(a => a).join('/'));
-  }
-
-  roomRef(roomId: string): firebase.database.Referenct {
-    return this.childRef('rooms', roomId);
-  }
-
-  async getRoomSnapshot(roomId: string): Promise<firebase.database.DataSnapshot> {
-    const dataSnapshot = await this.roomRef(roomId).once('value');
-    return dataSnapshot;
-  }
-
-  storageRef(roomId: string, path: string): firebase.storeage.Reference {
-    return this.storage.ref(`${roomId}/${path}`);
-  }
-
-  async getUser(): Promise<firebase.auth.UserCredential> {
-    if (this.user) return this.user;
-
-    const user = await new Promise((resolve) => {
-      this.eventBus.once('auth_state_changed', resolve);
+  /* APIs */
+  async getUID(): Promise<string> {
+    if (this.user) return this.user.uid;
+    return new Promise((resolve) => {
+      this.eventBus.once('auth_state_changed', user => resolve(user.uid));
     });
-
-    return user;
   }
 
-  /* Strategy Implements */
+  async subscribe(
+    path: string,
+    event: string,
+    callback: Object => void,
+  ): Promise<() => Promise<void>> {
+    const wrappedCallback = this.ref(path).on(event, snapshot => callback(filter(snapshot)));
 
-  async getUID() {
-    const { uid } = await this.getUser();
-    return uid;
+    return () => {
+      this.ref(path).off(event, wrappedCallback);
+    };
   }
 
-  async watchLobby(handler: Handler) {
-    watchList(this.roomsRef, 'rooms', handler, roomFilter);
-  }
-
-  async unwatchLobby() {
-    unwatchList(this.roomsRef);
-  }
-
-  async watchRoom(roomId: string, handler: Handler) {
-    const ref = this.childRef('rooms', roomId);
-    const event = 'room:update';
-    ref.on('value', v => handler(event, roomFilter(v)));
-  }
-
-  async unwatchRoom(roomId: string) {
-    const ref = this.childRef('rooms', roomId);
-    ref.off('value');
-  }
-
-  async watchObject(type: string, roomId: string, handler: Handler) {
-    const ref = this.childRef(type, roomId);
-    const event = `${type}:update`;
-    ref.on('value', v => handler(event, dataFilter(v)));
-  }
-
-  async unwatchObject(type: string, roomId: string) {
-    const ref = this.childRef(type, roomId);
-    ref.off('value');
-  }
-
-  async watchList(type: string, roomId: string, handler: Handler) {
-    const ref = this.childRef(type, roomId);
-    watchList(ref, type, handler);
-  }
-
-  async unwatchList(type: string, roomId: string) {
-    const ref = this.childRef(type, roomId);
-    unwatchList(ref);
-  }
-
-  async update(type: string, roomId: string, value: Object) {
-    const ref = this.childRef(type, roomId);
-    await ref.update(value);
-  }
-
-  async updateChild(type: string, roomId: string, path: string, value: Object) {
-    const ref = this.childRef(type, roomId, path);
-    await ref.update(value);
-  }
-
-  async remove(type: string, roomId: string) {
-    const ref = this.childRef(type, roomId);
-    await ref.remove();
-  }
-
-  async addChild(type: string, roomId: string, value: string) {
-    const ref = this.childRef(type, roomId).push();
-    ref.set(value);
+  async push(
+    path: string,
+    data: string,
+  ): Promise<string> {
+    const ref = this.ref(path).push();
+    await ref.set(data);
     return ref.key;
   }
 
-  async changeChild(type: string, roomId: string, childId: string, value: Object) {
-    const ref = this.childRef(type, roomId, childId);
-    await ref.update(value);
+  async update(
+    path: string,
+    data: any,
+  ): Promise<void> {
+    const ref = this.ref(path);
+
+    if (data && typeof data === 'object') await ref.update(data);
+    else await ref.set(data);
   }
 
-  async changeChildValue(type: string, roomId: string, childId: string, key: string, value: any) {
-    const ref = this.childRef(type, roomId, childId, key);
-    await ref.set(value);
-  }
-
-  async removeChild(type: string, roomId: string, childId: string): Promise<void> {
-    const ref = this.childRef(type, roomId, childId);
+  async remove(
+    path: string,
+  ): Promise<void> {
+    const ref = this.ref(path);
     await ref.remove();
   }
 
-  async uploadFile(roomId: string, path: string, file: File) {
-    const ref = this.storageRef(roomId, path);
-    await ref.put(file, { contentType: file.type });
-    return ref.getDownloadURL();
+  async pushFile(
+    path: string,
+    file: File,
+  ): Promise<string> {
+    const ref = this.storage.ref(path);
+    await ref.put(file);
+    const url = ref.getDownloadURL();
+    await this.ref(`files/${path}`).set(path);
+    return url;
   }
 
-  async deleteFile(roomId: string, path: string) {
-    try {
-      const ref = this.storageRef(roomId, path);
-      await ref.delete();
-    } catch (e) {
-      if (e.code !== 'storage/object-not-found') throw e;
+  async removeFile(
+    path: string,
+  ): Promise<string> {
+    const ref = this.storage.ref(path);
+    await ref.delete();
+    await this.ref(`files/${path}`).remove();
+  }
+
+  async removeFiles(
+    path: string,
+  ): Promise<void> {
+    const ref = this.ref(`files/${path}`);
+    const data = ref.once('value');
+
+    if (typeof data === 'string') await this.removeFile(path);
+    else if (data && typeof data === 'object') {
+      await Promise.all(Object.keys(data).map(key => this.removeFiles(`${path}/${key}`)));
     }
-  }
-
-  async createRoom(room: Object) {
-    const now = Date.now();
-    const uid = await this.getUID();
-    const ref = this.databaseRef('rooms').push();
-    await ref.set({
-      ...room,
-      uid,
-      players: 1,
-      createdAt: now,
-      updatedAt: now,
-    });
-    return ref.key;
-  }
-
-  async getRoom(roomId: string) {
-    const room = await this.getRoomSnapshot(roomId);
-    return room.exists() ? roomFilter(room) : null;
-  }
-
-  async updateRoom(roomId: string, value: Object) {
-    await this.update('rooms', roomId, value);
-  }
-
-  async loginRoom(roomId: string, password: ?string, member: Object) {
-    const uid = await this.getUID();
-
-    if (password) {
-      await this.childRef('passwords', roomId, uid).set(password);
-    }
-
-    try {
-      await this.childRef('members', roomId, uid).set(member);
-
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  async removeRoom(roomId: string) {
-    const ref = this.roomRef(roomId);
-    await ref.set({ canRemove: true });
-
-    await this.remove('members', roomId);
-    await this.remove('passwords', roomId);
-    await this.remove('rooms', roomId);
-  }
-
-  async removeMe(roomId: string) {
-    const uid = await this.getUID();
-    await this.childRef('members', roomId, uid).remove();
   }
 }

@@ -4,19 +4,11 @@ import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
 import SocketIO from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
-import * as SocketEvents from '../../constants/SocketEvents';
-import localStorage from '../utilities/localStorage';
-import BackendStrategy, { Handler } from './BackendStrategy';
-
-const ListEvents = [
-  'add',
-  'change',
-  'remove',
-];
-
-function joinKey(...args) {
-  return args.filter(a => a).join(':');
-}
+import BackendStrategy from '@/browser/backend/BackendStrategy';
+import localStorage from '@/browser/utilities/localStorage';
+import * as ListEvent from '@/constants/ListEvent';
+import * as ObjectEvent from '@/constants/ObjectEvent';
+import * as SocketEvents from '@/constants/SocketEvents';
 
 const UIDKey = 'nekotaku:socketbackend:uid';
 function getUID() {
@@ -28,6 +20,10 @@ function getUID() {
   return uid;
 }
 
+function getEventPath(path, event) {
+  return `${path}:${event}`;
+}
+
 export default class SocketStrategy extends BackendStrategy {
   constructor(config: Object) {
     super(config);
@@ -35,71 +31,45 @@ export default class SocketStrategy extends BackendStrategy {
     this.handlers = [];
     this.resolvers = {};
 
-    this.emitter = new EventEmitter();
+    this.eventBus = new EventEmitter();
 
     this.socket = config.socket || new SocketIO();
 
     this.socket.on('connect', () => {
       this.request(SocketEvents.SetUID, getUID());
     });
-    this.socket.on('reconnect', () => {
-      this.handlers.forEach(({ event, type, roomId }) => {
-        this.request(SocketEvents.Watch, event, type, roomId, true);
-      });
-    });
 
-    this.socket.on('message', (event, ...args) => {
-      this.emitter.emit(event, ...args);
-    });
-
-    this.socket.on('response:resolve', (requestId: string, data: any) => {
-      this.emitter.emit(`response:${requestId}`, true, data);
-    });
-    this.socket.on('response:reject', (requestId: string, error: any) => {
-      this.emitter.emit(`response:${requestId}`, false, error);
+    this.socket.on('event', (path, event, data) => {
+      console.log('event', path, event, data);
+      this.emit(path, event, data);
     });
 
     if (config.onInitialized) config.onInitialized();
   }
 
-  emit(event: string, ...args) {
-    this.socket.emit(event, ...args);
-  }
-
-  async request(event: string, ...args) {
-    const requestId = shortid();
-
-    const result = await new Promise((resolve, reject) => {
-      const resolveEvent = `response:${requestId}`;
-
-      const timeout = setTimeout(() => {
-        this.emitter.emit(resolveEvent, (false, new Error(`Request ${requestId} timeout`)));
-      }, 30 * 1000);
-
-      function listener(resolved: boolean, data: any) {
-        clearTimeout(timeout);
-        if (resolved) resolve(data);
-        else reject(data);
-      }
-
-      this.emitter.once(resolveEvent, listener);
-      this.emit(event, requestId, ...args);
+  /* Remote */
+  async request(event: string, ...args: any[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const requestId = shortid();
+      this.socket.once(`response:${event}:${requestId}`, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      });
+      this.socket.emit(`request:${event}`, requestId, ...args);
     });
-
-    return result;
   }
 
-  async on(event: string, type: string, roomId: ?string, handler: Handler) {
-    this.emitter.on(joinKey(event, type, roomId), handler);
-    await this.request(SocketEvents.Watch, event, type, roomId);
-    this.handlers.push({ event, type, roomId });
+  /* Local */
+  emit(path: string, event: string, data: Object): void {
+    this.eventBus.emit(getEventPath(path, event), data);
   }
 
-  async off(event: string, type: string, roomId: ?string) {
-    await this.request(SocketEvents.Unwatch, event, type, roomId);
-    this.emitter.removeListener(joinKey(event, type, roomId));
-    this.handlers = this.handlers
-      .filter(h => !(h.event === event && h.type === type && h.roomId === roomId));
+  on(path: string, event: string, callback: Object => void): void {
+    this.eventBus.on(getEventPath(path, event), callback);
+  }
+
+  off(path: string, event: string, callback: Object => void): void {
+    this.eventBus.off(getEventPath(path, event), callback);
   }
 
   /* Strategy Implements */
@@ -107,117 +77,69 @@ export default class SocketStrategy extends BackendStrategy {
     return getUID();
   }
 
-  async watchLobby(handler: Handler): Promise<void> {
-    const tasks = ListEvents.map((event) => {
-      const handlerEvent = `rooms:${event}`;
-      return this.on(event, 'rooms', null, data => handler(handlerEvent, data));
-    });
-    await Promise.all(tasks);
+  async subscribe(
+    path: string,
+    event: string,
+    callback: Object => void,
+  ): Promise<() => Promise<void>> {
+    this.on(path, event, callback);
+    const data = await this.request(SocketEvents.Subscribe, path, event);
+
+    console.log(path, event, data);
+    switch (event) {
+      case ObjectEvent.Value:
+        callback(data);
+        break;
+      case ListEvent.ChildAdded:
+        data.forEach(child => callback(child));
+        break;
+      default:
+        break;
+    }
+
+    return async () => {
+      this.off(path, event, callback);
+      await this.request(SocketEvents.Unsubscribe, path, event);
+    };
   }
 
-  async unwatchLobby(): Promise<void> {
-    const tasks = ListEvents.map(event => this.off(event, 'rooms', null));
-    await Promise.all(tasks);
-  }
-
-  async watchRoom(roomId: string, handler: Handler): Promise<void> {
-    await this.on('update', 'rooms', roomId, data => handler('room:update', data));
-  }
-
-  async unwatchRoom(roomId: string) {
-    await this.off('update', 'rooms', roomId);
-  }
-
-  async watchObject(type: string, roomId: string, handler: Handler): Promise<void> {
-    const event = `${type}:update`;
-    await this.on('update', type, roomId, data => handler(event, data));
-  }
-
-  async unwatchObject(type: string, roomId: string): Promise<void> {
-    await this.off('update', type, roomId);
-  }
-
-  async watchList(type: string, roomId: string, handler: Handler): Promise<void> {
-    const tasks = ListEvents.map((event) => {
-      const handlerEvent = `${type}:${event}`;
-      return this.on(event, type, roomId, data => handler(handlerEvent, data));
-    });
-    await Promise.all(tasks);
-  }
-
-  async unwatchList(type: string, roomId: string): Promise<void> {
-    const tasks = ListEvents.map(event => this.off(event, type, roomId));
-    await Promise.all(tasks);
-  }
-
-  async update(type: string, roomId: string, value: Object): Promise<void> {
-    await this.request(SocketEvents.Update, type, roomId, value);
-  }
-
-  async updateChild(type: string, roomId: string, path: string, value: Object): Promise<void> {
-    await this.request(SocketEvents.UpdateChild, type, roomId, path, value);
-  }
-
-  async remove(type: string, roomId: string): Promise<void> {
-    await this.request(SocketEvents.Remove, type, roomId);
-  }
-
-  async addChild(type: string, roomId: string, value: Object): Promise<string> {
-    const id = await this.request(SocketEvents.AddChild, type, roomId, value);
+  async push(
+    path: string,
+    data: string,
+  ): Promise<string> {
+    const id = await this.request(SocketEvents.Push, path, data);
     return id;
   }
 
-  async changeChild(type: string, roomId: string, childId: string, value: Object): Promise<void> {
-    await this.request(SocketEvents.ChangeChild, type, roomId, childId, value);
-  }
-
-  async changeChildValue(
-    type: string,
-    roomId: string,
-    childId: string,
-    key: string,
-    value: any,
+  async update(
+    path: string,
+    data: Object,
   ): Promise<void> {
-    await this.request(SocketEvents.ChangeChildValue, type, roomId, childId, key, value);
+    await this.request(SocketEvents.Update, path, data);
   }
 
-  async removeChild(type: string, roomId: string, chlidId: string): Promise<void> {
-    await this.request(SocketEvents.RemoveChild, type, roomId, chlidId);
+  async remove(
+    path: string,
+  ): Promise<void> {
+    await this.request(SocketEvents.Remove, path);
   }
 
-  async uploadFile(roomId: string, path: string, file: File): Promise<string> {
-    const url = await this.request(SocketEvents.UploadFile, roomId, path, file.type, file);
-    return url;
+  async pushFile(
+    path: string,
+    file: File,
+  ): Promise<string> {
+    await this.request(SocketEvents.PushFile, path, file);
   }
 
-  async deleteFile(roomId: string, path: string) {
-    await this.request(SocketEvents.DeleteFile, roomId, path);
+  async removeFile(
+    path: string,
+  ): Promise<void> {
+    await this.request(SocketEvents.RemoveFile, path);
   }
 
-  async createRoom(room: Object): Promise<string> {
-    const roomId = await this.request(SocketEvents.CreateRoom, room);
-    return roomId;
-  }
-
-  async getRoom(roomId: string): Promise<?Object> {
-    const room = await this.request(SocketEvents.GetRoom, roomId);
-    return room;
-  }
-
-  async updateRoom(roomId: string, value: Object): Promise<void> {
-    await this.request(SocketEvents.UpdateRoom, roomId, value);
-  }
-
-  async loginRoom(roomId: string, password: ?string): Promise<boolean> {
-    const result = await this.request(SocketEvents.LoginRoom, roomId, password);
-    return result;
-  }
-
-  async removeRoom(roomId: string): Promise<void> {
-    await this.request(SocketEvents.RemoveRoom, roomId);
-  }
-
-  async removeMe(roomId: string): Promise<void> {
-    await this.request(SocketEvents.RemoveMe, roomId);
+  async removeFiles(
+    path: string,
+  ): Promise<void> {
+    await this.request(SocketEvents.RemoveFiles, path);
   }
 }

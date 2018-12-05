@@ -7,36 +7,28 @@ import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import MemosModel from '@/browser/models/MemosModel';
 import MessagesModel from '@/browser/models/MessagesModel';
-import { ObjectEvent } from './ObjectModel';
+import * as ObjectEvent from '@/constants//ObjectEvent';
 import PasswordsModel from '@/browser/models/PasswordsModel';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import ShapesModel from '@/browser/models/ShapesModel';
 
-const Models = [
-  CharactersModel,
-  MapModel,
-  MembersModel,
-  MemosModel,
-  MessagesModel,
-  PasswordsModel,
-  RoomModel,
-  RoomsModel,
-  ShapesModel,
-];
+const Models = {
+  characters: CharactersModel,
+  map: MapModel,
+  members: MembersModel,
+  memos: MemosModel,
+  messages: MessagesModel,
+  passwords: PasswordsModel,
+  room: RoomModel,
+  rooms: RoomsModel,
+  shapes: ShapesModel,
+};
 
 export default {
   install(Vue) {
     // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$models = _(Models)
-      .map(Model => new Model(backend.strategy))
-      .map((model) => {
-        const m = model.constructor.name.match(/^(.*)Model$/);
-        const name = m[1].replace(/^[A-Z]/, c => c.toLowerCase());
-        return [name, model];
-      })
-      .fromPairs()
-      .value();
+    Vue.prototype.$models = _.mapValues(Models, Model => new Model(backend));
   },
 };
 
@@ -81,7 +73,7 @@ function bind(
 }
 
 export function bindAsList(name: string, isReversed: boolean = false, autoBind: boolean = true) {
-  return bind(name, autoBind, () => [], function callback(event: string, newData: Object | string) {
+  return bind(name, autoBind, () => [], function callback(event: string, newData: Object) {
     switch (event) {
       case ListEvent.ChildAdded:
         if (isReversed) this[name].unshift(newData);
@@ -91,7 +83,7 @@ export function bindAsList(name: string, isReversed: boolean = false, autoBind: 
         this[name] = this[name].map(item => (item.id === newData.id ? newData : item));
         break;
       case ListEvent.ChildRemoved:
-        this[name] = this[name].filter(item => item.id !== newData);
+        this[name] = this[name].filter(item => item.id !== newData.id);
         break;
       default:
     }

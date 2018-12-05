@@ -12,11 +12,16 @@
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test:unit",
     "firebase:deploy": "firebase deploy",
     "lint": "vue-cli-service lint",
+    "socket": "run-p socket:* watch:*",
+    "socket:run": "nodemon index.js",
     "start": "vue-cli-service serve",
     "test": "run-s test:*",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit -r mock-local-storage",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog && git add CHANGELOG.md",
+    "watch": "run-p watch:*",
+    "watch:browser": "npm run build:browser -- --watch --mode development",
+    "watch:server": "npm run build:server -- --watch"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
@@ -79,6 +84,7 @@
     "firebase-tools": "^6.1.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "mock-local-storage": "^1.1.7",
+    "nodemon": "^1.18.9",
     "npm-run-all": "^4.1.3",
     "nyc": "^13.1.0",
     "pug": "^2.0.3",

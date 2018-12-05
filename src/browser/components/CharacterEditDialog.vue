@@ -199,9 +199,11 @@ export default {
   },
   watch: {
     character(character) {
-      Object.keys(character.portrait).forEach((key) => {
-        if (this.faces.indexOf(key) < 0) this.faces.push(key);
-      });
+      if (character.portrait) {
+        Object.keys(character.portrait).forEach((key) => {
+          if (this.faces.indexOf(key) < 0) this.faces.push(key);
+        });
+      }
     },
   },
   props: {

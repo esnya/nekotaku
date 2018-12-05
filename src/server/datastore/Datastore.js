@@ -1,10 +1,19 @@
 /* eslint class-methods-use-this: off */
 
+import _ from 'lodash';
 import { MongoClient, ObjectId } from 'mongodb';
 import { system } from '../logger';
 
-function getQuery(id: ?string, query: Object = {}) {
-  return id ? { _id: ObjectId(id), ...query } : query;
+function refineQuery(query: Object): Object {
+  const {
+    id,
+    ...others
+  } = query;
+
+  return _.pickBy({
+    ...others,
+    _id: id && ObjectId(id),
+  }, value => value !== undefined);
 }
 
 export default class Datastore {
@@ -50,9 +59,9 @@ export default class Datastore {
     return db.collection(name);
   }
 
-  async findOne(collection: string, id: ?string, query: Object = {}) {
+  async findOne(collection: string, query: Object) {
     const col = await this.collection(collection);
-    const result = await col.findOne(getQuery(id, query));
+    const result = await col.findOne(refineQuery(query));
     return result;
   }
 
@@ -68,13 +77,13 @@ export default class Datastore {
     return insertedId.toString();
   }
 
-  async updateOne(collection: string, id: ?string, query: Object, value: string) {
+  async updateOne(collection: string, query: Object, value: string) {
     const col = await this.collection(collection);
-    await col.updateOne(getQuery(id, query), { $set: value });
+    await col.updateOne(refineQuery(query), { $set: value });
   }
 
-  async remove(collection: string, id: ?string, query: Object) {
+  async remove(collection: string, query: Object) {
     const col = await this.collection(collection);
-    await col.remove(getQuery(id, query));
+    await col.remove(refineQuery(query));
   }
 }

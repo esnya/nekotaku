@@ -5,8 +5,8 @@ import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import BackendStrategy from './BackendStrategy';
-import { ListEvent } from '@/browser/models/ListModel';
-import { ObjectEvent } from '@/browser/models/ObjectModel';
+import * as ListEvent from '@/constants/ListEvent';
+import * as ObjectEvent from '@/constants/ObjectEvent';
 
 function getParentPath(path: string): string {
   return path.replace(/\/?[^/]+$/, '') || null;
@@ -136,7 +136,7 @@ export default class StubStrategy extends BackendStrategy {
 
   async subscribe(
     path: string,
-    event: String,
+    event: string,
     callback: Object => void,
   ): Promise<() => Promise<void>> {
     console.log('[StubStrategy]', 'subscribe', { path, event, callback });
@@ -191,7 +191,7 @@ export default class StubStrategy extends BackendStrategy {
   async update(
     path: string,
     data: any,
-  ): Promise<string> {
+  ): Promise<void> {
     console.log('[StubStrategy]', 'update', { path, data });
 
     this.checkPath(path, 'write');
@@ -209,7 +209,7 @@ export default class StubStrategy extends BackendStrategy {
 
   async remove(
     path: string,
-  ): Promise<string> {
+  ): Promise<void> {
     const [key] = path.match(/[^/]+$/);
 
     console.log('[StubStrategy]', 'remove', { path, key });
@@ -220,7 +220,7 @@ export default class StubStrategy extends BackendStrategy {
     delete this.get(parentPath)[key];
 
     setTimeout(() => {
-      this.emit(parentPath, ListEvent.ChildRemoved, key);
+      this.emit(parentPath, ListEvent.ChildRemoved, { id: key });
       this.emitUpdate(path);
     });
   }
