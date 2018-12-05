@@ -44,7 +44,7 @@
         v-list-tile-content
           v-list-tile-title 卓削除
       v-divider
-      v-list-tile(@click="exportLog")
+      v-list-tile(@click="ledOpen = true")
         v-list-tile-action
           v-icon mdi-file-export
         v-list-tile-content
@@ -74,15 +74,16 @@
     feedback-dialog(v-model="fdOpen")
     tabletop-audio-sound-pad-dialog(v-model="taspdOpen")
     chat-view-dialog(v-model="vdOpen")
+    log-export-dialog(:messages="messages" :room="room" v-model="ledOpen")
 </template>
 
 <script>
-import moment from 'moment';
 import { mapState } from 'vuex';
 import * as RouteNames from '../constants/route';
 import ChangelogDialog from '@/browser/components/ChangelogDialog.vue';
 import ChatViewDialog from '@/browser/components/ChatViewDialog.vue';
 import FeedbackDialog from '@/browser/components/FeedbackDialog.vue';
+import LogExportDialog from '@/browser/components/LogExportDialog.vue';
 import RoomEditDialog from '@/browser/components/RoomEditDialog.vue';
 import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from '@/browser/components/RoomPasswordEditDialog.vue';
@@ -93,6 +94,7 @@ export default {
   components: {
     ChangelogDialog,
     ChatViewDialog,
+    LogExportDialog,
     FeedbackDialog,
     RoomEditDialog,
     RoomPasswordClearDialog,
@@ -108,6 +110,7 @@ export default {
     return {
       cdOpen: false,
       fdOpen: false,
+      ledOpen: false,
       redOpen: false,
       rpcdOpen: false,
       rpedOpen: false,
@@ -119,32 +122,6 @@ export default {
   methods: {
     logout() {
       this.$router.push({ name: RouteNames.Lobby });
-    },
-    exportLog() {
-      const { title } = this.room;
-      const filename = `${title}.html`;
-
-      const html = new Blob([
-        '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>',
-        title,
-        '</title><style>td { vertical-align: top; }</style></head><body>',
-        '<h1>', title, '</h1>',
-        '<table><tbody>',
-        this.messages.map(m => `<tr style="color: ${m.color};"><td>${m.name}</td><td>${m.body.map(b => b.text).join('<br>')}</td><td>${moment(m.createdAt).format('lll')}</td><tr/>`).join(''),
-        '</tbody></table></body></html>',
-      ], { type: 'text/html', name: filename });
-      const url = URL.createObjectURL(html);
-
-      const a = document.createElement('a');
-      a.href = url;
-      // a.target = '_blank';
-      a.download = filename;
-
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      URL.revokeObjectURL(url);
     },
     openInNew() {
       window.open(
