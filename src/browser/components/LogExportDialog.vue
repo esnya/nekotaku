@@ -7,7 +7,12 @@
           v-radio-group(v-model="type")
             v-radio(value="html" label="HTML")
             v-radio(value="txt" label="テキスト")
-          v-checkbox(v-model="showTimestamp" label="日時を含める")
+            v-radio(value="json" label="JSON")
+          v-checkbox(
+            label="日時を含める"
+            :disabled="type === 'json'"
+            v-model="showTimestamp"
+          )
       v-card-actions
         v-spacer
         v-btn(color="primary" @click="save") 保存
@@ -47,6 +52,30 @@ const MessageTemplate = {
   ].join(''),
 };
 
+function render(type, messages, room, options) {
+  if (type === 'json') return JSON.stringify({ messages, room }, null, '  ');
+
+  const {
+    showTimestamp,
+  } = options;
+
+  const renderedMessages = messages.map((message) => {
+    const data = {
+      ...message,
+      message: message.body.map(b => b.text).join(' '),
+      messageWithBr: message.body.map(b => b.text).join('<br>'),
+      timestamp: showTimestamp ? moment(message.createdAt).format('lll') : '',
+    };
+    return _.template(MessageTemplate[type])(data);
+  }).join('\r\n');
+
+  const data = {
+    title: room.title,
+    messages: renderedMessages,
+  };
+  return _.template(ContainerTemplate[type])(data);
+}
+
 export default {
   data: () => ({
     type: 'html',
@@ -54,23 +83,14 @@ export default {
   }),
   methods: {
     save() {
-      const { type } = this;
-      const messages = this.messages.map((message) => {
-        const data = {
-          ...message,
-          message: message.body.map(b => b.text).join(' '),
-          messageWithBr: message.body.map(b => b.text).join('<br>'),
-          timestamp: this.showTimestamp ? moment(message.createdAt).format('lll') : '',
-        };
-        return _.template(MessageTemplate[type])(data);
-      }).join('\r\n');
-
-      const data = {
-        title: this.room.title,
+      const {
+        type,
         messages,
-      };
-      const text = _.template(ContainerTemplate[type])(data);
+        room,
+        showTimestamp,
+      } = this;
 
+      const text = render(type, messages, room, { showTimestamp });
       const blob = new Blob([text]);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
