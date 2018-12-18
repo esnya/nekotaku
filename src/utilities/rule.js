@@ -10,25 +10,29 @@ export default async function check(
     childId,
   ] = path.split(/\//g);
 
+  const room = roomId && await get(`rooms/${roomId}`);
+  const password = roomId && await get(`passwords/${roomId}/${userId}`);
+
   switch (model) {
     case 'rooms':
       if (mode === 'read' && !roomId) return true;
-      if (mode === 'write' && roomId && !await get(`rooms/${roomId}`)) return true;
+      if (mode === 'write' && roomId && !room) return true;
       break;
     case 'members':
       if (
         mode === 'write'
         && childId === userId
-        && (!await get(`rooms/${roomId}/password`) || await get(`rooms/${roomId}/password`) === await get(`passwords/${roomId}/${userId}`))
+        && room
+        && (!room.password || room.password === password)
       ) return true;
       break;
     case 'passwords':
-      if (mode === 'write' && childId === userId) return true;
+      if (mode === 'write' && childId === userId && roomId) return true;
       break;
     default:
       break;
   }
-  if (roomId && await get(`members/${roomId}/${userId}`)) return true;
+  if (room && await get(`members/${roomId}/${userId}`)) return true;
 
   return false;
 }

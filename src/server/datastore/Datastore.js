@@ -12,7 +12,7 @@ function refineQuery(query: Object): Object {
 
   return _.pickBy({
     ...others,
-    _id: id && ObjectId(id),
+    _id: id && (id.length === 24 && id.match(/^[0-9a-f]+$/) ? ObjectId(id) : id),
   }, value => value !== undefined);
 }
 

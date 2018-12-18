@@ -54,6 +54,7 @@
 <script>
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
+import { UnauthorizedError, NotFoundError } from '../backend/Backend';
 import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
@@ -141,7 +142,12 @@ export default {
         this.width = window.innerWidth;
         this.timer = new IntervalTimer(() => this.updateMember(), 5 * 1000);
       } catch (e) {
-        this.$router.push({ name: RouteNames.RoomPassword });
+        if (e instanceof UnauthorizedError) this.$router.push({ name: RouteNames.RoomPassword });
+        else if (e instanceof NotFoundError) this.$router.push({ name: RouteNames.NotFound });
+        else {
+          console.error(e);
+          this.$router.push({ name: RouteNames.Lobby });
+        }
       }
     });
   },

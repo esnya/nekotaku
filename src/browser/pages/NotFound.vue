@@ -10,7 +10,7 @@
         div(v-if="count >= 50", key="4") なにもないって言ってるなじゃない。
         div(v-else-if="count >= 20", key="3") なにもないんだよ。
         div(v-else-if="count >= 10", key="2") なにもないってば。
-        div(v-else, key="1") ここにはなにもないよ。
+        div(v-else, key="1") ここにはなにもないよ。URLがまちがっていないかな?
     div
       v-btn(color="primary" :to="{ name: RouteNames.Lobby }") もどる
     v-spacer

@@ -1,8 +1,6 @@
 /* eslint no-unused-vars: off, class-methods-use-this: off */
 
-export type Handler = (event: string, data: Object | string) => void;
-
-export default class BackendStrategy {
+export default class Backend {
   constructor(config: Object) {
     this.type = config.type;
   }
@@ -59,3 +57,6 @@ export default class BackendStrategy {
     throw new Error('Abstract method called');
   }
 }
+
+export class NotFoundError extends Error {}
+export class UnauthorizedError extends Error {}

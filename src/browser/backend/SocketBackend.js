@@ -4,8 +4,9 @@ import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
 import SocketIO from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
-import BackendStrategy from '@/browser/backend/BackendStrategy';
+import Backend, { NotFoundError, UnauthorizedError } from '@/browser/backend/Backend';
 import localStorage from '@/browser/utilities/localStorage';
+import * as ErrorCode from '@/constants/ErrorCode';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import * as SocketEvents from '@/constants/SocketEvents';
@@ -24,7 +25,7 @@ function getEventPath(path, event) {
   return `${path}:${event}`;
 }
 
-export default class SocketStrategy extends BackendStrategy {
+export default class SocketBackend extends Backend {
   constructor(config: Object) {
     super(config);
 
@@ -40,7 +41,6 @@ export default class SocketStrategy extends BackendStrategy {
     });
 
     this.socket.on('event', (path, event, data) => {
-      console.log('event', path, event, data);
       this.emit(path, event, data);
     });
 
@@ -52,8 +52,19 @@ export default class SocketStrategy extends BackendStrategy {
     return new Promise((resolve, reject) => {
       const requestId = shortid();
       this.socket.once(`response:${event}:${requestId}`, (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
+        if (error) {
+          switch (error.code) {
+            case ErrorCode.NotFound:
+              reject(new NotFoundError());
+              break;
+            case ErrorCode.Unauthorized:
+              reject(new UnauthorizedError());
+              break;
+            default:
+              reject(new Error(error.message));
+              break;
+          }
+        } else resolve(result);
       });
       this.socket.emit(`request:${event}`, requestId, ...args);
     });
@@ -85,7 +96,6 @@ export default class SocketStrategy extends BackendStrategy {
     this.on(path, event, callback);
     const data = await this.request(SocketEvents.Subscribe, path, event);
 
-    console.log(path, event, data);
     switch (event) {
       case ObjectEvent.Value:
         callback(data);

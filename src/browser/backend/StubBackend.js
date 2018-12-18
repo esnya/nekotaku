@@ -4,7 +4,7 @@ import _ from 'lodash';
 import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
-import BackendStrategy from './BackendStrategy';
+import Backend, { UnauthorizedError, NotFoundError } from './Backend';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import checkRule from '@/utilities/rule';
@@ -30,7 +30,7 @@ function filter(data: Object): Object {
 
 export const UserId = 'user';
 
-export default class StubStrategy extends BackendStrategy {
+export default class StubBackend extends Backend {
   constructor(config: Object) {
     super(config);
 
@@ -101,9 +101,14 @@ export default class StubStrategy extends BackendStrategy {
   }
 
   async checkPath(path: string, mode: string) {
-    if (!await checkRule(path, mode, UserId, async p => this.get(p))) {
-      throw new Error(`Access denied (${path})`);
-    }
+    const authorized = await checkRule(path, mode, UserId, async p => this.get(p));
+    if (authorized) return;
+
+    const roomId = path.split(/\//g)[1];
+    const room = await this.get(`rooms/${roomId}`);
+
+    if (room) throw new UnauthorizedError();
+    throw new NotFoundError();
   }
 
   /* APIs */

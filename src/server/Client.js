@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { join as joinPath } from 'path';
 import SI from 'si-tools';
 import crypto from 'crypto';
+import * as ErrorCode from '../constants/ErrorCode';
 import * as SocketEvents from '../constants/SocketEvents';
 import * as ListEvent from '../constants/ListEvent';
 import * as ObjectEvent from '../constants/ObjectEvent';
@@ -12,6 +13,20 @@ import checkRule from '../utilities/rule';
 import config from './config';
 import datastore from './datastore';
 import { system } from './logger';
+
+class NotFoundError extends Error {
+  constructor(...args) {
+    super(...args);
+    this.code = ErrorCode.NotFound;
+  }
+}
+
+class UnauthorizedError extends Error {
+  constructor(...args) {
+    super(...args);
+    this.code = ErrorCode.Unauthorized;
+  }
+}
 
 function filter(value: ?Object) {
   if (!value) return value;
@@ -188,8 +203,15 @@ export default class Client {
   async authorize(path: string, mode: string) {
     const authorized = await checkRule(path, mode, this.uid, p => this.get(p));
     if (!authorized) {
-      system.info('Not authorized', path, mode, this.uid);
-      throw new Error(`Access denied (${path})`);
+      const roomId = path.split(/\//g)[1];
+      const room = await this.get(`rooms/${roomId}`);
+
+      if (room && room.id === roomId) {
+        system.info('Unauthorized', path, mode, this.uid);
+        throw new UnauthorizedError();
+      }
+      system.info('NotFound', path, mode, this.uid);
+      throw new NotFoundError();
     }
   }
 
@@ -202,6 +224,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<Object | Object[]> {
+    system.info('Subscribe', path, event);
     await this.authorize(path, 'read');
     const eventPath = getEventPath(path, event);
 
@@ -210,7 +233,6 @@ export default class Client {
       this.socket.join(eventPath);
     } else this.subscribeCounter[eventPath] += 1;
 
-    system.info('Subscribed', path, event);
 
     switch (event) {
       case ObjectEvent.Value:
@@ -232,6 +254,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<() => Promise<void>> {
+    system.info('Unsubscribe', path, event);
     const eventPath = getEventPath(path, event);
     this.subscribeCounter[eventPath] -= 1;
 
@@ -244,6 +267,7 @@ export default class Client {
     path: string,
     data: string,
   ): Promise<string> {
+    system.info('Push', path, data);
     await this.authorize(path, 'write');
     const id = await this.push(path, data);
     return id;
@@ -253,6 +277,7 @@ export default class Client {
     path: string,
     data: Object,
   ): Promise<void> {
+    system.info('Update', path, data);
     await this.authorize(path, 'write');
     await this.update(path, data);
   }
@@ -260,6 +285,7 @@ export default class Client {
   async onRemove(
     path: string,
   ): Promise<void> {
+    system.info('Remove', path);
     await this.authorize(path, 'write');
     await this.remove(path);
   }
@@ -268,6 +294,7 @@ export default class Client {
     path: string,
     file: File,
   ): Promise<string> {
+    system.info('PushFile', path, file);
     if (file.length > MaxFileSize) throw new Error('Maximum file size exceeded');
 
     const [roomId] = path.split(/\//g);
@@ -284,6 +311,7 @@ export default class Client {
   async onRemoveFile(
     path: string,
   ): Promise<void> {
+    system.info('RemoveFile', path);
     const [roomId] = path.split(/\//g);
     const hash = getHash(path);
     const filePath = joinPath(FilePath, hash);
@@ -294,6 +322,7 @@ export default class Client {
   async onRemoveFiles(
     path: string,
   ): Promise<void> {
+    system.info('RemoveFiles', path);
     const [roomId] = path.split(/\//g);
     const data = await datastore.findArray('files', { roomId });
 
