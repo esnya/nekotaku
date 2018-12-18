@@ -7,6 +7,7 @@ import StubData from '../constants/StubData';
 import BackendStrategy from './BackendStrategy';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants/ObjectEvent';
+import checkRule from '@/utilities/rule';
 
 function getParentPath(path: string): string {
   return path.replace(/\/?[^/]+$/, '') || null;
@@ -99,34 +100,10 @@ export default class StubStrategy extends BackendStrategy {
     this.emitUpdate(parentPath);
   }
 
-  checkPath(path: string, mode: string) {
-    const [
-      model,
-      roomId,
-      childId,
-    ] = path.split(/\//g);
-
-    switch (model) {
-      case 'rooms':
-        if (mode === 'read' && !roomId) return;
-        if (mode === 'write' && roomId && !this.get(`rooms/${roomId}`)) return;
-        break;
-      case 'members':
-        if (
-          mode === 'write'
-          && childId === UserId
-          && (!this.get(`rooms/${roomId}/password`) || this.get(`rooms/${roomId}/password`) === this.get(`passwords/${roomId}/${UserId}`))
-        ) return;
-        break;
-      case 'passwords':
-        if (mode === 'write' && childId === UserId) return;
-        break;
-      default:
-        break;
+  async checkPath(path: string, mode: string) {
+    if (!await checkRule(path, mode, UserId, async p => this.get(p))) {
+      throw new Error(`Access denied (${path})`);
     }
-    if (roomId && this.get(`members/${roomId}/${UserId}`)) return;
-
-    throw new Error(`Access denied (${path})`);
   }
 
   /* APIs */
@@ -141,7 +118,7 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<() => Promise<void>> {
     console.log('[StubStrategy]', 'subscribe', { path, event, callback });
 
-    this.checkPath(path, 'read');
+    await this.checkPath(path, 'read');
 
     this.on(path, event, callback);
 
@@ -171,7 +148,7 @@ export default class StubStrategy extends BackendStrategy {
 
     const id = `${Date.now()}_${shortid()}`;
 
-    this.checkPath(`${path}/${id}`, 'write');
+    await this.checkPath(`${path}/${id}`, 'write');
 
     const newData = {
       ...data,
@@ -194,7 +171,7 @@ export default class StubStrategy extends BackendStrategy {
   ): Promise<void> {
     console.log('[StubStrategy]', 'update', { path, data });
 
-    this.checkPath(path, 'write');
+    await this.checkPath(path, 'write');
 
     const oldData = this.get(path);
     const newData = (typeof data === 'object' && oldData && oldData.id) ? {
@@ -214,7 +191,7 @@ export default class StubStrategy extends BackendStrategy {
 
     console.log('[StubStrategy]', 'remove', { path, key });
 
-    this.checkPath(path, 'write');
+    await this.checkPath(path, 'write');
 
     const parentPath = getParentPath(path);
     delete this.get(parentPath)[key];

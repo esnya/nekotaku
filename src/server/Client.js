@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import * as SocketEvents from '../constants/SocketEvents';
 import * as ListEvent from '../constants/ListEvent';
 import * as ObjectEvent from '../constants/ObjectEvent';
+import checkRule from '../utilities/rule';
 import config from './config';
 import datastore from './datastore';
 import { system } from './logger';
@@ -51,6 +52,7 @@ function parsePath(path: string): Object {
         collection,
         roomId,
         query: { id: roomId },
+        subPath: [childId, ...subPathArray].join('/'),
       };
     case 'members':
     case 'passwords':
@@ -103,8 +105,10 @@ export default class Client {
 
   /* Utilities */
   async get(path: string): Promise<Object> {
-    const { collection, query } = parsePath(path);
+    const { collection, query, subPath } = parsePath(path);
     const data = await datastore.findOne(collection, query);
+
+    if (subPath) return _.get(data, subPath.replace(/\//g, '.'));
     return data;
   }
 
@@ -124,7 +128,9 @@ export default class Client {
     } = parsePath(path);
     const oldData = await datastore.findOne(collection, query);
 
-    const newData = subPath ? _.set(oldData || {}, subPath.replace(/\//g, '.'), data) : {
+    const newData = subPath ? _.set(oldData || {
+      roomId: collection !== 'room' ? roomId : undefined,
+    }, subPath.replace(/\//g, '.'), data) : {
       ...oldData,
       ...data,
       roomId: collection !== 'room' ? roomId : undefined,
@@ -133,12 +139,14 @@ export default class Client {
     if (!oldData) await datastore.insert(collection, newData);
     else await datastore.updateOne(collection, query, newData);
 
-    const collectionData = await this.get(`${collection}/${roomId}`);
-    this.io.emit('event', `${collection}/${roomId}`, ObjectEvent.Value, filter(collectionData));
-    if (childId) {
-      const itemData = await this.get(`${collection}/${roomId}/${childId}`);
-      this.io.emit('event', `${collection}/${roomId}/${childId}`, ObjectEvent.Value, filter(itemData));
-      this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildChanged, filter(itemData));
+    if (collection !== 'passwords') {
+      const collectionData = await this.get(`${collection}/${roomId}`);
+      this.io.emit('event', `${collection}/${roomId}`, ObjectEvent.Value, filter(collectionData));
+      if (childId) {
+        const itemData = await this.get(`${collection}/${roomId}/${childId}`);
+        this.io.emit('event', `${collection}/${roomId}/${childId}`, ObjectEvent.Value, filter(itemData));
+        this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildChanged, filter(itemData));
+      }
     }
   }
 
@@ -155,7 +163,9 @@ export default class Client {
       await this.update(path, undefined);
     } else {
       await datastore.remove(collection, query);
-      this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildRemoved, { id: childId });
+      if (collection !== 'passwords') {
+        this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildRemoved, { id: childId });
+      }
     }
   }
 
@@ -166,11 +176,21 @@ export default class Client {
       roomId,
     });
 
-    const newData = await this.get(`${path}/${id}`);
-    this.io.emit('event', path, ListEvent.ChildAdded, filter(newData));
-    this.io.emit('event', `${path}/${id}`, ObjectEvent.Value, filter(newData));
+    if (collection !== 'passwords') {
+      const newData = await this.get(`${path}/${id}`);
+      this.io.emit('event', path, ListEvent.ChildAdded, filter(newData));
+      this.io.emit('event', `${path}/${id}`, ObjectEvent.Value, filter(newData));
+    }
 
     return id;
+  }
+
+  async authorize(path: string, mode: string) {
+    const authorized = await checkRule(path, mode, this.uid, p => this.get(p));
+    if (!authorized) {
+      system.info('Not authorized', path, mode, this.uid);
+      throw new Error(`Access denied (${path})`);
+    }
   }
 
   /* Event Listeners */
@@ -182,6 +202,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<Object | Object[]> {
+    await this.authorize(path, 'read');
     const eventPath = getEventPath(path, event);
 
     if (!this.subscribeCounter[eventPath]) {
@@ -223,6 +244,7 @@ export default class Client {
     path: string,
     data: string,
   ): Promise<string> {
+    await this.authorize(path, 'write');
     const id = await this.push(path, data);
     return id;
   }
@@ -231,12 +253,14 @@ export default class Client {
     path: string,
     data: Object,
   ): Promise<void> {
+    await this.authorize(path, 'write');
     await this.update(path, data);
   }
 
   async onRemove(
     path: string,
   ): Promise<void> {
+    await this.authorize(path, 'write');
     await this.remove(path);
   }
 
