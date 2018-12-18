@@ -1,17 +1,10 @@
 import ObjectModel from '@/browser/models/ObjectModel';
 
-function getFilePath(roomId: string, key: string): string {
-  return `${roomId}/map/${key}`;
-}
+const FilePath = 'map/backgroundImage';
 
 export default class MapModel extends ObjectModel {
   constructor(backend) {
     super(backend, 'maps');
-  }
-
-  async remove(roomId: string): Promise<void> {
-    await this.removeBackgroundImage(roomId);
-    await super.remove(roomId);
   }
 
   async update(roomId: string, data: Object): Promise<void> {
@@ -23,12 +16,12 @@ export default class MapModel extends ObjectModel {
   }
 
   async updateBackgroundImage(roomId: string, file: File): Promise<void> {
-    const url = await this.backend.pushFile(getFilePath(roomId, 'backgroundImage'), file);
+    const url = await this.backend.pushFile(roomId, FilePath, file);
     await this.update(roomId, { backgroundImage: url });
   }
 
   async removeBackgroundImage(roomId: string): Promise<void> {
     await this.update(roomId, { backgroundImage: null });
-    this.backend.removeFile(getFilePath(roomId, 'backgroundImage'));
+    this.backend.removeFile(roomId, FilePath);
   }
 }

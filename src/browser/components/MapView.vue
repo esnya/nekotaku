@@ -60,6 +60,7 @@ export default {
     bindAsList('characters'),
     bindAsList('shapes'),
     bindAsObject('map'),
+    bindAsObject('room'),
   ],
   components: {
     Loading,
@@ -115,10 +116,14 @@ export default {
         attributes,
       } = character;
 
+      const attributeList = (this.room && attributes)
+        ? this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`)
+        : [];
+
       return [
         name,
         `イニシアチブ：${initiative}`,
-        ...this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`),
+        ...attributeList,
       ];
     },
     async alignCharacter(characterId) {

@@ -123,39 +123,47 @@ export default class FirebaseBackend extends Backend {
   }
 
   pushFile(
+    roomId: string,
     path: string,
     file: File,
   ): Promise<string> {
-    return this.handleError(path, async () => {
-      const ref = this.storage.ref(path);
+    const dbPath = `files/${roomId}`;
+    return this.handleError(dbPath, async () => {
+      await this.push(dbPath, { path });
+
+      const ref = this.storage.ref(`${roomId}/${path}`);
       await ref.put(file);
+
       const url = ref.getDownloadURL();
-      await this.ref(`files/${path}`).set(path);
       return url;
     });
   }
 
   removeFile(
+    roomId: string,
     path: string,
   ): Promise<string> {
     return this.handleError(path, async () => {
-      const ref = this.storage.ref(path);
-      await ref.delete();
-      await this.ref(`files/${path}`).remove();
+      await this.storage.ref(`${roomId}/${path}`).delete();
     });
   }
 
   removeFiles(
-    path: string,
+    roomId: string,
   ): Promise<void> {
-    return this.handleError(path, async () => {
-      const ref = this.ref(`files/${path}`);
-      const data = ref.once('value');
-
-      if (typeof data === 'string') await this.removeFile(path);
-      else if (data && typeof data === 'object') {
-        await Promise.all(Object.keys(data).map(key => this.removeFiles(`${path}/${key}`)));
-      }
+    const dbPath = `files/${roomId}`;
+    return this.handleError(dbPath, async () => {
+      const snapshot = await this.ref(dbPath).once('value');
+      const files = snapshot.val();
+      await Promise.all(_.map(files, async ({ path }, key) => {
+        try {
+          await this.ref(`files/${roomId}/${key}`).remove();
+          const ref = this.storage.ref(`${roomId}/${path}`);
+          await ref.delete();
+          // eslint-disable-next-line no-empty
+        } catch (e) {
+        }
+      }));
     });
   }
 }

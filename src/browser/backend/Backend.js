@@ -39,6 +39,7 @@ export default class Backend {
   }
 
   async pushFile(
+    roomId: string,
     path: string,
     file: File,
   ): Promise<string> {
@@ -46,13 +47,14 @@ export default class Backend {
   }
 
   async removeFile(
+    roomId: string,
     path: string,
   ): Promise<void> {
     throw new Error('Abstract method called');
   }
 
   async removeFiles(
-    path: string,
+    roomId: string,
   ): Promise<void> {
     throw new Error('Abstract method called');
   }
