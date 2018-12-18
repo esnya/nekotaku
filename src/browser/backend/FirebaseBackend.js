@@ -139,13 +139,15 @@ export default class FirebaseBackend extends Backend {
     });
   }
 
-  removeFile(
+  async removeFile(
     roomId: string,
     path: string,
   ): Promise<string> {
-    return this.handleError(path, async () => {
+    try {
       await this.storage.ref(`${roomId}/${path}`).delete();
-    });
+      // eslint-disable-next-line no-empty
+    } catch (e) {
+    }
   }
 
   removeFiles(
@@ -156,13 +158,8 @@ export default class FirebaseBackend extends Backend {
       const snapshot = await this.ref(dbPath).once('value');
       const files = snapshot.val();
       await Promise.all(_.map(files, async ({ path }, key) => {
-        try {
-          await this.ref(`files/${roomId}/${key}`).remove();
-          const ref = this.storage.ref(`${roomId}/${path}`);
-          await ref.delete();
-          // eslint-disable-next-line no-empty
-        } catch (e) {
-        }
+        await this.ref(`files/${roomId}/${key}`).remove();
+        await this.removeFile(roomId, path);
       }));
     });
   }

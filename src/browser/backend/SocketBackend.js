@@ -135,21 +135,24 @@ export default class SocketBackend extends Backend {
   }
 
   async pushFile(
+    roomId: string,
     path: string,
     file: File,
   ): Promise<string> {
-    await this.request(SocketEvents.PushFile, path, file);
+    const url = await this.request(SocketEvents.PushFile, roomId, path, file.type, file.name, file);
+    return url;
   }
 
   async removeFile(
+    roomId: string,
     path: string,
   ): Promise<void> {
-    await this.request(SocketEvents.RemoveFile, path);
+    await this.request(SocketEvents.RemoveFile, roomId, path);
   }
 
   async removeFiles(
-    path: string,
+    roomId: string,
   ): Promise<void> {
-    await this.request(SocketEvents.RemoveFiles, path);
+    await this.request(SocketEvents.RemoveFiles, roomId);
   }
 }

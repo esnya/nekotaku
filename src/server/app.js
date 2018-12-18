@@ -18,7 +18,7 @@ app.use('/files/:fileId', async (req, res) => {
     fileId,
   } = req.params;
 
-  const file = await datastore.findOne('files', fileId);
+  const file = await datastore.findOne('files', { id: fileId });
   if (!file) {
     res.sendStatus(404);
   } else {

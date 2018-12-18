@@ -208,12 +208,13 @@ export default class StubBackend extends Backend {
   }
 
   async pushFile(
+    roomId: string,
     path: string,
     file: File,
   ): Promise<string> {
-    console.log('[StubStrategy]', 'putFile', { path, file });
+    console.log('[StubStrategy]', 'putFile', { roomId, path, file });
 
-    const filePath = `files/${path}`;
+    const filePath = `files/${roomId}/${path}`;
     const oldUrl = this.get(filePath);
     if (oldUrl) URL.revokeObjectURL(oldUrl);
 
@@ -225,11 +226,12 @@ export default class StubBackend extends Backend {
   }
 
   async removeFile(
+    roomId: string,
     path: string,
   ): Promise<void> {
-    console.log('[StubStrategy]', 'removeFile', { path });
+    console.log('[StubStrategy]', 'removeFile', { roomId, path });
 
-    const filePath = `files/${path}`;
+    const filePath = `files/${roomId}/${path}`;
     const url = this.get(filePath);
     if (url) {
       URL.revokeObjectURL(url);
@@ -238,14 +240,16 @@ export default class StubBackend extends Backend {
   }
 
   async removeFiles(
-    path: string,
+    roomId: string,
   ): Promise<void> {
-    console.log('[StubStrategy]', 'removeFiles', { path });
+    console.log('[StubStrategy]', 'removeFiles', { roomId });
 
-    const data = this.get(`files/${path}`);
-    if (typeof data === 'string') await this.removeFile(path);
-    else if (data && typeof data === 'object') {
-      await Promise.all(Object.keys(data).map(key => this.removeFiles(`${path}/${key}`)));
+    const data = this.get(`files/${roomId}`);
+    if (data) {
+      _.values(data).forEach((url) => {
+        if (url) URL.revokeObjectURL(url);
+      });
+      this.remove(`files/${roomId}`);
     }
   }
 }

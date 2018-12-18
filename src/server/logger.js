@@ -10,6 +10,7 @@ configure({
   categories: { default: { appenders: ['console'], level: config.loglevel || levels.INFO } },
 });
 
+export const client = getLogger('client');
 export const system = getLogger('system');
 export const access = getLogger('access');
 export const connect = connectLogger(access, { level: levels.INFO });

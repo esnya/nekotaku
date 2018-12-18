@@ -84,6 +84,6 @@ export default class Datastore {
 
   async remove(collection: string, query: Object) {
     const col = await this.collection(collection);
-    await col.remove(refineQuery(query));
+    await col.deleteMany(refineQuery(query));
   }
 }
