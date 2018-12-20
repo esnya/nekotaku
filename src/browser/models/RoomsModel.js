@@ -19,7 +19,7 @@ export default class RoomsModel extends ListModel {
 
     const id = await super.push(null, data);
 
-    if (data.password) {
+    if (password) {
       const passwordsModel = new PasswordsModel(this.backend);
       await passwordsModel.update(id, password);
     }

@@ -2,7 +2,6 @@
 
 import _ from 'lodash';
 import { MongoClient, ObjectId } from 'mongodb';
-import { system } from '../logger';
 
 function refineQuery(query: Object): Object {
   const {
@@ -23,7 +22,8 @@ export default class Datastore {
       url,
       dbname,
       ...options
-    } = config;
+    } = config.datastore;
+    this.logger = config.logger;
     this.type = type;
     this.connect(url, dbname, options);
   }
@@ -34,23 +34,23 @@ export default class Datastore {
 
   async connect(url: string, dbname: string, options: ?Object) {
     try {
-      system.info('Datastore connecting', url);
+      this.logger.info('Datastore connecting', url);
       const client = await MongoClient.connect(url, options);
       this.db = client.db(dbname);
-      system.info('Datastore connected');
+      this.logger.info('Datastore connected');
     } catch (e) {
-      system.fatal(e);
+      this.logger.fatal(e);
     }
   }
 
   async close() {
     try {
-      system.info('Datastore connection closing');
+      this.logger.info('Datastore connection closing');
       const db = await this.getDB();
       await db.close();
-      system.info('Datastore connection closed');
+      this.logger.info('Datastore connection closed');
     } catch (e) {
-      system.fatal(e);
+      this.logger.fatal(e);
     }
   }
 

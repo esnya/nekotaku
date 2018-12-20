@@ -1,11 +1,6 @@
 import _ from 'lodash';
 import Model from '@/browser/models/Model';
-
-export const ListEvent = {
-  ChildAdded: 'child_added',
-  ChildChanged: 'child_changed',
-  ChildRemoved: 'child_removed',
-};
+import * as ListEvent from '@/constants/ListEvent';
 
 export default class ListModel extends Model {
   getChildPath(roomId: string, childId: string) {

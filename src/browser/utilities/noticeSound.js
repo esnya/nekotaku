@@ -1,21 +1,32 @@
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const context = new AudioContext();
+let context;
+let gainNode;
 
-const gainNode = context.createGain();
-gainNode.connect(context.destination);
+function setup() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
 
-function avoidTouch() {
-  window.removeEventListener('touchstart', avoidTouch);
+  context = new AudioContext();
 
-  const buffer = context.createBuffer(1, 1, 22050);
-  const source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(context.destination);
-  source.start(0);
+  gainNode = context.createGain();
+  gainNode.connect(context.destination);
+
+  function avoidTouch() {
+    window.removeEventListener('touchstart', avoidTouch);
+
+    const buffer = context.createBuffer(1, 1, 22050);
+    const source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.start(0);
+  }
+  window.addEventListener('touchstart', avoidTouch);
 }
-window.addEventListener('touchstart', avoidTouch);
+
+setup();
 
 export default function playNoticeSound(gain: number = 0.25) {
+  if (!context) return;
+
   gainNode.gain.value = gain;
 
   const oscillator = context.createOscillator();

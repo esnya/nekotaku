@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import EventEmitter from 'eventemitter3';
+import log from 'loglevel';
 import shortid from 'shortid';
 import StubData from '../constants/StubData';
 import Backend, { UnauthorizedError, NotFoundError } from './Backend';
@@ -79,12 +80,12 @@ export default class StubBackend extends Backend {
   }
 
   emit(path, event, data) {
-    console.log('[StubStrategy]', 'emit', { path, event, data });
+    log.info('[StubStrategy]', 'emit', { path, event, data });
     this.eventBus.emit(`${path}:${event}`, filter(data));
   }
 
   emitUpdate(path) {
-    console.log('[StubStrategy]', 'emitUpdate', { path });
+    log.info('[StubStrategy]', 'emitUpdate', { path });
 
     if (!path) return;
 
@@ -121,7 +122,7 @@ export default class StubBackend extends Backend {
     event: string,
     callback: Object => void,
   ): Promise<() => Promise<void>> {
-    console.log('[StubStrategy]', 'subscribe', { path, event, callback });
+    log.info('[StubStrategy]', 'subscribe', { path, event, callback });
 
     await this.checkPath(path, 'read');
 
@@ -140,7 +141,7 @@ export default class StubBackend extends Backend {
     });
 
     return () => {
-      console.log('[StubStrategy]', 'unsubscribe', { path, event, callback });
+      log.info('[StubStrategy]', 'unsubscribe', { path, event, callback });
       this.off(path, event, callback);
     };
   }
@@ -149,7 +150,7 @@ export default class StubBackend extends Backend {
     path: string,
     data: string,
   ): Promise<string> {
-    console.log('[StubStrategy]', 'push', { path, data });
+    log.info('[StubStrategy]', 'push', { path, data });
 
     const id = `${Date.now()}_${shortid()}`;
 
@@ -174,7 +175,7 @@ export default class StubBackend extends Backend {
     path: string,
     data: any,
   ): Promise<void> {
-    console.log('[StubStrategy]', 'update', { path, data });
+    log.info('[StubStrategy]', 'update', { path, data });
 
     await this.checkPath(path, 'write');
 
@@ -194,7 +195,7 @@ export default class StubBackend extends Backend {
   ): Promise<void> {
     const [key] = path.match(/[^/]+$/);
 
-    console.log('[StubStrategy]', 'remove', { path, key });
+    log.info('[StubStrategy]', 'remove', { path, key });
 
     await this.checkPath(path, 'write');
 
@@ -212,7 +213,7 @@ export default class StubBackend extends Backend {
     path: string,
     file: File,
   ): Promise<string> {
-    console.log('[StubStrategy]', 'putFile', { roomId, path, file });
+    log.info('[StubStrategy]', 'putFile', { roomId, path, file });
 
     const filePath = `files/${roomId}/${path}`;
     const oldUrl = this.get(filePath);
@@ -229,7 +230,7 @@ export default class StubBackend extends Backend {
     roomId: string,
     path: string,
   ): Promise<void> {
-    console.log('[StubStrategy]', 'removeFile', { roomId, path });
+    log.info('[StubStrategy]', 'removeFile', { roomId, path });
 
     const filePath = `files/${roomId}/${path}`;
     const url = this.get(filePath);
@@ -242,7 +243,7 @@ export default class StubBackend extends Backend {
   async removeFiles(
     roomId: string,
   ): Promise<void> {
-    console.log('[StubStrategy]', 'removeFiles', { roomId });
+    log.info('[StubStrategy]', 'removeFiles', { roomId });
 
     const data = this.get(`files/${roomId}`);
     if (data) {

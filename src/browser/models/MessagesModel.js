@@ -1,6 +1,6 @@
 import ListModel from '@/browser/models/ListModel';
 
-async function parseBody(body: string | Object, dice: ?string): Promise<Object> {
+async function parseBody(body: string|Object[], dice: ?string): Promise<Object> {
   if (typeof body !== 'string') return body;
   if (dice) {
     const {

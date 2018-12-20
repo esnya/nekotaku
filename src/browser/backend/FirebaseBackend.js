@@ -21,15 +21,20 @@ function filter(snapshot) {
   }, v => v !== undefined);
 }
 
+
 export default class FirebaseBackend extends Backend {
   constructor(config: Object) {
     super(config);
 
     this.eventBus = new EventEmitter();
 
-    firebase.initializeApp(config);
+    if (!config.firebase) {
+      firebase.initializeApp(config);
+    }
 
-    const auth = firebase.auth();
+    const app = config.firebase || firebase.app();
+
+    const auth = app.auth();
 
     auth.onAuthStateChanged((user) => {
       this.user = user;
@@ -37,11 +42,13 @@ export default class FirebaseBackend extends Backend {
     });
     auth.signInAnonymously();
 
-    const database = firebase.database();
+    const database = app.database();
     this.database = database;
 
-    const storage = firebase.storage();
+    const storage = app.storage();
     this.storage = storage;
+
+    if ((typeof config.onInitialized) === 'function') config.onInitialized();
   }
 
   /* Utilities */

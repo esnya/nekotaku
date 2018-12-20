@@ -2,7 +2,6 @@ import _ from 'lodash';
 import shortid from 'shortid';
 import backend from '@/browser/backend';
 import CharactersModel from '@/browser/models/CharactersModel';
-import { ListEvent } from '@/browser/models/ListModel';
 import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import MemosModel from '@/browser/models/MemosModel';
@@ -12,6 +11,7 @@ import PasswordsModel from '@/browser/models/PasswordsModel';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import ShapesModel from '@/browser/models/ShapesModel';
+import * as ListEvent from '@/constants/ListEvent';
 
 const Models = {
   characters: CharactersModel,

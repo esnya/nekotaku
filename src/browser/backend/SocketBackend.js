@@ -48,7 +48,7 @@ export default class SocketBackend extends Backend {
   }
 
   /* Remote */
-  async request(event: string, ...args: any[]): Promise<any> {
+  request(event: string, ...args: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       const requestId = shortid();
       this.socket.once(`response:${event}:${requestId}`, (error, result) => {

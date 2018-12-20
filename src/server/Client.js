@@ -10,9 +10,6 @@ import * as SocketEvents from '../constants/SocketEvents';
 import * as ListEvent from '../constants/ListEvent';
 import * as ObjectEvent from '../constants/ObjectEvent';
 import checkRule from '../utilities/rule';
-import config from './config';
-import datastore from './datastore';
-import { client } from './logger';
 
 class NotFoundError extends Error {
   constructor(...args) {
@@ -48,10 +45,6 @@ function getHash(data): string {
   sha1.update(data);
   return sha1.digest('hex');
 }
-
-const ParsedFileSize = SI.parse(config.file.maxSize);
-const MaxFileSize = ParsedFileSize.number;
-const FilePath = config.file.path;
 
 function getEventPath(path: string, event: string) {
   return `${path}:${event}`;
@@ -93,25 +86,40 @@ function parsePath(path: string): Object {
 }
 
 export default class Client {
+  constructor(config) {
+    const {
+      datastore,
+      file,
+      logger,
+    } = config;
+
+    const prsedFileSize = SI.parse(file.maxSize);
+    this.maxFileSize = prsedFileSize.number;
+    this.filePath = file.path;
+
+    this.datastore = datastore;
+    this.logger = logger;
+  }
+
   connection(io, socket) {
     this.io = io;
     this.socket = socket;
     this.subscribeCounter = {};
 
-    client.info('Connection', socket.id);
+    this.logger.info('Connection', socket.id);
 
     _(SocketEvents).forEach((event, key) => {
       socket.on(`request:${event}`, async (requestId, ...args) => {
         try {
-          client.trace('received', event, ...args);
+          this.logger.trace('received', event, ...args);
 
           const methodKey = `on${key}`;
-          if (!this[methodKey]) client.fatal(`Client.${methodKey} is not defined`);
+          if (!this[methodKey]) this.logger.fatal(`Client.${methodKey} is not defined`);
 
           const result = await this[methodKey](...args);
           this.socket.emit(`response:${event}:${requestId}`, null, result);
         } catch (e) {
-          client.error(e, requestId, args);
+          this.logger.error(e, requestId, args);
           this.socket.emit(`response:${event}:${requestId}`, e, null);
         }
       });
@@ -121,7 +129,7 @@ export default class Client {
   /* Utilities */
   async get(path: string): Promise<Object> {
     const { collection, query, subPath } = parsePath(path);
-    const data = await datastore.findOne(collection, query);
+    const data = await this.datastore.findOne(collection, query);
 
     if (subPath) return _.get(data, subPath.replace(/\//g, '.'));
     return data;
@@ -129,7 +137,7 @@ export default class Client {
 
   async list(path: string): Promise<Object[]> {
     const { collection, query } = parsePath(path);
-    const data = await datastore.findArray(collection, query);
+    const data = await this.datastore.findArray(collection, query);
     return data;
   }
 
@@ -141,7 +149,7 @@ export default class Client {
       childId,
       subPath,
     } = parsePath(path);
-    const oldData = await datastore.findOne(collection, query);
+    const oldData = await this.datastore.findOne(collection, query);
 
     const newData = subPath ? _.set(oldData || {
       roomId: collection !== 'room' ? roomId : undefined,
@@ -151,8 +159,8 @@ export default class Client {
       roomId: collection !== 'room' ? roomId : undefined,
     };
 
-    if (!oldData) await datastore.insert(collection, newData);
-    else await datastore.updateOne(collection, query, newData);
+    if (!oldData) await this.datastore.insert(collection, newData);
+    else await this.datastore.updateOne(collection, query, newData);
 
     if (collection !== 'passwords') {
       const collectionData = await this.get(`${collection}/${roomId}`);
@@ -177,7 +185,7 @@ export default class Client {
     if (subPath) {
       await this.update(path, undefined);
     } else {
-      await datastore.remove(collection, query);
+      await this.datastore.remove(collection, query);
       if (collection !== 'passwords') {
         this.io.emit('event', `${collection}/${roomId}`, ListEvent.ChildRemoved, { id: childId });
       }
@@ -186,7 +194,7 @@ export default class Client {
 
   async push(path: string, data: Object): Promise<string> {
     const { collection, roomId } = parsePath(path);
-    const id = await datastore.insert(collection, {
+    const id = await this.datastore.insert(collection, {
       ...data,
       roomId,
     });
@@ -207,16 +215,17 @@ export default class Client {
       const room = await this.get(`rooms/${roomId}`);
 
       if (room && room.id === roomId) {
-        client.info('Unauthorized', path, mode, this.uid);
+        this.logger.info('AutohrizationFailed', 'Unauthorized', path, mode, this.uid);
         throw new UnauthorizedError();
       }
-      client.info('NotFound', path, mode, this.uid);
+      this.logger.info('AutohrizationFailed', 'NotFound', path, mode, this.uid);
       throw new NotFoundError();
     }
   }
 
   /* Event Listeners */
-  async onSetUID(uid: string) {
+  async onSetUID(uid: string): Promise<void> {
+    this.logger.info('SetUID', uid);
     this.uid = uid;
   }
 
@@ -224,7 +233,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<Object | Object[]> {
-    client.info('Subscribe', path, event);
+    this.logger.info('Subscribe', path, event);
     await this.authorize(path, 'read');
     const eventPath = getEventPath(path, event);
 
@@ -254,7 +263,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<() => Promise<void>> {
-    client.info('Unsubscribe', path, event);
+    this.logger.info('Unsubscribe', path, event);
     const eventPath = getEventPath(path, event);
     this.subscribeCounter[eventPath] -= 1;
 
@@ -267,8 +276,8 @@ export default class Client {
     path: string,
     data: string,
   ): Promise<string> {
-    client.info('Push', path, data);
-    await this.authorize(path, 'write');
+    this.logger.info('Push', path, data);
+    await this.authorize(`${path}/childId`, 'write');
     const id = await this.push(path, data);
     return id;
   }
@@ -277,7 +286,7 @@ export default class Client {
     path: string,
     data: Object,
   ): Promise<void> {
-    client.info('Update', path, data);
+    this.logger.info('Update', path, data);
     await this.authorize(path, 'write');
     await this.update(path, data);
   }
@@ -285,7 +294,7 @@ export default class Client {
   async onRemove(
     path: string,
   ): Promise<void> {
-    client.info('Remove', path);
+    this.logger.info('Remove', path);
     await this.authorize(path, 'write');
     await this.remove(path);
   }
@@ -297,22 +306,22 @@ export default class Client {
     name: string,
     data: Buffer,
   ): Promise<string> {
-    client.info('PushFile', roomId, path, type, name, data);
+    this.logger.info('PushFile', roomId, path, type, name, data);
 
     await this.authorize(`files/${roomId}`, 'write');
 
-    if (data.length > MaxFileSize) throw new Error('Maximum file size exceeded');
+    if (data.length > this.maxFileSize) throw new Error('Maximum file size exceeded');
 
     const pathHash = getHash(path);
     await this.onRemoveFile(roomId, path);
 
-    const id = await datastore.insert('files', {
+    const id = await this.datastore.insert('files', {
       roomId,
       pathHash,
       type,
       name,
     });
-    const filePath = joinPath(FilePath, id);
+    const filePath = joinPath(this.filePath, id);
     await fs.writeFile(filePath, data);
 
     return `/files/${id}`;
@@ -322,35 +331,35 @@ export default class Client {
     roomId: string,
     path: string,
   ): Promise<void> {
-    client.info('RemoveFile', roomId, path);
+    this.logger.info('RemoveFile', roomId, path);
 
     await this.authorize(`files/${roomId}`, 'write');
 
     const pathHash = getHash(path);
-    const files = await datastore.findArray('files', { roomId, pathHash });
+    const files = await this.datastore.findArray('files', { roomId, pathHash });
 
     await Promise.all(files.map(async (file) => {
       // eslint-disable-next-line no-underscore-dangle
       const id = file._id.toString();
-      const filePath = joinPath(FilePath, id);
+      const filePath = joinPath(this.filePath, id);
       await fs.unlink(filePath);
     }));
 
-    await datastore.remove('files', { roomId, pathHash });
+    await this.datastore.remove('files', { roomId, pathHash });
   }
 
   async onRemoveFiles(
     roomId: string,
   ): Promise<void> {
-    client.info('RemoveFiles', roomId);
+    this.logger.info('RemoveFiles', roomId);
 
     await this.authorize(`files/${roomId}`, 'write');
 
-    const files = await datastore.findArray('files', { roomId });
+    const files = await this.datastore.findArray('files', { roomId });
 
     // eslint-disable-next-line no-underscore-dangle
-    await Promise.all(files.map(file => fs.unlink(joinPath(FilePath, file._id.toString()))));
+    await Promise.all(files.map(file => fs.unlink(joinPath(this.filePath, file._id.toString()))));
 
-    await datastore.remove('files', { roomId });
+    await this.datastore.remove('files', { roomId });
   }
 }
