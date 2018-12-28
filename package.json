@@ -1,6 +1,6 @@
 {
   "name": "nekotaku",
-  "version": "1.7.1",
+  "version": "1.8.0-beta1",
   "private": true,
   "description": "ねこ卓：モバイルフレンドリーなオンラインセッション支援ツール",
   "author": "ukatama <dev.ukatama@gmail.com>",
