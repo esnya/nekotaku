@@ -21,7 +21,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
     "@firebase/app": "^0.3.4",
-    "@firebase/auth": "^0.7.9",
+    "@firebase/app-types": "^0.3.2",
+    "@firebase/auth": "^0.9.1",
     "@firebase/database": "^0.3.6",
     "@firebase/storage": "^0.2.4",
     "bcdice-js": "^0.10.1",
@@ -57,6 +58,8 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-syntax-flow": "^7.2.0",
     "@babel/preset-flow": "^7.0.0",
     "@vue/cli-plugin-babel": "^3.1.1",
     "@vue/cli-plugin-e2e-cypress": "^3.1.1",
@@ -68,6 +71,7 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-eslint": "^10.0.1",
     "chai": "^4.1.2",
+    "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
@@ -84,7 +88,8 @@
     "stylus-loader": "^3.0.2",
     "update-changelog": "^1.0.2",
     "vue-cli-plugin-vuetify": "^0.4.6",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.28.2"
   },
   "license": "MIT",
   "main": "index.js",
