@@ -135,11 +135,11 @@ export default {
       this.body = null;
 
       this.$models.messages.push(this.roomId, {
+        body,
         color,
         dice,
-        name,
         face,
-        body,
+        name,
         to,
       });
     },

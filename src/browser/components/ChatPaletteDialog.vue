@@ -101,7 +101,7 @@ export default {
       } = this;
       const {
         dice,
-      } = this.room.dice;
+      } = this.room;
 
       const { palette } = this.tabs[tab];
       const attrs = _(palette)
@@ -110,31 +110,16 @@ export default {
         .map(m => [`{${m[1]}}`, m[2]]);
       const body = attrs.reduce((prev, curr) => prev.replace(curr[0], curr[1]), line);
 
-      const {
-        executeDice,
-        getDiceBotDescByFilename,
-      } = await import(/* webpackChunkName: "bcdice" */ '@/browser/utilities/bcdice');
-
-      const {
-        result,
-        diceResults,
-      } = await executeDice(body, dice);
-
-      const diceBotDesc = getDiceBotDescByFilename(dice);
-
-      const parsed = body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
-        type: 'dice',
-        dice: diceBotDesc ? diceBotDesc.gameType : dice,
-        text: result.replace(/^: /, ''),
-        diceResults,
-      }]);
+      this.selectedTab = null;
+      this.selectedLine = null;
 
       this.$models.messages.push(this.roomId, {
-        body: parsed,
+        body,
         color,
+        dice,
         face: 'default',
         name,
-        createdAt: Date.now(),
+        to: null,
       });
     },
   },

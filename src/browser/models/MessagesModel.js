@@ -33,16 +33,22 @@ export default class MessagesModel extends ListModel {
   async push(roomId: string, data: Object): Promise<void> {
     const {
       body,
+      color,
       dice,
+      face,
+      name,
       to,
-      ...others
     } = data;
 
+    const parsedBody = await parseBody(body, dice);
+
     await super.push(roomId, {
-      ...others,
-      body: await parseBody(body, dice),
-      to: (typeof to === 'string' ? to.split(/\s*,\s*/g) : to) || null,
+      body: parsedBody,
+      color,
       createdAt: Date.now(),
+      face,
+      name,
+      to: (typeof to === 'string' ? to.split(/\s*,\s*/g) : to) || null,
     });
   }
 }
