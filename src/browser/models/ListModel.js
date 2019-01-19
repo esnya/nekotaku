@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Model from '@/browser/models/Model';
+import Model, { filter } from '@/browser/models/Model';
 import * as ListEvent from '@/constants/ListEvent';
 
 export default class ListModel extends Model {
@@ -23,12 +23,12 @@ export default class ListModel extends Model {
   }
 
   async push(roomId: string, data: Object): Promise<string> {
-    const id = await this.backend.push(this.getPath(roomId), data);
+    const id = await this.backend.push(this.getPath(roomId), filter(data));
     return id;
   }
 
   async update(roomId: string, childId: string, data: Object): Promise<void> {
-    await this.backend.update(this.getChildPath(roomId, childId), data);
+    await this.backend.update(this.getChildPath(roomId, childId), filter(data));
   }
 
   async remove(roomId: string, childId: string): Promise<void> {

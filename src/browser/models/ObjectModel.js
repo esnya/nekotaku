@@ -1,4 +1,4 @@
-import Model from '@/browser/models/Model';
+import Model, { filter } from '@/browser/models/Model';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 
 export default class ObjectModel extends Model {
@@ -16,7 +16,7 @@ export default class ObjectModel extends Model {
   }
 
   async update(roomId: string, data: Object): Promise<void> {
-    await this.backend.update(this.getPath(roomId), data);
+    await this.backend.update(this.getPath(roomId), filter(data));
   }
 
   async remove(roomId: string): Promise<void> {
