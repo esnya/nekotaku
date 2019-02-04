@@ -212,7 +212,7 @@ export default class Client {
     const authorized = await checkRule(path, mode, this.uid, p => this.get(p));
     if (!authorized) {
       const roomId = path.split(/\//g)[1];
-      const room = await this.get(`rooms/${roomId}`);
+      const room = filter(await this.get(`rooms/${roomId}`));
 
       if (room && room.id === roomId) {
         this.logger.info('AutohrizationFailed', 'Unauthorized', path, mode, this.uid);
