@@ -73,10 +73,11 @@
 import { mapGetters } from 'vuex';
 import ChatConfigDialog from '@/browser/components/ChatConfigDialog.vue';
 import ChatPaletteDialog from '@/browser/components/ChatPaletteDialog.vue';
-import { bindAsObject } from '@/browser/models';
+import { bindAsList, bindAsObject } from '@/browser/models';
 
 export default {
   mixins: [
+    bindAsList('characters'),
     bindAsObject('room'),
   ],
   components: {
