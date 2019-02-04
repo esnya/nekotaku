@@ -40,8 +40,8 @@ export default {
       commit('addChatConfig');
       save(getRoomId(rootState), state);
     },
-    removeChatConfig({ state, rootState, commit }) {
-      commit('removeChatConfig');
+    deleteChatConfig({ state, rootState, commit }, id) {
+      commit('deleteChatConfig', id);
       save(getRoomId(rootState), state);
     },
     selectChatConfig({ state, rootState, commit }, id) {
@@ -56,8 +56,12 @@ export default {
       commit('setChatColor', color);
       save(getRoomId(rootState), state);
     },
-    setMessagesLimit({ state, rootState, commit }, limit) {
-      commit('setMessagesLimit', limit);
+    updateMessagesLimit({ state, rootState, commit }, limit) {
+      commit('updateMessagesLimit', limit);
+      save(getRoomId(rootState), state);
+    },
+    updateChatConfig({ state, rootState, commit }, config) {
+      commit('updateChatConfig', config);
       save(getRoomId(rootState), state);
     },
     loadChatConfig({ commit }, roomId: string) {
@@ -73,16 +77,10 @@ export default {
       });
       state.selectedId = id;
     },
-    removeChatConfig(state) {
-      if (state.configList.length > 1) {
-        const { selectedId } = state;
-        const nextSelectedIndex = Math.max(
-          state.configList.findIndex(c => c.id === selectedId) - 1,
-          0,
-        );
-        state.selectedId = state.configList[nextSelectedIndex].id;
-        state.configList = state.configList.filter(c => c.id !== selectedId);
-      }
+    deleteChatConfig(state, id) {
+      state.configList = state.configList.filter(c => c.id !== id);
+      if (state.configList.length === 0) state.configList = [DefaultConfig];
+      if (state.selectedId === id) state.selectedChatId = state.configList[0].id;
     },
     selectChatConfig(state, id) {
       if (state.configList.find(c => c.id === id)) {
@@ -92,27 +90,23 @@ export default {
     setChatConfig(state, value) {
       Object.assign(state, value);
     },
-    setChatName(state, name) {
+    updateMessagesLimit(state, limit) {
+      state.messagesLimit = Number(limit);
+    },
+    updateChatConfig(state, { id, name, color }) {
       state.configList = state.configList.map(config => (
-        config.id === state.selectedId
-          ? { ...config, name }
+        config.id === id
+          ? { ...config, name, color }
           : config
       ));
-    },
-    setChatColor(state, color) {
-      state.configList = state.configList.map(config => (
-        config.id === state.selectedId
-          ? { ...config, color }
-          : config
-      ));
-    },
-    setMessagesLimit(state, limit) {
-      state.messagesLimit = limit;
     },
   },
   state: DefaultState,
   getters: {
     chatControl(state) {
+      return state.configList.find(({ id }) => id === state.selectedId) || DefaultConfig;
+    },
+    chatConfig(state) {
       return state.configList.find(({ id }) => id === state.selectedId) || DefaultConfig;
     },
     chatConfigList(state) {

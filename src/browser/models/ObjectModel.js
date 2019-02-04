@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Model, { filter } from '@/browser/models/Model';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 
@@ -9,7 +10,7 @@ export default class ObjectModel extends Model {
     const unsubscribe = await this.backend.subscribe(
       this.getPath(roomId),
       ObjectEvent.Value,
-      value => callback(ObjectEvent.Value, value),
+      value => callback(ObjectEvent.Value, _.defaultsDeep(value, this.getDefault())),
     );
 
     return unsubscribe;

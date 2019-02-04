@@ -20,4 +20,9 @@ export default class Model {
   getPath(roomId: string): string {
     return `${this.name}/${roomId}`;
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  getDefault(): Object {
+    return {};
+  }
 }

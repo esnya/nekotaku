@@ -23,6 +23,14 @@
         ".write": "auth.uid !== null && (root.child('members/' + $roomId + '/' + auth.uid).exists() || !data.exists() || data.child('canRemove').exists())"
 			}
 		},
+    "chat-paletts": {
+      "$roomId": {
+        "$uid": {
+          ".read": "auth.uid === $uid && root.child('members/' + $roomId + '/' + auth.uid",
+          ".write": "auth.uid === $uid && root.child('members/' + $roomId + '/' + auth.uid"
+        }
+      }
+		},
     "maps": {
       "$roomId": {
         ".write": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",

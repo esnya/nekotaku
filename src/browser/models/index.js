@@ -2,6 +2,7 @@ import _ from 'lodash';
 import shortid from 'shortid';
 import backend from '@/browser/backend';
 import CharactersModel from '@/browser/models/CharactersModel';
+import ChatPaletts from '@/browser/models/ChatPalettsModel';
 import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import MemosModel from '@/browser/models/MemosModel';
@@ -15,6 +16,7 @@ import * as ListEvent from '@/constants/ListEvent';
 
 const Models = {
   characters: CharactersModel,
+  chatPaletts: ChatPaletts,
   map: MapModel,
   members: MembersModel,
   memos: MemosModel,

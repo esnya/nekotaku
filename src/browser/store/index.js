@@ -3,14 +3,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import chatControl from './modules/chatControl';
+import chatMessage from './modules/chatMessage';
 import mapControl from './modules/mapControl';
+import whisperTargets from './modules/whisperTargets';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     chatControl,
+    chatMessage,
     mapControl,
+    whisperTargets,
   },
   state: {
     loadingCount: 0,

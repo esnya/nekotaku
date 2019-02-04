@@ -14,7 +14,7 @@ export default class ListModel extends Model {
     const unsubscribers = await Promise.all(_(ListEvent).map(event => this.backend.subscribe(
       this.getPath(roomId),
       event,
-      data => callback(event, data),
+      data => callback(event, _.defaultsDeep(data, this.getDefault())),
     )));
 
     return () => Promise.all(unsubscribers.map(async (unsubscriber) => {
@@ -23,12 +23,18 @@ export default class ListModel extends Model {
   }
 
   async push(roomId: string, data: Object): Promise<string> {
-    const id = await this.backend.push(this.getPath(roomId), filter(data));
+    const id = await this.backend.push(
+      this.getPath(roomId),
+      _.defaultsDeep(filter(data), this.getDefault()),
+    );
     return id;
   }
 
   async update(roomId: string, childId: string, data: Object): Promise<void> {
-    await this.backend.update(this.getChildPath(roomId, childId), filter(data));
+    await this.backend.update(
+      this.getChildPath(roomId, childId),
+      filter(data),
+    );
   }
 
   async remove(roomId: string, childId: string): Promise<void> {

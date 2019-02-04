@@ -13,22 +13,16 @@
       main(v-if="room")
         .floating.fixed.ignore-toolbar-padding
           room-info-list.room-info-list(:room="room" :members="members")
-        div.room-slider(:style="{ transform: `translateX(${Number(roomTab) * -100}%)` }")
-          .room-slider-item.scroll
-            message-list
-          .room-slider-item.scroll
-            memo-list
-          .room-slider-item.scroll
-            character-list
-          .room-slider-item
-            map-view
+        chat-tab(:members="members" :room="room" v-if="roomTab === '0'")
+        memo-list(v-else-if="roomTab === '1'")
+        character-tab(
+          :room="room"
+          v-else-if="roomTab === '2'"
+        )
+        map-tab(v-else-if="roomTab === '3'")
         transition(name="neko-slide-right")
           portrait-panel(v-if="roomTab === '0'")
-        transition(name="neko-fade")
-          dice-panel(v-if="roomTab === '0'")
-        transition(name="neko-slide-bottom")
-          chat-control(v-if="roomTab === '0'")
-          map-control(v-else-if="roomTab === '3'")
+        dice-panel
         v-bottom-nav(
           color="white"
           :active.sync="roomTab"
@@ -59,17 +53,15 @@ import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '../utilities/sessionStorage';
 import { IntervalTimer } from '../utilities/timer';
-import ChatControl from '@/browser/components/ChatControl.vue';
-import CharacterList from '@/browser/components/CharacterList.vue';
-import DicePanel from '@/browser/components/DicePanel.vue';
-import Loading from '@/browser/components/Loading.vue';
-import MapControl from '@/browser/components/MapControl.vue';
-import MapView from '@/browser/components/MapView.vue';
+import DicePanel from '@/browser/moleculers/DicePanel.vue';
+import Loading from '@/browser/atoms/Loading.vue';
+import MapTab from '@/browser/organisims/MapTab.vue';
 import MemoList from '@/browser/components/MemoList.vue';
-import MessageList from '@/browser/components/MessageList.vue';
 import PortraitPanel from '@/browser/components/PortraitPanel.vue';
 import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
+import CharacterTab from '@/browser/organisims/CharacterTab.vue';
+import ChatTab from '@/browser/organisims/ChatTab.vue';
 import run from '@/browser/task';
 import { bindAsObject } from '@/browser/models';
 
@@ -83,14 +75,12 @@ export default {
     bindAsObject('room', false),
   ],
   components: {
-    ChatControl,
-    CharacterList,
+    CharacterTab,
+    ChatTab,
     DicePanel,
     Loading,
-    MapControl,
-    MapView,
+    MapTab,
     MemoList,
-    MessageList,
     RoomInfoList,
     RoomMenu,
     RouteNames,

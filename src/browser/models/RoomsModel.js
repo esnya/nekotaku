@@ -8,6 +8,15 @@ export default class RoomsModel extends ListModel {
     super(backend, 'rooms');
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  getDefault() {
+    return {
+      title: null,
+      dice: null,
+      createdAt: Date.now(),
+    };
+  }
+
   getPath(): string {
     return this.name;
   }

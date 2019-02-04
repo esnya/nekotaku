@@ -7,12 +7,14 @@ export default class MapModel extends ObjectModel {
     super(backend, 'maps');
   }
 
-  async update(roomId: string, data: Object): Promise<void> {
-    await super.update(roomId, {
+  // eslint-disable-next-line class-methods-use-this
+  getDefault() {
+    return {
       width: 10,
       height: 10,
-      ...data,
-    });
+      grid: true,
+      backgroundImage: null,
+    };
   }
 
   async updateBackgroundImage(roomId: string, file: File): Promise<void> {

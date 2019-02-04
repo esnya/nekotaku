@@ -9,7 +9,7 @@ export default {
     resetMapZoom(state) {
       state.zoom = 0;
     },
-    setMapMode(state, { mode, shapeType }) {
+    updateMapMode(state, { mode, shapeType }) {
       state.mode = mode;
       state.shapeType = shapeType;
       state.selected = null;

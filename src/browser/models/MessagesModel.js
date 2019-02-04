@@ -30,6 +30,19 @@ export default class MessagesModel extends ListModel {
     super(backend, 'messages');
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  getDefault() {
+    return {
+      body: [],
+      color: '#000000',
+      dice: null,
+      createdAt: Date.now(),
+      face: 'default',
+      name: 'ななしさん',
+      to: null,
+    };
+  }
+
   async push(roomId: string, data: Object): Promise<void> {
     const {
       body,

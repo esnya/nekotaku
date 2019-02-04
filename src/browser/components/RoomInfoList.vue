@@ -8,7 +8,8 @@
       span.white--text {{memberList.length}}
     v-chip.pl-0.mr-0.orange(small)
       v-icon.mx-1(color="white") mdi-clock
-      span.white--text {{time}}
+      span.white--text
+        from-now(:time="room.createdAt")
     v-dialog(v-model="helpOpen" width="auto")
       v-card(v-scroll="'y'")
         v-card-title
@@ -44,13 +45,13 @@
 
 <script>
 import _ from 'lodash';
-import moment from 'moment';
+import FromNow from '@/browser/atoms/FromNow.vue';
 
 export default {
+  components: {
+    FromNow,
+  },
   computed: {
-    time() {
-      return moment(this.room.createdAt).format('lll');
-    },
     memberList() {
       return this.members && _(this.members)
         .filter(v => (typeof v === 'object'))

@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import DiceSelect from '@/browser/components/DiceSelect.vue';
+import DiceSelect from '@/browser/atoms/DiceSelect.vue';
 import * as RouteNames from '@/browser/constants/route';
 import run from '@/browser/task';
 

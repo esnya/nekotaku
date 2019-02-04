@@ -19,7 +19,7 @@ import { mapGetters } from 'vuex';
 import { inOutSign } from 'ease-component';
 import scroll from 'scroll';
 import playNoticeSound from '../utilities/noticeSound';
-import FromNow from '@/browser/components/FromNow.vue';
+import FromNow from '@/browser/atoms/FromNow.vue';
 import MessageBody from '@/browser/components/MessageBody.vue';
 
 export default {
@@ -47,7 +47,7 @@ export default {
   props: [
     'message',
   ],
-  mounted() {
+  mountedDisabled() {
     const item = this.$refs.root.$el;
     if (!item.closest) return;
 

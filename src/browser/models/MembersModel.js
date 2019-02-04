@@ -5,11 +5,11 @@ export default class MembersModel extends UserDataModel {
     super(backend, 'members');
   }
 
-  async update(roomId: string, data: Object): Promise<void> {
-    await super.update(roomId, {
+  // eslint-disable-next-line class-methods-use-this
+  getDefault() {
+    return {
       name: 'ななしさん',
       timestamp: Date.now(),
-      ...data,
-    });
+    };
   }
 }

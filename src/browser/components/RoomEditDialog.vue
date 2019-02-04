@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Loading from '@/browser/components/Loading.vue';
-import DiceSelect from '@/browser/components/DiceSelect.vue';
+import Loading from '@/browser/atoms/Loading.vue';
+import DiceSelect from '@/browser/atoms/DiceSelect.vue';
 
 function genInputValue(key) {
   return {

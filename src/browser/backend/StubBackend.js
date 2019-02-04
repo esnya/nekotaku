@@ -45,6 +45,7 @@ export default class StubBackend extends Backend {
       members: {},
       shapes: {},
       memos: {},
+      'chat-paletts': {},
     };
     StubData.rooms.forEach((room) => {
       const { id } = room;
@@ -58,6 +59,9 @@ export default class StubBackend extends Backend {
       });
       this.data.maps[id] = { ...StubData.map };
       this.data.members[id] = {};
+      this.data['chat-paletts'][id] = {
+        [UserId]: StubData['chat-paletts'],
+      };
     });
   }
 
@@ -180,7 +184,7 @@ export default class StubBackend extends Backend {
     await this.checkPath(path, 'write');
 
     const oldData = this.get(path);
-    const newData = (typeof data === 'object' && oldData && oldData.id) ? {
+    const newData = (typeof data === 'object' && oldData) ? {
       ...oldData,
       ...data,
       id: oldData.id,

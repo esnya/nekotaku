@@ -22,6 +22,14 @@ import store from '@/browser/store';
 
 import '@/browser/styles/main.styl';
 
+const VueExtensions = [
+  Dice,
+  VueSimpleMarkdown,
+  VeeValidate,
+  VueYoutube,
+  Models,
+];
+
 async function main() {
   moment.locale('ja');
 
@@ -30,12 +38,8 @@ async function main() {
     return _.get(colors, value);
   });
 
-  Vue.use(Dice);
-  Vue.use(VeeValidate);
   Vue.use(Vuetify, { theme });
-  Vue.use(VueSimpleMarkdown);
-  Vue.use(VueYoutube);
-  Vue.use(Models);
+  VueExtensions.forEach(ext => Vue.use(ext));
   Vue.mixin({
     computed: {
       roomId() {
