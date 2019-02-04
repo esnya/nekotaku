@@ -34,15 +34,6 @@
             v-for="character in sortedCharacters"
             @touch="e => mms.onCharacterTouch(e, character)"
           )
-            v-tooltip(bottom)
-              .character-inner(
-                slot="activator"
-                :style="character.innerStyle"
-                @mousedown="e => mms.onCharacterTouch(e, character)"
-                @touchstart="e => mms.onCharacterTouch(e, character)"
-              )
-                .name.text-xs-center.caption {{character.name}}
-              div(v-for="line in getCharacterDescription(character)") {{line}}
   loading(v-else)
 </template>
 
@@ -109,23 +100,6 @@ export default {
       'selectEntity',
       'deselectEntity',
     ]),
-    getCharacterDescription(character) {
-      const {
-        name,
-        initiative,
-        attributes,
-      } = character;
-
-      const attributeList = (this.room && attributes)
-        ? this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`)
-        : [];
-
-      return [
-        name,
-        `イニシアチブ：${initiative}`,
-        ...attributeList,
-      ];
-    },
     async alignCharacter(characterId) {
       const character = this.characters.find(i => i.id === characterId);
       if (!character) return;

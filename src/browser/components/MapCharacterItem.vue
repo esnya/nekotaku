@@ -3,12 +3,15 @@
     :style="style"
     v-if="!character.hideIcon"
   )
-    .character-inner(
-      :style="innerStyle"
-      @mousedown="$emit('touch', $event)"
-      @touchstart="$emit('touch', $event)"
-    )
-      div.name.text-xs-center.caption {{character.name}}
+    v-tooltip(bottom)
+      .character-inner(
+        slot="activator"
+        :style="innerStyle"
+        @mousedown="$emit('touch', $event)"
+        @touchstart="$emit('touch', $event)"
+      )
+        div.name.text-xs-center.caption {{character.name}}
+      div(v-for="line in description") {{line}}
 </template>
 
 <script>
@@ -36,6 +39,23 @@ export default {
         width: size,
         height: size,
       };
+    },
+    description() {
+      const {
+        name,
+        initiative,
+        attributes,
+      } = this.character;
+
+      const attributeList = (this.room && attributes)
+        ? this.room.characterAttributes.map((key, i) => `${key}：${attributes[i]}`)
+        : [];
+
+      return [
+        name,
+        `イニシアチブ：${initiative}`,
+        ...attributeList,
+      ];
     },
   },
   props: {
