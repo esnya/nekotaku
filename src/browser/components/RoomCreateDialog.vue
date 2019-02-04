@@ -79,7 +79,7 @@ export default {
     return {
       value: false,
       title: null,
-      dice: 'DiceBot',
+      dice: null,
       characterAttributes: [],
       password: null,
       passwordConfirm: null,
@@ -96,6 +96,8 @@ export default {
           characterAttributes,
           password,
         } = this;
+
+        if (!title || !dice) return;
 
         const roomId = await this.$models.rooms.push({
           title,
