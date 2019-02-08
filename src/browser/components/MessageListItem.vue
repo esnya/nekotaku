@@ -47,17 +47,17 @@ export default {
   props: [
     'message',
   ],
-  mountedDisabled() {
+  mounted() {
     const item = this.$refs.root.$el;
     if (!item.closest) return;
 
-    const scrollable = item.closest('.scroll');
+    const scrollable = item.closest('.neko-chat-tab');
     const prev = item.previousElementSibling;
 
     const isNewMessage = Date.now() - this.message.createdAt < 1000;
     if (isNewMessage) playNoticeSound();
 
-    const margin = 56 + 50 + 16 + 56;
+    const margin = 56 + 60;
 
     const scrollableHeight = scrollable.offsetHeight - margin;
     if (prev && prev.offsetTop < scrollable.scrollTop + scrollableHeight) {

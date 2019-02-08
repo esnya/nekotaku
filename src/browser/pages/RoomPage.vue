@@ -20,8 +20,6 @@
           v-else-if="roomTab === '2'"
         )
         map-tab(v-else-if="roomTab === '3'")
-        transition(name="neko-slide-right")
-          portrait-panel(v-if="roomTab === '0'")
         dice-panel
         v-bottom-nav(
           color="white"
@@ -57,7 +55,6 @@ import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
 import MapTab from '@/browser/organisims/MapTab.vue';
 import MemoList from '@/browser/components/MemoList.vue';
-import PortraitPanel from '@/browser/components/PortraitPanel.vue';
 import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
 import CharacterTab from '@/browser/organisims/CharacterTab.vue';
@@ -84,7 +81,6 @@ export default {
     RoomInfoList,
     RoomMenu,
     RouteNames,
-    PortraitPanel,
   },
   data() {
     return {
