@@ -40,6 +40,7 @@ export default class MessagesModel extends ListModel {
       face: 'default',
       name: 'ななしさん',
       to: null,
+      channel: 'メイン',
     };
   }
 
@@ -47,6 +48,7 @@ export default class MessagesModel extends ListModel {
     const {
       body,
       color,
+      channel,
       dice,
       face,
       name,
@@ -57,6 +59,7 @@ export default class MessagesModel extends ListModel {
 
     await super.push(roomId, {
       body: parsedBody,
+      channel,
       color,
       createdAt: Date.now(),
       face,

@@ -51,7 +51,9 @@ export default {
     const item = this.$refs.root.$el;
     if (!item.closest) return;
 
-    const scrollable = item.closest('.neko-chat-tab');
+    const scrollable = item.closest('.neko-chat-scroll');
+    if (!scrollable) return;
+
     const prev = item.previousElementSibling;
 
     const isNewMessage = Date.now() - this.message.createdAt < 1000;

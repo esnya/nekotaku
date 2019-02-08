@@ -11,8 +11,6 @@
       room-menu.mr-0
     transition(name="neko-slide")
       main(v-if="room")
-        .floating.fixed.ignore-toolbar-padding
-          room-info-list.room-info-list(:room="room" :members="members")
         chat-tab(:members="members" :room="room" v-if="roomTab === '0'")
         memo-list(v-else-if="roomTab === '1'")
         character-tab(
@@ -55,7 +53,6 @@ import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
 import MapTab from '@/browser/organisims/MapTab.vue';
 import MemoList from '@/browser/components/MemoList.vue';
-import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
 import CharacterTab from '@/browser/organisims/CharacterTab.vue';
 import ChatTab from '@/browser/organisims/ChatTab.vue';
@@ -78,7 +75,6 @@ export default {
     Loading,
     MapTab,
     MemoList,
-    RoomInfoList,
     RoomMenu,
     RouteNames,
   },
@@ -142,28 +138,3 @@ export default {
   },
 };
 </script>
-
-<style lang="stylus" scoped>
-main
-  padding-top 64px
-
-.room-slider
-  display flex
-  transition transform 0.4s ease-in-out
-  margin-top -64px
-
-.room-slider-item
-  overflow hidden
-  flex 0 0 100vw
-  max-height 100vh
-
-.scroll
-  overflow-x hidden
-  overflow-y auto
-  -webkit-overflow-scrolling touch
-  width 100%
-  height 100%
-
-.ignore-toolbar-padding
-  top 68px
-</style>

@@ -28,6 +28,7 @@ const DefaultState = {
   configList: [DefaultConfig],
   selectedId: DefaultId,
   messagesLimit: 100,
+  channel: 'メイン',
 };
 
 function getRoomId(state) {
@@ -67,6 +68,10 @@ export default {
     loadChatConfig({ commit }, roomId: string) {
       commit('setChatConfig', (roomId && storageGet(roomId)) || DefaultState);
     },
+    selectChannel({ state, rootState, commit }, channel) {
+      commit('selectChannel', channel);
+      save(getRoomId(rootState), state);
+    },
   },
   mutations: {
     addChatConfig(state) {
@@ -99,6 +104,9 @@ export default {
           ? { ...config, name, color }
           : config
       ));
+    },
+    selectChannel(state, channel) {
+      state.channel = channel;
     },
   },
   state: DefaultState,

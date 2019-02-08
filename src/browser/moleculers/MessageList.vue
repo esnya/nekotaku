@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container.pt-5
+  v-container.neko-message-list.neko-chat-scroll
     message-list-item(
       :key="message.id"
       :message="message"
@@ -10,12 +10,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import MessageListItem from '@/browser/components/MessageListItem.vue';
-import { bindAsList } from '@/browser/models';
 
 export default {
-  mixins: [
-    bindAsList('messages'),
-  ],
   components: {
     MessageListItem,
   },
@@ -24,10 +20,19 @@ export default {
       'messagesLimit',
     ]),
   },
+  props: {
+    messages: {
+      required: true,
+      type: Array,
+    },
+  },
 };
 </script>
 
 <style lang="stylus" scoped>
-.container
+.neko-message-list
   padding-bottom 50vh
+  max-height calc(100vh - 56px - 32px - 48px - 56px - 60px)
+  overflow-y auto
+  -webkit-overflow-scrolling touch
 </style>

@@ -1,22 +1,28 @@
 <template lang="pug">
-  .neko-chat-tab.pt-5
-    message-list(:messages="messages")
+  .neko-chat-tab
+    v-layout(justify-center)
+      room-info-list(:room="room" :members="members")
+    chat-channel-tabs(:messages="messages" :room="room")
     portrait-panel
     chat-control(:members="members" :room="room")
 </template>
 
 <script>
-import MessageList from '@/browser/components/MessageList.vue';
 import PortraitPanel from '@/browser/components/PortraitPanel.vue';
+import ChatChannelTabs from '@/browser/moleculers/ChatChannelTabs.vue';
+import RoomInfoList from '@/browser/components/RoomInfoList.vue';
 import ChatControl from '@/browser/organisims/ChatControl.vue';
 import { bindAsList } from '@/browser/models';
 
 export default {
-  mixins: [bindAsList('messages')],
+  mixins: [
+    bindAsList('messages'),
+  ],
   components: {
+    ChatChannelTabs,
     ChatControl,
-    MessageList,
     PortraitPanel,
+    RoomInfoList,
   },
   props: {
     members: {
@@ -30,12 +36,3 @@ export default {
   },
 };
 </script>
-
-<style lang="stylus" scoped>
-.neko-chat-tab
-  width 100vw
-  height 100vh
-  overflow-x hidden
-  overflow-y auto
-  -webkit-overflow-scrolling touch
-</style>

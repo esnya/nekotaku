@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import BottomControl from '@/browser/atoms/BottomControl.vue';
 import ChatMessageInput from '@/browser/atoms/ChatMessageInput.vue';
 import MoreIconButton from '@/browser/atoms/MoreIconButton.vue';
@@ -17,6 +17,9 @@ export default {
     ...mapGetters([
       'chatConfig',
       'whisperTargets',
+    ]),
+    ...mapState([
+      'chatControl',
     ]),
   },
   components: {
@@ -41,11 +44,15 @@ export default {
       } = this.chatConfig;
 
       const {
+        channel,
+      } = this.chatControl;
+
+      const {
         dice,
       } = this.room;
 
-
       this.$models.messages.push(this.roomId, {
+        channel,
         body,
         color,
         dice,

@@ -84,12 +84,12 @@ export default class StubBackend extends Backend {
   }
 
   emit(path, event, data) {
-    log.info('[StubStrategy]', 'emit', { path, event, data });
+    // log.info('[StubStrategy]', 'emit', { path, event, data });
     this.eventBus.emit(`${path}:${event}`, filter(data));
   }
 
   emitUpdate(path) {
-    log.info('[StubStrategy]', 'emitUpdate', { path });
+    // log.info('[StubStrategy]', 'emitUpdate', { path });
 
     if (!path) return;
 

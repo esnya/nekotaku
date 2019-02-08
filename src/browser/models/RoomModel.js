@@ -15,6 +15,7 @@ export default class RoomModel extends ObjectModel {
     return {
       title: null,
       dice: null,
+      channels: ['メイン'],
       createdAt: Date.now(),
     };
   }
