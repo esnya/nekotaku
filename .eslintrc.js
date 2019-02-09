@@ -10,6 +10,7 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    '@vue/typescript',
   ],
   rules: {
     'class-methods-use-this': off,
@@ -18,4 +19,12 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  overrides: [
+    {
+      files: ['**/*.ts'],
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
+    },
+  ],
 };
