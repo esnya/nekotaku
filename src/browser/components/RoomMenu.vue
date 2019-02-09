@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-menu(offset-y v-if="room")
+  v-menu(offset-y bottom left v-if="room")
     v-btn(icon slot="activator")
       v-icon more_vert
     v-list.pt-0
