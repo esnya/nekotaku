@@ -4,7 +4,7 @@
       img(src="/img/nekokoro32.png")
       v-toolbar-title {{title}}
       v-spacer
-      v-menu.mr-0(offset-y)
+      v-menu.mr-0(offset-y bottom left)
         v-btn(icon slot="activator")
           v-icon more_vert
         v-list.pt-0
