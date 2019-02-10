@@ -1,3 +1,7 @@
+function convertTo<T>(src: any): T {
+  return (src as T);
+}
+
 export default async function check(
   path: string,
   mode: string,
@@ -12,7 +16,8 @@ export default async function check(
 
   const room = roomId && (await get(`rooms/${roomId}`) as { password?: string } | null);
   const roomPassword = room && room.password;
-  const password = roomId && (await get(`passwords/${roomId}/${userId}/password`) as string | null);
+
+  const password: string | null = roomId && await get(`passwords/${roomId}/${userId}/password`);
 
   switch (model) {
     case 'rooms':

@@ -21,7 +21,7 @@ function getParentPath(path: string): string | null {
   return path.replace(/\/?[^/]+$/, '') || null;
 }
 
-function reader<T = any>(data: T): T {
+function reader<T>(data: T): T {
   if (data && (data as { password?: string | null }).password) {
     const {
       password,

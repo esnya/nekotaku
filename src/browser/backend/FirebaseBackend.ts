@@ -1,22 +1,18 @@
 /* eslint no-return-await: off */
 
 import EventEmitter from 'eventemitter3';
-import firebase from '@firebase/app';
+import firebase from 'firebase';
 import map from 'lodash/map';
 import pickBy from 'lodash/pickBy';
-import '@firebase/auth';
-import '@firebase/database';
-import '@firebase/storage';
+import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/storage';
 import Backend from '@/browser/backend/Backend';
-import { FirebaseApp } from '@firebase/app-types';
-import { User } from '@firebase/auth-types';
-import { FirebaseDatabase, DataSnapshot } from '@firebase/database-types';
-import { FirebaseStorage } from '@firebase/storage-types';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import FirebaseBackendOptions from './FirebaseBackendOptions';
 
-function reader(snapshot: DataSnapshot | null): {} | null {
+function reader(snapshot: firebase.database.DataSnapshot | null): {} | null {
   if (!snapshot) return null;
 
   const val = snapshot.val();
@@ -36,9 +32,9 @@ type FirebaseEvent = 'value' | 'child_added' | 'child_changed' | 'child_removed'
 
 export default class FirebaseBackend implements Backend {
   private eventBus = new EventEmitter();
-  private database: FirebaseDatabase;
-  private storage: FirebaseStorage;
-  private user: User | null = null;
+  private database: firebase.database.Database;
+  private storage: firebase.storage.Storage;
+  private user: firebase.User | null = null;
 
   constructor(options: FirebaseBackendOptions) {
     if (!options.firebase) {
@@ -50,7 +46,7 @@ export default class FirebaseBackend implements Backend {
     if (!app.auth) throw Error('Failed to initialize firebase');
     const auth = app.auth();
 
-    auth.onAuthStateChanged((user: User | null) => {
+    auth.onAuthStateChanged((user: firebase.User | null) => {
       this.user = user;
       this.eventBus.emit('auth_state_changed', user);
     });
@@ -107,7 +103,10 @@ export default class FirebaseBackend implements Backend {
     callback: (data: {}) => void,
   ): Promise<() => Promise<void>> {
     return this.handleError(path, async () => {
-      const wrappedCallback = (a: DataSnapshot | null, b?: string | null | undefined) => callback(reader(a) || {});
+      const wrappedCallback = (
+        a: firebase.database.DataSnapshot | null,
+        b?: string | null | undefined,
+      ) => callback(reader(a) || {});
       this.ref(path).on(event as FirebaseEvent, wrappedCallback);
 
       return async () => {

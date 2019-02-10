@@ -105,7 +105,7 @@ function setupSocket(c) {
   };
 }
 
-export function forEachBackend(tests: Object => void) {
+export function forEachBackend(tests: (a: Object) => void) {
   const backends = {
     stub: [StubBackend, setupStub],
     firebase: [FirebaseBackend, setupFirebase],

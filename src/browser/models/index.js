@@ -37,8 +37,8 @@ export default {
 function bind(
   name: string,
   autoBind: boolean,
-  init: void => any,
-  callback: (string, Object | string) => void,
+  init: () => any,
+  callback: (event: string, data: Object | string) => void,
 ) {
   const unsubscribeKey = `$${shortid()}`;
 

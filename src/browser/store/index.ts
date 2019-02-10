@@ -20,7 +20,7 @@ interface State {
   room: { id: string };
 }
 
-const state: State = {
+const initialState: State = {
   loadingCount: 0,
   messages: [],
   room: { id: '' },
@@ -33,7 +33,7 @@ export default new Vuex.Store({
     mapControl,
     whisperTargets,
   },
-  state,
+  state: initialState,
   mutations: {
     setLoading(state: State, loading: boolean) {
       if (loading) state.loadingCount += 1;
