@@ -1,23 +1,23 @@
-export function parseText(text) {
-  if (typeof text !== 'string') return {};
+import { Memo } from '@/types/data/Memo';
 
+export function parseText(text: string): Memo {
   const m = text.match(/^(.*?)\r?\n--\r?\n((.|\r|\n)*?)(\r?\n--\r?\n((.|\r|\n)*?))?$/);
   if (!m) {
     return {
-      title: null,
+      title: undefined,
       front: text,
-      back: null,
+      back: undefined,
     };
   }
 
   return {
-    title: m[1] || null,
-    front: m[2] || null,
-    back: m[5] || null,
+    title: m[1] || undefined,
+    front: m[2] || undefined,
+    back: m[5] || undefined,
   };
 }
 
-export function toText({ title, front, back }) {
+export function toText({ title, front, back }: Memo) {
   return [
     title || '',
     front || '',

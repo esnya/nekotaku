@@ -47,7 +47,7 @@ import { mapGetters } from 'vuex';
 import { UnauthorizedError, NotFoundError } from '../backend/Backend';
 import config from '../config';
 import * as RouteNames from '../constants/route';
-import sessionStorage from '../utilities/sessionStorage';
+import sessionStorage from '@/browser/wrappers/sessionStorage';
 import { IntervalTimer } from '../utilities/timer';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';

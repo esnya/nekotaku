@@ -1,14 +1,17 @@
-let context;
-let gainNode;
+import mem from 'mem';
+
+const getContext: () => AudioContext = mem(() => new AudioContext());
+
+const getGainNode: () => GainNode = mem(() => {
+  const context = getContext();
+  const gainNode = context.createGain();
+  gainNode.connect(context.destination);
+  return gainNode;
+});
 
 function setup() {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) return;
-
-  context = new AudioContext();
-
-  gainNode = context.createGain();
-  gainNode.connect(context.destination);
+  const context = getContext();
+  const gainNode = getGainNode();
 
   function avoidTouch() {
     window.removeEventListener('touchstart', avoidTouch);
@@ -21,15 +24,13 @@ function setup() {
   }
   window.addEventListener('touchstart', avoidTouch);
 }
-
 setup();
 
 export default function playNoticeSound(gain: number = 0.25) {
-  if (!context) return;
-
+  const gainNode = getGainNode();
   gainNode.gain.value = gain;
 
-  const oscillator = context.createOscillator();
+  const oscillator = getContext().createOscillator();
   oscillator.type = 'sine';
   oscillator.frequency.value = 523.251;
   oscillator.connect(gainNode);

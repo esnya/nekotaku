@@ -6,7 +6,10 @@ export default async function run(task: () => Promise<void>) {
   try {
     await task();
   } catch (e) {
-    console.error(e);
+    store.commit('pushMessage', {
+      title: 'error',
+      body: e.stack ? e.stack.toString() : e.toString(),
+    });
   }
 
   store.commit('setLoading', false);
