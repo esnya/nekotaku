@@ -14,7 +14,7 @@
 
 <script>
 import * as RouteNames from '@/browser/constants/route';
-import run from '@/browser/task';
+import run from '@/browser/utilities/task';
 
 export default {
   methods: {

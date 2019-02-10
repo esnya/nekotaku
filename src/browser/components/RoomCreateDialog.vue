@@ -59,7 +59,7 @@
 <script>
 import DiceSelect from '@/browser/atoms/DiceSelect.vue';
 import * as RouteNames from '@/browser/constants/route';
-import run from '@/browser/task';
+import run from '@/browser/utilities/task';
 
 export default {
   components: {

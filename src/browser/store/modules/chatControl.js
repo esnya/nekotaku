@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: off */
 import _ from 'lodash';
 import shortid from 'shortid';
-import storage from '../../utilities/localStorage';
+import storage from '../../wrappers/localStorage';
 
 function storageKey(roomId: string) {
   return `nekotaku:${roomId}:chatControl`;
@@ -10,11 +10,11 @@ function storageGet(roomId: string) {
   const data = storage.getItem(storageKey(roomId));
   return data && JSON.parse(data);
 }
-function storageSet(roomId: string, data: Object) {
+function storageSet(roomId: string, data: {}) {
   storage.setItem(storageKey(roomId), JSON.stringify(data));
 }
 
-const save = _.debounce((roomId: string, data: Object) => {
+const save = _.debounce((roomId: string, data: {}) => {
   storageSet(roomId, data);
 }, 1000);
 

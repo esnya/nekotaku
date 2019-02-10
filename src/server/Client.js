@@ -192,7 +192,7 @@ export default class Client {
     }
   }
 
-  async push(path: string, data: Object): Promise<string> {
+  async push(path: string, data: {}): Promise<string> {
     const { collection, roomId } = parsePath(path);
     const id = await this.datastore.insert(collection, {
       ...data,
@@ -284,7 +284,7 @@ export default class Client {
 
   async onUpdate(
     path: string,
-    data: Object,
+    data: {},
   ): Promise<void> {
     this.logger.debug('Update', path, data);
     await this.authorize(path, 'write');

@@ -2,17 +2,17 @@ export default async function check(
   path: string,
   mode: string,
   userId: string,
-  get: string => Promise<any>,
-): Boolean {
+  get: (path: string) => Promise<any>,
+): Promise<boolean> {
   const [
     model,
     roomId,
     childId,
   ] = path.split(/\//g);
 
-  const room = roomId && await get(`rooms/${roomId}`);
+  const room = roomId && (await get(`rooms/${roomId}`) as { password?: string } | null);
   const roomPassword = room && room.password;
-  const password = roomId && await get(`passwords/${roomId}/${userId}/password`);
+  const password = roomId && (await get(`passwords/${roomId}/${userId}/password`) as string | null);
 
   switch (model) {
     case 'rooms':

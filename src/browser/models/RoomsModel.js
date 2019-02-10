@@ -21,7 +21,7 @@ export default class RoomsModel extends ListModel {
     return this.name;
   }
 
-  async push(data: Object): Promise<string> {
+  async push(data: {}): Promise<string> {
     const {
       password,
     } = data;

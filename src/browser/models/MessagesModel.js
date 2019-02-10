@@ -44,7 +44,7 @@ export default class MessagesModel extends ListModel {
     };
   }
 
-  async push(roomId: string, data: Object): Promise<void> {
+  async push(roomId: string, data: {}): Promise<void> {
     const {
       body,
       color,

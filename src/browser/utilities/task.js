@@ -1,6 +1,6 @@
 import store from '@/browser/store';
 
-export default async function run(task: void => Promise<void>) {
+export default async function run(task: () => Promise<void>) {
   store.commit('setLoading', true);
 
   try {

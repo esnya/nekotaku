@@ -36,7 +36,7 @@ export default class ControllerStrategy {
     this.store.commit('deselectEntity');
   }
 
-  updateSelected(data: Object) {
+  updateSelected(data: {}) {
     if (!this.selected) return;
     const model = this.selectedType === 'character' ? this.models.characters : this.models.shapes;
     model.update(this.roomId, this.selectedId, data);

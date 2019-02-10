@@ -1,19 +1,29 @@
 /* eslint no-return-await: off */
 
-import _ from 'lodash';
 import EventEmitter from 'eventemitter3';
 import firebase from '@firebase/app';
+import map from 'lodash/map';
+import pickBy from 'lodash/pickBy';
 import '@firebase/auth';
 import '@firebase/database';
 import '@firebase/storage';
-import Backend, { NotFoundError, UnauthorizedError } from './Backend';
+import Backend from '@/browser/backend/Backend';
+import { FirebaseApp } from '@firebase/app-types';
+import { User } from '@firebase/auth-types';
+import { FirebaseDatabase, DataSnapshot } from '@firebase/database-types';
+import { FirebaseStorage } from '@firebase/storage-types';
+import NotFoundError from '@/browser/backend/NotFoundError';
+import UnauthorizedError from '@/browser/backend/UnauthorizedError';
+import FirebaseBackendOptions from './FirebaseBackendOptions';
 
-function filter(snapshot) {
+function reader(snapshot: DataSnapshot | null): {} | null {
+  if (!snapshot) return null;
+
   const val = snapshot.val();
 
   if (!val || typeof val !== 'object') return val;
 
-  return _.pickBy({
+  return pickBy({
     ...val,
     id: snapshot.key,
     password: undefined,
@@ -21,34 +31,38 @@ function filter(snapshot) {
   }, v => v !== undefined);
 }
 
+type FirebaseEvent = 'value' | 'child_added' | 'child_changed' | 'child_removed';
 
-export default class FirebaseBackend extends Backend {
-  constructor(config: Object) {
-    super(config);
 
-    this.eventBus = new EventEmitter();
+export default class FirebaseBackend implements Backend {
+  private eventBus = new EventEmitter();
+  private database: FirebaseDatabase;
+  private storage: FirebaseStorage;
+  private user: User | null = null;
 
-    if (!config.firebase) {
-      firebase.initializeApp(config);
+  constructor(options: FirebaseBackendOptions) {
+    if (!options.firebase) {
+      firebase.initializeApp(options);
     }
 
-    const app = config.firebase || firebase.app();
+    const app = options.firebase || firebase.app();
 
+    if (!app.auth) throw Error('Failed to initialize firebase');
     const auth = app.auth();
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user: User | null) => {
       this.user = user;
       this.eventBus.emit('auth_state_changed', user);
     });
     auth.signInAnonymously();
 
-    const database = app.database();
-    this.database = database;
+    if (!app.database) throw Error('Failed to initialize firebase');
+    this.database = app.database();
 
-    const storage = app.storage();
-    this.storage = storage;
+    if (!app.storage) throw Error('Failed to initialize firebase');
+    this.storage = app.storage();
 
-    if ((typeof config.onInitialized) === 'function') config.onInitialized();
+    if (options.onInitialized) options.onInitialized();
   }
 
   getType(): string {
@@ -60,7 +74,7 @@ export default class FirebaseBackend extends Backend {
     return this.database.ref(path);
   }
 
-  async handleError<T>(path, callback: () => Promise<T>): Promise<T> {
+  async handleError<T>(path: string, callback: () => Promise<T>): Promise<T> {
     try {
       const result = await callback();
       return result;
@@ -90,24 +104,26 @@ export default class FirebaseBackend extends Backend {
   subscribe(
     path: string,
     event: string,
-    callback: (data: Object) => void,
+    callback: (data: {}) => void,
   ): Promise<() => Promise<void>> {
     return this.handleError(path, async () => {
-      const wrappedCallback = this.ref(path).on(event, snapshot => callback(filter(snapshot)));
+      const wrappedCallback = (a: DataSnapshot | null, b?: string | null | undefined) => callback(reader(a) || {});
+      this.ref(path).on(event as FirebaseEvent, wrappedCallback);
 
-      return () => {
-        this.ref(path).off(event, wrappedCallback);
+      return async () => {
+        this.ref(path).off(event as FirebaseEvent, wrappedCallback);
       };
     });
   }
 
   push(
     path: string,
-    data: string,
+    data: {},
   ): Promise<string> {
     return this.handleError(path, async () => {
       const ref = this.ref(path).push();
       await ref.set(data);
+      if (!ref.key) throw new Error(`Failed to push into ${path}`);
       return ref.key;
     });
   }
@@ -153,7 +169,7 @@ export default class FirebaseBackend extends Backend {
   async removeFile(
     roomId: string,
     path: string,
-  ): Promise<string> {
+  ): Promise<void> {
     try {
       await this.storage.ref(`${roomId}/${path}`).delete();
       // eslint-disable-next-line no-empty
@@ -168,7 +184,7 @@ export default class FirebaseBackend extends Backend {
     return this.handleError(dbPath, async () => {
       const snapshot = await this.ref(dbPath).once('value');
       const files = snapshot.val();
-      await Promise.all(_.map(files, async ({ path }, key) => {
+      await Promise.all(map(files, async ({ path }, key) => {
         await this.ref(`files/${roomId}/${key}`).remove();
         await this.removeFile(roomId, path);
       }));

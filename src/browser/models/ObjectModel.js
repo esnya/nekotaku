@@ -16,7 +16,7 @@ export default class ObjectModel extends Model {
     return unsubscribe;
   }
 
-  async update(roomId: string, data: Object): Promise<void> {
+  async update(roomId: string, data: {}): Promise<void> {
     await this.backend.update(this.getPath(roomId), filter({
       ...data,
       updatedAt: Date.now(),

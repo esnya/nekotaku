@@ -16,7 +16,7 @@ export default class Backend {
   async subscribe(
     path: string,
     event: string,
-    callback: (data: Object) => void,
+    callback: (data: {}) => void,
   ): Promise<() => Promise<void>> {
     throw new Error('Abstract method called');
   }
@@ -30,7 +30,7 @@ export default class Backend {
 
   async update(
     path: string,
-    data: Object,
+    data: {},
   ): Promise<void> {
     throw new Error('Abstract method called');
   }

@@ -22,7 +22,7 @@ export default class ListModel extends Model {
     }));
   }
 
-  async push(roomId: string, data: Object): Promise<string> {
+  async push(roomId: string, data: {}): Promise<string> {
     const id = await this.backend.push(
       this.getPath(roomId),
       _.defaultsDeep(filter(data), this.getDefault()),
@@ -30,7 +30,7 @@ export default class ListModel extends Model {
     return id;
   }
 
-  async update(roomId: string, childId: string, data: Object): Promise<void> {
+  async update(roomId: string, childId: string, data: {}): Promise<void> {
     await this.backend.update(
       this.getChildPath(roomId, childId),
       filter(data),

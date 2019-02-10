@@ -14,6 +14,8 @@ module.exports = {
   ],
   rules: {
     'class-methods-use-this': off,
+    'import/prefer-default-export': off,
+    'lines-between-class-members': off,
     'no-restricted-imports': [warn, { paths: ['lodash'] }],
   },
   parserOptions: {

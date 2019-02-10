@@ -1,5 +1,5 @@
-import _ from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 import defaultConfig from '../../config/default.json';
 import config from '../../config/config.json';
 
-export default _.defaultsDeep(config, defaultConfig);
+export default defaultsDeep(config, defaultConfig);

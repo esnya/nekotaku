@@ -1,11 +1,14 @@
 
 
 import EventEmitter from 'eventemitter3';
+import io from 'socket.io-client';
 import shortid from 'shortid';
-import SocketIO from 'socket.io-client';
 import uuidv4 from 'uuid/v4';
-import Backend, { NotFoundError, UnauthorizedError } from '@/browser/backend/Backend';
-import localStorage from '@/browser/utilities/localStorage';
+import Backend from '@/browser/backend/Backend';
+import NotFoundError from '@/browser/backend/NotFoundError';
+import SocketBackendOptions from '@/browser/backend/SocketBackendOptions';
+import UnauthorizedError from '@/browser/backend/UnauthorizedError';
+import localStorage from '@/browser/wrappers/localStorage';
 import * as ErrorCode from '@/constants/ErrorCode';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants/ObjectEvent';
@@ -21,30 +24,33 @@ function getUID() {
   return uid;
 }
 
-function getEventPath(path, event) {
+function getEventPath(path: string, event: string) {
   return `${path}:${event}`;
 }
 
-export default class SocketBackend extends Backend {
-  constructor(config: Object) {
-    super(config);
+interface ErrorMessage {
+  code: string;
+  message: string;
+}
 
-    this.handlers = [];
-    this.resolvers = {};
+export default class SocketBackend implements Backend {
+  private eventBus = new EventEmitter();
+  private socket: SocketIOClient.Socket;
 
+  constructor(options: SocketBackendOptions) {
     this.eventBus = new EventEmitter();
 
-    this.socket = config.socket || new SocketIO();
+    this.socket = options.socket || io();
 
     this.socket.on('connect', () => {
       this.request(SocketEvents.SetUID, getUID());
     });
 
-    this.socket.on('event', (path, event, data) => {
+    this.socket.on('event', (path: string, event: string, data: {}) => {
       this.emit(path, event, data);
     });
 
-    if (config.onInitialized) config.onInitialized();
+    if (options.onInitialized) options.onInitialized();
   }
 
   getType(): string {
@@ -55,7 +61,7 @@ export default class SocketBackend extends Backend {
   request(event: string, ...args: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
       const requestId = shortid();
-      this.socket.once(`response:${event}:${requestId}`, (error, result) => {
+      this.socket.once(`response:${event}:${requestId}`, (error: ErrorMessage | null, result: {}) => {
         if (error) {
           switch (error.code) {
             case ErrorCode.NotFound:
@@ -75,15 +81,15 @@ export default class SocketBackend extends Backend {
   }
 
   /* Local */
-  emit(path: string, event: string, data: Object): void {
+  emit(path: string, event: string, data: {}): void {
     this.eventBus.emit(getEventPath(path, event), data);
   }
 
-  on(path: string, event: string, callback: (data: Object) => void): void {
+  on(path: string, event: string, callback: (data: {}) => void): void {
     this.eventBus.on(getEventPath(path, event), callback);
   }
 
-  off(path: string, event: string, callback: (data: Object) => void): void {
+  off(path: string, event: string, callback: (data: {}) => void): void {
     this.eventBus.off(getEventPath(path, event), callback);
   }
 
@@ -95,7 +101,7 @@ export default class SocketBackend extends Backend {
   async subscribe(
     path: string,
     event: string,
-    callback: (data: Object) => void,
+    callback: (data: {}) => void,
   ): Promise<() => Promise<void>> {
     this.on(path, event, callback);
     const data = await this.request(SocketEvents.Subscribe, path, event);
@@ -105,7 +111,7 @@ export default class SocketBackend extends Backend {
         callback(data);
         break;
       case ListEvent.ChildAdded:
-        data.forEach(child => callback(child));
+        data.forEach((child: {}) => callback(child));
         break;
       default:
         break;
@@ -127,7 +133,7 @@ export default class SocketBackend extends Backend {
 
   async update(
     path: string,
-    data: Object,
+    data: {},
   ): Promise<void> {
     await this.request(SocketEvents.Update, path, data);
   }

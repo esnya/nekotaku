@@ -56,7 +56,7 @@ import MemoList from '@/browser/components/MemoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
 import CharacterTab from '@/browser/organisims/CharacterTab.vue';
 import ChatTab from '@/browser/organisims/ChatTab.vue';
-import run from '@/browser/task';
+import run from '@/browser/utilities/task';
 import { bindAsObject } from '@/browser/models';
 
 const saveRoomTab = _.debounce((roomId, roomTab) => {
