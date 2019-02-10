@@ -1,10 +1,11 @@
+import Backend from '@/browser/backend/Backend';
 import ListModel from '@/browser/models/ListModel';
 import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import PasswordsModel from '@/browser/models/PasswordsModel';
 
 export default class RoomsModel extends ListModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'rooms');
   }
 
@@ -21,7 +22,7 @@ export default class RoomsModel extends ListModel {
     return this.name;
   }
 
-  async push(data: {}): Promise<string> {
+  async push(roomId: null, data: { password?: string }): Promise<string> {
     const {
       password,
     } = data;

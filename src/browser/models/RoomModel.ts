@@ -1,3 +1,4 @@
+import Backend from '@/browser/backend/Backend';
 import ObjectModel from '@/browser/models/ObjectModel';
 import CharactersModel from '@/browser/models/CharactersModel';
 import MapModel from '@/browser/models/MapModel';
@@ -6,7 +7,7 @@ import MessagesModel from '@/browser/models/MessagesModel';
 import ShapesModel from '@/browser/models/ShapesModel';
 
 export default class RoomModel extends ObjectModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'rooms');
   }
 

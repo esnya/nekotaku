@@ -1,7 +1,8 @@
+import Backend from '@/browser/backend/Backend';
 import UserDataModel from '@/browser/models/UserDataModel';
 
 export default class PasswordsModel extends UserDataModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'passwords');
   }
 

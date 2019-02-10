@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import map from 'lodash/map';
+import defaultsDeep from 'lodash/defaultsDeep';
 import Model, { filter } from '@/browser/models/Model';
 import * as ListEvent from '@/constants/ListEvent';
 
@@ -8,29 +9,31 @@ export default class ListModel extends Model {
   }
 
   async subscribe(
-    roomId: string,
-    callback: (string, Object) => void,
+    roomId: string | null,
+    callback: (event: string, data: { id: string }) => void,
   ): Promise<() => Promise<void>> {
-    const unsubscribers = await Promise.all(_(ListEvent).map(event => this.backend.subscribe(
+    const unsubscribers = await Promise.all(map(ListEvent, event => this.backend.subscribe(
       this.getPath(roomId),
       event,
-      data => callback(event, _.defaultsDeep(data, this.getDefault())),
+      data => callback(event, defaultsDeep(data, this.getDefault())),
     )));
 
-    return () => Promise.all(unsubscribers.map(async (unsubscriber) => {
-      await unsubscriber();
-    }));
+    return async () => {
+      await Promise.all(unsubscribers.map(async (unsubscriber) => {
+        await unsubscriber();
+      }));
+    };
   }
 
-  async push(roomId: string, data: {}): Promise<string> {
+  async push(roomId: string | null, data: {}): Promise<string> {
     const id = await this.backend.push(
       this.getPath(roomId),
-      _.defaultsDeep(filter(data), this.getDefault()),
+      defaultsDeep(filter(data), this.getDefault()),
     );
     return id;
   }
 
-  async update(roomId: string, childId: string, data: {}): Promise<void> {
+  async update(roomId: string, childId: string, data: {} | null): Promise<void> {
     await this.backend.update(
       this.getChildPath(roomId, childId),
       filter(data),

@@ -1,6 +1,12 @@
+import Backend from '@/browser/backend/Backend';
 import ListModel from '@/browser/models/ListModel';
 
-async function parseBody(body: string|Object[], dice: ?string): Promise<Object> {
+export interface MessageNode {
+  type: string;
+  text: string;
+}
+
+async function parseBody(body: string | MessageNode[], dice?: string): Promise<MessageNode[]> {
   if (typeof body !== 'string') return body;
   if (dice) {
     const {
@@ -15,18 +21,36 @@ async function parseBody(body: string|Object[], dice: ?string): Promise<Object> 
       diceResults,
     } = await executeDice(body, dice);
 
-    return body.split(/\n/g).map(text => ({ type: 'text', text })).concat(result === '1' ? [] : [{
-      type: 'dice',
-      dice: diceBotDesc ? diceBotDesc.gameType : dice,
-      text: result.replace(/^: /, ''),
-      diceResults,
-    }]);
+    const textNodes = body.split(/\n/g).map(text => ({ type: 'text', text }));
+    const diceResultNodes = result === '1'
+      ? []
+      : [{
+        type: 'dice',
+        dice: diceBotDesc ? diceBotDesc.gameType : dice,
+        text: result.replace(/^: /, ''),
+        diceResults,
+      }];
+
+    return [
+      ...textNodes,
+      ...diceResultNodes,
+    ]
   }
   return body.split(/\n/g).map(text => ({ type: 'text', text }));
 }
 
+interface MessageUpdateData {
+  body: string;
+  channel: string;
+  color: string;
+  dice: string
+  face: string;
+  name: string;
+  to?: string | string[] | null;
+}
+
 export default class MessagesModel extends ListModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'messages');
   }
 
@@ -44,7 +68,7 @@ export default class MessagesModel extends ListModel {
     };
   }
 
-  async push(roomId: string, data: {}): Promise<void> {
+  async push(roomId: string, data: MessageUpdateData): Promise<string> {
     const {
       body,
       color,
@@ -57,7 +81,7 @@ export default class MessagesModel extends ListModel {
 
     const parsedBody = await parseBody(body, dice);
 
-    await super.push(roomId, {
+    const id = await super.push(roomId, {
       body: parsedBody,
       channel,
       color,
@@ -66,5 +90,7 @@ export default class MessagesModel extends ListModel {
       name,
       to: (typeof to === 'string' ? to.split(/\s*,\s*/g) : to) || null,
     });
+
+    return id;
   }
 }

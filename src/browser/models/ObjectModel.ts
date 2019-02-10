@@ -1,16 +1,16 @@
-import _ from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 import Model, { filter } from '@/browser/models/Model';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 
 export default class ObjectModel extends Model {
   async subscribe(
-    roomId: string,
-    callback: (string, Object) => void,
+    roomId: string | null,
+    callback: (event: string, data: { id: string }) => void,
   ): Promise<() => Promise<void>> {
     const unsubscribe = await this.backend.subscribe(
       this.getPath(roomId),
       ObjectEvent.Value,
-      value => callback(ObjectEvent.Value, _.defaultsDeep(value, this.getDefault())),
+      value => callback(ObjectEvent.Value, defaultsDeep(value, this.getDefault())),
     );
 
     return unsubscribe;

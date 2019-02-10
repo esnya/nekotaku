@@ -8,13 +8,13 @@ declare module 'bcdice-js' {
     static loadUnknownGame(dice: string): DiceBot | null;
   }
   export class DiceBotResolver {
-    static setCustomLoader(loader: (filename: string) => Promise<any>): void;
+    static setCustomLoader(loader: (filename: string) => Promise<any>, async: boolean): void;
   }
   export default class BCDice {
     setGameByTitle(dice: string): Promise<void>;
     setCollectRandResult(value: boolean): void;
     setMessage(message: string): void;
-    diceCommand(): void;
+    diceCommand(): string[];
     getRandResults(): number[][];
   }
 }

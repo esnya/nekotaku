@@ -1,7 +1,8 @@
+import Backend from '@/browser/backend/Backend';
 import ListModel from '@/browser/models/ListModel';
 
 export default class ShapesModel extends ListModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'shapes');
   }
 

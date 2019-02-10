@@ -1,11 +1,12 @@
 import ListModel from '@/browser/models/ListModel';
+import Backend from '../backend/Backend';
 
 function getFilePath(characterId: string, key: string): string {
   return `characters/${characterId}/${key}`;
 }
 
 export default class CharactersModel extends ListModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'characters');
   }
 
@@ -28,7 +29,7 @@ export default class CharactersModel extends ListModel {
 
   async removeIcon(roomId: string, characterId: string): Promise<void> {
     await this.update(roomId, characterId, { icon: null });
-    await this.backend.removeFile(getFilePath(roomId, characterId, 'icon'));
+    await this.backend.removeFile(roomId, getFilePath(roomId, `${characterId}/icon`));
   }
 
   async removePortrait(roomId: string, characterId: string, face: string): Promise<void> {

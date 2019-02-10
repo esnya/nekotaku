@@ -1,9 +1,10 @@
+import Backend from '@/browser/backend/Backend';
 import ObjectModel from '@/browser/models/ObjectModel';
 
 const FilePath = 'map/backgroundImage';
 
 export default class MapModel extends ObjectModel {
-  constructor(backend) {
+  constructor(backend: Backend) {
     super(backend, 'maps');
   }
 

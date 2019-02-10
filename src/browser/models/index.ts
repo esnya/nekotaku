@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import mapValues from 'lodash/mapValues';
+import Vue from 'vue';
 import shortid from 'shortid';
 import backend from '@/browser/backend';
 import CharactersModel from '@/browser/models/CharactersModel';
@@ -27,18 +28,14 @@ const Models = {
   shapes: ShapesModel,
 };
 
-export default {
-  install(Vue) {
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.$models = _.mapValues(Models, Model => new Model(backend));
-  },
-};
+const models = mapValues(Models, Model => new Model(backend));
+export default models;
 
 function bind(
   name: string,
   autoBind: boolean,
   init: () => any,
-  callback: (event: string, data: Object | string) => void,
+  callback: (event: string, data: { id: string }) => void,
 ) {
   const unsubscribeKey = `$${shortid()}`;
 
@@ -47,17 +44,17 @@ function bind(
       [name]: init(),
     }),
     methods: autoBind ? {} : {
-      async bindModels() {
+      async bindModels(this: { $modelBinders: (() => void)[] }) {
         await Promise.all(this.$modelBinders.map(f => f()));
       },
     },
-    async created() {
-      if (!this.$models[name]) throw new Error(`Model ${name} is not defined`);
+    async created(this: { roomId: string, $modelBinders: (() => void)[], [key: string]: {} }) {
+      if (!models[name]) throw new Error(`Model ${name} is not defined`);
 
       const binder = async () => {
-        this[unsubscribeKey] = await this.$models[name].subscribe(
+        this[unsubscribeKey] = await models[name].subscribe(
           this.roomId || null,
-          callback.bind(this),
+          (event, data) => callback(event, data),
         );
       };
       if (autoBind) await binder();
@@ -66,7 +63,7 @@ function bind(
         this.$modelBinders.push(binder);
       }
     },
-    async destroyed() {
+    async destroyed(this: { [key: string]: () => void | null }) {
       if (this[unsubscribeKey]) {
         await this[unsubscribeKey]();
       }
@@ -74,22 +71,35 @@ function bind(
   };
 }
 
-export function bindAsList(name: string, isReversed: boolean = false, autoBind: boolean = true) {
-  return bind(name, autoBind, () => [], function callback(event: string, newData: Object) {
-    switch (event) {
-      case ListEvent.ChildAdded:
-        if (isReversed) this[name].unshift(newData);
-        else this[name].push(newData);
-        break;
-      case ListEvent.ChildChanged:
-        this[name] = this[name].map(item => (item.id === newData.id ? newData : item));
-        break;
-      case ListEvent.ChildRemoved:
-        this[name] = this[name].filter(item => item.id !== newData.id);
-        break;
-      default:
-    }
-  });
+export function bindAsList(
+  name: string,
+  isReversed: boolean = false,
+  autoBind: boolean = true,
+) {
+  return bind(
+    name,
+    autoBind,
+    () => [],
+    function callback(
+      this: { [key: string]: { id: string }[] },
+      event: string,
+      newData: { id: string },
+    ) {
+      switch (event) {
+        case ListEvent.ChildAdded:
+          if (isReversed) this[name].unshift(newData);
+          else this[name].push(newData);
+          break;
+        case ListEvent.ChildChanged:
+          this[name] = this[name].map(item => (item.id === newData.id ? newData : item));
+          break;
+        case ListEvent.ChildRemoved:
+          this[name] = this[name].filter(item => item.id !== newData.id);
+          break;
+        default:
+      }
+    },
+  );
 }
 
 export function bindAsObject(name: string, autoBind: boolean = true) {
@@ -97,7 +107,11 @@ export function bindAsObject(name: string, autoBind: boolean = true) {
     name,
     autoBind,
     () => null,
-    function callback(event: string, newData: Object | string) {
+    function callback(
+      this: { [key: string]: { id: string } },
+      event: string,
+      newData: { id: string },
+    ) {
       switch (event) {
         case ObjectEvent.Value:
           this[name] = newData;
