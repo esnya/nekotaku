@@ -5,4 +5,9 @@ export default class UserDataModel extends ObjectModel {
     const uid = await this.backend.getUID();
     await super.update(`${roomId}/${uid}`, data);
   }
+
+  async remove(roomId: string): Promise<void> {
+    const uid = await this.backend.getUID();
+    await super.remove(`${roomId}/${uid}`);
+  }
 }

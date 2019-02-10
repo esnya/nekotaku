@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 import { Store } from 'vuex';
 
 export default class ControllerStrategy {

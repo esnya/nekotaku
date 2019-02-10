@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 
 import ControllerStrategy from './ControllerStrategy';
 import getShapeCreateStrategy from './ShapeCreateStrategy';

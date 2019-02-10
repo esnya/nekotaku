@@ -11,7 +11,8 @@ export default async function check(
   ] = path.split(/\//g);
 
   const room = roomId && await get(`rooms/${roomId}`);
-  const password = roomId && await get(`passwords/${roomId}/${userId}`);
+  const roomPassword = room && room.password;
+  const password = roomId && await get(`passwords/${roomId}/${userId}/password`);
 
   switch (model) {
     case 'rooms':
@@ -23,7 +24,7 @@ export default async function check(
         mode === 'write'
         && childId === userId
         && room
-        && (!room.password || room.password === password)
+        && (!roomPassword || roomPassword === password)
       ) return true;
       break;
     case 'passwords':

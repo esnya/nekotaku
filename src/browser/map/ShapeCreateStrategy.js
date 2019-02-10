@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 
 import { snap } from './utilities';
 

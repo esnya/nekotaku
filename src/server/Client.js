@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 
 import fs from 'mz/fs';
 import _ from 'lodash';

@@ -51,6 +51,10 @@ export default class FirebaseBackend extends Backend {
     if ((typeof config.onInitialized) === 'function') config.onInitialized();
   }
 
+  getType(): string {
+    return 'firebase';
+  }
+
   /* Utilities */
   ref(path: string) {
     return this.database.ref(path);
@@ -86,7 +90,7 @@ export default class FirebaseBackend extends Backend {
   subscribe(
     path: string,
     event: string,
-    callback: Object => void,
+    callback: (data: Object) => void,
   ): Promise<() => Promise<void>> {
     return this.handleError(path, async () => {
       const wrappedCallback = this.ref(path).on(event, snapshot => callback(filter(snapshot)));

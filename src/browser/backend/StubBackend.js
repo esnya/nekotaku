@@ -65,6 +65,10 @@ export default class StubBackend extends Backend {
     });
   }
 
+  getType(): string {
+    return 'stub';
+  }
+
   /* Utilities */
   get(path: string, defaultValue = null): any {
     return _.get(this.data, path.replace(/\//g, '.'), defaultValue);
@@ -112,6 +116,13 @@ export default class StubBackend extends Backend {
     const roomId = path.split(/\//g)[1];
     const room = await this.get(`rooms/${roomId}`);
 
+    // console.log({
+    //   path,
+    //   mode,
+    //   roomId,
+    //   room,
+    //   password: this.data.passwords[roomId],
+    // }); // , this.data.rooms);
     if (room) throw new UnauthorizedError();
     throw new NotFoundError();
   }
@@ -124,7 +135,7 @@ export default class StubBackend extends Backend {
   async subscribe(
     path: string,
     event: string,
-    callback: Object => void,
+    callback: (data: Object) => void,
   ): Promise<() => Promise<void>> {
     log.info('[StubStrategy]', 'subscribe', { path, event, callback });
 

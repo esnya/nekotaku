@@ -1,11 +1,14 @@
 /* eslint no-unused-vars: off, class-methods-use-this: off */
 
 export default class Backend {
-  constructor(config: Object) {
-    this.type = config.type;
-  }
+  // get type(): string {
+  //   return this.getType();
+  // }
 
-  /* new API */
+  // getType(): string {
+  //   throw new Error('Abstract method called');
+  // }
+
   async getUID(): Promise<string> {
     throw new Error('Abstract method called');
   }
@@ -13,7 +16,7 @@ export default class Backend {
   async subscribe(
     path: string,
     event: string,
-    callback: Object => void,
+    callback: (data: Object) => void,
   ): Promise<() => Promise<void>> {
     throw new Error('Abstract method called');
   }
