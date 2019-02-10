@@ -32,7 +32,11 @@ describe('PasswordsModel', () => {
       await membersModel.remove(roomId);
     });
 
+<<<<<<< HEAD
     if (backend.getType() !== 'firebase') { // ToDo
+=======
+    if (backend.type !== 'firebase') { // ToDo
+>>>>>>> Fix #49
       it('should not be able to join without password', async () => {
         await assert.isRejected((async () => {
           await membersModel.update(roomId, {});
@@ -44,7 +48,11 @@ describe('PasswordsModel', () => {
       await passwordsModel.update(roomId, 'incorrect');
     });
 
+<<<<<<< HEAD
     if (backend.getType() !== 'firebase') { // ToDo
+=======
+    if (backend.type !== 'firebase') { // ToDo
+>>>>>>> Fix #49
       it('should not be able to join with incorrect password', async () => {
         await assert.isRejected((async () => {
           await membersModel.update(roomId, {});
