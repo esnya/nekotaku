@@ -24,14 +24,11 @@ module.exports = {
     'no-restricted-imports': [warn, { paths: ['lodash'] }],
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
   },
   overrides: [
     {
       files: ['**/*.ts'],
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-      },
       rules: {
         semi: 'off',
       },

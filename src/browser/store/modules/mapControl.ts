@@ -48,10 +48,10 @@ export default {
     selected: null,
     gridVisibility: true,
     style: {
-      stroke: palette.get('red'),
+      stroke: palette.get('Red'),
       strokeOpacity: 1.0,
       strokeWidth: 2,
-      fill: palette.get('red'),
+      fill: palette.get('Red'),
       fillOpacity: 0.5,
     },
   },

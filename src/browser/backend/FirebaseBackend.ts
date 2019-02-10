@@ -1,16 +1,16 @@
 /* eslint no-return-await: off */
 
 import EventEmitter from 'eventemitter3';
-import firebase from 'firebase';
 import map from 'lodash/map';
 import pickBy from 'lodash/pickBy';
+import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import Backend from '@/browser/backend/Backend';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import FirebaseBackendOptions from './FirebaseBackendOptions';
+import FirebaseBackendOptions from '@/browser/backend/FirebaseBackendOptions';
 
 function reader(snapshot: firebase.database.DataSnapshot | null): {} | null {
   if (!snapshot) return null;
