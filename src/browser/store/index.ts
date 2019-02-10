@@ -9,6 +9,23 @@ import whisperTargets from './modules/whisperTargets';
 
 Vue.use(Vuex);
 
+interface Message {
+  title: string;
+  body: string;
+}
+
+interface State {
+  loadingCount: number;
+  messages: Message[];
+  room: { id: string };
+}
+
+const state: State = {
+  loadingCount: 0,
+  messages: [],
+  room: { id: '' },
+};
+
 export default new Vuex.Store({
   modules: {
     chatControl,
@@ -16,17 +33,14 @@ export default new Vuex.Store({
     mapControl,
     whisperTargets,
   },
-  state: {
-    loadingCount: 0,
-    messages: [],
-  },
+  state,
   mutations: {
-    setLoading(state, loading) {
+    setLoading(state: State, loading: boolean) {
       if (loading) state.loadingCount += 1;
       else state.loadingCount -= 1;
     },
-    pushMessage(state, { title, body }) {
-      this.messages.push({ title, body });
+    pushMessage(state: State, { title, body }: Message) {
+      state.messages.push({ title, body });
     },
   },
 });

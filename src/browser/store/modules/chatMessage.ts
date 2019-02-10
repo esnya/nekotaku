@@ -1,13 +1,17 @@
 /* eslint no-param-reassign: off */
 
+interface State {
+  chatMessage: string;
+}
+
 export default {
   getters: {
-    chatMessage(state) {
+    chatMessage(state: State) {
       return state.chatMessage;
     },
   },
   mutations: {
-    updateChatMessage(state, message) {
+    updateChatMessage(state: State, message: string) {
       state.chatMessage = message;
     },
   },
