@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 
 import EventEmitter from 'eventemitter3';
 import shortid from 'shortid';
@@ -47,6 +47,10 @@ export default class SocketBackend extends Backend {
     if (config.onInitialized) config.onInitialized();
   }
 
+  getType(): string {
+    return 'socket';
+  }
+
   /* Remote */
   request(event: string, ...args: any[]): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -75,11 +79,11 @@ export default class SocketBackend extends Backend {
     this.eventBus.emit(getEventPath(path, event), data);
   }
 
-  on(path: string, event: string, callback: Object => void): void {
+  on(path: string, event: string, callback: (data: Object) => void): void {
     this.eventBus.on(getEventPath(path, event), callback);
   }
 
-  off(path: string, event: string, callback: Object => void): void {
+  off(path: string, event: string, callback: (data: Object) => void): void {
     this.eventBus.off(getEventPath(path, event), callback);
   }
 
@@ -91,7 +95,7 @@ export default class SocketBackend extends Backend {
   async subscribe(
     path: string,
     event: string,
-    callback: Object => void,
+    callback: (data: Object) => void,
   ): Promise<() => Promise<void>> {
     this.on(path, event, callback);
     const data = await this.request(SocketEvents.Subscribe, path, event);

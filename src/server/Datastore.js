@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: off */
+
 
 import _ from 'lodash';
 import { MongoClient, ObjectId } from 'mongodb';
