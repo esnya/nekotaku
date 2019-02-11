@@ -148,7 +148,7 @@ export async function withRoom(backend) {
   return roomId;
 }
 
-export function sleep(t) {
+export function sleep(t: number = 500) {
   return new Promise((resolve) => {
     setTimeout(resolve, t);
   });
