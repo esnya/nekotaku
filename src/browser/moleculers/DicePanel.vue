@@ -78,6 +78,7 @@ export default {
             i,
             backgroundColor,
             firstColor,
+            frameColor: '#ffffff',
             shown: true,
           }));
         })

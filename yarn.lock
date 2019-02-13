@@ -12091,10 +12091,10 @@ vue-color@^2.7.0:
     material-colors "^1.0.0"
     tinycolor2 "^1.1.2"
 
-vue-dice-component@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/vue-dice-component/-/vue-dice-component-0.1.3.tgz#9029a692d6ef29dd3bf604b0e9a0606037c6b351"
-  integrity sha512-PNRLDJUyo+mjmihm/9cObieeT/zChX4rYwUsJzd9a4YtVCtpDLvIV2qyqvyh7OiMNKJsB7/ocl37DURI+pZKHA==
+vue-dice-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/vue-dice-component/-/vue-dice-component-0.2.0.tgz#f01884c03a3311f7d6057be0396b3f6588de3919"
+  integrity sha512-kXByzW+b8JJnPXpV9ee5rMcGH/DPkh9+D2T1xAYEv1GhF/3ipSez3UlXoeMX5CkkOaZEpjCb/3Cc1IgyFv/WFw==
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
