@@ -8,3 +8,5 @@
 /node_modules
 /public/assets
 /*.log
+/mongo
+*.swp

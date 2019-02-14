@@ -112,6 +112,16 @@ https://nekotaku.nekometer.info
   $ node index.js
   ```
 
+### E. Docker Compose
+1. Build Docker Image.
+  ```
+  $ docker-compose build
+  ```
+2. Run.
+  ```
+  $ docker-compose up
+  ```
+
 ## 設定 / Configuration
 ### `config/config.json`
 ```js
