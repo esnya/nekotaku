@@ -1,6 +1,6 @@
 {
   "name": "nekotaku",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "private": true,
   "description": "ねこ卓：モバイルフレンドリーなオンラインセッション支援ツール",
   "repository": "https://github.com/ukatama/nekotaku.git",
