@@ -67,7 +67,7 @@ export default class Datastore {
 
   async findArray(name: string, query: Object) {
     const collection = await this.collection(name);
-    const result = await collection.find(query).toArray();
+    const result = await collection.find(refineQuery(query)).toArray();
     return result;
   }
 
