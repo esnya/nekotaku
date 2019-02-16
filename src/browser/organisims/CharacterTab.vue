@@ -2,7 +2,7 @@
   div
     character-table(
       :characters="characters"
-      :character-attribute-names="room.characterAttributes"
+      :character-attribute-names="room.characterAttributes || []"
     )
     fixed-bottom-right
       add-fab(@click="addingDialog = true")
