@@ -106,7 +106,7 @@ export default class Client {
     this.socket = socket;
     this.subscribeCounter = {};
 
-    this.logger.info('Connection', socket.id);
+    this.logger.debug('Connection', socket.id);
 
     _(SocketEvents).forEach((event, key) => {
       socket.on(`request:${event}`, async (requestId, ...args) => {
@@ -215,17 +215,17 @@ export default class Client {
       const room = filter(await this.get(`rooms/${roomId}`));
 
       if (room && room.id === roomId) {
-        this.logger.info('AutohrizationFailed', 'Unauthorized', path, mode, this.uid);
+        this.logger.debug('AutohrizationFailed', 'Unauthorized', path, mode, this.uid);
         throw new UnauthorizedError();
       }
-      this.logger.info('AutohrizationFailed', 'NotFound', path, mode, this.uid);
+      this.logger.debug('AutohrizationFailed', 'NotFound', path, mode, this.uid);
       throw new NotFoundError();
     }
   }
 
   /* Event Listeners */
   async onSetUID(uid: string): Promise<void> {
-    this.logger.info('SetUID', uid);
+    this.logger.debug('SetUID', uid);
     this.uid = uid;
   }
 
@@ -233,7 +233,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<Object | Object[]> {
-    this.logger.info('Subscribe', path, event);
+    this.logger.debug('Subscribe', path, event);
     await this.authorize(path, 'read');
     const eventPath = getEventPath(path, event);
 
@@ -263,7 +263,7 @@ export default class Client {
     path: string,
     event: string,
   ): Promise<() => Promise<void>> {
-    this.logger.info('Unsubscribe', path, event);
+    this.logger.debug('Unsubscribe', path, event);
     const eventPath = getEventPath(path, event);
     this.subscribeCounter[eventPath] -= 1;
 
@@ -276,7 +276,7 @@ export default class Client {
     path: string,
     data: string,
   ): Promise<string> {
-    this.logger.info('Push', path, data);
+    this.logger.debug('Push', path, data);
     await this.authorize(`${path}/childId`, 'write');
     const id = await this.push(path, data);
     return id;
@@ -286,7 +286,7 @@ export default class Client {
     path: string,
     data: Object,
   ): Promise<void> {
-    this.logger.info('Update', path, data);
+    this.logger.debug('Update', path, data);
     await this.authorize(path, 'write');
     await this.update(path, data);
   }
@@ -294,7 +294,7 @@ export default class Client {
   async onRemove(
     path: string,
   ): Promise<void> {
-    this.logger.info('Remove', path);
+    this.logger.debug('Remove', path);
     await this.authorize(path, 'write');
     await this.remove(path);
   }
@@ -306,7 +306,7 @@ export default class Client {
     name: string,
     data: Buffer,
   ): Promise<string> {
-    this.logger.info('PushFile', roomId, path, type, name, data);
+    this.logger.debug('PushFile', roomId, path, type, name, data);
 
     await this.authorize(`files/${roomId}`, 'write');
 
@@ -331,7 +331,7 @@ export default class Client {
     roomId: string,
     path: string,
   ): Promise<void> {
-    this.logger.info('RemoveFile', roomId, path);
+    this.logger.debug('RemoveFile', roomId, path);
 
     await this.authorize(`files/${roomId}`, 'write');
 
@@ -351,7 +351,7 @@ export default class Client {
   async onRemoveFiles(
     roomId: string,
   ): Promise<void> {
-    this.logger.info('RemoveFiles', roomId);
+    this.logger.debug('RemoveFiles', roomId);
 
     await this.authorize(`files/${roomId}`, 'write');
 
