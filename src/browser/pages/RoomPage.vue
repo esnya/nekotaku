@@ -11,13 +11,13 @@
       room-menu.mr-0
     transition(name="neko-slide")
       main(v-if="room")
-        chat-tab(:members="members" :room="room" v-if="roomTab === '0'")
-        memo-list(v-else-if="roomTab === '1'")
+        chat-tab(:members="members" :room="room" v-show="roomTab === '0'")
+        memo-list(v-show="roomTab === '1'")
         character-tab(
           :room="room"
-          v-else-if="roomTab === '2'"
+          v-show="roomTab === '2'"
         )
-        map-tab(v-else-if="roomTab === '3'")
+        map-tab(v-show="roomTab === '3'")
         dice-panel
         v-bottom-nav(
           color="white"
