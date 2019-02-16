@@ -31,7 +31,7 @@ export default class EraseControllerStrategy extends ControllerStrategy {
     this.models.shapes.update(this.roomId, this.selectedId, shape);
   }
 
-  onStom() {
+  onStop() {
     this.deselect();
   }
 }
