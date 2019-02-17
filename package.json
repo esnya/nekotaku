@@ -12,31 +12,23 @@
     "build:browser": "vue-cli-service build",
     "build:server": "babel --config-file ./babel.config.server.js -d lib --ignore src/browser -s true src",
     "ci:before_deploy": "run-s ci:before_deploy:*",
-    "ci:before_deploy:1": "rimraf dist",
-    "ci:before_deploy:2": "node scripts/genFirebaseConfig.js > config/config.json",
-    "ci:before_deploy:3": "cross-env NODE_ENV=production npm run build",
-    "ci:script": "run-s lint cover test:unit build",
+    "ci:before_deploy:1": "node scripts/genFirebaseConfig.js > config/config.json",
+    "ci:before_deploy:2": "cross-env NODE_ENV=production npm run build",
+    "ci:script": "run-s lint test:unit build",
     "clean": "rimraf dist",
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test:unit src/browser/components src/browser/backends src/browser/mixins src/browser/models src/browser/store src/browser/utilities",
     "firebase:deploy": "firebase deploy",
     "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve",
     "socket": "run-p socket:* watch:*",
     "socket:run": "nodemon index.js",
     "start": "npm run serve",
-    "serve": "vue-cli-service serve",
     "test": "run-s test:*",
     "test:unit": "vue-cli-service test:unit -r ./tests/unit/setup.js --timeout 10000 tests/unit",
     "version": "update-changelog && git add CHANGELOG.md",
     "watch": "run-p watch:*",
     "watch:browser": "npm run build:browser -- --watch --mode development",
     "watch:server": "npm run build:server -- --watch"
-  },
-  "nyc": {
-    "exclude": [
-      "dist/**/*",
-      "tests/**/*",
-      "*.js"
-    ]
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
@@ -84,12 +76,16 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-syntax-flow": "^7.2.0",
     "@babel/preset-flow": "^7.0.0",
+    "@types/chai-as-promised": "^7.1.0",
     "@types/eventemitter3": "^2.0.2",
     "@types/firebase": "^3.2.1",
     "@types/lodash": "^4.14.120",
     "@types/loglevel": "^1.5.4",
     "@types/mem": "^1.1.2",
+    "@types/mongodb": "^3.1.19",
+    "@types/mz": "0.0.32",
     "@types/shortid": "^0.0.29",
+    "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
     "@types/uuid": "^3.4.4",
     "@vue/cli-plugin-babel": "^3.1.1",
@@ -107,7 +103,7 @@
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
-    "eslint": "^5.8.0",
+    "eslint": "^5.14.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "firebase-mock": "^2.2.10",
     "firebase-tools": "^6.3.1",
@@ -130,5 +126,12 @@
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.5.22",
     "webpack": "^4.28.2"
+  },
+  "nyc": {
+    "exclude": [
+      "dist/**/*",
+      "tests/**/*",
+      "*.js"
+    ]
   }
 }

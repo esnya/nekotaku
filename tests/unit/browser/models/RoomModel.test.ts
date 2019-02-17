@@ -1,63 +1,60 @@
 import chai, { expect } from 'chai';
 import { spy } from 'sinon';
 import sinonChai from 'sinon-chai';
-import MapModel from '@/browser/models/MapModel';
+import RoomModel from '@/browser/models/RoomModel';
 import * as ObjectEvent from '@/constants/ObjectEvent';
+import Backend from '@/browser/backend/Backend';
 import { forEachBackend, withRoom, sleep } from './utilities';
 
 chai.use(sinonChai);
 
-describe('MapModel', () => {
-  forEachBackend((backend) => {
-    let roomId;
+describe('RoomModel', () => {
+  forEachBackend((backend: Backend) => {
+    let roomId: string;
     before(async () => {
       roomId = await withRoom(backend);
     });
 
-    let model;
+    let roomModel: RoomModel;
     it('should be able to instantiate', () => {
-      model = new MapModel(backend);
+      roomModel = new RoomModel(backend);
     });
 
     const callback = spy();
     it('should be able to subscribe', async () => {
-      await model.subscribe(roomId, callback);
+      await roomModel.subscribe(roomId, callback);
       await sleep();
     });
 
-    let map;
+    let room: any;
     it('should calls callback with value event', () => {
-      expect(callback).to.have.called;
-
       const [event, data] = callback.lastCall.args;
 
       expect(event).to.equal(ObjectEvent.Value);
-      expect(typeof data.width).to.equal('number');
-      expect(typeof data.height).to.equal('number');
+      expect(data.id).to.equal(roomId);
 
-      map = data;
+      room = data;
     });
 
-    let newWidth;
+    let newTitle: string;
     it('should be able to update', async () => {
-      newWidth = map.width + 1;
-      await model.update(roomId, {
-        width: newWidth,
+      newTitle = `${room.title}-1`;
+      await roomModel.update(roomId, {
+        title: newTitle,
       });
       await sleep();
     });
 
     it('should calls callback with value event', () => {
-      expect(callback).to.have.called;
-
       const [event, data] = callback.lastCall.args;
 
       expect(event).to.equal(ObjectEvent.Value);
-      expect(data.width).to.equal(newWidth);
+      expect(data.id).to.equal(roomId);
+      expect(data.title).to.equal(newTitle);
     });
 
     it('should be able to remove', async () => {
-      await model.remove(roomId);
+      await roomModel.remove(roomId);
     });
   });
 });

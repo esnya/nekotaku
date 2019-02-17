@@ -4,12 +4,13 @@ import sinonChai from 'sinon-chai';
 import RoomsModel from '@/browser/models/RoomsModel';
 import * as ListEvent from '@/constants/ListEvent';
 import { forEachBackend, removeRoom } from './utilities';
+import Backend from '@/browser/backend/Backend';
 
 chai.use(sinonChai);
 
 describe('RoomsModel', () => {
-  forEachBackend((backend) => {
-    let roomsModel;
+  forEachBackend((backend: Backend) => {
+    let roomsModel: RoomsModel;
     it('should be able to instantiate', () => {
       roomsModel = new RoomsModel(backend);
     });
@@ -21,9 +22,9 @@ describe('RoomsModel', () => {
 
     const now = Date.now();
     const title = `TestRoom-${now}`;
-    let roomId;
+    let roomId: string;
     it('should be able to create new room without password', async () => {
-      roomId = await roomsModel.push({
+      roomId = await roomsModel.push(null, {
         title,
         dice: 'SwordWord',
         characterAttirbutes: ['HP', 'MP'],

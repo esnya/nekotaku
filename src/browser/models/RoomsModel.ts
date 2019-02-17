@@ -4,6 +4,13 @@ import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import PasswordsModel from '@/browser/models/PasswordsModel';
 
+interface RoomPushData {
+  title: string;
+  dice: string;
+  characterAttirbutes: string[];
+  password?: string | null;
+}
+
 export default class RoomsModel extends ListModel {
   constructor(backend: Backend) {
     super(backend, 'rooms');
@@ -22,7 +29,7 @@ export default class RoomsModel extends ListModel {
     return this.name;
   }
 
-  async push(roomId: null, data: { password?: string }): Promise<string> {
+  async push(roomId: null, data: RoomPushData): Promise<string> {
     const {
       password,
     } = data;

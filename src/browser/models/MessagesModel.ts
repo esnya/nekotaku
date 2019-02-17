@@ -40,7 +40,7 @@ async function parseBody(body: string | MessageNode[], dice?: string): Promise<M
 }
 
 interface MessageUpdateData {
-  body: string;
+  body: string | MessageNode[];
   channel: string;
   color: string;
   dice: string

@@ -1,22 +1,43 @@
+import pickBy from 'lodash/pickBy';
+import { MongoClient, ObjectId, Db } from 'mongodb';
 
+interface Query {
+  [key: string]: any;
+}
 
-import _ from 'lodash';
-import { MongoClient, ObjectId } from 'mongodb';
-
-function refineQuery(query: Object): Object {
+function refineQuery(query: Query): Query {
   const {
     id,
     ...others
   } = query;
 
-  return _.pickBy({
+  return pickBy({
     ...others,
-    _id: id && (id.length === 24 && id.match(/^[0-9a-f]+$/) ? ObjectId(id) : id),
+    _id: id && (id.length === 24 && id.match(/^[0-9a-f]+$/) ? new ObjectId(id) : id),
   }, value => value !== undefined);
 }
 
+export interface DatastoreOptions {
+  datastore: {
+    type: string;
+    url: string;
+    dbname: string;
+  };
+  logger: Logger;
+}
+
+interface Logger {
+  fatal: (...args: any[]) => void,
+  info: (...args: any[]) => void,
+}
+
 export default class Datastore {
-  constructor(config) {
+  private logger: Logger;
+  private db: Db | null = null;
+
+  type: string;
+
+  constructor(config: DatastoreOptions) {
     const {
       type,
       url,
@@ -28,11 +49,12 @@ export default class Datastore {
     this.connect(url, dbname, options);
   }
 
-  async getDB() {
+  async getDB(): Promise<Db> {
+    if (!this.db) throw new Error('Database connection is not initialized');
     return this.db;
   }
 
-  async connect(url: string, dbname: string, options: ?Object) {
+  async connect(url: string, dbname: string, options?: {}) {
     try {
       this.logger.info('Datastore connecting', url);
       const client = await MongoClient.connect(url, options);
@@ -47,7 +69,7 @@ export default class Datastore {
     try {
       this.logger.info('Datastore connection closing');
       const db = await this.getDB();
-      await db.close();
+      await (db as any).close();
       this.logger.info('Datastore connection closed');
     } catch (e) {
       this.logger.fatal(e);
@@ -59,7 +81,7 @@ export default class Datastore {
     return db.collection(name);
   }
 
-  async findOne(collection: string, query: Object) {
+  async findOne(collection: string, query: Query) {
     const col = await this.collection(collection);
     const result = await col.findOne(refineQuery(query));
     return result;
@@ -71,13 +93,13 @@ export default class Datastore {
     return result;
   }
 
-  async insert(collection: string, value: string) {
+  async insert(collection: string, value: Object) {
     const col = await this.collection(collection);
     const { insertedId } = await col.insertOne(value);
     return insertedId.toString();
   }
 
-  async updateOne(collection: string, query: Object, value: string) {
+  async updateOne(collection: string, query: Object, value: Object) {
     const col = await this.collection(collection);
     await col.updateOne(refineQuery(query), { $set: value });
   }

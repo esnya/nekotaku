@@ -7,20 +7,21 @@ import RoomModel from '@/browser/models/RoomModel';
 import PasswordsModel from '@/browser/models/PasswordsModel';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import { forEachBackend, withRoom, sleep } from './utilities';
+import Backend from '@/browser/backend/Backend';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 
 describe('PasswordsModel', () => {
-  forEachBackend((backend) => {
-    let roomId;
+  forEachBackend((backend: Backend) => {
+    let roomId: string;
     before(async () => {
       roomId = await withRoom(backend);
     });
 
-    let membersModel;
-    let passwordsModel;
-    let roomModel;
+    let membersModel: MembersModel;
+    let passwordsModel: PasswordsModel;
+    let roomModel: RoomModel;
     it('should be able to instantiate', () => {
       membersModel = new MembersModel(backend);
       passwordsModel = new PasswordsModel(backend);

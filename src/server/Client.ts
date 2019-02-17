@@ -1,7 +1,10 @@
 
 
 import fs from 'mz/fs';
-import _ from 'lodash';
+import forEach from 'lodash/forEach';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import pickBy from 'lodash/pickBy';
 import { join as joinPath } from 'path';
 import SI from 'si-tools';
 import crypto from 'crypto';
@@ -10,22 +13,29 @@ import * as SocketEvents from '../constants/SocketEvents';
 import * as ListEvent from '../constants/ListEvent';
 import * as ObjectEvent from '../constants/ObjectEvent';
 import checkRule from '../utilities/rule';
+import Datastore from './Datastore';
 
-class NotFoundError extends Error {
-  constructor(...args) {
-    super(...args);
-    this.code = ErrorCode.NotFound;
+class ClientError extends Error {
+  code: string;
+  constructor(code: string, message?: string) {
+    super(message);
+    this.code = code;
   }
 }
 
-class UnauthorizedError extends Error {
-  constructor(...args) {
-    super(...args);
-    this.code = ErrorCode.Unauthorized;
+class NotFoundError extends ClientError {
+  constructor(message?: string) {
+    super(ErrorCode.NotFound, message);
   }
 }
 
-function filter(value: ?Object) {
+class UnauthorizedError extends ClientError {
+  constructor(message?: string) {
+    super(ErrorCode.Unauthorized, message);
+  }
+}
+
+function filter(value: any) {
   if (!value) return value;
   const {
     _id,
@@ -33,14 +43,14 @@ function filter(value: ?Object) {
     ...others
   } = value;
 
-  return _.pickBy({
+  return pickBy({
     ...others,
     id: _id && _id.toString(),
     isLocked: password ? true : undefined,
   }, v => v !== undefined);
 }
 
-function getHash(data): string {
+function getHash(data: any): string {
   const sha1 = crypto.createHash('sha1');
   sha1.update(data);
   return sha1.digest('hex');
@@ -50,7 +60,16 @@ function getEventPath(path: string, event: string) {
   return `${path}:${event}`;
 }
 
-function parsePath(path: string): Object {
+function parsePath(path: string): {
+  collection: string;
+  roomId: string;
+  childId?: string;
+  query: {
+    id?: string;
+    roomId?: string;
+  };
+  subPath: string;
+} {
   const [collection, roomId, childId, ...subPathArray] = path.split(/\//g);
   const subPath = subPathArray.join('/');
 
@@ -85,8 +104,34 @@ function parsePath(path: string): Object {
   }
 }
 
+export interface ClientOptions {
+  datastore: Datastore;
+  file: {
+    path: string;
+    maxSize: string;
+  };
+  logger: Logger;
+}
+
+interface Logger {
+  fatal: (...args: any[]) => void,
+  error: (...args: any[]) => void,
+  info: (...args: any[]) => void,
+  debug: (...args: any[]) => void,
+  trace: (...args: any[]) => void,
+}
+
 export default class Client {
-  constructor(config) {
+  private maxFileSize: number;
+  private filePath: string;
+  private datastore: Datastore;
+  private logger: Logger;
+  private io: any;
+  private socket: any;
+  private subscribeCounter: { [key: string]: number} = {};
+  private uid?: string;
+
+  constructor(config: ClientOptions) {
     const {
       datastore,
       file,
@@ -101,22 +146,22 @@ export default class Client {
     this.logger = logger;
   }
 
-  connection(io, socket) {
+  connection(io: any, socket: any) {
     this.io = io;
     this.socket = socket;
-    this.subscribeCounter = {};
 
     this.logger.debug('Connection', socket.id);
 
-    _(SocketEvents).forEach((event, key) => {
-      socket.on(`request:${event}`, async (requestId, ...args) => {
+    forEach(SocketEvents, (event, key) => {
+      socket.on(`request:${event}`, async (requestId: string, ...args: any[]) => {
         try {
           this.logger.trace('received', event, ...args);
 
           const methodKey = `on${key}`;
-          if (!this[methodKey]) this.logger.fatal(`Client.${methodKey} is not defined`);
+          const method = (this as any as {[key: string]: (...args: any[]) => any})[methodKey];
+          if (!method) this.logger.fatal(`Client.${methodKey} is not defined`);
 
-          const result = await this[methodKey](...args);
+          const result = await method.call(this, ...args);
           this.socket.emit(`response:${event}:${requestId}`, null, result);
         } catch (e) {
           this.logger.error(e, requestId, args);
@@ -131,7 +176,7 @@ export default class Client {
     const { collection, query, subPath } = parsePath(path);
     const data = await this.datastore.findOne(collection, query);
 
-    if (subPath) return _.get(data, subPath.replace(/\//g, '.'));
+    if (subPath) return get(data, subPath.replace(/\//g, '.'));
     return data;
   }
 
@@ -151,7 +196,7 @@ export default class Client {
     } = parsePath(path);
     const oldData = await this.datastore.findOne(collection, query);
 
-    const newData = subPath ? _.set(oldData || {
+    const newData = subPath ? set(oldData || {
       roomId: collection !== 'room' ? roomId : undefined,
     }, subPath.replace(/\//g, '.'), data) : {
       ...oldData,
@@ -209,6 +254,7 @@ export default class Client {
   }
 
   async authorize(path: string, mode: string) {
+    if (!this.uid) throw new Error('Unauthorized');
     const authorized = await checkRule(path, mode, this.uid, p => this.get(p));
     if (!authorized) {
       const roomId = path.split(/\//g)[1];
@@ -232,7 +278,7 @@ export default class Client {
   async onSubscribe(
     path: string,
     event: string,
-  ): Promise<Object | Object[]> {
+  ): Promise<Object | Object[] | null> {
     this.logger.debug('Subscribe', path, event);
     await this.authorize(path, 'read');
     const eventPath = getEventPath(path, event);
@@ -241,7 +287,6 @@ export default class Client {
       this.subscribeCounter[eventPath] = 1;
       this.socket.join(eventPath);
     } else this.subscribeCounter[eventPath] += 1;
-
 
     switch (event) {
       case ObjectEvent.Value:
@@ -262,7 +307,7 @@ export default class Client {
   async onUnsubscribe(
     path: string,
     event: string,
-  ): Promise<() => Promise<void>> {
+  ): Promise<void> {
     this.logger.debug('Unsubscribe', path, event);
     const eventPath = getEventPath(path, event);
     this.subscribeCounter[eventPath] -= 1;

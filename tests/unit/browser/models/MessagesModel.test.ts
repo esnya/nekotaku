@@ -4,17 +4,18 @@ import sinonChai from 'sinon-chai';
 import MessagesModel from '@/browser/models/MessagesModel';
 import * as ListEvent from '@/constants/ListEvent';
 import { forEachBackend, withRoom, sleep } from './utilities';
+import Backend from '@/browser/backend/Backend';
 
 chai.use(sinonChai);
 
 describe('MessagesModel', () => {
-  forEachBackend((backend) => {
-    let roomId;
+  forEachBackend((backend: Backend) => {
+    let roomId: string;
     before(async () => {
       roomId = await withRoom(backend);
     });
 
-    let model;
+    let model: MessagesModel;
     it('should be able to instantiate', () => {
       model = new MessagesModel(backend);
     });
@@ -26,8 +27,15 @@ describe('MessagesModel', () => {
 
     it('should be able to push', async () => {
       await model.push(roomId, {
+        body: [
+          { type: 'text', text: '2d6' },
+          { type: 'text', text: 'test' },
+        ],
+        channel: 'メイン',
+        color: '#000000',
+        dice: 'DiceBot',
+        face: 'default',
         name: 'Test-Name',
-        body: '2d6\ntest',
       });
       await sleep();
     });

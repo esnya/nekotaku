@@ -1,5 +1,5 @@
-import EventEmitter from 'eventemitter3';
-import firebasemock from 'firebase-mock';
+import EventEmitter, { ListenerFn } from 'eventemitter3';
+import * as firebasemock from 'firebase-mock';
 import { spy } from 'sinon';
 import browserLogger from 'loglevel';
 import config from '@/browser/config';
@@ -11,20 +11,21 @@ import RoomsModel from '@/browser/models/RoomsModel';
 import serverConfig from '@/server/config';
 import Datastore from '@/server/Datastore';
 import Client from '@/server/Client';
+import Backend from '@/browser/backend/Backend';
 
-function setupStub(c) {
+function setupStub(c: any) {
   browserLogger.setLevel(browserLogger.levels.ERROR);
   return c.backend;
 }
 
-function setupFirebase(c) {
+function setupFirebase(c: any) {
   const mockauth = new firebasemock.MockAuthentication();
   mockauth.autoFlush();
   const mockdatabase = new firebasemock.MockFirebase();
   mockdatabase.autoFlush();
   const mockstorage = new firebasemock.MockStorage();
   const mocksdk = new firebasemock.MockFirebaseSdk(
-    path => (path ? mockdatabase.child(path) : mockdatabase),
+    (path?: string) => (path ? mockdatabase.child(path) : mockdatabase),
     () => mockauth,
     // () => ({
     //   onAuthStateChanged(callback) {
@@ -53,38 +54,39 @@ const MockLogger = {
   fatal: spy(),
 };
 
-function setupSocket(c) {
+class StubSocket {
+  private sender: EventEmitter;
+  private receiver: EventEmitter;
+  join = spy();
+
+  constructor(sender: EventEmitter, receiver: EventEmitter) {
+    this.sender = sender;
+    this.receiver = receiver;
+  }
+
+  emit(event: string, ...args: any[]): void {
+    setTimeout(() => this.sender.emit(event, ...args));
+  }
+
+  once(event: string, callback: ListenerFn): void {
+    this.receiver.once(event, callback);
+  }
+
+  on(event: string, callback: ListenerFn): void {
+    this.receiver.on(event, callback);
+  }
+
+  off(event: string, callback: ListenerFn): void {
+    this.receiver.off(event, callback);
+  }
+}
+
+function setupSocket(c: any) {
   const up = new EventEmitter();
   const down = new EventEmitter();
-  const clientSocket = {
-    emit(event, ...args) {
-      setTimeout(() => up.emit(event, ...args));
-    },
-    once(event, callback) {
-      down.once(event, callback);
-    },
-    on(event, callback) {
-      down.on(event, callback);
-    },
-    off(event, callback) {
-      down.off(event, callback);
-    },
-  };
-  const serverSocket = {
-    emit(event, ...args) {
-      setTimeout(() => down.emit(event, ...args));
-    },
-    join: spy(),
-    once(event, callback) {
-      up.once(event, callback);
-    },
-    on(event, callback) {
-      up.on(event, callback);
-    },
-    off(event, callback) {
-      up.off(event, callback);
-    },
-  };
+
+  const clientSocket = new StubSocket(up, down);
+  const serverSocket = new StubSocket(down, up);
 
   const datastore = new Datastore({
     ...serverConfig,
@@ -105,18 +107,18 @@ function setupSocket(c) {
   };
 }
 
-export function forEachBackend(tests: (a: Object) => void) {
-  const backends = {
+export function forEachBackend(tests: (a: Backend) => void) {
+  const backends: { [key: string]: [any, (c: any) => any ]} = {
     stub: [StubBackend, setupStub],
     firebase: [FirebaseBackend, setupFirebase],
     socket: [SocketBackend, setupSocket],
   };
 
   Object.keys(backends).forEach((type) => {
-    const [Backend, setup] = backends[type];
+    const [TargetBackend, setup] = backends[type];
 
     const testConfig = setup(config);
-    const backend = new Backend(testConfig);
+    const backend = new TargetBackend(testConfig);
 
     describe(`with ${type} backend`, () => {
       tests(backend);
@@ -124,18 +126,18 @@ export function forEachBackend(tests: (a: Object) => void) {
   });
 }
 
-export async function removeRoom(backend, roomId) {
+export async function removeRoom(backend: Backend, roomId: string) {
   const roomModel = new RoomModel(backend);
   await roomModel.remove(roomId);
 }
 
-export async function withRoom(backend) {
+export async function withRoom(backend: Backend) {
   const roomsModel = new RoomsModel(backend);
 
   const now = Date.now();
   const title = `TestRoom-${now}`;
 
-  const roomId = await roomsModel.push({
+  const roomId = await roomsModel.push(null, {
     title,
     dice: 'SwordWord',
     characterAttirbutes: ['HP', 'MP'],
