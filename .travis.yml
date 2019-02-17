@@ -7,11 +7,11 @@ services:
 before_script:
 - cp config/config.stub.json config/config.json
 - cp config/server.mongodb.json config/server.json
-script: yarn ci:script
+script: npm run ci:script
 after_success:
 - if [ "${TRAVIS_NODE_VERSION}" = "node" ]; then cat ./coverage/lcov.info | coveralls;
   fi
-before_deploy: yarn ci:before_deploy
+before_deploy: npm run ci:before_deploy
 deploy:
   provider: firebase
   skip_cleanup: true

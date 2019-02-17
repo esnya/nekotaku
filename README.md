@@ -43,13 +43,12 @@ https://nekotaku.nekometer.info
 ### B. UIプレビュー（データ保存・共有なし） / UI Preview (Without data saving and sharering)
 1. Requirements:
   - Node.js >= 6.11.3
-  - yarn (install: `npm i -g yarn`)
 
 2. Install dependencies.
   ```bash
-  $ yarn
+  $ npm install
   ```
-  
+
 3. Configure.
   ```
   $ cp config/config.stub.json config/config.json
@@ -57,7 +56,7 @@ https://nekotaku.nekometer.info
 
 4. Start dev-server.
   ```bash
-  $ yarn start
+  $ npm start
   ```
 
 5. Open http://localhost:8080 with your browser.
@@ -65,11 +64,10 @@ https://nekotaku.nekometer.info
 ### C. Firebase
 1. Requirements:
   - Node.js >= 6.11.3
-  - yarn
 2. Setup your Firebase project.
 3. Install dependencies.
   ```bash
-  $ yarn
+  $ npm install
   ```
 4. Configure.
   ```bash
@@ -79,7 +77,7 @@ https://nekotaku.nekometer.info
   ```
 5. Build. (or run locally to follow B-4, B-5)
   ```bash
-  $ NODE_ENV=production yarn build
+  $ NODE_ENV=production npm run build
   ```
 
 6. Deploy `<your-nekotaku-directory>/dist` into your server.
@@ -87,11 +85,10 @@ https://nekotaku.nekometer.info
 ### D. Standalone Server with MongoDB
 1. Requirements:
   - Node.js >= 6.11.3
-  - yarn
   - MongoDB
 2. Install dependencies.
   ```bash
-  $ yarn
+  $ npm install
   ```
 4. Configure client.
   ```bash
@@ -105,7 +102,7 @@ https://nekotaku.nekometer.info
   ```
 6. Build.
   ```
-  $ NODE_ENV=production yarn build
+  $ NODE_ENV=production npm run build
   ```
 7. Run.
   ```
