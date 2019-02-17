@@ -1,5 +1,4 @@
 import '@babel/polyfill';
-import 'vue-dice-component/lib/dice.css';
 import 'vue-simple-markdown/dist/vue-simple-markdown.css';
 import 'vuetify/dist/vuetify.min.css';
 
