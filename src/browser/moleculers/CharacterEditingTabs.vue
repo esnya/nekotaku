@@ -27,7 +27,7 @@
     v-tab-item
       character-portrait-editor.mt-3(:character="character")
     v-tab-item
-      character-deleting-form.mt-3(:character="character")
+      character-deleting-form.mt-3(:character="character" @delete="deleteCharacter")
 </template>
 
 <script>
@@ -46,6 +46,11 @@ export default {
   data: () => ({
     tab: 0,
   }),
+  methods: {
+    deleteCharacter() {
+      this.$models.characters.remove(this.roomId, this.character.id);
+    },
+  },
   props: {
     character: {
       required: true,

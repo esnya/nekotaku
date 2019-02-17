@@ -8,6 +8,7 @@
     chat-configuration-dialog(:room="room" v-model="configuration")
     chat-palette-dialog(v-model="palette")
     whisper-target-dialog(:members="members" v-model="whisper")
+    chat-face-dialog(:characters="characters" v-model="face")
 </template>
 
 <script>
@@ -19,13 +20,20 @@ import ChatWhisperTile from '@/browser/atoms/ChatWhisperTile.vue';
 import ChatConfigurationDialog from '@/browser/organisims/ChatConfigurationDialog.vue';
 import ChatPaletteDialog from '@/browser/organisims/ChatPaletteDialog.vue';
 import WhisperTargetDialog from '@/browser/organisims/WhisperTargetDialog.vue';
+import ChatFaceDialog from '@/browser/organisims/ChatFaceDialog.vue';
+import { bindAsList } from '@/browser/models';
 import modelWrapper from '@/browser/mixins/modelWrapper';
+import { mapGetters } from 'vuex';
 
 export default {
-  mixins: [modelWrapper(Boolean, true)],
+  mixins: [
+    bindAsList('characters'),
+    modelWrapper(Boolean, true),
+  ],
   components: {
     ChatConfigurationDialog,
     ChatConfigurationTile,
+    ChatFaceDialog,
     ChatFaceTile,
     ChatPaletteDialog,
     ChatPaletteTile,

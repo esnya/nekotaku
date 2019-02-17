@@ -26,7 +26,6 @@ const VueExtensions = [
   VueSimpleMarkdown,
   VeeValidate,
   VueYoutube,
-  Models,
 ];
 
 async function main() {
@@ -43,6 +42,9 @@ async function main() {
     computed: {
       roomId() {
         return this.$route.params.roomId;
+      },
+      $models() {
+        return Models;
       },
     },
   });

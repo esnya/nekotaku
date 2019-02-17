@@ -38,7 +38,6 @@ function bind(
   callback: (event: string, data: { id: string }) => void,
 ) {
   const unsubscribeKey = `$${shortid()}`;
-
   return {
     data: () => ({
       [name]: init(),
@@ -54,7 +53,7 @@ function bind(
       const binder = async () => {
         this[unsubscribeKey] = await models[name].subscribe(
           this.roomId || null,
-          (event, data) => callback(event, data),
+          (event, data) => callback.call(this, event, data),
         );
       };
       if (autoBind) await binder();

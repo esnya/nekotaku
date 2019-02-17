@@ -89,6 +89,10 @@ export default {
       commit('updateChatConfig', config);
       save(getRoomId(rootState), state);
     },
+    updateChatFace({ state, rootState, commit }: Context, face: string) {
+      commit('updateChatFace', face);
+      save(getRoomId(rootState), state);
+    },
     loadChatConfig({ commit }: Context, roomId: string) {
       commit('setChatConfig', (roomId && storageGet(roomId)) || DefaultState);
     },
@@ -126,6 +130,14 @@ export default {
       state.configList = state.configList.map(config => (
         config.id === id
           ? { ...config, name, color }
+          : config
+      ));
+    },
+    updateChatFace(state: State, face: string) {
+      const { selectedId } = state;
+      state.configList = state.configList.map(config => (
+        config.id === selectedId
+          ? { ...config, face }
           : config
       ));
     },

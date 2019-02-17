@@ -38,10 +38,4 @@ export default class ChatPaletts extends UserDataModel {
     );
     return unsubscribe;
   }
-
-  async update(roomId: string, data: {}[]): Promise<void> {
-    await super.update(roomId, {
-      paletts: data,
-    });
-  }
 }

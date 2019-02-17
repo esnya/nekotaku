@@ -44,7 +44,8 @@
 <script>
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
-import { UnauthorizedError, NotFoundError } from '../backend/Backend';
+import NotFoundError from '@/browser/backend/NotFoundError';
+import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import config from '../config';
 import * as RouteNames from '../constants/route';
 import sessionStorage from '@/browser/wrappers/sessionStorage';

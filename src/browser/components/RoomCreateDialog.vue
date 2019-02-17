@@ -99,7 +99,7 @@ export default {
 
         if (!title || !dice) return;
 
-        const roomId = await this.$models.rooms.push({
+        const roomId = await this.$models.rooms.push(null, {
           title,
           dice,
           characterAttributes,

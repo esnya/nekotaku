@@ -35,8 +35,9 @@ export default {
     submitMessage(body) {
       const {
         face,
-        to,
-      } = this;
+      } = this.chatConfig;
+
+      const to = this.whisperTargets;
 
       const {
         name,

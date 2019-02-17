@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import map from 'lodash/map';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {
   mixins: [modelWrapper(Array, false)],
   computed: {
     items() {
-      return _.map(this.members, v => v.name);
+      return map(this.members, v => v.name).filter(a => a);
     },
   },
   props: {
