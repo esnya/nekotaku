@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import flatten from 'lodash/flatten';
 import palette from 'google-material-color';
 import { bindAsList } from '@/browser/models';
 
@@ -48,7 +48,7 @@ export default {
     messages(messages) {
       const now = Date.now();
 
-      this.diceList = _(messages)
+      const tmp = messages
         .filter(m => now - m.createdAt < 1000 && !m.to)
         .map(m => ({
           id: m.id,
@@ -81,9 +81,8 @@ export default {
             frameColor: '#ffffff',
             shown: true,
           }));
-        })
-        .flatten()
-        .value();
+        });
+      return flatten(tmp);
     },
   },
 };

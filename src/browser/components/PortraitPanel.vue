@@ -22,11 +22,13 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import fromPairs from 'lodash/fromPairs';
+import mapValues from 'lodash/mapValues';
+import take from 'lodash/take';
+import uniqBy from 'lodash/uniqBy';
 import { bindAsList } from '@/browser/models';
 
 const N = 3;
-const Wait = 40;
 
 export default {
   mixins: [
@@ -34,17 +36,17 @@ export default {
     bindAsList('messages'),
   ],
   computed: {
-    portraits: _.throttle(function portraits() {
-      const characterPortraits = _(this.characters)
-        .map(c => [c.name, _.mapValues(c.portrait, p => p && p.url)])
-        .fromPairs()
-        .value();
+    portraits() {
+      const characterPortraitPairs = this.characters
+        .map(c => [c.name, mapValues(c.portrait, p => p && p.url)]);
+      const characterPortraits = fromPairs(characterPortraitPairs);
 
-      return _(this.messages.slice())
+      const tmp1 = this.messages.slice()
         .reverse()
-        .filter(m => m.name && (m.name in characterPortraits) && characterPortraits[m.name][m.face])
-        .uniqBy(m => m.name)
-        .take(N)
+        .filter(
+          m => m.name && (m.name in characterPortraits) && characterPortraits[m.name][m.face],
+        );
+      return take(uniqBy(tmp1, m => m.name), N)
         .map(m => ({ name: m.name, src: characterPortraits[m.name][m.face] }))
         .map(({ name, src }, i) => ({
           name,
@@ -54,9 +56,8 @@ export default {
           },
           src,
         }))
-        .sort((a, b) => ((a.name > b.name) ? -1 : 1))
-        .value();
-    }, Wait),
+        .sort((a, b) => ((a.name > b.name) ? -1 : 1));
+    },
   },
   data() {
     return {

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import debounce from 'lodash/debounce';
 import { mapGetters } from 'vuex';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
@@ -60,7 +60,7 @@ import ChatTab from '@/browser/organisims/ChatTab.vue';
 import run from '@/browser/utilities/task';
 import { bindAsObject } from '@/browser/models';
 
-const saveRoomTab = _.debounce((roomId, roomTab) => {
+const saveRoomTab = debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
 }, 1000);
 

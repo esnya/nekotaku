@@ -2,7 +2,8 @@ import '@babel/polyfill';
 import 'vue-simple-markdown/dist/vue-simple-markdown.css';
 import 'vuetify/dist/vuetify.min.css';
 
-import _ from 'lodash';
+import get from 'lodash/get';
+import mapValues from 'lodash/mapValues';
 import moment from 'moment';
 import VeeValidate from 'vee-validate';
 import Vue from 'vue';
@@ -31,9 +32,9 @@ const VueExtensions = [
 async function main() {
   moment.locale('ja');
 
-  const theme = _.mapValues(config.theme, (value) => {
+  const theme = mapValues(config.theme, (value) => {
     if (value.match(/^#/)) return value;
-    return _.get(colors, value);
+    return get(colors, value);
   });
 
   Vue.use(Vuetify, { theme });

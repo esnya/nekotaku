@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: off */
-import _ from 'lodash';
+import debounce from 'lodash/debounce';
 import shortid from 'shortid';
 import storage from '../../wrappers/localStorage';
 
@@ -14,7 +14,7 @@ function storageSet(roomId: string, data: {}) {
   storage.setItem(storageKey(roomId), JSON.stringify(data));
 }
 
-const save = _.debounce((roomId: string, data: {}) => {
+const save = debounce((roomId: string, data: {}) => {
   storageSet(roomId, data);
 }, 1000);
 
