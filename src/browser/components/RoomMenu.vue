@@ -79,11 +79,11 @@
 
 <script>
 import * as RouteNames from '../constants/route';
-import ChangelogDialog from '@/browser/organisims/ChangelogDialog.vue';
-import ViewConfigurationDialog from '@/browser/organisims/ViewConfigurationDialog.vue';
-import FeedbackDialog from '@/browser/organisims/FeedbackDialog.vue';
-import LogExportingDialog from '@/browser/organisims/LogExportingDialog.vue';
-import RoomEditDialog from '@/browser/organisims/RoomEditDialog.vue';
+import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
+import ViewConfigurationDialog from '@/browser/moleculers/ViewConfigurationDialog.vue';
+import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
+import LogExportingDialog from '@/browser/moleculers/LogExportingDialog.vue';
+import RoomEditDialog from '@/browser/moleculers/RoomEditDialog.vue';
 import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialog.vue';
 import RoomPasswordEditDialog from '@/browser/components/RoomPasswordEditDialog.vue';
 import RoomRemoveDialog from '@/browser/components/RoomRemoveDialog.vue';

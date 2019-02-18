@@ -23,7 +23,7 @@ import CharacterAttributeValue from '@/browser/atoms/CharacterAttributeValue.vue
 import CharacterInitiativeValue from '@/browser/atoms/CharacterInitiativeValue.vue';
 import CharacterNameValue from '@/browser/atoms/CharacterNameValue.vue';
 import EditIconButton from '@/browser/atoms/EditIconButton.vue';
-import CharacterEditingDialog from '@/browser/organisims/CharacterEditingDialog.vue';
+import CharacterEditingDialog from '@/browser/moleculers/CharacterEditingDialog.vue';
 
 export default {
   components: {

@@ -28,10 +28,10 @@
 
 <script>
 import config from '../config';
-import ChangelogDialog from '@/browser/organisims/ChangelogDialog.vue';
-import FeedbackDialog from '@/browser/organisims/FeedbackDialog.vue';
+import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
+import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
-import RoomList from '@/browser/organisims/RoomList.vue';
+import RoomList from '@/browser/moleculers/RoomList.vue';
 import * as RouteNames from '@/browser/constants/route';
 
 export default {

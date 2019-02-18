@@ -62,8 +62,8 @@ import ZoomOutFab from '@/browser/atoms/ZoomOutFab.vue';
 import ZoomResetFab from '@/browser/atoms/ZoomResetFab.vue';
 import MapModeButton from '@/browser/moleculers/MapModeButton.vue';
 import ShapeTypeButton from '@/browser/moleculers/ShapeTypeButton.vue';
-import MapSettingDialog from '@/browser/organisims/MapSettingDialog.vue';
-import MapStyleDialog from '@/browser/organisims/MapStyleDialog.vue';
+import MapSettingDialog from '@/browser/moleculers/MapSettingDialog.vue';
+import MapStyleDialog from '@/browser/moleculers/MapStyleDialog.vue';
 import { mapState, mapMutations } from 'vuex';
 
 export default {

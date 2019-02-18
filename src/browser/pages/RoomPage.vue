@@ -52,11 +52,11 @@ import sessionStorage from '@/browser/wrappers/sessionStorage';
 import { IntervalTimer } from '../utilities/timer';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
-import MapTab from '@/browser/organisims/MapTab.vue';
+import MapTab from '@/browser/moleculers/MapTab.vue';
 import MemoList from '@/browser/components/MemoList.vue';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
-import CharacterTab from '@/browser/organisims/CharacterTab.vue';
-import ChatTab from '@/browser/organisims/ChatTab.vue';
+import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
+import ChatTab from '@/browser/moleculers/ChatTab.vue';
 import run from '@/browser/utilities/task';
 import { bindAsObject } from '@/browser/models';
 
