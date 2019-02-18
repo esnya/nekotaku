@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import values from 'lodash/values';
 import DiceHelpDialog from '@/browser/moleculers/DiceHelpDialog.vue';
 import MemberListDialog from '@/browser/moleculers/MemberListDialog.vue';
 import RoomCreatedAtChip from '@/browser/moleculers/RoomCreatedAtChip.vue';

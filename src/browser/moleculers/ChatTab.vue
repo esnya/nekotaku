@@ -11,7 +11,7 @@
 import PortraitPanel from '@/browser/components/PortraitPanel.vue';
 import ChatChannelTabs from '@/browser/moleculers/ChatChannelTabs.vue';
 import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
-import ChatControl from '@/browser/organisims/ChatControl.vue';
+import ChatControl from '@/browser/moleculers/ChatControl.vue';
 import { bindAsList } from '@/browser/models';
 
 export default {

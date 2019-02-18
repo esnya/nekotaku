@@ -13,7 +13,7 @@
 import AddFab from '@/browser/atoms/AddFab.vue';
 import FixedBottomRight from '@/browser/atoms/FixedBottomRight.vue';
 import CharacterTable from '@/browser/moleculers/CharacterTable.vue';
-import CharacterAddingDialog from '@/browser/organisims/CharacterAddingDialog.vue';
+import CharacterAddingDialog from '@/browser/moleculers/CharacterAddingDialog.vue';
 import { bindAsList } from '@/browser/models';
 
 export default {

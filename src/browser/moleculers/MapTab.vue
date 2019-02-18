@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import MapContainer from '@/browser/organisims/MapContainer.vue';
-import MapControl from '@/browser/organisims/MapControl.vue';
+import MapContainer from '@/browser/moleculers/MapContainer.vue';
+import MapControl from '@/browser/moleculers/MapControl.vue';
 import { bindAsObject } from '@/browser/models';
 
 export default {

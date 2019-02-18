@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import LoadingDialog from '@/browser/organisims/LoadingDialog.vue';
+import LoadingDialog from '@/browser/moleculers/LoadingDialog.vue';
 import WelcomeMessage from '@/browser/components/WelcomeMessage.vue';
 
 export default {
