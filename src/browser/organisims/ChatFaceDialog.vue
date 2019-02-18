@@ -21,8 +21,8 @@ interface Portrait {
   },
 })
 export default class ChatFaceDialog extends Vue {
-  @Prop() private value!: boolean;
-  @Prop() private characters!: { name: string, portrait?: Portrait }[];
+  @Prop({ required: true }) private value!: boolean;
+  @Prop({ required: true }) private characters!: { name: string, portrait?: Portrait }[]; // ToDo
 
   get faces(): string[] {
     const {

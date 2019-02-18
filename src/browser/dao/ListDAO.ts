@@ -1,21 +1,15 @@
-import ListDAOBase from '@/browser/dao/ListDAOBase';
-import backend from '../backend';
-import { DataType } from './DAO';
+import ListDAOBase, { ListItemBase } from '@/browser/dao/ListDAOBase';
+import { DataType, DataWithId } from './DAO';
+import router from '../router';
 
-export interface ListItemDataType extends DataType {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-}
+export interface ListItemDataType extends DataType {}
 
-export default abstract class ListDAO<Data, AddData, UpdateData, ItemKey>
+export default abstract class ListDAO<Data extends ListItemBase, AddData, UpdateData, ItemKey>
   extends ListDAOBase<Data, AddData, UpdateData, ItemKey> {
-  protected roomId: string;
-
-  constructor(roomId: string) {
-    super();
-
-    this.roomId = roomId;
+  protected get roomId(): string {
+    const id = router.currentRoute.params.roomId;
+    if (!id) throw new Error('Not joined room');
+    return id;
   }
 
   abstract getName(): string;
@@ -29,7 +23,7 @@ export default abstract class ListDAO<Data, AddData, UpdateData, ItemKey>
     return `${this.getName()}/${this.roomId}/${this.keyToString(key)}`;
   }
 
-  static reader(data: DataType): ListItemDataType {
+  static reader(data: DataWithId): ListItemDataType {
     return {
       createdAt: 0,
       updatedAt: 0,

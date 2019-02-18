@@ -31,7 +31,7 @@ import config from '../config';
 import ChangelogDialog from '@/browser/organisims/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/organisims/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
-import RoomList from '@/browser/components/RoomList.vue';
+import RoomList from '@/browser/organisims/RoomList.vue';
 import * as RouteNames from '@/browser/constants/route';
 
 export default {

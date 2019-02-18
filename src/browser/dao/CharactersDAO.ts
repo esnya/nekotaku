@@ -1,10 +1,10 @@
 import ListDAO, { ListItemDataType } from '@/browser/dao/ListDAO';
 
-interface CharacterPortrait {
-  image?: string | null;
+export interface CharacterPortrait {
+  url?: string | null;
 }
 
-interface Character extends ListItemDataType {
+export interface Character extends ListItemDataType {
   attributes: string[];
   icon?: string | null;
   initiative: number;
@@ -12,13 +12,20 @@ interface Character extends ListItemDataType {
   portrait: { [fase: string]: CharacterPortrait };
   x: number;
   y: number;
-  z: number;
 }
 
 interface AddData {
+  attributes: [];
+  name: string;
+  initiative: number;
+  icon?: string | null;
+  portrait?: { [fase: string]: CharacterPortrait };
+  x?: number;
+  y?: number;
 }
 
 interface UpdateData {
+  name?: string;
 }
 
 type ItemKey = string;
@@ -40,7 +47,6 @@ export default class CharactersDAO extends ListDAO<Character, AddData, UpdateDat
       name: 'ななしさん',
       x: 0,
       y: 0,
-      z: 0,
       ...tmp,
       portrait: {
         default: {},
