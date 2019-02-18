@@ -8,7 +8,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class ChatFaceSelect extends Vue {
   @Prop() value?: string | null = null;
-  @Prop() faces!: string[];
+  @Prop({ required: true }) faces!: string[];
 
   get items(): string[] {
     const {

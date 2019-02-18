@@ -1,18 +1,20 @@
-import ObjectDAO, { ObjectDataType } from '@/browser/dao/ObjectDAO';
-import { DataType } from './DAO';
+import ObjectDAO from '@/browser/dao/ObjectDAO';
+import { DataWithId } from './DAO';
+import Room, { RoomUpdateData } from '@/types/data/Room';
 
-export interface Room extends ObjectDataType {
-}
-
-export interface UpdateData {
-}
-
-export class RoomDAO extends ObjectDAO<Room, UpdateData> {
+export default class RoomDAO extends ObjectDAO<Room, RoomUpdateData> {
   getName(): string {
     return 'rooms';
   }
 
-  reader(data: DataType): Room {
-    return ObjectDAO.reader(data);
+  reader(data: DataWithId): Room {
+    return {
+      ...ObjectDAO.reader(data),
+      channels: [],
+      characterAttributes: [],
+      dice: 'DiceBot',
+      title: '新しい卓',
+      ...data,
+    };
   }
 }

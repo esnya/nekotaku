@@ -1,13 +1,23 @@
 import Callback from '@/browser/dao/Callback';
-import DAO, { DataType } from '@/browser/dao/DAO';
+import DAO, { DataWithId } from '@/browser/dao/DAO';
 import * as ListEvent from '@/constants/ListEvent';
 import backend from '../backend';
+import Unsubscriber from './Unsubscriber';
 
-export default abstract class ListDAOBase<Data, AddData, UpdateData, ItemKey> implements DAO {
+export interface ListItemBase {
+  id: string;
+}
+
+export default abstract class ListDAOBase<
+  Data extends ListItemBase,
+  AddData,
+  UpdateData,
+  ItemKey,
+> implements DAO {
   abstract getName(): string;
   abstract getListPath(): Promise<string>;
   abstract getItemPath(key: ItemKey): Promise<string>;
-  abstract reader(data: DataType): Data;
+  abstract reader(data: DataWithId): Data;
 
   initializer(data: AddData): {} {
     return {
@@ -28,7 +38,7 @@ export default abstract class ListDAOBase<Data, AddData, UpdateData, ItemKey> im
     onAdded: Callback<Data>,
     onChanged: Callback<Data>,
     onRemoved: Callback<Data>,
-  ): Promise<() => Promise<void>> {
+  ): Promise<Unsubscriber> {
     const path = await this.getListPath();
     const unsubscribers = await Promise.all([
       backend.subscribe(path, ListEvent.ChildAdded, (data: any) => onAdded(this.reader(data))),

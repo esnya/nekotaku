@@ -1,0 +1,22 @@
+import ObjectDataType from './ObjectDataType';
+
+export default interface Room extends ObjectDataType {
+  channels: string[];
+  characterAttributes: string[];
+  dice: string;
+  title: string;
+}
+
+export interface RoomAddData {
+  // channels: string[];
+  characterAttributes: string[];
+  dice: string;
+  title: string;
+}
+
+export interface RoomUpdateData {
+  channels?: string[];
+  characterAttributes?: string[];
+  dice?: string;
+  title?: string;
+}

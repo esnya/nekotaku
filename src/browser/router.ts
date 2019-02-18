@@ -48,4 +48,4 @@ export default new VueRouter({
       component: NotFound,
     },
   ],
-});
+} as any);

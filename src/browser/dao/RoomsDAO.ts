@@ -1,20 +1,9 @@
-import ListDAOBase from '@/browser/dao/ListDAOBase';
+import ListDAOBase, { ListItemBase } from '@/browser/dao/ListDAOBase';
+import Room, { RoomAddData } from '@/types/data/Room';
 
-interface Data {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-}
+export type ItemKey = string;
 
-interface AddData {
-}
-
-interface UpdateData {
-}
-
-type ItemKey = string;
-
-export default class RoomsDAO extends ListDAOBase<Data, AddData, UpdateData, ItemKey> {
+export default class RoomsDAO extends ListDAOBase<Room, RoomAddData, void, ItemKey> {
   getName(): string {
     return 'rooms';
   }
@@ -27,10 +16,14 @@ export default class RoomsDAO extends ListDAOBase<Data, AddData, UpdateData, Ite
     return `${this.getName()}/${key}`;
   }
 
-  reader(data: { id: string }): Data {
+  reader(data: { id: string }): Room {
     return {
       createdAt: 0,
       updatedAt: 0,
+      channels: ['メイン'],
+      characterAttributes: [],
+      dice: 'DiceBot',
+      title: '新しい卓',
       ...data,
     };
   }

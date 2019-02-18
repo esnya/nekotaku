@@ -1,12 +1,13 @@
 import PrivateDataDAO from './PrivateDataDAO';
-import { DataType } from './DAO';
+import { DataWithId } from './DAO';
+import ObjectDAO from './ObjectDAO';
 
-interface ChatPalette {
+export interface ChatPalette {
   title: string;
   items: string[];
 }
 
-interface ChatPaletts {
+export interface ChatPaletts {
   paletts: ChatPalette[]
 }
 
@@ -15,10 +16,20 @@ export default class ChatPalettsDAO extends PrivateDataDAO<ChatPaletts, ChatPale
     return 'chat-paletts';
   }
 
-  reader(data: DataType): ChatPaletts {
+  reader(data: DataWithId): ChatPaletts {
+    const castedData: {
+      paletts?: any,
+    } = data as any;
     return {
+      ...ObjectDAO.reader(data),
       ...data,
-      paletts: [],
+      paletts: castedData.paletts && Array.isArray(castedData.paletts)
+        ? castedData.paletts.map(palette => ({
+          title: 'チャットパレット',
+          items: [],
+          ...palette,
+        }))
+        : [],
     };
   }
 }

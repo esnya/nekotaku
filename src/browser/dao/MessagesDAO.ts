@@ -1,11 +1,11 @@
 import ListDAO, { ListItemDataType } from '@/browser/dao/ListDAO';
 
-interface BodyNode {
+export interface BodyNode {
   type: string;
   text: string;
 }
 
-interface Message extends ListItemDataType {
+export interface Message extends ListItemDataType {
   body: BodyNode[];
   channel: string;
   color: string;
@@ -15,14 +15,17 @@ interface Message extends ListItemDataType {
 }
 
 interface AddData {
+  body: BodyNode[];
+  channel: string;
+  color: string;
+  face: string;
+  name: string;
+  to?: string[] | null;
 }
 
-interface UpdateData {
-}
+export type ItemKey = string;
 
-type ItemKey = string;
-
-export default class MessagesDAO extends ListDAO<Message, AddData, UpdateData, ItemKey> {
+export default class MessagesDAO extends ListDAO<Message, AddData, void, ItemKey> {
   getName(): string {
     return 'messages';
   }

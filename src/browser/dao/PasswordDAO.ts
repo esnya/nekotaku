@@ -1,7 +1,7 @@
 import PrivateDataDAO from './PrivateDataDAO';
-import { DataType } from './DAO';
+import { DataWithId } from './DAO';
 
-interface Password {
+export interface Password {
   password?: string | null;
 }
 
@@ -10,7 +10,7 @@ export default class PasswordDAO extends PrivateDataDAO<Password, Password> {
     return 'passwords';
   }
 
-  reader(data: DataType): Password {
+  reader(data: DataWithId): Password {
     return {
       password: null,
       ...data,

@@ -1,23 +1,20 @@
 import Callback from '@/browser/dao/Callback';
-import DAO, { DataType } from '@/browser/dao/DAO';
+import DAO, { DataType, DataWithId } from '@/browser/dao/DAO';
 import backend from '@/browser/backend';
 import * as ObjectEvent from '@/constants/ObjectEvent';
-
-export interface ObjectDataType extends DataType {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
-}
+import Unsubscriber from './Unsubscriber';
+import router from '../router';
+import ObjectDataType from '@/types/data/ObjectDataType';
 
 export default abstract class ObjectDAO<Data, UpdateData> implements DAO {
-  protected roomId: string;
-
-  constructor(roomId: string) {
-    this.roomId = roomId;
+  protected get roomId(): string {
+    const id = router.currentRoute.params.roomId;
+    if (!id) throw new Error('Not joined room');
+    return id;
   }
 
   abstract getName(): string;
-  abstract reader(data: DataType): Data;
+  abstract reader(data: DataWithId): Data;
 
   async getPath(): Promise<string> {
     return `${this.getName()}/${this.roomId}`;
@@ -35,7 +32,7 @@ export default abstract class ObjectDAO<Data, UpdateData> implements DAO {
 
   async subscribe(
     onValue: Callback<Data>,
-  ): Promise<() => Promise<void>> {
+  ): Promise<Unsubscriber> {
     const path = await this.getSubscribePath();
     const callback = (data: any) => onValue(this.reader(data));
     const unsubscribe = await backend.subscribe(path, ObjectEvent.Value, callback);
@@ -52,7 +49,7 @@ export default abstract class ObjectDAO<Data, UpdateData> implements DAO {
     await backend.remove(path);
   }
 
-  static reader(data: DataType): ObjectDataType {
+  static reader(data: DataWithId): ObjectDataType {
     return {
       createdAt: 0,
       updatedAt: 0,

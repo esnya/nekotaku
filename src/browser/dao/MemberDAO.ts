@@ -1,14 +1,14 @@
 import mapValues from 'lodash/mapValues';
 import ObjectDAO from './ObjectDAO';
 import backend from '../backend';
-import { DataType } from './DAO';
+import { DataWithId } from './DAO';
 
-interface Member {
+export interface Member {
   name: string;
   color: string;
   timestamp: number;
 }
-type Members = { [uid: string]: Member };
+export type Members = { [uid: string]: Member };
 
 export default class MemberDAO extends ObjectDAO<Members, Member> {
   getName() {
@@ -24,7 +24,7 @@ export default class MemberDAO extends ObjectDAO<Members, Member> {
     return `${this.getName()}/${this.roomId}`;
   }
 
-  reader(data: DataType): Members {
+  reader(data: DataWithId): Members {
     return mapValues(data, (member: {}) => ({
       name: 'ななしさん',
       color: '#000000',

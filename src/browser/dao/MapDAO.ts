@@ -1,5 +1,6 @@
-import ObjectDAO, { ObjectDataType } from '@/browser/dao/ObjectDAO';
-import { DataType } from './DAO';
+import ObjectDAO from '@/browser/dao/ObjectDAO';
+import { DataWithId } from './DAO';
+import ObjectDataType from '@/types/data/ObjectDataType';
 
 export interface Map extends ObjectDataType {
   grid: boolean;
@@ -9,6 +10,10 @@ export interface Map extends ObjectDataType {
 }
 
 export interface UpdateData {
+  grid?: boolean;
+  width?: number;
+  height?: number;
+  backgroundImage?: string | null;
 }
 
 export class MapDAO extends ObjectDAO<Map, UpdateData> {
@@ -16,12 +21,13 @@ export class MapDAO extends ObjectDAO<Map, UpdateData> {
     return 'maps';
   }
 
-  reader(data: DataType): Map {
+  reader(data: DataWithId): Map {
     return {
+      ...ObjectDAO.reader(data),
       grid: true,
       width: 10,
       height: 10,
-      ...ObjectDAO.reader(data),
+      ...data,
     };
   }
 }
