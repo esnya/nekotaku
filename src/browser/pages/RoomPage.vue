@@ -1,5 +1,5 @@
 <template lang="pug">
-  .app(v-if="room")
+  .app(v-if="room && members")
     v-toolbar.primary.app-bar(dark, fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title
