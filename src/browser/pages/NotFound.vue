@@ -12,25 +12,29 @@
         div(v-else-if="count >= 10", key="2") なにもないってば。
         div(v-else, key="1") ここにはなにもないよ。URLがまちがっていないかな?
     div
-      v-btn(color="primary" :to="{ name: RouteNames.Lobby }") もどる
+      v-btn(color="primary" :to="lobby") もどる
     v-spacer
 </template>
 
 <script>
-import * as RouteNames from '../constants/route';
+import * as Routes from '../routes';
 
 export default {
   data() {
     return {
       count: 0,
-      RouteNames,
     };
+  },
+  computed: {
+    lobby() {
+      return { name: Routes.Lobby.name };
+    },
   },
   watch: {
     count(count) {
       if (count === 50) {
         setTimeout(() => {
-          this.$router.push({ name: RouteNames.Lobby });
+          this.$router.push(this.lobby);
         }, 2000 + 2000);
       }
     },

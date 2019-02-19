@@ -6,7 +6,7 @@ export interface ListItemDataType extends DataType {}
 
 export default abstract class ListDAO<Data extends ListItemBase, AddData, UpdateData, ItemKey>
   extends ListDAOBase<Data, AddData, UpdateData, ItemKey> {
-  protected get roomId(): string {
+  get roomId(): string {
     const id = router.currentRoute.params.roomId;
     if (!id) throw new Error('Not joined room');
     return id;

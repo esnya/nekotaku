@@ -32,7 +32,7 @@ import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
-import * as RouteNames from '@/browser/constants/route';
+import * as Routes from '@/browser/routes';
 
 export default {
   components: {
@@ -64,7 +64,7 @@ export default {
         password,
       });
 
-      this.$router.push({ name: RouteNames.Room, params: { roomId } });
+      this.$router.push({ name: Routes.Room.name, params: { roomId } });
     },
   },
   created() {

@@ -20,25 +20,28 @@
             v-btn(@click="cancel") やめる
 </template>
 
-<script>
-import * as RouteNames from '@/browser/constants/route';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import * as Routes from '@/browser/routes';
+import PasswordDAO from '@/browser/dao/PasswordDAO';
 
-export default {
-  data: () => ({
-    password: null,
-  }),
-  methods: {
-    async join() {
-      if (!await this.$validator.validateAll()) return;
+@Component
+export default class RoomPasswordPage extends Vue {
+  password: string | null = null;
 
-      const { password, roomId } = this;
+  async join() {
+    const { password } = this;
 
-      await this.$models.passwords.update(roomId, password);
-      this.$router.push({ name: RouteNames.Room, params: { roomId } });
-    },
-    cancel() {
-      this.$router.push({ name: RouteNames.Lobby });
-    },
-  },
-};
+    if (!await this.$validator.validateAll() || !password) return;
+
+    const passwordDAO = new PasswordDAO();
+    await passwordDAO.update({ password });
+
+    this.$router.push({ name: Routes.Room.name, params: { roomId: passwordDAO.roomId } });
+  }
+
+  cancel() {
+    this.$router.push({ name: Routes.Lobby.name });
+  }
+}
 </script>
