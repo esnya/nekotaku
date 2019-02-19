@@ -1,7 +1,7 @@
 import { Server } from 'http';
+import { system } from './logger';
 import app from './app';
 import config from './config';
-import { system } from './logger';
 
 const server = new Server(app);
 export default server;

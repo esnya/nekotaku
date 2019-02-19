@@ -51,20 +51,20 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 import DrawFab from '@/browser/atoms/DrawFab.vue';
 import FixedBottomRight from '@/browser/atoms/FixedBottomRight.vue';
+import MapModeButton from '@/browser/moleculers/MapModeButton.vue';
+import MapSettingDialog from '@/browser/moleculers/MapSettingDialog.vue';
 import MapSettingFab from '@/browser/atoms/MapSettingFab.vue';
+import MapStyleDialog from '@/browser/moleculers/MapStyleDialog.vue';
 import PaletteFab from '@/browser/atoms/PaletteFab.vue';
 import PerspectiveFab from '@/browser/atoms/PerspectiveFab.vue';
+import ShapeTypeButton from '@/browser/moleculers/ShapeTypeButton.vue';
 import ZoomFab from '@/browser/atoms/ZoomFab.vue';
 import ZoomInFab from '@/browser/atoms/ZoomInFab.vue';
 import ZoomOutFab from '@/browser/atoms/ZoomOutFab.vue';
 import ZoomResetFab from '@/browser/atoms/ZoomResetFab.vue';
-import MapModeButton from '@/browser/moleculers/MapModeButton.vue';
-import ShapeTypeButton from '@/browser/moleculers/ShapeTypeButton.vue';
-import MapSettingDialog from '@/browser/moleculers/MapSettingDialog.vue';
-import MapStyleDialog from '@/browser/moleculers/MapStyleDialog.vue';
-import { mapState, mapMutations } from 'vuex';
 
 export default {
   components: {

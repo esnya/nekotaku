@@ -1,5 +1,5 @@
-import ObjectDAO from '@/browser/dao/ObjectDAO';
 import { DataWithId } from './DAO';
+import ObjectDAO from '@/browser/dao/ObjectDAO';
 import Room, { RoomUpdateData } from '@/types/data/Room';
 
 export default class RoomDAO extends ObjectDAO<Room, RoomUpdateData> {

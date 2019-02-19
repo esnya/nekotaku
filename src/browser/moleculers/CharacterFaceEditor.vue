@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 import { bindAsObject } from '@/browser/models';
+import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 
 export default {
   mixins: [

@@ -22,10 +22,10 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import AddIconButton from '@/browser/atoms/AddIconButton.vue';
 import ChatConfigurationForm from '@/browser/moleculers/ChatConfigurationForm.vue';
 import ChatConfigurationTab from '@/browser/moleculers/ChatConfigurationTab.vue';
-import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {

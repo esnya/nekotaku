@@ -32,9 +32,9 @@
 
 <script>
 import CharacterBasisEditor from '@/browser/moleculers/CharacterBasisEditor.vue';
+import CharacterDeletingForm from '@/browser/moleculers/CharacterDeletingForm.vue';
 import CharacterIconEditor from '@/browser/moleculers/CharacterIconEditor.vue';
 import CharacterPortraitEditor from '@/browser/moleculers/CharacterPortraitEditor.vue';
-import CharacterDeletingForm from '@/browser/moleculers/CharacterDeletingForm.vue';
 
 export default {
   components: {

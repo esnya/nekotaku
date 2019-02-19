@@ -1,7 +1,7 @@
-import shortid from 'shortid';
-import backend from '@/browser/backend';
-import Model from '@/browser/models/Model';
 import * as ListEvent from '@/constants/ListEvent';
+import Model from '@/browser/models/Model';
+import backend from '@/browser/backend';
+import shortid from 'shortid';
 
 export function bindAsList(M: Model, isReversed: boolean = false) {
   const model = new M(backend);

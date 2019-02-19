@@ -1,8 +1,8 @@
-import { Vue } from 'vue-property-decorator';
 import { Unsubscribe } from 'firebase';
+import { Vue } from 'vue-property-decorator';
 import ListDAOBase, { ListItemBase } from '../dao/ListDAOBase';
-import PropertyDecorator from './PropertyDecorator';
 import ObjectDAO from '../dao/ObjectDAO';
+import PropertyDecorator from './PropertyDecorator';
 
 interface Wrapper<T> {
   subscribe(): Promise<Unsubscribe>;

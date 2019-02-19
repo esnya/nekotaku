@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import { parseText, InitialText } from '../utilities/memo';
-import MemoListItem from '@/browser/components/MemoListItem.vue';
+import { InitialText, parseText } from '../utilities/memo';
 import { bindAsList } from '@/browser/models';
+import MemoListItem from '@/browser/components/MemoListItem.vue';
 
 export default {
   mixins: [

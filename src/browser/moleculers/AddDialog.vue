@@ -12,8 +12,8 @@
 
 <script>
 import AddButton from '@/browser/atoms/AddButton.vue';
-import CloseButton from '@/browser/atoms/CloseButton.vue';
 import CardDialog from '@/browser/atoms/CardDialog.vue';
+import CloseButton from '@/browser/atoms/CloseButton.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {

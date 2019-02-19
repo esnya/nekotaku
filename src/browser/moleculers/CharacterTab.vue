@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import AddFab from '@/browser/atoms/AddFab.vue';
-import FixedBottomRight from '@/browser/atoms/FixedBottomRight.vue';
-import CharacterTable from '@/browser/moleculers/CharacterTable.vue';
-import CharacterAddingDialog from '@/browser/moleculers/CharacterAddingDialog.vue';
 import { bindAsList } from '@/browser/models';
+import AddFab from '@/browser/atoms/AddFab.vue';
+import CharacterAddingDialog from '@/browser/moleculers/CharacterAddingDialog.vue';
+import CharacterTable from '@/browser/moleculers/CharacterTable.vue';
+import FixedBottomRight from '@/browser/atoms/FixedBottomRight.vue';
 
 export default {
   mixins: [

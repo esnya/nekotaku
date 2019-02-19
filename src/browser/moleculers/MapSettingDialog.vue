@@ -12,9 +12,9 @@
 </template>
 
 <script>
+import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 import MapGridCheckbox from '@/browser/atoms/MapGridCheckbox.vue';
 import MapSizeInput from '@/browser/atoms/MapSizeInput.vue';
-import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
 
 function field(key) {

@@ -18,9 +18,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import RoomSearchInput from '@/browser/atoms/RoomSearchInput.vue';
-import RoomListItem from '@/browser/moleculers/RoomListItem.vue';
 import Room from '@/types/data/Room';
+import RoomListItem from '@/browser/moleculers/RoomListItem.vue';
+import RoomSearchInput from '@/browser/atoms/RoomSearchInput.vue';
 
 @Component({
   components: {

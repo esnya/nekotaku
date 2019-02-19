@@ -43,24 +43,24 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce';
-import { mapGetters } from 'vuex';
-import NotFoundError from '@/browser/backend/NotFoundError';
-import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import config from '../config';
 import * as Routes from '../routes';
-import sessionStorage from '@/browser/wrappers/sessionStorage';
-import NotFound from '@/browser/moleculers/NotFound.vue';
 import { IntervalTimer } from '../utilities/timer';
+import { bindAsObject } from '@/browser/models';
+import { mapGetters } from 'vuex';
+import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
+import ChatTab from '@/browser/moleculers/ChatTab.vue';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
 import MapTab from '@/browser/moleculers/MapTab.vue';
 import MemoList from '@/browser/components/MemoList.vue';
+import NotFound from '@/browser/moleculers/NotFound.vue';
+import NotFoundError from '@/browser/backend/NotFoundError';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
-import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
-import ChatTab from '@/browser/moleculers/ChatTab.vue';
+import UnauthorizedError from '@/browser/backend/UnauthorizedError';
+import config from '../config';
+import debounce from 'lodash/debounce';
 import run from '@/browser/utilities/task';
-import { bindAsObject } from '@/browser/models';
+import sessionStorage from '@/browser/wrappers/sessionStorage';
 
 const saveRoomTab = debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);

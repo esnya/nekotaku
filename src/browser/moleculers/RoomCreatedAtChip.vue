@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-import FromNow from '@/browser/atoms/FromNow.vue';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import FromNow from '@/browser/atoms/FromNow.vue';
 
 @Component({
   components: {

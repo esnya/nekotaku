@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import { mapMutations } from 'vuex';
 import ChatPaletteTile from '@/browser/atoms/ChatPaletteItemTile.vue';
+import _ from 'lodash';
 
 export default {
   components: {

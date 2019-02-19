@@ -4,10 +4,10 @@
 </template>
 
 <script>
+import { bindAsObject } from '@/browser/models';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import ChatPaletteTabs from '@/browser/moleculers/ChatPaletteTabs.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
-import { bindAsObject } from '@/browser/models';
 
 export default {
   mixins: [

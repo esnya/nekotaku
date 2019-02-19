@@ -1,8 +1,8 @@
 import express from 'express';
-import path from 'path';
-import config from './config';
-import Datastore from './Datastore';
 import { connect, datastore as datastoreLogger } from './logger';
+import Datastore from './Datastore';
+import config from './config';
+import path from 'path';
 
 const app = express();
 export default app;

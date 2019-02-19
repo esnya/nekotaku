@@ -4,9 +4,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import ChatFaceSelect from '@/browser/atoms/ChatFaceSelect.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
+import ChatFaceSelect from '@/browser/atoms/ChatFaceSelect.vue';
 
 interface Portrait {
   [key: string]: {

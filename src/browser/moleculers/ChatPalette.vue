@@ -8,11 +8,11 @@
 </template>
 
 <script>
+import ChatPaletteForm from '@/browser/moleculers/ChatPaletteForm.vue';
+import ChatPaletteItemList from '@/browser/moleculers/ChatPaletteItemList.vue';
 import DeleteButton from '@/browser/atoms/DeleteButton.vue';
 import EditButton from '@/browser/atoms/EditButton.vue';
 import EditFinishButton from '@/browser/atoms/EditFinishButton.vue';
-import ChatPaletteForm from '@/browser/moleculers/ChatPaletteForm.vue';
-import ChatPaletteItemList from '@/browser/moleculers/ChatPaletteItemList.vue';
 
 export default {
   components: {

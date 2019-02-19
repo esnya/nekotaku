@@ -11,9 +11,9 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import ClearIconButton from '@/browser/atoms/ClearIconButton.vue';
 import WhisperTargetSelect from '@/browser/atoms/WhisperTargetSelect.vue';
-import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {

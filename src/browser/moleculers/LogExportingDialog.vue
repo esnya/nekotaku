@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import _ from 'lodash';
-import moment from 'moment';
 import CardDialog from '@/browser/atoms/CardDialog.vue';
 import CloseButton from '@/browser/atoms/CloseButton.vue';
-import LogTypeSelect from '@/browser/atoms/LogTypeSelect.vue';
 import LogShowTimestampCheckbox from '@/browser/atoms/LogShowTimestampCheckbox.vue';
+import LogTypeSelect from '@/browser/atoms/LogTypeSelect.vue';
 import SaveButton from '@/browser/atoms/SaveButton.vue';
+import _ from 'lodash';
+import moment from 'moment';
 
 const ContainerTemplate = {
   txt: '<%= messages %>',

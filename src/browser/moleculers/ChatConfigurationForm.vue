@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ColorSelect from '@/browser/atoms/ColorSelect.vue';
 import ChatNameInput from '@/browser/atoms/ChatNameInput.vue';
+import ColorSelect from '@/browser/atoms/ColorSelect.vue';
 import DeleteButton from '@/browser/atoms/DeleteButton.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 

@@ -1,8 +1,8 @@
 import socketIO from 'socket.io';
+import * as logger from './logger';
 import Client from './Client';
 import Datastore from './Datastore';
 import config from './config';
-import * as logger from './logger';
 import server from './server';
 
 const io = socketIO(server);

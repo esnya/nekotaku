@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import ColorSelect from '@/browser/atoms/ColorSelect.vue';
-import OpacityInput from '@/browser/atoms/OpacityInput.vue';
-import NumberInput from '@/browser/atoms/NumberInput.vue';
-import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
 import { mapMutations, mapState } from 'vuex';
+import ColorSelect from '@/browser/atoms/ColorSelect.vue';
+import NumberInput from '@/browser/atoms/NumberInput.vue';
+import OpacityInput from '@/browser/atoms/OpacityInput.vue';
+import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
 
 function dataValue(key, r) {
   return {

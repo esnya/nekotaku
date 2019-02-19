@@ -1,6 +1,6 @@
-import MoveControllerStrategy from './MoveControllerStrategy';
 import CreateControllerStrategy from './CreateControllerStrategy';
 import EraseControllerStrategy from './EraseControllerStrategy';
+import MoveControllerStrategy from './MoveControllerStrategy';
 
 function on(event, callback) {
   window.addEventListener(event, callback);

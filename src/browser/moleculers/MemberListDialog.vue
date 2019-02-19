@@ -6,9 +6,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Member from '@/types/data/Member';
 import MemberListItem from '@/browser/atoms/MemberListItem.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
-import Member from '@/types/data/Member';
 
 @Component({
   components: {

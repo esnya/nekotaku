@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import AddIconButton from '@/browser/atoms/AddIconButton.vue';
+import CharacterFaceEditor from '@/browser/moleculers/CharacterFaceEditor.vue';
 import CharacterFaceInput from '@/browser/atoms/CharacterFaceInput.vue';
 import CharacterFaceSelector from '@/browser/atoms/CharacterFaceSelector.vue';
-import CharacterFaceEditor from '@/browser/moleculers/CharacterFaceEditor.vue';
+import _ from 'lodash';
 
 export default {
   components: {

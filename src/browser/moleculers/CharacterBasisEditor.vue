@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import CharacterNameInput from '@/browser/atoms/CharacterNameInput.vue';
-import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
 import CharacterAttributeInput from '@/browser/atoms/CharacterAttributeInput.vue';
+import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
+import CharacterNameInput from '@/browser/atoms/CharacterNameInput.vue';
 
 function field(key) {
   return {

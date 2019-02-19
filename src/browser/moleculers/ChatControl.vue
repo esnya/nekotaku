@@ -8,9 +8,9 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import BottomControl from '@/browser/atoms/BottomControl.vue';
+import ChatActionDialog from '@/browser/moleculers/ChatActionDialog.vue';
 import ChatMessageInput from '@/browser/atoms/ChatMessageInput.vue';
 import MoreIconButton from '@/browser/atoms/MoreIconButton.vue';
-import ChatActionDialog from '@/browser/moleculers/ChatActionDialog.vue';
 
 export default {
   computed: {

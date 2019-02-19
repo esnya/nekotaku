@@ -1,4 +1,3 @@
-import config from '@/browser/config';
 import Backend from '@/browser/backend/Backend';
 import BackendOptions from '@/browser/backend/BackendOptions';
 import FirebaseBackend from '@/browser/backend/FirebaseBackend';
@@ -6,6 +5,7 @@ import FirebaseBackendOptions from '@/browser/backend/FirebaseBackendOptions';
 import SocketBackend from '@/browser/backend/SocketBackend';
 import SocketBackendOptions from '@/browser/backend/SocketBackendOptions';
 import StubBackend from '@/browser/backend/StubBackend';
+import config from '@/browser/config';
 
 const {
   backend,

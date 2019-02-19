@@ -13,13 +13,13 @@
 </template>
 
 <script>
+import { bindAsList } from '@/browser/models';
 import { mapState } from 'vuex';
-import MapController from '@/browser/map/MapController';
 import MapBackground from '@/browser/atoms/MapBackground.vue';
+import MapCharacterLayer from '@/browser/moleculers/MapCharacterLayer.vue';
+import MapController from '@/browser/map/MapController';
 import MapGrid from '@/browser/atoms/MapGrid.vue';
 import MapShapeLayer from '@/browser/moleculers/MapShapeLayer.vue';
-import MapCharacterLayer from '@/browser/moleculers/MapCharacterLayer.vue';
-import { bindAsList } from '@/browser/models';
 
 export default {
   mixins: [

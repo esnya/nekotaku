@@ -1,5 +1,5 @@
+import { Db, MongoClient, ObjectId } from 'mongodb';
 import pickBy from 'lodash/pickBy';
-import { MongoClient, ObjectId, Db } from 'mongodb';
 
 interface Query {
   [key: string]: any;

@@ -1,5 +1,5 @@
-import Loading from '@/browser/atoms/Loading.vue';
 import { RouteConfig } from 'vue-router';
+import Loading from '@/browser/atoms/Loading.vue';
 
 export const Lobby: RouteConfig = {
   path: '/',
