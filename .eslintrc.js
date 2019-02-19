@@ -1,6 +1,6 @@
 const off = 'off';
 const warn = 'warn';
-// const error = 'error';
+const error = 'error';
 
 // ToDo
 const parseErroredRules = {
@@ -16,12 +16,16 @@ module.exports = {
     '@vue/airbnb',
     '@vue/typescript',
   ],
+  plugins: [
+    'sort-imports-es6-autofix',
+  ],
   rules: {
     ...parseErroredRules,
     'class-methods-use-this': off,
     'import/prefer-default-export': off,
     'lines-between-class-members': off,
     'no-restricted-imports': [warn, { paths: ['lodash'] }],
+    // 'sort-imports-es6-autofix/sort-imports-es6': error,
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

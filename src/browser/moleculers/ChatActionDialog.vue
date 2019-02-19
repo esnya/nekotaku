@@ -12,18 +12,18 @@
 </template>
 
 <script>
+import { bindAsList } from '@/browser/models';
+import { mapGetters } from 'vuex';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
+import ChatConfigurationDialog from '@/browser/moleculers/ChatConfigurationDialog.vue';
 import ChatConfigurationTile from '@/browser/atoms/ChatConfigurationTile.vue';
+import ChatFaceDialog from '@/browser/moleculers/ChatFaceDialog.vue';
 import ChatFaceTile from '@/browser/atoms/ChatFaceTile.vue';
+import ChatPaletteDialog from '@/browser/moleculers/ChatPaletteDialog.vue';
 import ChatPaletteTile from '@/browser/atoms/ChatPaletteTile.vue';
 import ChatWhisperTile from '@/browser/atoms/ChatWhisperTile.vue';
-import ChatConfigurationDialog from '@/browser/moleculers/ChatConfigurationDialog.vue';
-import ChatPaletteDialog from '@/browser/moleculers/ChatPaletteDialog.vue';
 import WhisperTargetDialog from '@/browser/moleculers/WhisperTargetDialog.vue';
-import ChatFaceDialog from '@/browser/moleculers/ChatFaceDialog.vue';
-import { bindAsList } from '@/browser/models';
 import modelWrapper from '@/browser/mixins/modelWrapper';
-import { mapGetters } from 'vuex';
 
 export default {
   mixins: [

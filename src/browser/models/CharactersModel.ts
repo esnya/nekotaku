@@ -1,5 +1,5 @@
-import ListModel from '@/browser/models/ListModel';
 import Backend from '../backend/Backend';
+import ListModel from '@/browser/models/ListModel';
 
 function getFilePath(characterId: string, key: string): string {
   return `characters/${characterId}/${key}`;

@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import MapShapeItem from '@/browser/moleculers/MapShapeItem.vue';
 import { bindAsList } from '@/browser/models';
+import MapShapeItem from '@/browser/moleculers/MapShapeItem.vue';
 
 export default {
   mixins: [

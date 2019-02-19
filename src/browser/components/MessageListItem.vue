@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { inOutSign } from 'ease-component';
-import scroll from 'scroll';
-import playNoticeSound from '../utilities/noticeSound';
+import { mapGetters } from 'vuex';
 import FromNow from '@/browser/atoms/FromNow.vue';
 import MessageBody from '@/browser/components/MessageBody.vue';
+import scroll from 'scroll';
+import playNoticeSound from '../utilities/noticeSound';
 
 export default {
   components: {

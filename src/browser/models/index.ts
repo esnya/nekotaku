@@ -1,19 +1,19 @@
-import mapValues from 'lodash/mapValues';
-import Vue from 'vue';
-import shortid from 'shortid';
-import backend from '@/browser/backend';
+import * as ListEvent from '@/constants/ListEvent';
+import * as ObjectEvent from '@/constants//ObjectEvent';
 import CharactersModel from '@/browser/models/CharactersModel';
 import ChatPaletts from '@/browser/models/ChatPalettsModel';
 import MapModel from '@/browser/models/MapModel';
 import MembersModel from '@/browser/models/MembersModel';
 import MemosModel from '@/browser/models/MemosModel';
 import MessagesModel from '@/browser/models/MessagesModel';
-import * as ObjectEvent from '@/constants//ObjectEvent';
 import PasswordsModel from '@/browser/models/PasswordsModel';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import ShapesModel from '@/browser/models/ShapesModel';
-import * as ListEvent from '@/constants/ListEvent';
+import Vue from 'vue';
+import backend from '@/browser/backend';
+import mapValues from 'lodash/mapValues';
+import shortid from 'shortid';
 
 const Models = {
   characters: CharactersModel,

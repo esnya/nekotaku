@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import shortid from 'shortid';
 import AddIconButton from '@/browser/atoms/AddIconButton.vue';
 import ChatPalette from '@/browser/moleculers/ChatPalette.vue';
+import shortid from 'shortid';
 
 export default {
   components: {

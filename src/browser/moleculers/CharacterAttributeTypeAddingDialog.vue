@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import CharacterAttributeTypeInput from '@/browser/atoms/CharacterAttributeTypeInput.vue';
 import AddDialog from '@/browser/moleculers/AddDialog.vue';
+import CharacterAttributeTypeInput from '@/browser/atoms/CharacterAttributeTypeInput.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {

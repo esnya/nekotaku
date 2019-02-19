@@ -22,11 +22,11 @@
 </template>
 
 <script>
+import { bindAsList } from '@/browser/models';
 import fromPairs from 'lodash/fromPairs';
 import mapValues from 'lodash/mapValues';
 import take from 'lodash/take';
 import uniqBy from 'lodash/uniqBy';
-import { bindAsList } from '@/browser/models';
 
 const N = 3;
 

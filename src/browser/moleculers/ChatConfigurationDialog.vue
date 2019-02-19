@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import ChatConfigurationTabs from '@/browser/moleculers/ChatConfigurationTabs.vue';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
+import ChatConfigurationTabs from '@/browser/moleculers/ChatConfigurationTabs.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {

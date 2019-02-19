@@ -1,7 +1,7 @@
-import map from 'lodash/map';
-import defaultsDeep from 'lodash/defaultsDeep';
-import Model, { filter } from '@/browser/models/Model';
 import * as ListEvent from '@/constants/ListEvent';
+import Model, { filter } from '@/browser/models/Model';
+import defaultsDeep from 'lodash/defaultsDeep';
+import map from 'lodash/map';
 
 export default class ListModel extends Model {
   getChildPath(roomId: string, childId: string) {

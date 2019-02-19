@@ -1,7 +1,7 @@
 
 
-import ControllerStrategy from './ControllerStrategy';
 import { snap } from './utilities';
+import ControllerStrategy from './ControllerStrategy';
 
 export default class MoveControllerStrategy extends ControllerStrategy {
   onTouchCharacter(location: Object, character: Object) {

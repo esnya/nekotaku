@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MapCharacterItem from '@/browser/atoms/MapCharacterPiece.vue';
 import { bindAsList } from '@/browser/models';
+import MapCharacterItem from '@/browser/atoms/MapCharacterPiece.vue';
 
 export default {
   mixins: [

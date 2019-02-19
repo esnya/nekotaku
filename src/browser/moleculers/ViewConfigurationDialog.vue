@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import MessagesLimitInput from '@/browser/atoms/MessagesLimitInput.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
 

@@ -4,8 +4,8 @@
 </template>
 
 <script>
-import DiceAnimator from './DiceAnimator.vue';
 import { bindAsList } from '@/browser/models';
+import DiceAnimator from './DiceAnimator.vue';
 
 export default {
   mixins: [
@@ -20,7 +20,7 @@ export default {
 
       return this.messages
         .filter(message => !message.to && now - message.createdAt < 1000)
-        .map((message) => message.body
+        .map(message => message.body
           .filter(node => node.type === 'dice')
           .map(node => node.diceResults)
           .filter(diceResults => diceResults)
@@ -33,9 +33,8 @@ export default {
           .map((dice, i) => ({
             ...dice,
             key: `${message.id}-${i}`,
-          }))
-        )
-        .flat()
+          })))
+        .flat();
     },
   },
 };

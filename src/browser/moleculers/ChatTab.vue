@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import PortraitPanel from '@/browser/components/PortraitPanel.vue';
-import ChatChannelTabs from '@/browser/moleculers/ChatChannelTabs.vue';
-import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
-import ChatControl from '@/browser/moleculers/ChatControl.vue';
 import { bindAsList } from '@/browser/models';
+import ChatChannelTabs from '@/browser/moleculers/ChatChannelTabs.vue';
+import ChatControl from '@/browser/moleculers/ChatControl.vue';
+import PortraitPanel from '@/browser/components/PortraitPanel.vue';
+import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
 
 export default {
   mixins: [

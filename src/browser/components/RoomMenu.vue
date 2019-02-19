@@ -79,8 +79,8 @@
 
 <script>
 import * as Routes from '../routes';
+import { bindAsList, bindAsObject } from '@/browser/models';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
-import ViewConfigurationDialog from '@/browser/moleculers/ViewConfigurationDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import LogExportingDialog from '@/browser/moleculers/LogExportingDialog.vue';
 import RoomEditDialog from '@/browser/moleculers/RoomEditDialog.vue';
@@ -88,7 +88,7 @@ import RoomPasswordClearDialog from '@/browser/components/RoomPasswordClearDialo
 import RoomPasswordEditDialog from '@/browser/components/RoomPasswordEditDialog.vue';
 import RoomRemoveDialog from '@/browser/components/RoomRemoveDialog.vue';
 import TabletopAudioSoundPadDialog from '@/browser/components/TabletopAudioSoundPadDialog.vue';
-import { bindAsList, bindAsObject } from '@/browser/models';
+import ViewConfigurationDialog from '@/browser/moleculers/ViewConfigurationDialog.vue';
 
 export default {
   mixins: [

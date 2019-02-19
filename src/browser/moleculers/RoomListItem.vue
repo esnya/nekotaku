@@ -13,11 +13,11 @@
 </template>
 
 <script lang="ts">
+import * as Routes from '../routes';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import JoinButton from '@/browser/atoms/JoinButton.vue';
-import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
-import * as Routes from '../routes';
 import Room from '@/types/data/Room';
+import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
 
 @Component({
   components: {

@@ -42,7 +42,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { parseText, toText, InitialText } from '../utilities/memo';
+import { InitialText, parseText, toText } from '../utilities/memo';
 
 function byLine(text) {
   if (typeof text !== 'string') return text;

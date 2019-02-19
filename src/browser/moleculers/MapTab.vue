@@ -5,9 +5,9 @@
 </template>
 
 <script>
+import { bindAsObject } from '@/browser/models';
 import MapContainer from '@/browser/moleculers/MapContainer.vue';
 import MapControl from '@/browser/moleculers/MapControl.vue';
-import { bindAsObject } from '@/browser/models';
 
 export default {
   mixins: [

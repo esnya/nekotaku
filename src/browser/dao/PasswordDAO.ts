@@ -1,5 +1,5 @@
-import PrivateDataDAO from './PrivateDataDAO';
 import { DataWithId } from './DAO';
+import PrivateDataDAO from './PrivateDataDAO';
 
 export interface Password {
   password?: string | null;

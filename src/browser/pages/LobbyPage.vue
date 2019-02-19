@@ -28,17 +28,17 @@
 </template>
 
 <script lang="ts">
+import * as Routes from '@/browser/routes';
+import { BindAsList } from '../decorators/dao';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import config from '../config';
-import Loading from '@/browser/atoms/Loading.vue';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
+import Loading from '@/browser/atoms/Loading.vue';
+import Room, { RoomAddData } from '@/types/data/Room';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
-import * as Routes from '@/browser/routes';
 import RoomsDAO from '../dao/RoomsDAO';
-import { BindAsList } from '../decorators/dao';
-import Room, { RoomAddData } from '@/types/data/Room';
+import config from '../config';
 
 const roomsDAO = new RoomsDAO();
 

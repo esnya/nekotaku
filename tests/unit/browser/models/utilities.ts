@@ -1,17 +1,17 @@
-import EventEmitter, { ListenerFn } from 'eventemitter3';
 import * as firebasemock from 'firebase-mock';
 import { spy } from 'sinon';
-import browserLogger from 'loglevel';
-import config from '@/browser/config';
-import StubBackend from '@/browser/backend/StubBackend';
+import Backend from '@/browser/backend/Backend';
+import Client from '@/server/Client';
+import Datastore from '@/server/Datastore';
+import EventEmitter, { ListenerFn } from 'eventemitter3';
 import FirebaseBackend from '@/browser/backend/FirebaseBackend';
-import SocketBackend from '@/browser/backend/SocketBackend';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
+import SocketBackend from '@/browser/backend/SocketBackend';
+import StubBackend from '@/browser/backend/StubBackend';
+import browserLogger from 'loglevel';
+import config from '@/browser/config';
 import serverConfig from '@/server/config';
-import Datastore from '@/server/Datastore';
-import Client from '@/server/Client';
-import Backend from '@/browser/backend/Backend';
 
 function setupStub(c: any) {
   browserLogger.setLevel(browserLogger.levels.ERROR);

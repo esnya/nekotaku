@@ -1,9 +1,9 @@
 import Backend from '@/browser/backend/Backend';
-import ObjectModel from '@/browser/models/ObjectModel';
 import CharactersModel from '@/browser/models/CharactersModel';
 import MapModel from '@/browser/models/MapModel';
 import MemosModel from '@/browser/models/MemosModel';
 import MessagesModel from '@/browser/models/MessagesModel';
+import ObjectModel from '@/browser/models/ObjectModel';
 import ShapesModel from '@/browser/models/ShapesModel';
 
 export default class RoomModel extends ObjectModel {

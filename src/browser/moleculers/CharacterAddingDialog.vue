@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import CharacterNameInput from '@/browser/atoms/CharacterNameInput.vue';
-import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
-import CharacterAttributeInput from '@/browser/atoms/CharacterAttributeInput.vue';
-import AddDialog from '@/browser/moleculers/AddDialog.vue';
-import modelWrapper from '@/browser/mixins/modelWrapper';
 import { bindAsObject } from '@/browser/models';
+import AddDialog from '@/browser/moleculers/AddDialog.vue';
+import CharacterAttributeInput from '@/browser/atoms/CharacterAttributeInput.vue';
+import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
+import CharacterNameInput from '@/browser/atoms/CharacterNameInput.vue';
+import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {
   mixins: [

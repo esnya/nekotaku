@@ -1,5 +1,5 @@
-import ObjectDAO from '@/browser/dao/ObjectDAO';
 import { DataWithId } from './DAO';
+import ObjectDAO from '@/browser/dao/ObjectDAO';
 import ObjectDataType from '@/types/data/ObjectDataType';
 
 export interface Map extends ObjectDataType {

@@ -26,9 +26,9 @@ iframe
 </style>
 
 <script>
-import isUrl from 'is-url';
-import getYoutubeId from 'get-youtube-id';
 import MessageBodyNodeYoutubePlayer from '@/browser/components/MessageBodyNodeYoutubePlayer.vue';
+import getYoutubeId from 'get-youtube-id';
+import isUrl from 'is-url';
 
 export default {
   components: {

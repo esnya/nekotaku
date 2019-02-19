@@ -1,6 +1,6 @@
+import Backend from '@/browser/backend/Backend';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
-import Backend from '@/browser/backend/Backend';
 
 export function filter<T>(data: T): T {
   if (typeof data === 'object') {

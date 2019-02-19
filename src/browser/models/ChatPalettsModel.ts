@@ -1,6 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep';
-import UserDataModel from '@/browser/models/UserDataModel';
 import Backend from '../backend/Backend';
+import UserDataModel from '@/browser/models/UserDataModel';
 
 export default class ChatPaletts extends UserDataModel {
   constructor(backend: Backend) {
