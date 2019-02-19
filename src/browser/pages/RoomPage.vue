@@ -1,6 +1,6 @@
 <template lang="pug">
   .app(v-if="room && members && !notFound")
-    v-toolbar.primary.app-bar(dark, fixed)
+    v-toolbar.primary.app-bar(dark fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title
         v-layout(row)
@@ -10,7 +10,7 @@
       v-spacer
       room-menu.mr-0
     transition(name="neko-slide")
-      main(v-if="room")
+      main
         chat-tab(:members="members" :room="room" v-show="roomTab === '0'")
         memo-list(v-show="roomTab === '1'")
         character-tab(
@@ -38,9 +38,8 @@
           v-btn(flat color="primary" value="3")
             span マップ
             v-icon mdi-map-marker-radius
-      .popyoapopyewp(v-else-if="notFound")
-        not-found-page
-      loading(v-else)
+  not-found-page(v-else-if="notFound")
+  loading(v-else)
 </template>
 
 <script>
