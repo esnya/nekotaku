@@ -12,6 +12,7 @@ export interface RoomAddData {
   characterAttributes: string[];
   dice: string;
   title: string;
+  password?: string;
 }
 
 export interface RoomUpdateData {

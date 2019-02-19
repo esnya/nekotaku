@@ -1,19 +1,18 @@
 <template lang="pug">
   v-app
-    transition(name="neko-slide")
-      router-view
+    router-view
     welcome-message
-    loading-dialog
 </template>
 
-<script>
-import LoadingDialog from '@/browser/moleculers/LoadingDialog.vue';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import WelcomeMessage from '@/browser/components/WelcomeMessage.vue';
 
-export default {
+@Component({
   components: {
-    LoadingDialog,
     WelcomeMessage,
   },
-};
+})
+export default class App extends Vue {
+}
 </script>

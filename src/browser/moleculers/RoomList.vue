@@ -17,9 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { BindAsList } from '../decorators/dao';
-import RoomsDAO from '../dao/RoomsDAO';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import RoomSearchInput from '@/browser/atoms/RoomSearchInput.vue';
 import RoomListItem from '@/browser/moleculers/RoomListItem.vue';
 import Room from '@/types/data/Room';
@@ -31,7 +29,7 @@ import Room from '@/types/data/Room';
   },
 })
 export default class RoomList extends Vue {
-  @BindAsList(new RoomsDAO(), true) private rooms!: Room[];
+  @Prop({ required: true }) private rooms!: Room[];
 
   pagination = {
     page: 0,
@@ -44,7 +42,8 @@ export default class RoomList extends Vue {
       rooms,
       searchText,
     } = this;
-    if (!searchText) return this.rooms;
+
+    if (!searchText) return rooms;
     return rooms.filter(room => room.title.match(searchText));
   }
 }

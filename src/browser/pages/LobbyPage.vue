@@ -20,57 +20,55 @@
               v-list-tile-title 更新履歴
     main
       v-container(fluid :grid-list-md="true")
-        room-list
+        room-list(:rooms="rooms" v-if="rooms")
+        loading(v-else)
       room-create-dialog
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import config from '../config';
+import Loading from '@/browser/atoms/Loading.vue';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
 import * as Routes from '@/browser/routes';
+import RoomsDAO from '../dao/RoomsDAO';
+import { BindAsList } from '../decorators/dao';
+import Room, { RoomAddData } from '@/types/data/Room';
 
-export default {
+const roomsDAO = new RoomsDAO();
+
+@Component({
   components: {
     ChangelogDialog,
     FeedbackDialog,
+    Loading,
     RoomCreateDialog,
     RoomList,
   },
-  computed: {
-    title: () => config.title,
-  },
-  data: () => ({
-    cdOpen: false,
-    fdOpen: false,
-  }),
-  methods: {
-    async createRoom(data) {
-      const {
-        characterAttributes,
-        dice,
-        title,
-        password,
-      } = data;
+})
+export default class LobbyPage extends Vue {
+  @BindAsList(roomsDAO, true) rooms!: Room[] | null;
+  cdOpen: boolean = false;
+  fdOpen: boolean = false;
 
-      const roomId = await this.$models.rooms.push({
-        characterAttributes,
-        dice,
-        title,
-        password,
-      });
+  get title() {
+    return config.title;
+  }
 
-      this.$router.push({ name: Routes.Room.name, params: { roomId } });
-    },
-  },
+  async createRoom(room: RoomAddData) {
+    const roomId = await roomsDAO.addItem(room);
+    this.$router.push({ name: Routes.Room.name, params: { roomId } });
+  }
+
   created() {
     document.title = this.title;
-  },
-};
+  }
+}
 </script>
 
 <style lang="stylus" scoped>

@@ -38,7 +38,7 @@
           v-btn(flat color="primary" value="3")
             span マップ
             v-icon mdi-map-marker-radius
-  not-found-page(v-else-if="notFound")
+  not-found(v-else-if="notFound")
   loading(v-else)
 </template>
 
@@ -50,7 +50,7 @@ import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import config from '../config';
 import * as Routes from '../routes';
 import sessionStorage from '@/browser/wrappers/sessionStorage';
-import NotFoundPage from '@/browser/pages/NotFound.vue';
+import NotFound from '@/browser/moleculers/NotFound.vue';
 import { IntervalTimer } from '../utilities/timer';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
@@ -79,7 +79,7 @@ export default {
     MapTab,
     MemoList,
     RoomMenu,
-    NotFoundPage,
+    NotFound,
   },
   data() {
     return {
