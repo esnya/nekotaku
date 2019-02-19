@@ -1,5 +1,5 @@
 <template lang="pug">
-  .app(v-if="room && members")
+  .app(v-if="room && members && !notFound")
     v-toolbar.primary.app-bar(dark, fixed)
       img(src="/img/nekokoro32.png")
       v-toolbar-title
@@ -38,6 +38,8 @@
           v-btn(flat color="primary" value="3")
             span マップ
             v-icon mdi-map-marker-radius
+      .popyoapopyewp(v-else-if="notFound")
+        not-found-page
       loading(v-else)
 </template>
 
@@ -47,8 +49,9 @@ import { mapGetters } from 'vuex';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import config from '../config';
-import * as RouteNames from '../constants/route';
+import * as Routes from '../routes';
 import sessionStorage from '@/browser/wrappers/sessionStorage';
+import NotFoundPage from '@/browser/pages/NotFound.vue';
 import { IntervalTimer } from '../utilities/timer';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
@@ -77,7 +80,7 @@ export default {
     MapTab,
     MemoList,
     RoomMenu,
-    RouteNames,
+    NotFoundPage,
   },
   data() {
     return {
@@ -85,6 +88,7 @@ export default {
       roomTab: '0',
       prevRoomTab: '0',
       timer: null,
+      notFound: false,
     };
   },
   computed: {
@@ -125,11 +129,11 @@ export default {
         this.width = window.innerWidth;
         this.timer = new IntervalTimer(() => this.updateMember(), 5 * 1000);
       } catch (e) {
-        if (e instanceof UnauthorizedError) this.$router.push({ name: RouteNames.RoomPassword });
-        else if (e instanceof NotFoundError) this.$router.push({ name: RouteNames.NotFound });
+        if (e instanceof UnauthorizedError) this.$router.push({ name: Routes.RoomPassword.name });
+        else if (e instanceof NotFoundError) this.notFound = true;
         else {
           console.error(e);
-          this.$router.push({ name: RouteNames.Lobby });
+          this.$router.push({ name: Routes.Lobby.name });
         }
       }
     });

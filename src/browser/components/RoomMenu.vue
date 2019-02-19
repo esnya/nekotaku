@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import * as RouteNames from '../constants/route';
+import * as Routes from '../routes';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import ViewConfigurationDialog from '@/browser/moleculers/ViewConfigurationDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push({ name: RouteNames.Lobby });
+      this.$router.push({ name: Routes.Lobby.name });
     },
     openInNew() {
       window.open(

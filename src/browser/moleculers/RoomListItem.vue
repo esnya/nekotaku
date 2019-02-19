@@ -16,7 +16,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import JoinButton from '@/browser/atoms/JoinButton.vue';
 import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
-import * as RouteNames from '../constants/route';
+import * as Routes from '../routes';
 import Room from '@/types/data/Room';
 
 @Component({
@@ -29,7 +29,7 @@ export default class RoomListItem extends Vue {
   @Prop({ required: true }) private room!: Room;
 
   private join(): void {
-    this.$router.push({ name: RouteNames.Room, params: { roomId: this.room.id } });
+    this.$router.push({ name: Routes.Room.name, params: { roomId: this.room.id } });
   }
 }
 </script>

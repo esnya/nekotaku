@@ -7,7 +7,7 @@ import router from '../router';
 import ObjectDataType from '@/types/data/ObjectDataType';
 
 export default abstract class ObjectDAO<Data, UpdateData> implements DAO {
-  protected get roomId(): string {
+  get roomId(): string {
     const id = router.currentRoute.params.roomId;
     if (!id) throw new Error('Not joined room');
     return id;

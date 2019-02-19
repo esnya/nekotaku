@@ -58,7 +58,7 @@
 
 <script>
 import DiceSelect from '@/browser/atoms/DiceSelect.vue';
-import * as RouteNames from '@/browser/constants/route';
+import * as Routes from '@/browser/routes';
 import run from '@/browser/utilities/task';
 
 export default {
@@ -108,7 +108,7 @@ export default {
 
         this.value = false;
 
-        this.$router.push({ name: RouteNames.Room, params: { roomId } });
+        this.$router.push({ name: Routes.Room.name, params: { roomId } });
       });
     },
   },
