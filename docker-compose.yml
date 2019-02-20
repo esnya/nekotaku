@@ -18,12 +18,6 @@ services:
   db:
     image: mongo:4-xenial
     volumes:
-      - mongo-db:/data
+      - ./data/db:/data/db
     restart: always
-
-volumes:
-  mongo-db:
-    driver_opts:
-      type: none
-      device: ${PWD}/mongo/data
-      o: bind
+    command: bash -c 'usermod -o -u 1000 mongodb; groupmod -o -g 500 mongodb; chown -R mongodb:root /data/db; /usr/local/bin/docker-entrypoint.sh mongod'
