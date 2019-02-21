@@ -1,4 +1,5 @@
-import ListDAO, { ListItemDataType } from '@/browser/dao/ListDAO';
+import ListDAO from '@/browser/dao/ListDAO';
+import ListItemDataType from '@/types/data/ListItemDataType';
 
 export interface Shape extends ListItemDataType {
   type: string;

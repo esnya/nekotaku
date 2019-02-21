@@ -1,8 +1,7 @@
-import { DataType, DataWithId } from './DAO';
+import { DataWithId } from './DAO';
 import ListDAOBase, { ListItemBase } from '@/browser/dao/ListDAOBase';
 import router from '../router';
-
-export interface ListItemDataType extends DataType {}
+import ListItemDataType from '@/types/data/ListItemDataType';
 
 export default abstract class ListDAO<Data extends ListItemBase, AddData, UpdateData, ItemKey>
   extends ListDAOBase<Data, AddData, UpdateData, ItemKey> {

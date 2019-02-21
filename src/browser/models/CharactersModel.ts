@@ -24,6 +24,7 @@ export default class CharactersModel extends ListModel {
       x: 0,
       y: 0,
       z: Date.now(),
+      iconSize: 1,
     };
   }
 
