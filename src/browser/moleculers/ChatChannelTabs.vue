@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-tabs.neko-channel-tabs(:value="tab" @input="onSelectTab")
+  v-tabs.neko-channel-tabs(:value="tab" @change="onSelectTab")
     v-tab(
       :channel="channel"
       :key="`t${i}`"

@@ -3,20 +3,16 @@
     label="表情"
     :items="faces"
     :value="value"
-    @input="onInput"
+    @input="$emit('input', $event)"
   )
 </template>
 
-<script>
-import modelWrapper from '@/browser/mixins/modelWrapper';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-export default {
-  mixins: [modelWrapper(String, true)],
-  props: {
-    faces: {
-      required: true,
-      type: Array,
-    },
-  },
-};
+@Component
+export default class CharacterFaceSelector extends Vue {
+  @Prop({ required: true }) faces!: string[];
+  @Prop() value?: string;
+}
 </script>

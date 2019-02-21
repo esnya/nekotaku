@@ -2,38 +2,38 @@
   .neko-container
     image-preview(:url="url")
     .neko-button-container.pb-1
-      upload-icon-button(@click="upload")
-      clear-icon-button(color="red" :disabled="!url" @click="clear")
+      upload-icon-button(accept="image/*" @input="onInput")
+      clear-icon-button(color="red" :disabled="!url" @click="$emit('clear', $event)")
 </template>
 
-<script>
+<script lang="ts">
+import {
+  Component,
+  Emit,
+  Prop,
+  Vue,
+} from 'vue-property-decorator';
 import ClearIconButton from '@/browser/atoms/ClearIconButton.vue';
 import ImagePreview from '@/browser/atoms/ImagePreview.vue';
 import UploadIconButton from '@/browser/atoms/UploadIconButton.vue';
-import openFile from '@/browser/utilities/file';
 
-export default {
+@Component({
   components: {
     ClearIconButton,
     ImagePreview,
     UploadIconButton,
   },
-  methods: {
-    async upload() {
-      const file = await openFile('image/*');
-      if (file) this.$emit('upload', file);
-    },
-    clear(event) {
-      this.$emit('clear', event);
-    },
-  },
-  props: {
-    url: {
-      required: false,
-      type: String,
-    },
-  },
-};
+})
+export default class ImageEditor extends Vue {
+  @Prop() url?: string;
+
+  @Emit('upload')
+  emitUpload(file: File) {}
+
+  onInput(file: File | null) {
+    if (file) this.emitUpload(file);
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
