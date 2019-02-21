@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+    image: nekotaku-dev:latest
+    environment:
+      - NODE_ENV=production
+      - WAIT_HOSTS=db:27017
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+    command: sh -c '/wait && node index.js'
+  db:
+    image: mongo:4-xenial
+    volumes:
+      - ./data/db:/data/db
+    restart: always
+    command: bash -c 'usermod -o -u 1000 mongodb; groupmod -o -g 500 mongodb; chown -R mongodb:root /data/db; /usr/local/bin/docker-entrypoint.sh mongod'
