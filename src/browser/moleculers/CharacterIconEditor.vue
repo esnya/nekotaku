@@ -14,12 +14,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CharacterIconSizeInput from '@/browser/atoms/CharacterIconSizeInput.vue';
-import CharactersDAO from '@/browser/dao/CharactersDAO';
+import characterDAO from '@/browser/dao/characterDAO';
 import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 import Character from '@/models/Character';
 import Room from '@/models/Room';
-
-const charactersDAO = new CharactersDAO();
 
 @Component({
   components: {
@@ -45,7 +43,7 @@ export default class CharacterIconEditor extends Vue {
       character,
     } = this;
 
-    charactersDAO.updateItem(character.id, { iconSize });
+    characterDAO.update({ iconSize }, character.id);
   }
 
   clear(): void {

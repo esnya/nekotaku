@@ -1,6 +1,7 @@
 import Character, { CharacterAdd, CharacterUpdate } from '@/models/Character';
 import Model from '@/models/Model';
 import RoomChildDAO from './RoomChildDAO';
+import backend from '../backend';
 
 export class CharacterDAO extends RoomChildDAO<CharacterAdd, CharacterUpdate, Character> {
   getCollectionName(): string {
@@ -19,4 +20,4 @@ export class CharacterDAO extends RoomChildDAO<CharacterAdd, CharacterUpdate, Ch
     };
   }
 }
-export default new CharacterDAO();
+export default new CharacterDAO(backend);

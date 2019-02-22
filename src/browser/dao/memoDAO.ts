@@ -1,6 +1,7 @@
 import Memo, { MemoAdd, MemoUpdate } from '@/models/Memo';
 import Model from '@/models/Model';
 import RoomChildDAO from './RoomChildDAO';
+import backend from '../backend';
 
 export class MemoDAO extends RoomChildDAO<MemoAdd, MemoUpdate, Memo> {
   getCollectionName(): string {
@@ -11,4 +12,4 @@ export class MemoDAO extends RoomChildDAO<MemoAdd, MemoUpdate, Memo> {
     return value;
   }
 }
-export default new MemoDAO();
+export default new MemoDAO(backend);

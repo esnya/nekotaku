@@ -1,6 +1,7 @@
 import Member, { MemberUpdate } from '@/models/Member';
 import Model from '@/models/Model';
 import UserDataDAO from './UserDataDAO';
+import backend from '../backend';
 
 export class MemberDAO extends UserDataDAO<MemberUpdate, Member> {
   getCollectionName(): string {
@@ -15,4 +16,4 @@ export class MemberDAO extends UserDataDAO<MemberUpdate, Member> {
     };
   }
 }
-export default new MemberDAO();
+export default new MemberDAO(backend);

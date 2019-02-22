@@ -1,6 +1,7 @@
 import Message, { MessageAdd } from '@/models/Message';
 import Model from '@/models/Model';
 import RoomChildDAO from './RoomChildDAO';
+import backend from '../backend';
 
 export class MessageDAO extends RoomChildDAO<MessageAdd, void, Message> {
   getCollectionName(): string {
@@ -17,4 +18,4 @@ export class MessageDAO extends RoomChildDAO<MessageAdd, void, Message> {
     };
   }
 }
-export default new MessageDAO();
+export default new MessageDAO(backend);

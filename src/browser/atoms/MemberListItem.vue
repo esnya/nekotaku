@@ -20,7 +20,7 @@ export default class MemberListItem extends Vue {
   @Prop({ required: true }) private member!: Member;
 
   private isOnline(): boolean {
-    return (Date.now() - this.member.updatedAt) <= 60 * 1000;
+    return (Date.now() - this.member.updatedAt.getTime()) <= 60 * 1000;
   }
 }
 </script>

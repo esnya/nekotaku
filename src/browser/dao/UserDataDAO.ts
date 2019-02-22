@@ -2,7 +2,6 @@ import DAO from './DAO';
 import CollectionPath from '../backend/CollectionPath';
 import { parseCollectionPath, getRoomId, concatItemId } from './utilities';
 import PathElement from '../backend/PathElement';
-import backend from '../backend';
 import Model from '@/models/Model';
 
 export default abstract class UserDataDAO<Update, Value extends Model>
@@ -13,9 +12,9 @@ export default abstract class UserDataDAO<Update, Value extends Model>
     return parseCollectionPath(`rooms/${getRoomId()}/${this.getCollectionName()}`);
   }
 
-  async getItemPath(key: void): Promise<PathElement[]> {
+  async getItemPath(): Promise<PathElement[]> {
     const collectionPath = await this.getCollectionPath();
-    const userId = await backend.v2getUserId();
+    const userId = await this.backend.v2getUserId();
 
     return concatItemId(collectionPath, userId)
   }

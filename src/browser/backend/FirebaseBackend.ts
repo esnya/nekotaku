@@ -11,6 +11,11 @@ import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import map from 'lodash/map';
 import pickBy from 'lodash/pickBy';
+import Unsubscribe from './Unsubscribe';
+import Model from '@/models/Model';
+import PathElement from './PathElement';
+import CollectionPath from './CollectionPath';
+import Timestamp from '@/models/Timestamp';
 
 function reader(snapshot: firebase.database.DataSnapshot | null): {} | null {
   if (!snapshot) return null;
@@ -188,5 +193,38 @@ export default class FirebaseBackend implements Backend {
         await this.removeFile(roomId, path);
       }));
     });
+  }
+
+  /* v2 */
+  async v2getUserId(): Promise<string> {
+    throw new Error('ToDo');
+  }
+
+  async v2add<T extends Timestamp>(path: CollectionPath, value: T): Promise<string> {
+    throw new Error('ToDo');
+  }
+
+  async v2update<T extends { updatedAt: Date }>(path: PathElement[], value: T): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2remove(path: PathElement[]): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeChild(
+    path: CollectionPath,
+    onAdded: (value: Model) => void,
+    onChanged: (value: Model) => void,
+    onRemoved: (id: string) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeValue(
+    path: PathElement[],
+    onValue: (value: Model | null) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
   }
 }

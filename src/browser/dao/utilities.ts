@@ -3,22 +3,23 @@ import PathElement from '@/browser/backend/PathElement';
 import CollectionPath from '@/browser/backend/CollectionPath';
 import router from '@/browser/router';
 
-export function parseItemPath(path: string): PathElement[] {
-  const splitted = path.split(/\//g);
-  if (splitted.length % 2) throw new Error('The length of the path must be a multiple of 2');
-
+function arrayToPath(splitted: string[]): PathElement[] {
+  if (splitted.length % 2 === 1) throw new Error('The length of the path must be a multiple of 2');
   return chunk(splitted, 2).map(([collection, id]) => ({ collection, id }));
 }
 
-export function parseCollectionPath(path: string): CollectionPath {
-  const m = path.match(/^(.*)\/(.*?)$/);
-  if (!m || m.length !== 3) throw new Error('Invalid path pattern');
+export function parseItemPath(path: string): PathElement[] {
+  const splitted = path.split(/\//g);
+  return arrayToPath(splitted);
+}
 
-  const [_, parentPath, collection] = m;
+export function parseCollectionPath(path: string): CollectionPath {
+  const splitted = path.split(/\//g);
+  if (splitted.length % 2 === 0) throw new Error('The length of the path must be a multiple of 2 + 1');
 
   return {
-    parentPath: parseItemPath(parentPath),
-    collection,
+    parentPath: arrayToPath(splitted.slice(0, -1)),
+    collection: splitted[splitted.length - 1],
   };
 }
 

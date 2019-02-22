@@ -13,7 +13,8 @@ export default abstract class RoomChildDAO<Add, Update, Value extends Model>
     return parseCollectionPath(`rooms/${roomId}/${this.getCollectionName()}`);
   }
 
-  async getItemPath(key: string): Promise<PathElement[]> {
+  async getItemPath(key?: string): Promise<PathElement[]> {
+    if (!key) throw new Error('key is required');
     const collectionPath = await this.getCollectionPath();
     return concatItemId(collectionPath, key);
   }

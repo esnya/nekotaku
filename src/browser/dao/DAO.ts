@@ -1,27 +1,32 @@
-import backend from '@/browser/backend';
-import { parseItemPath } from './utilities';
 import CollectionPath from '../backend/CollectionPath';
 import PathElement from '../backend/PathElement';
 import Model from '@/models/Model';
 import Unsubscribe from '../backend/Unsubscribe';
+import Backend from '../backend/Backend';
 
 export default abstract class DAO<CollectionKey, ItemKey, Add, Update, Value extends Model> {
-  abstract getCollectionPath(collectionKey: CollectionKey): Promise<CollectionPath>;
+  protected backend: Backend;
+
+  constructor(backend: Backend) {
+    this.backend = backend;
+  }
+
+  abstract getCollectionPath(collectionKey?: CollectionKey): Promise<CollectionPath>;
   abstract read(value: Model): Value;
 
-  getItemPath(itemKey: ItemKey): Promise<PathElement[]> {
+  getItemPath(itemKey?: ItemKey): Promise<PathElement[]> {
     throw new Error('Abstract method called');
   }
 
   async subscribeChild(
-    collectionKey: CollectionKey,
     onAdded: (value: Value) => void,
     onChanged: (value: Value) => void,
     onRemoved: (id: string) => void,
+    collectionKey?: CollectionKey,
   ): Promise<Unsubscribe> {
     const path = await this.getCollectionPath(collectionKey);
 
-    const unsubscribe = await backend.v2subscribeChild(
+    const unsubscribe = await this.backend.v2subscribeChild(
       path,
       (value: Model) => onAdded(this.read(value)),
       (value: Model) => onChanged(this.read(value)),
@@ -31,10 +36,10 @@ export default abstract class DAO<CollectionKey, ItemKey, Add, Update, Value ext
     return unsubscribe;
   }
 
-  async subscribeValue(key: ItemKey, onValue: (value: Value | null) => void): Promise<Unsubscribe> {
+  async subscribeValue(onValue: (value: Value | null) => void, key: ItemKey): Promise<Unsubscribe> {
     const path = await this.getItemPath(key);
 
-    const unsubscribe = await backend.v2subscribeValue(
+    const unsubscribe = await this.backend.v2subscribeValue(
       path,
       (value: Model | null) => onValue(value && this.read(value)),
     );
@@ -42,9 +47,9 @@ export default abstract class DAO<CollectionKey, ItemKey, Add, Update, Value ext
     return unsubscribe;
   }
 
-  async add(collectionKey: CollectionKey, value: Add): Promise<string> {
+  async add(value: Add, collectionKey?: CollectionKey): Promise<string> {
     const path = await this.getCollectionPath(collectionKey);
-    const id = await backend.v2add(path, {
+    const id = await this.backend.v2add(path, {
       ...value,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -52,16 +57,16 @@ export default abstract class DAO<CollectionKey, ItemKey, Add, Update, Value ext
     return id;
   }
 
-  async update(key: ItemKey, value: Update): Promise<void> {
+  async update(value: Update, key?: ItemKey): Promise<void> {
     const path = await this.getItemPath(key);
-    await backend.v2update(path, {
+    await this.backend.v2update(path, {
       ...value,
       updatedAt: new Date(),
     });
   }
 
-  async remove(key: ItemKey): Promise<void> {
+  async remove(key?: ItemKey): Promise<void> {
     const path = await this.getItemPath(key);
-    await backend.v2remove(path);
+    await this.backend.v2remove(path);
   }
 }

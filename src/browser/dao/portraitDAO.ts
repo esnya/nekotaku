@@ -4,6 +4,7 @@ import { parseCollectionPath, getRoomId, concatItemId } from './utilities';
 import CollectionPath from '../backend/CollectionPath';
 import PathElement from '../backend/PathElement';
 import Model from '@/models/Model';
+import backend from '../backend';
 
 export interface ItemKey {
   characterId: string;
@@ -11,13 +12,15 @@ export interface ItemKey {
 }
 
 export class PortraitDAO extends DAO<string, ItemKey, PortraitAdd, PortraitUpdate, Portrait> {
-  async getCollectionPath(characterId: string): Promise<CollectionPath> {
+  async getCollectionPath(characterId?: string): Promise<CollectionPath> {
+    if (!characterId) throw new Error('characterId is required');
     return parseCollectionPath(`rooms/${getRoomId()}/characters/${characterId}/portraits`);
   }
 
-  async getItemPath({ characterId, portraitId }: ItemKey): Promise<PathElement[]> {
-    const collectionPath = await this.getCollectionPath(characterId);
-    return concatItemId(collectionPath, portraitId);
+  async getItemPath(key?: ItemKey): Promise<PathElement[]> {
+    if (!key) throw new Error('key is required');
+    const collectionPath = await this.getCollectionPath(key.characterId);
+    return concatItemId(collectionPath, key.portraitId);
   }
 
   read(value: Model): Portrait {
@@ -28,3 +31,4 @@ export class PortraitDAO extends DAO<string, ItemKey, PortraitAdd, PortraitUpdat
     };
   }
 }
+export default new PortraitDAO(backend);

@@ -20,8 +20,7 @@
               v-list-tile-title 更新履歴
     main
       v-container(fluid :grid-list-md="true")
-        room-list(:rooms="rooms" v-if="rooms")
-        loading(v-else)
+        room-list(:rooms="rooms")
       room-create-dialog
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
@@ -33,26 +32,22 @@ import { BindAsList } from '../decorators/dao';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
-import Loading from '@/browser/atoms/Loading.vue';
-import Room, { RoomAddData } from '@/models/Room';
+import Room, { RoomAdd } from '@/models/Room';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
-import RoomsDAO from '../dao/RoomsDAO';
+import roomDAO from '../dao/roomDAO';
 import config from '../config';
-
-const roomsDAO = new RoomsDAO();
 
 @Component({
   components: {
     ChangelogDialog,
     FeedbackDialog,
-    Loading,
     RoomCreateDialog,
     RoomList,
   },
 })
 export default class LobbyPage extends Vue {
-  @BindAsList(roomsDAO, true) rooms!: Room[] | null;
+  @BindAsList(roomDAO, { reverse: true }) rooms!: Room[];
   cdOpen: boolean = false;
   fdOpen: boolean = false;
 
@@ -60,8 +55,8 @@ export default class LobbyPage extends Vue {
     return config.title;
   }
 
-  async createRoom(room: RoomAddData) {
-    const roomId = await roomsDAO.addItem(room);
+  async createRoom(room: RoomAdd) {
+    const roomId = await roomDAO.add(room);
     this.$router.push({ name: Routes.Room.name, params: { roomId } });
   }
 

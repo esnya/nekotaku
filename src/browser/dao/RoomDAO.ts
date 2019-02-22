@@ -4,6 +4,7 @@ import CollectionPath from '../backend/CollectionPath';
 import { parseCollectionPath, concatItemId, getRoomId } from './utilities';
 import Model from '@/models/Model';
 import PathElement from '../backend/PathElement';
+import backend from '../backend';
 
 export const collectionPath = parseCollectionPath('rooms');
 
@@ -12,7 +13,7 @@ export class RoomDAO extends DAO<void, void, RoomAdd, RoomUpdate, Room> {
     return collectionPath;
   }
 
-  async getItemPath(key: void): Promise<PathElement[]> {
+  async getItemPath(): Promise<PathElement[]> {
     return concatItemId(collectionPath, getRoomId());
   }
 
@@ -29,4 +30,4 @@ export class RoomDAO extends DAO<void, void, RoomAdd, RoomUpdate, Room> {
     };
   }
 }
-export default new RoomDAO();
+export default new RoomDAO(backend);

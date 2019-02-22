@@ -1,6 +1,7 @@
 import RoomPrivateChildDAO from './RoomPrivateChildDAO';
 import ChatName, { ChatNameAdd, ChatNameUpdate } from '@/models/ChatName';
 import Model from '@/models/Model';
+import backend from '../backend';
 
 export class ChatNameDAO
   extends RoomPrivateChildDAO<ChatNameAdd, ChatNameUpdate, ChatName> {
@@ -16,4 +17,4 @@ export class ChatNameDAO
     };
   }
 }
-export default new ChatNameDAO();
+export default new ChatNameDAO(backend);

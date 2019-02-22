@@ -13,6 +13,11 @@ import io from 'socket.io-client';
 import localStorage from '@/browser/wrappers/localStorage';
 import shortid from 'shortid';
 import uuidv4 from 'uuid/v4';
+import Unsubscribe from './Unsubscribe';
+import Model from '@/models/Model';
+import PathElement from './PathElement';
+import CollectionPath from './CollectionPath';
+import Timestamp from '@/models/Timestamp';
 
 const UIDKey = 'nekotaku:socketbackend:uid';
 function getUID() {
@@ -164,5 +169,38 @@ export default class SocketBackend implements Backend {
     roomId: string,
   ): Promise<void> {
     await this.request(SocketEvents.RemoveFiles, roomId);
+  }
+
+  /* v2 */
+  async v2getUserId(): Promise<string> {
+    throw new Error('ToDo');
+  }
+
+  async v2add<T extends Timestamp>(path: CollectionPath, value: T): Promise<string> {
+    throw new Error('ToDo');
+  }
+
+  async v2update<T extends { updatedAt: Date }>(path: PathElement[], value: T): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2remove(path: PathElement[]): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeChild(
+    path: CollectionPath,
+    onAdded: (value: Model) => void,
+    onChanged: (value: Model) => void,
+    onRemoved: (id: string) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeValue(
+    path: PathElement[],
+    onValue: (value: Model | null) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
   }
 }

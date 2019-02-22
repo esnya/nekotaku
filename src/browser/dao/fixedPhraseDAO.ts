@@ -1,6 +1,7 @@
 import RoomPrivateChildDAO from './RoomPrivateChildDAO';
 import FixedPhrase, { FixedPhraseAdd, FixedPhraseUpdate } from '@/models/FixedPhrase';
 import Model from '@/models/Model';
+import backend from '../backend';
 
 export class FixedPhraseDAO
   extends RoomPrivateChildDAO<FixedPhraseAdd, FixedPhraseUpdate, FixedPhrase> {
@@ -16,4 +17,4 @@ export class FixedPhraseDAO
     };
   }
 }
-export default new FixedPhraseDAO();
+export default new FixedPhraseDAO(backend);

@@ -16,6 +16,11 @@ import map from 'lodash/map';
 import set from 'lodash/set';
 import shortid from 'shortid';
 import values from 'lodash/values';
+import Timestamp from '@/models/Timestamp';
+import CollectionPath from './CollectionPath';
+import PathElement from './PathElement';
+import Model from '@/models/Model';
+import Unsubscribe from './Unsubscribe';
 
 function getParentPath(path: string): string | null {
   return path.replace(/\/?[^/]+$/, '') || null;
@@ -297,5 +302,38 @@ export default class StubBackend implements Backend {
       });
       this.remove(`files/${roomId}`);
     }
+  }
+
+  /* v2 */
+  async v2getUserId(): Promise<string> {
+    return UserId;
+  }
+
+  async v2add<T extends Timestamp>(path: CollectionPath, value: T): Promise<string> {
+    throw new Error('ToDo');
+  }
+
+  async v2update<T extends { updatedAt: Date }>(path: PathElement[], value: T): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2remove(path: PathElement[]): Promise<void> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeChild(
+    path: CollectionPath,
+    onAdded: (value: Model) => void,
+    onChanged: (value: Model) => void,
+    onRemoved: (id: string) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
+  }
+
+  async v2subscribeValue(
+    path: PathElement[],
+    onValue: (value: Model | null) => void,
+  ): Promise<Unsubscribe> {
+    throw new Error('ToDo');
   }
 }

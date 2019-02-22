@@ -1,6 +1,6 @@
-import { Memo } from '@/models/Memo';
+import Memo, { MemoAdd } from '@/models/Memo';
 
-export function parseText(text: string): Memo {
+export function parseText(text: string): MemoAdd {
   const m = text.match(/^(.*?)\r?\n--\r?\n((.|\r|\n)*?)(\r?\n--\r?\n((.|\r|\n)*?))?$/);
   if (!m) {
     return {

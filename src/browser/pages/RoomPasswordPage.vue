@@ -23,7 +23,7 @@
 <script lang="ts">
 import * as Routes from '@/browser/routes';
 import { Component, Vue } from 'vue-property-decorator';
-import PasswordDAO from '@/browser/dao/PasswordDAO';
+import passwordDAO from '@/browser/dao/passwordDAO';
 
 @Component
 export default class RoomPasswordPage extends Vue {
@@ -34,10 +34,9 @@ export default class RoomPasswordPage extends Vue {
 
     if (!await this.$validator.validateAll() || !password) return;
 
-    const passwordDAO = new PasswordDAO();
     await passwordDAO.update({ password });
 
-    this.$router.push({ name: Routes.Room.name, params: { roomId: passwordDAO.roomId } });
+    this.$router.push({ name: Routes.Room.name, params: this.$route.params });
   }
 
   cancel() {

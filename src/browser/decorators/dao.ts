@@ -1,166 +1,69 @@
-import { Unsubscribe } from 'firebase';
-import { Vue } from 'vue-property-decorator';
-import ListDAOBase, { ListItemBase } from '../dao/ListDAOBase';
-import ObjectDAO from '../dao/ObjectDAO';
-import PropertyDecorator from './PropertyDecorator';
+/* eslint no-param-reassign: off */
 
-interface Wrapper<T> {
-  subscribe(): Promise<Unsubscribe>;
+import Model from '@/models/Model';
+import DAO from '../dao/DAO';
+import Unsubscribe from '../backend/Unsubscribe';
+
+interface ListOptions {
+  reverse?: boolean;
 }
 
-export class ListWrapper<
-  Data extends ListItemBase,
-  AddData,
-  UpdateData,
-  ItemKey,
-> implements Wrapper<Data[]> {
-  private dao: ListDAOBase<Data, AddData, UpdateData, ItemKey>;
-  private reversed: boolean;
-  private parent: Vue;
-  private propertyKey: string;
+function bind(subscribe: (component: any, propertyKey: string) => Promise<Unsubscribe>) {
+  return (prototype: any, propertyKey: string) => {
+    const unsubscribeKey = Symbol('unsubscribe');
 
-  constructor(
-    dao: ListDAOBase<Data, AddData, UpdateData, ItemKey>,
-    reversed: boolean,
-    parent: Vue,
-    propertyKey: string,
-  ) {
-    this.dao = dao;
-    this.reversed = reversed;
-    this.parent = parent;
-    this.propertyKey = propertyKey;
-  }
-
-  get data(): Data[] {
-    const parent = this.parent as any;
-    if (!parent[this.propertyKey]) parent[this.propertyKey] = [];
-    return parent[this.propertyKey] || [];
-  }
-
-  set data(value: Data[]) {
-    const parent = this.parent as any as { [key: string]: Data[] };
-    (this.parent as any)[this.propertyKey] = value;
-  }
-
-  async subscribe(): Promise<Unsubscribe> {
-    const unsubscribe = await this.dao.subscribe(
-      (data: Data) => {
-        if (this.reversed) this.data.unshift(data);
-        else this.data.push(data);
+    const originalCreated = prototype.created;
+    const originalDestroyed = prototype.destroyed;
+    Object.defineProperties(prototype, {
+      [propertyKey]: {
+        value: [],
       },
-      (data: Data) => {
-        const index = this.data.findIndex(item => item.id === data.id);
-        if (index < 0) return;
-        this.data[index] = data;
+      created: {
+        async value(): Promise<void> {
+          if (originalCreated) {
+            const result = originalCreated.call(this);
+            if (result instanceof Promise) await result;
+          }
+
+          this[unsubscribeKey] = await subscribe(this, propertyKey);
+        },
       },
-      (data: Data) => {
-        const index = this.data.findIndex(item => item.id === data.id);
-        if (index < 0) return;
-        for (let i = index; i < this.data.length; i += 1) {
-          this.data[i] = this.data[i + 1];
-        }
-        this.data.length -= 1;
+      destroyed: {
+        async value(): Promise<void> {
+          if (originalDestroyed) originalDestroyed.call(this);
+        },
       },
-    );
-    this.data = [];
-    return unsubscribe;
-  }
+    });
+  };
 }
 
-const wrapperKey = Symbol('Wrapper');
-const unsubscribeKey = Symbol('Unsubscribe');
-
-function bind<T>(
-  createWrapper: (parent: Vue, propertyKey: string) => Wrapper<T>,
-  subscribe: boolean,
+export function BindAsList<CollectionKey, ItemKey, Add, Update, Value extends Model>(
+  dao: DAO<CollectionKey, ItemKey, Add, Update, Value>,
+  options: ListOptions,
 ) {
-  return (target: any, propertyKey: string) => {
-    const { created, destroyed } = target;
-
-    Object.defineProperty(target, propertyKey, {
-      enumerable: true,
-      value: null,
-    });
-
-    Object.defineProperty(target, 'created', {
-      enumerable: true,
-      writable: false,
-      value() {
-        if (created) created.call(this);
-
-        const wrapper = createWrapper(this, propertyKey);
-        Object.defineProperty(this, wrapperKey, {
-          enumerable: true,
-          writable: false,
-          value: wrapper,
-        });
-
-        if (subscribe) {
-          Object.defineProperty(this, unsubscribeKey, {
-            configurable: true,
-            writable: false,
-            value: () => Promise.resolve(),
-          });
-          wrapper.subscribe().then((unsubscribe: Unsubscribe) => {
-            Object.defineProperty(this, unsubscribeKey, {
-              writable: false,
-              value: unsubscribe,
-            });
-          });
-        }
-      },
-    });
-
-    Object.defineProperty(target, 'destroyed', {
-      value() {
-        if (destroyed) destroyed.call(this);
-        if (subscribe) this[unsubscribeKey]();
-      },
-    });
-  }
+  return bind((component: any, propertyKey: string) => dao.subscribeChild(
+    (value: Value) => {
+      if (options.reverse) component[propertyKey].unshift(value);
+      else component[propertyKey].push(value);
+    },
+    (value: Value) => {
+      component[propertyKey] = component[propertyKey]
+        .map((item: Value) => (item.id === value.id ? value : item));
+    },
+    (id: string) => {
+      component[propertyKey] = component[propertyKey].filter((item: Value) => item.id !== id);
+    },
+    typeof component.getCollectionKey === 'function' ? component.getCollectionKey() : null,
+  ));
 }
 
-export function BindAsList<
-  Data extends ListItemBase,
-  AddData,
-  UpdateData,
-  ItemKey,
->(
-  dao: ListDAOBase<Data, AddData, UpdateData, ItemKey>,
-  reversed: boolean = false,
-  subscribe: boolean = true,
-): PropertyDecorator {
-  return bind(
-    (parent: Vue, propertyKey: string) => new ListWrapper(dao, reversed, parent, propertyKey),
-    subscribe,
-  );
-}
-
-export class ObjectWrapper<Data, UpdateData> implements Wrapper<Data> {
-  private dao: ObjectDAO<Data, UpdateData>;
-  private parent: Vue;
-  private propertyKey: string;
-
-  constructor(dao: ObjectDAO<Data, UpdateData>, parent: Vue, propertyKey: string) {
-    this.dao = dao;
-    this.parent = parent;
-    this.propertyKey = propertyKey;
-  }
-
-  async subscribe(): Promise<Unsubscribe> {
-    const unsubscribe = await this.dao.subscribe((data) => {
-      (this.parent as any)[this.propertyKey] = data;
-    });
-    return unsubscribe;
-  }
-}
-
-export function BindAsObject<Data, UpdateData>(
-  dao: ObjectDAO<Data, UpdateData>,
-  subscribe: boolean = true,
-): PropertyDecorator {
-  return bind(
-    (parent: Vue, propertyKey: string) => new ObjectWrapper(dao, parent, propertyKey),
-    subscribe,
-  );
+export function BindAsObject<CollectionKey, ItemKey, Add, Update, Value extends Model>(
+  dao: DAO<CollectionKey, ItemKey, Add, Update, Value>,
+) {
+  return bind((component: any, propertyKey: string) => dao.subscribeValue(
+    (value: Value | null) => {
+      component[propertyKey] = value;
+    },
+    typeof component.getItemKey === 'function' ? component.getItemKey() : null,
+  ));
 }

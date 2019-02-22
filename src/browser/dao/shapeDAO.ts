@@ -1,6 +1,7 @@
 import Shape, { ShapeAdd, ShapeUpdate } from '@/models/Shape';
 import Model from '@/models/Model';
 import RoomChildDAO from './RoomChildDAO';
+import backend from '../backend';
 
 export class ShapeDAO extends RoomChildDAO<ShapeAdd, ShapeUpdate, Shape> {
   getCollectionName(): string {
@@ -17,4 +18,4 @@ export class ShapeDAO extends RoomChildDAO<ShapeAdd, ShapeUpdate, Shape> {
     };
   }
 }
-export default new ShapeDAO();
+export default new ShapeDAO(backend);
