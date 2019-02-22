@@ -4,13 +4,9 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import DiceAnimator from './DiceAnimator.vue';
 
 export default {
-  mixins: [
-    bindAsList('messages'),
-  ],
   components: {
     DiceAnimator,
   },
@@ -35,6 +31,12 @@ export default {
             key: `${message.id}-${i}`,
           })))
         .flat();
+    },
+  },
+  props: {
+    messages: {
+      required: true,
+      type: Array,
     },
   },
 };

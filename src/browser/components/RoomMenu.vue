@@ -79,7 +79,6 @@
 
 <script>
 import * as Routes from '../routes';
-import { bindAsList, bindAsObject } from '@/browser/models';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import LogExportingDialog from '@/browser/moleculers/LogExportingDialog.vue';
@@ -91,10 +90,6 @@ import TabletopAudioSoundPadDialog from '@/browser/components/TabletopAudioSound
 import ViewConfigurationDialog from '@/browser/moleculers/ViewConfigurationDialog.vue';
 
 export default {
-  mixins: [
-    bindAsList('messages'),
-    bindAsObject('room'),
-  ],
   components: {
     ChangelogDialog,
     ViewConfigurationDialog,
@@ -129,6 +124,16 @@ export default {
         `${Date.now()}${Math.random()}`,
         'location=no,resizable=yes,scrollbars=yes,status=no,toolbar=no',
       );
+    },
+  },
+  props: {
+    messages: {
+      required: true,
+      type: Array,
+    },
+    room: {
+      required: true,
+      type: Object,
     },
   },
 };

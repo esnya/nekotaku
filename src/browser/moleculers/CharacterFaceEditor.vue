@@ -11,13 +11,9 @@
 </template>
 
 <script>
-import { bindAsObject } from '@/browser/models';
 import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 
 export default {
-  mixins: [
-    bindAsObject('room'),
-  ],
   components: {
     ImageEditor,
   },
@@ -58,6 +54,12 @@ export default {
     face: {
       required: true,
       type: String,
+    },
+  },
+  props: {
+    room: {
+      required: true,
+      type: Object,
     },
   },
 };

@@ -57,5 +57,8 @@ export default interface Backend {
     onChanged: (value: Model) => void,
     onRemoved: (id: string) => void,
   ): Promise<Unsubscribe>;
-  v2subscribeValue(path: PathElement[], onValue: (value: Model | null) => void): Promise<Unsubscribe>;
+
+  v2subscribeValue(
+    path: PathElement[], onValue: (value: Model | null) => void,
+  ): Promise<Unsubscribe>;
 }

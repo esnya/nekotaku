@@ -10,16 +10,12 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import AddFab from '@/browser/atoms/AddFab.vue';
 import CharacterAddingDialog from '@/browser/moleculers/CharacterAddingDialog.vue';
 import CharacterTable from '@/browser/moleculers/CharacterTable.vue';
 import FixedBottomRight from '@/browser/atoms/FixedBottomRight.vue';
 
 export default {
-  mixins: [
-    bindAsList('characters'),
-  ],
   components: {
     AddFab,
     CharacterAddingDialog,
@@ -30,6 +26,10 @@ export default {
     addingDialog: false,
   }),
   props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
     room: {
       required: true,
       type: Object,

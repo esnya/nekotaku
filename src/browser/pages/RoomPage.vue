@@ -42,10 +42,10 @@
   loading(v-else)
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as Routes from '../routes';
 import { IntervalTimer } from '../utilities/timer';
-import { bindAsObject } from '@/browser/models';
 import { mapGetters } from 'vuex';
 import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
 import ChatTab from '@/browser/moleculers/ChatTab.vue';
@@ -66,11 +66,7 @@ const saveRoomTab = debounce((roomId, roomTab) => {
   sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
 }, 1000);
 
-export default {
-  mixins: [
-    bindAsObject('members', false),
-    bindAsObject('room', false),
-  ],
+@Component({
   components: {
     CharacterTab,
     ChatTab,
@@ -81,45 +77,44 @@ export default {
     RoomMenu,
     NotFound,
   },
-  data() {
-    return {
-      drawer: false,
-      roomTab: '0',
-      prevRoomTab: '0',
-      timer: null,
-      notFound: false,
-    };
-  },
-  computed: {
-    ...mapGetters([
-      'chatControl',
-    ]),
-    title() {
-      return this.room ? `${this.room.title} - ${config.title}` : config.title;
-    },
-  },
-  methods: {
-    async updateMember() {
-      const {
-        name,
-        color,
-      } = this.chatControl;
-      await this.$models.members.update(this.roomId, { name, color });
-    },
-  },
-  watch: {
-    room({ id }) {
-      document.title = this.title;
+})
+export default class RoomPage extends Vue {
+  @BindAsList(memberDAO) members!: Member[];
+  @BindAsObject(roomDAO) room!: Room | null;
+  
+  drawer: boolean = false;
+  roomTab: string = '0';
+  prevRoomTab:string = '0';
+  timer: any = null;
+  notFound: boolean = false;
+  
+  get title() {
+    return this.room ? `${this.room.title} - ${config.title}` : config.title;
+  }
 
-      const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
-      if (roomTab) this.roomTab = roomTab;
-    },
-    roomTab(roomTab, oldValue) {
-      this.prevRoomTab = oldValue;
+  async updateMember() {
+    const {
+      name,
+      color,
+    } = this.chatControl;
+    await this.$models.members.update(this.roomId, { name, color });
+  }
 
-      saveRoomTab(this.roomId, roomTab);
-    },
-  },
+  @Watch('room')
+  room({ id }) {
+    document.title = this.title;
+
+    const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
+    if (roomTab) this.roomTab = roomTab;
+  }
+
+  @Watch('roomTab')
+  roomTab(roomTab, oldValue) {
+    this.prevRoomTab = oldValue;
+
+    saveRoomTab(this.roomId, roomTab);
+  }
+
   created() {
     run(async () => {
       try {
@@ -136,9 +131,10 @@ export default {
         }
       }
     });
-  },
+  }
+
   destroyed() {
     if (this.timer) this.timer.stop();
-  },
-};
+  }
+}
 </script>

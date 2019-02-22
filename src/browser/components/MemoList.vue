@@ -27,36 +27,38 @@
           v-btn(flat @click="addDialog = false") キャンセル
 </template>
 
-<script>
+<script lang="ts">
 import { InitialText, parseText } from '../utilities/memo';
-import { bindAsList } from '@/browser/models';
 import MemoListItem from '@/browser/components/MemoListItem.vue';
+import { Component, Vue } from 'vue-property-decorator';
+import memoDAO from '@/browser/dao/memoDAO';
+import { BindAsList } from '@/browser/decorators/dao';
+import Memo from '@/models/Memo';
 
-export default {
-  mixins: [
-    bindAsList('memos'),
-  ],
+@Component({
   components: {
     MemoListItem,
   },
-  data() {
-    return {
-      addDialog: false,
-      addText: InitialText,
-      InitialText,
-    };
-  },
-  methods: {
-    submitMemo() {
-      const data = parseText(this.addText);
+})
+export default class MemoList extends Vue {
+  @BindAsList(memoDAO) memos!: Memo[];
 
-      this.$models.memos.push(this.roomId, data);
+  addDialog: boolean = false;
+  addText: string = InitialText;
 
-      this.addDialog = false;
-      this.addText = InitialText;
-    },
-  },
-};
+  get initialText(): string {
+    return InitialText;
+  }
+
+  submitMemo() {
+    const data = parseText(this.addText);
+
+    memoDAO.add(data);
+
+    this.addDialog = false;
+    this.addText = InitialText;
+  }
+}
 </script>
 
 <style lang="stylus" scoped>

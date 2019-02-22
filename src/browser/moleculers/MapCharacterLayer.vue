@@ -9,13 +9,9 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import MapCharacterItem from '@/browser/atoms/MapCharacterPiece.vue';
 
 export default {
-  mixins: [
-    bindAsList('characters'),
-  ],
   components: {
     MapCharacterItem,
   },
@@ -25,6 +21,10 @@ export default {
     },
   },
   props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
   },
 };
 </script>

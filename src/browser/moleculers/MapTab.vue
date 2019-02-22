@@ -1,23 +1,25 @@
 <template lang="pug">
-  .neko-map-tab(v-if="map")
-    map-container(:map="map")
-    map-control(:map="map")
+  .neko-map-tab
+    map-container(:room="room")
+    map-control(:room="room")
 </template>
 
-<script>
-import { bindAsObject } from '@/browser/models';
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+
 import MapContainer from '@/browser/moleculers/MapContainer.vue';
 import MapControl from '@/browser/moleculers/MapControl.vue';
+import Room from '@/models/Room';
 
-export default {
-  mixins: [
-    bindAsObject('map'),
-  ],
+@Component({
   components: {
-    MapContainer,
     MapControl,
+    MapContainer,
   },
-};
+})
+export default class MapTab extends Vue {
+  @Prop() room!: Room;
+}
 </script>
 
 <style lang="stylus" scoped>

@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import { mapState } from 'vuex';
 import MapBackground from '@/browser/atoms/MapBackground.vue';
 import MapCharacterLayer from '@/browser/moleculers/MapCharacterLayer.vue';
@@ -22,10 +21,6 @@ import MapGrid from '@/browser/atoms/MapGrid.vue';
 import MapShapeLayer from '@/browser/moleculers/MapShapeLayer.vue';
 
 export default {
-  mixins: [
-    bindAsList('characters'),
-    bindAsList('shapes'),
-  ],
   components: {
     MapBackground,
     MapCharacterLayer,
@@ -80,7 +75,11 @@ export default {
     this.$controller.destroy();
   },
   props: {
-    map: {
+    characters: {
+      required: true,
+      type: Array,
+    },
+    room: {
       required: true,
       type: Object,
     },

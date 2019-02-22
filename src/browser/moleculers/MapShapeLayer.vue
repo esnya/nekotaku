@@ -9,34 +9,32 @@
     )
 </template>
 
-<script>
-import { bindAsList } from '@/browser/models';
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import MapShapeItem from '@/browser/moleculers/MapShapeItem.vue';
+import { BindAsList } from '@/browser/decorators/dao';
+import shapeDAO from '@/browser/dao/shapeDAO';
+import Shape from '@/models/Shape';
 
-export default {
-  mixins: [
-    bindAsList('shapes'),
-  ],
+@Component({
   components: {
     MapShapeItem,
   },
-  computed: {
-    showHandle() {
-      const {
-        mode,
-      } = this;
+})
+export default class MapShapeLayer extends Vue {
+  @BindAsList(shapeDAO) shapes!: Shape[];
+  @Prop({ required: true }) mode!: string;
 
-      return mode === 'move' || mode === 'erase';
-    },
-    sortedShapes() {
-      return this.shapes.slice().sort((a, b) => a.z > b.z);
-    },
-  },
-  props: {
-    mode: {
-      required: true,
-      type: String,
-    },
-  },
-};
+  get showHandle() {
+    const {
+      mode,
+    } = this;
+
+    return mode === 'move' || mode === 'erase';
+  }
+
+  get sortedShapes() {
+    return this.shapes.slice().sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+  }
+}
 </script>

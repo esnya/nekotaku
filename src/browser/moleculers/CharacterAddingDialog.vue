@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import { bindAsObject } from '@/browser/models';
 import AddDialog from '@/browser/moleculers/AddDialog.vue';
 import CharacterAttributeInput from '@/browser/atoms/CharacterAttributeInput.vue';
 import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
@@ -27,7 +26,6 @@ import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {
   mixins: [
-    bindAsObject('room'),
     modelWrapper(Boolean, true),
   ],
   components: {
@@ -70,6 +68,12 @@ export default {
     },
     close() {
       this.onInput(false);
+    },
+  },
+  props: {
+    room: {
+      required: true,
+      type: Object,
     },
   },
 };

@@ -5,7 +5,6 @@ import 'vuetify/dist/vuetify.min.css';
 import { sync } from 'vuex-router-sync';
 import App from '@/browser/App.vue';
 import Dice from 'vue-dice-component';
-import Models from '@/browser/models';
 import VeeValidate from 'vee-validate';
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
@@ -39,16 +38,6 @@ async function main() {
 
   Vue.use(Vuetify, { theme });
   VueExtensions.forEach((ext: any) => Vue.use(ext));
-  Vue.mixin({
-    computed: {
-      roomId() {
-        return (this.$route as any).params.roomId;
-      },
-      $models() {
-        return Models;
-      },
-    },
-  });
 
   Vue.directive('scroll', {
     inserted(el, binding) {

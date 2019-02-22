@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import { mapGetters } from 'vuex';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import ChatConfigurationDialog from '@/browser/moleculers/ChatConfigurationDialog.vue';
@@ -27,7 +26,6 @@ import modelWrapper from '@/browser/mixins/modelWrapper';
 
 export default {
   mixins: [
-    bindAsList('characters'),
     modelWrapper(Boolean, true),
   ],
   components: {
@@ -54,6 +52,10 @@ export default {
     },
   },
   props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
     members: {
       required: true,
       type: Object,

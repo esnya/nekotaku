@@ -3,6 +3,8 @@
 import ControllerStrategy from './ControllerStrategy';
 import getShapeCreateStrategy, { ShapeCreateStrategy } from './ShapeCreateStrategy';
 import Point from './Point';
+import store from '../store';
+import shapeDAO from '../dao/shapeDAO';
 
 export default class EraseControllerStrategy extends ControllerStrategy {
   private shapeStrategy?: ShapeCreateStrategy;
@@ -10,9 +12,7 @@ export default class EraseControllerStrategy extends ControllerStrategy {
   onTouchMap(location: Point, event: Event): void {
     event.preventDefault();
 
-    const {
-      shapeType,
-    } = this.store.state.mapControl;
+    const shapeType = store.state.mapShapeType;
 
     const shapeStrategy = getShapeCreateStrategy(shapeType)
     this.shapeStrategy = shapeStrategy;
@@ -20,11 +20,13 @@ export default class EraseControllerStrategy extends ControllerStrategy {
 
     const shape = {
       type: shapeType,
-      ...this.store.state.mapControl.style,
+      x: 0,
+      y: 0,
+      ...store.state.mapStyle,
       ...shapeStrategy.onCreate(location, { x: 0, y: 0 }),
     };
 
-    this.models.shapes.push(this.roomId, shape).then((id) => {
+    shapeDAO.add(shape).then((id) => {
       this.select('shape', { id }, location);
     });
   }
@@ -32,7 +34,7 @@ export default class EraseControllerStrategy extends ControllerStrategy {
   onMove(location: Point): void {
     if (!this.selectedId || !this.shapeStrategy) return;
     const shape = this.shapeStrategy.onMove(location, this.offset);
-    this.models.shapes.update(this.roomId, this.selectedId, shape);
+    shapeDAO.update(shape, this.selectedId);
   }
 
   onStop(): void {

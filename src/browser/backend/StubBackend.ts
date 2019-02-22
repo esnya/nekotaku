@@ -21,6 +21,7 @@ import CollectionPath from './CollectionPath';
 import PathElement from './PathElement';
 import Model from '@/models/Model';
 import Unsubscribe from './Unsubscribe';
+import { async } from '../utilities/memory';
 
 function getParentPath(path: string): string | null {
   return path.replace(/\/?[^/]+$/, '') || null;
@@ -124,6 +125,24 @@ class StubStorage {
   set<T>(path: string, data: T): void {
     set(this.data, path.replace(/\//g, '.'), data);
   }
+}
+
+function v2filter(value: any): Model {
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    password,
+    ...others
+  } = value;
+
+  return {
+    ...others,
+    id,
+    createdAt,
+    updatedAt,
+    isLocked: password ? true : undefined,
+  };
 }
 
 export default class StubBackend implements Backend {
@@ -305,6 +324,8 @@ export default class StubBackend implements Backend {
   }
 
   /* v2 */
+  private v2eventBus = new EventEmitter();
+
   async v2getUserId(): Promise<string> {
     return UserId;
   }
@@ -327,7 +348,21 @@ export default class StubBackend implements Backend {
     onChanged: (value: Model) => void,
     onRemoved: (id: string) => void,
   ): Promise<Unsubscribe> {
-    throw new Error('ToDo');
+    log.info('subscribeChild', { path });
+
+    const {
+      collection,
+    } = path;
+
+    this.v2eventBus.on(`${collection}:added`, value => onAdded(v2filter(value)));
+    this.v2eventBus.on(`${collection}:changed`, value => onChanged(v2filter(value)));
+    this.v2eventBus.on(`${collection}:removed`, onRemoved);
+
+    return async () => {
+      this.v2eventBus.off(`${collection}:added`, onAdded);
+      this.v2eventBus.off(`${collection}:changed`, onChanged);
+      this.v2eventBus.off(`${collection}:removed`, onRemoved);
+    };
   }
 
   async v2subscribeValue(

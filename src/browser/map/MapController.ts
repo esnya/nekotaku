@@ -1,10 +1,9 @@
-import { Store } from 'vuex';
 import CreateControllerStrategy from './CreateControllerStrategy';
 import EraseControllerStrategy from './EraseControllerStrategy';
 import MoveControllerStrategy from './MoveControllerStrategy';
 import ControllerStrategy from './ControllerStrategy';
-import ListModel from '../models/ListModel';
 import Entity from './Entity';
+import store from '../store';
 
 function on(event: string, callback: (e: MouseEvent | TouchEvent) => void) {
   const wrappedCallback = (e: Event) => {
@@ -27,23 +26,18 @@ function getEventLocation(event: MouseEvent | TouchEvent): { clientX: number, cl
 }
 
 export default class MapController {
-  private store: Store<any>;
   private container: HTMLElement;
   private controllerStrategies: { [key: string]: ControllerStrategy };
   private unsubscribers: (() => void)[];
 
   constructor(
-    store: Store<any>,
-    models: { [key: string]: ListModel },
-    roomId: string,
     container: HTMLElement,
   ) {
-    this.store = store;
     this.container = container;
     this.controllerStrategies = {
-      create: new CreateControllerStrategy(store, models, roomId),
-      erase: new EraseControllerStrategy(store, models, roomId),
-      move: new MoveControllerStrategy(store, models, roomId),
+      create: new CreateControllerStrategy(),
+      erase: new EraseControllerStrategy(),
+      move: new MoveControllerStrategy(),
     };
 
     this.unsubscribers = [
@@ -64,7 +58,7 @@ export default class MapController {
     const parent = container.parentElement;
     if (!parent) throw new Error('Failed to get parent element');
 
-    const size = 50 * (2 ** this.store.state.mapControl.zoom);
+    const size = 50 * (2 ** store.state.mapZoom);
     return {
       x: (clientX - container.offsetLeft + parent.scrollLeft) / size,
       y: (clientY - container.offsetTop + parent.scrollTop) / size,
@@ -72,7 +66,7 @@ export default class MapController {
   }
 
   get controllerStrategy(): ControllerStrategy {
-    const { mode } = this.store.state.mapControl;
+    const mode = store.state.mapMode;
     const controllerStrategy = this.controllerStrategies[mode];
     if (!controllerStrategy) throw new Error(`Invalid map editing mode: ${mode}`);
     return controllerStrategy;

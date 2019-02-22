@@ -27,9 +27,6 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ],
-    "plugins": [
-      { "name": "ts-vue-plugin" }
     ]
   },
   "include": [

@@ -1,37 +1,28 @@
-import { Store } from 'vuex';
-import ListModel from '../models/ListModel';
+import store from '@/browser/store';
 import Entity from './Entity';
 import Point from './Point';
+import characterDAO from '../dao/characterDAO';
+import shapeDAO from '../dao/shapeDAO';
 
 export default class ControllerStrategy {
-  protected store: Store<any>;
-  protected models: { [key: string]: ListModel };
-  protected roomId: string;
-
-  constructor(store: Store<any>, models: { [key: string]: ListModel }, roomId: string) {
-    this.store = store;
-    this.models = models;
-    this.roomId = roomId;
-  }
-
   get selected() {
-    return this.store.state.mapControl.selected;
+    return store.state.mapSelected;
   }
 
-  get selectedId() {
+  get selectedId(): string | null {
     return this.selected && this.selected.id;
   }
 
-  get selectedType() {
+  get selectedType(): string | null {
     return this.selected && this.selected.type;
   }
 
-  get offset() {
-    return this.selected && this.selected.offset;
+  get offset(): Point {
+    return this.selected ? this.selected.offset : { x: 0, y: 0 };
   }
 
   select(type: string, entity: Entity, location: Point): void {
-    this.store.commit('selectEntity', {
+    store.commit('selectEntity', {
       type,
       id: entity.id,
       offset: location,
@@ -39,13 +30,13 @@ export default class ControllerStrategy {
   }
 
   deselect(): void {
-    this.store.commit('deselectEntity');
+    store.commit('deselectEntity');
   }
 
   updateSelected(data: {}): void {
-    if (!this.selected) return;
-    const model = this.selectedType === 'character' ? this.models.characters : this.models.shapes;
-    model.update(this.roomId, this.selectedId, data);
+    if (!this.selectedId) return;
+    const model = this.selectedType === 'character' ? characterDAO : shapeDAO;
+    model.update(data, this.selectedId);
   }
 
   onMove(location: Point): void {}

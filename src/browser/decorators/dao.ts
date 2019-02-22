@@ -39,7 +39,7 @@ function bind(subscribe: (component: any, propertyKey: string) => Promise<Unsubs
 
 export function BindAsList<CollectionKey, ItemKey, Add, Update, Value extends Model>(
   dao: DAO<CollectionKey, ItemKey, Add, Update, Value>,
-  options: ListOptions,
+  options: ListOptions = {},
 ) {
   return bind((component: any, propertyKey: string) => dao.subscribeChild(
     (value: Value) => {

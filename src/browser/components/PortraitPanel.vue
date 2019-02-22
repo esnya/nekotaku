@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import fromPairs from 'lodash/fromPairs';
 import mapValues from 'lodash/mapValues';
 import take from 'lodash/take';
@@ -31,10 +30,6 @@ import uniqBy from 'lodash/uniqBy';
 const N = 3;
 
 export default {
-  mixins: [
-    bindAsList('characters'),
-    bindAsList('messages'),
-  ],
   computed: {
     portraits() {
       const characterPortraitPairs = this.characters
@@ -64,6 +59,16 @@ export default {
       open: true,
     };
   },
+  props: {
+    characters: {
+      required: true,
+      type: Array,
+    },
+    messages: {
+      required: true,
+      type: Array,
+    },
+  }
 };
 </script>
 
