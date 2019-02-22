@@ -38,9 +38,19 @@ export const RoomPassword: RouteConfig = {
   }),
 };
 
+export const Sushi: RouteConfig = {
+  path: '/🍣',
+  name: '🍣',
+  component: () => ({
+    component: import(/* webpackChunkName: 'Sushi' */ '@/browser/pages/🍣.vue') as any,
+    loading: Loading,
+  }),
+};
+
 export default [
   Lobby,
   Debug,
+  Sushi,
   Room,
   RoomPassword,
 ];
