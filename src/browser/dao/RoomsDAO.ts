@@ -1,5 +1,5 @@
 import ListDAOBase, { ListItemBase } from '@/browser/dao/ListDAOBase';
-import Room, { RoomAddData } from '@/types/data/Room';
+import Room, { RoomAddData } from '@/models/Room';
 
 export type ItemKey = string;
 

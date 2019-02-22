@@ -1,7 +1,7 @@
 export default function modelWrapper(type: Object, required: boolean): Object {
   return {
     methods: {
-      onInput(event: Event) {
+      onInput(this: any, event: Event) {
         this.$emit('input', event);
       },
     },

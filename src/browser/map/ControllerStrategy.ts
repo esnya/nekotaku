@@ -1,8 +1,14 @@
-
 import { Store } from 'vuex';
+import ListModel from '../models/ListModel';
+import Entity from './Entity';
+import Point from './Point';
 
 export default class ControllerStrategy {
-  constructor(store: Store, models: Object, roomId: string) {
+  protected store: Store<any>;
+  protected models: { [key: string]: ListModel };
+  protected roomId: string;
+
+  constructor(store: Store<any>, models: { [key: string]: ListModel }, roomId: string) {
     this.store = store;
     this.models = models;
     this.roomId = roomId;
@@ -24,7 +30,7 @@ export default class ControllerStrategy {
     return this.selected && this.selected.offset;
   }
 
-  select(type: string, entity: Object, location: Object) {
+  select(type: string, entity: Entity, location: Point): void {
     this.store.commit('selectEntity', {
       type,
       id: entity.id,
@@ -32,23 +38,19 @@ export default class ControllerStrategy {
     });
   }
 
-  deselect() {
+  deselect(): void {
     this.store.commit('deselectEntity');
   }
 
-  updateSelected(data: {}) {
+  updateSelected(data: {}): void {
     if (!this.selected) return;
     const model = this.selectedType === 'character' ? this.models.characters : this.models.shapes;
     model.update(this.roomId, this.selectedId, data);
   }
 
-  onMove() {}
-
-  onStop() {}
-
-  onTouchMap() {}
-
-  onTouchCharacter() {}
-
-  onTouchShape() {}
+  onMove(location: Point): void {}
+  onStop(): void {}
+  onTouchMap(location: Point, event: Event): void {}
+  onTouchCharacter(location: Point, character: Entity): void {}
+  onTouchShape(location: Point, shape: Entity): void {}
 }

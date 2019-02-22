@@ -124,6 +124,7 @@
     "stylus-loader": "^3.0.2",
     "ts-node": "^8.0.2",
     "ts-node-dev": "^1.0.0-pre.32",
+    "ts-vue-plugin": "^0.2.0",
     "typescript": "^3.3.3",
     "update-changelog": "^1.0.2",
     "vue-cli-plugin-vuetify": "^0.4.6",

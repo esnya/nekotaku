@@ -1,5 +1,5 @@
 import PrivateDataDAO from './PrivateDataDAO';
-import DataWithId from '@/types/data/DataWithId';
+import DataWithId from '@/models/DataWithId';
 
 export interface Password {
   password?: string | null;

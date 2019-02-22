@@ -1,11 +1,11 @@
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import Callback from '@/browser/dao/Callback';
 import DAO from '@/browser/dao/DAO';
-import ObjectDataType from '@/types/data/ObjectDataType';
+import ObjectDataType from '@/models/ObjectDataType';
 import Unsubscriber from './Unsubscriber';
 import backend from '@/browser/backend';
 import router from '../router';
-import DataWithId from '@/types/data/DataWithId';
+import DataWithId from '@/models/DataWithId';
 
 export default abstract class ObjectDAO<Data, UpdateData> implements DAO {
   get roomId(): string {

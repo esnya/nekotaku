@@ -38,11 +38,11 @@ async function main() {
   });
 
   Vue.use(Vuetify, { theme });
-  VueExtensions.forEach(ext => Vue.use(ext));
+  VueExtensions.forEach((ext: any) => Vue.use(ext));
   Vue.mixin({
     computed: {
       roomId() {
-        return this.$route.params.roomId;
+        return (this.$route as any).params.roomId;
       },
       $models() {
         return Models;

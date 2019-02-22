@@ -16,8 +16,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import CharacterIconSizeInput from '@/browser/atoms/CharacterIconSizeInput.vue';
 import CharactersDAO from '@/browser/dao/CharactersDAO';
 import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
-import Character from '@/types/data/Character';
-import Room from '@/types/data/Room';
+import Character from '@/models/Character';
+import Room from '@/models/Room';
 
 const charactersDAO = new CharactersDAO();
 

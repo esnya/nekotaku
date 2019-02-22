@@ -10,10 +10,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import DiceHelpDialog from '@/browser/moleculers/DiceHelpDialog.vue';
-import Member from '@/types/data/Member';
+import Member from '@/models/Member';
 import MemberListDialog from '@/browser/moleculers/MemberListDialog.vue';
-import Members from '@/types/data/Members';
-import Room from '@/types/data/Room';
+import Members from '@/models/Members';
+import Room from '@/models/Room';
 import RoomCreatedAtChip from '@/browser/moleculers/RoomCreatedAtChip.vue';
 import RoomDiceChip from '@/browser/atoms/RoomDiceChip.vue';
 import RoomMembersChip from '@/browser/atoms/RoomMembersChip.vue';

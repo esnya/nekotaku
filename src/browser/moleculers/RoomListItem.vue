@@ -16,7 +16,7 @@
 import * as Routes from '../routes';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import JoinButton from '@/browser/atoms/JoinButton.vue';
-import Room from '@/types/data/Room';
+import Room from '@/models/Room';
 import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';
 
 @Component({

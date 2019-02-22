@@ -1,7 +1,7 @@
 import ListDAOBase, { ListItemBase } from '@/browser/dao/ListDAOBase';
 import router from '../router';
-import ListItemDataType from '@/types/data/ListItemDataType';
-import DataWithId from '@/types/data/DataWithId';
+import ListItemDataType from '@/models/ListItemDataType';
+import DataWithId from '@/models/DataWithId';
 
 export default abstract class ListDAO<Data extends ListItemBase, AddData, UpdateData, ItemKey>
   extends ListDAOBase<Data, AddData, UpdateData, ItemKey> {

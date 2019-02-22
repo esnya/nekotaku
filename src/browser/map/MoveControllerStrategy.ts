@@ -2,19 +2,21 @@
 
 import { snap } from './utilities';
 import ControllerStrategy from './ControllerStrategy';
+import Point from './Point';
+import Entity from './Entity';
 
 export default class MoveControllerStrategy extends ControllerStrategy {
-  onTouchCharacter(location: Object, character: Object) {
+  onTouchCharacter(location: Point, character: Entity): void {
     this.select('character', character, location);
     this.updateSelected({ z: Date.now() });
   }
 
-  onTouchShape(location: Object, shape: Object) {
+  onTouchShape(location: Point, shape: Entity): void {
     this.select('shape', shape, location);
     this.updateSelected({ z: Date.now() });
   }
 
-  onMove(location: { x: number, y: number }) {
+  onMove(location: { x: number, y: number }): void {
     if (!this.selected) return;
 
     this.updateSelected({
@@ -23,7 +25,7 @@ export default class MoveControllerStrategy extends ControllerStrategy {
     });
   }
 
-  onStop() {
+  onStop(): void {
     this.deselect();
   }
 }

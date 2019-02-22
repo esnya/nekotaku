@@ -1,5 +1,5 @@
 import ListDAO from '@/browser/dao/ListDAO';
-import Character, { CharacterAddData, CharacterUpdateData } from '@/types/data/Character';
+import Character, { CharacterAddData, CharacterUpdateData } from '@/models/Character';
 
 type ItemKey = string;
 

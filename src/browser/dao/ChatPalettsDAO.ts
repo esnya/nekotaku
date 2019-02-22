@@ -1,6 +1,6 @@
 import ObjectDAO from './ObjectDAO';
 import PrivateDataDAO from './PrivateDataDAO';
-import DataWithId from '@/types/data/DataWithId';
+import DataWithId from '@/models/DataWithId';
 
 export interface ChatPalette {
   title: string;

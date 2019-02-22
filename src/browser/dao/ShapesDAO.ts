@@ -1,5 +1,5 @@
 import ListDAO from '@/browser/dao/ListDAO';
-import ListItemDataType from '@/types/data/ListItemDataType';
+import ListItemDataType from '@/models/ListItemDataType';
 
 export interface Shape extends ListItemDataType {
   type: string;

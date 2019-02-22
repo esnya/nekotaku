@@ -3,7 +3,7 @@ import Callback from '@/browser/dao/Callback';
 import DAO from '@/browser/dao/DAO';
 import Unsubscriber from './Unsubscriber';
 import backend from '../backend';
-import DataWithId from '@/types/data/DataWithId';
+import DataWithId from '@/models/DataWithId';
 
 export interface ListItemBase {
   id: string;

@@ -34,7 +34,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import Loading from '@/browser/atoms/Loading.vue';
-import Room, { RoomAddData } from '@/types/data/Room';
+import Room, { RoomAddData } from '@/models/Room';
 import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
 import RoomsDAO from '../dao/RoomsDAO';

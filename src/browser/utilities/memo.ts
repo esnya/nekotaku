@@ -1,4 +1,4 @@
-import { Memo } from '@/types/data/Memo';
+import { Memo } from '@/models/Memo';
 
 export function parseText(text: string): Memo {
   const m = text.match(/^(.*?)\r?\n--\r?\n((.|\r|\n)*?)(\r?\n--\r?\n((.|\r|\n)*?))?$/);

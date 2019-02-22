@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import Member from '@/types/data/Member';
+import Member from '@/models/Member';
 
 @Component
 export default class MemberListItem extends Vue {
