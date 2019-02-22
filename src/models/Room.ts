@@ -1,21 +1,25 @@
-import ObjectDataType from './ObjectDataType';
+import Model from './Model';
 
-export default interface Room extends ObjectDataType {
+export default interface Room extends Model {
   channels: string[];
   characterAttributes: string[];
   dice: string;
   title: string;
+  mapBackgroundImageUrl?: string | null;
+  mapGrid: boolean;
+  mapHeight: number;
+  mapWidth: number;
 }
 
-export interface RoomAddData {
-  // channels: string[];
+export interface RoomAdd {
+  channels: string[];
   characterAttributes: string[];
   dice: string;
   title: string;
   password?: string;
 }
 
-export interface RoomUpdateData {
+export interface RoomUpdate {
   channels?: string[];
   characterAttributes?: string[];
   dice?: string;

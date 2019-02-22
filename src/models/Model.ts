@@ -1,5 +1,5 @@
-export default interface Model {
+import Timestamp from './Timestamp';
+
+export default interface Model extends Timestamp {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

@@ -1,6 +1,11 @@
-export default interface Member {
-  uid: string;
+import Model from '@/models/Model';
+
+export default interface Member extends Model {
   color: string;
   name: string;
-  updatedAt: number;
+}
+
+export interface MemberUpdate {
+  color: string;
+  name: string;
 }

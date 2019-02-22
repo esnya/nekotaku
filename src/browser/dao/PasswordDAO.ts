@@ -1,19 +1,14 @@
-import PrivateDataDAO from './PrivateDataDAO';
-import DataWithId from '@/models/DataWithId';
+import Password, { PasswordUpdate } from '@/models/Password';
+import Model from '@/models/Model';
+import UserDataDAO from './UserDataDAO';
 
-export interface Password {
-  password?: string | null;
-}
-
-export default class PasswordDAO extends PrivateDataDAO<Password, Password> {
-  getName(): string {
+export class PasswordDAO extends UserDataDAO<PasswordUpdate, Password> {
+  getCollectionName(): string {
     return 'passwords';
   }
 
-  reader(data: DataWithId): Password {
-    return {
-      password: null,
-      ...data,
-    };
+  read(value: Model): Password {
+    return value;
   }
 }
+export default new PasswordDAO();

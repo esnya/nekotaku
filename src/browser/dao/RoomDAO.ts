@@ -1,20 +1,32 @@
-import ObjectDAO from '@/browser/dao/ObjectDAO';
-import Room, { RoomUpdateData } from '@/models/Room';
-import DataWithId from '@/models/DataWithId';
+import DAO from '@/browser/dao/DAO';
+import Room, { RoomAdd, RoomUpdate } from '@/models/Room';
+import CollectionPath from '../backend/CollectionPath';
+import { parseCollectionPath, concatItemId, getRoomId } from './utilities';
+import Model from '@/models/Model';
+import PathElement from '../backend/PathElement';
 
-export default class RoomDAO extends ObjectDAO<Room, RoomUpdateData> {
-  getName(): string {
-    return 'rooms';
+export const collectionPath = parseCollectionPath('rooms');
+
+export class RoomDAO extends DAO<void, void, RoomAdd, RoomUpdate, Room> {
+  async getCollectionPath(): Promise<CollectionPath> {
+    return collectionPath;
   }
 
-  reader(data: DataWithId): Room {
+  async getItemPath(key: void): Promise<PathElement[]> {
+    return concatItemId(collectionPath, getRoomId());
+  }
+
+  read(value: Model): Room {
     return {
-      ...ObjectDAO.reader(data),
-      channels: [],
+      channels: ['メイン'],
       characterAttributes: [],
       dice: 'DiceBot',
-      title: '新しい卓',
-      ...data,
+      title: '卓',
+      mapGrid: true,
+      mapHeight: 10,
+      mapWidth: 10,
+      ...value,
     };
   }
 }
+export default new RoomDAO();

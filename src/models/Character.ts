@@ -1,32 +1,34 @@
-import ObjectDataType from './ObjectDataType';
+import Model from './Model';
 
-export interface CharacterPortrait {
-  url?: string | null;
-}
-
-export default interface Character extends ObjectDataType {
+export default interface Character extends Model {
   attributes: string[];
-  icon?: string | null;
+  iconSize: number;
+  iconUrl?: string | null;
   initiative: number;
   name: string;
-  portrait: { [fase: string]: CharacterPortrait };
+  portraitUrl?: string | null;
   x: number;
   y: number;
-  iconSize: number;
 }
 
-export interface CharacterAddData {
+export interface CharacterAdd {
   attributes: [];
-  name: string;
+  iconUrl?: string | null;
+  iconSize: number;
   initiative: number;
-  icon?: string | null;
-  portrait?: { [fase: string]: CharacterPortrait };
+  name: string;
+  portraitUrl?: string | null;
+  x: number;
+  y: number;
+}
+
+export interface CharacterUpdate {
+  attributes?: string[];
+  iconUrl?: string | null;
+  iconSize?: number;
+  initiative?: number;
+  name?: string;
+  portraitUrl?: string | null;
   x?: number;
   y?: number;
-  iconSize: number;
-}
-
-export interface CharacterUpdateData {
-  name?: string;
-  iconSize?: number;
 }
