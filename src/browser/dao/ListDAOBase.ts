@@ -1,8 +1,9 @@
 import * as ListEvent from '@/constants/ListEvent';
 import Callback from '@/browser/dao/Callback';
-import DAO, { DataWithId } from '@/browser/dao/DAO';
+import DAO from '@/browser/dao/DAO';
 import Unsubscriber from './Unsubscriber';
 import backend from '../backend';
+import DataWithId from '@/types/data/DataWithId';
 
 export interface ListItemBase {
   id: string;

@@ -1,7 +1,7 @@
 import mapValues from 'lodash/mapValues';
-import { DataWithId } from './DAO';
 import ObjectDAO from './ObjectDAO';
 import backend from '../backend';
+import DataWithId from '@/types/data/DataWithId';
 
 export interface Member {
   name: string;

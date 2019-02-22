@@ -10,7 +10,9 @@ export default class ObjectModel extends Model {
     const unsubscribe = await this.backend.subscribe(
       this.getPath(roomId),
       ObjectEvent.Value,
-      value => callback(ObjectEvent.Value, defaultsDeep(value, this.getDefault())),
+      (value) => {
+        callback(ObjectEvent.Value, defaultsDeep(value, this.getDefault()));
+      },
     );
 
     return unsubscribe;

@@ -81,6 +81,7 @@ function parsePath(path: string): {
         query: { id: roomId },
         subPath: [childId, ...subPathArray].join('/'),
       };
+    case 'chat-paletts':
     case 'members':
     case 'passwords':
       return {

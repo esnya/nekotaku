@@ -15,7 +15,7 @@ const FilePath = config.file.path;
 const datastore = new Datastore({ ...config, logger: datastoreLogger });
 
 app.use(express.static(PublicPath));
-app.use('/files/:fileId', async (req, res) => {
+app.use('/files/:fileId', async (req: express.Request, res: express.Response) => {
   const {
     fileId,
   } = req.params;
@@ -28,4 +28,4 @@ app.use('/files/:fileId', async (req, res) => {
     res.sendFile(path.resolve(FilePath, fileId));
   }
 });
-app.get('*', (req, res) => res.sendFile(path.join(PublicPath, 'index.html')));
+app.get('*', (req: express.Request, res: express.Response) => res.sendFile(path.join(PublicPath, 'index.html')));

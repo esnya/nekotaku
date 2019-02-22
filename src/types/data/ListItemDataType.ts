@@ -1,3 +1,3 @@
-import { DataType } from '@/browser/dao/DAO';
+import DataType from './DataType';
 
 export default interface ListItemDataType extends DataType {}

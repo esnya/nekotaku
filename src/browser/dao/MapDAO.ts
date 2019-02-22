@@ -1,6 +1,6 @@
-import { DataWithId } from './DAO';
 import ObjectDAO from '@/browser/dao/ObjectDAO';
 import ObjectDataType from '@/types/data/ObjectDataType';
+import DataWithId from '@/types/data/DataWithId';
 
 export interface Map extends ObjectDataType {
   grid: boolean;

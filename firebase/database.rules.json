@@ -25,8 +25,8 @@
 		},
     "chat-paletts": {
       "$roomId": {
+        ".read": "auth.uid !== null && root.child('members/' + $roomId + '/' + auth.uid).exists()",
         "$uid": {
-          ".read": "auth.uid === $uid && root.child('members/' + $roomId + '/' + auth.uid).exists()",
           ".write": "auth.uid === $uid && root.child('members/' + $roomId + '/' + auth.uid).exists()"
         }
       }

@@ -1,6 +1,6 @@
 <template lang="pug">
-  bottom-dialog(:container="false" :value="value" @input="onInput" v-if="chatPaletts")
-    chat-palette-tabs(:chat-paletts="chatPaletts" @close="onInput(false)")
+  bottom-dialog(:container="false" :value="value" @input="onInput")
+    chat-palette-tabs(:chat-paletts="chatPaletts || {}" @close="onInput(false)")
 </template>
 
 <script>
