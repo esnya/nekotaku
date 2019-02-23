@@ -1,29 +1,29 @@
 <template lang="pug">
   simple-dialog(title="表示設定" :value="value" @input="$emit('input', $event)")
-    messages-limit-input(:value="messagesLimit" @input="updateMessagesLimit")
+    messages-limit-input(:value="viewLimit" @input="setViewLimit")
 </template>
 
-<script>
-import { mapActions, mapGetters } from 'vuex';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import MessagesLimitInput from '@/browser/atoms/MessagesLimitInput.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
+import chatStore from '@/browser/store/chatStore';
 
-export default {
+@Component({
   components: {
     MessagesLimitInput,
     SimpleDialog,
   },
-  computed: mapGetters([
-    'messagesLimit',
-  ]),
-  methods: mapActions([
-    'updateMessagesLimit',
-  ]),
-  props: {
-    value: {
-      required: true,
-      type: Boolean,
-    },
-  },
-};
+})
+export default class ViewConfigurationDialog extends Vue {
+  @Prop({ required: true }) value!: boolean;
+
+  get viewLimit() {
+    return chatStore.viewLimit;
+  }
+
+  setViewLimit(viewLimit: number) {
+    chatStore.setViewLimit(viewLimit);
+  }
+}
 </script>

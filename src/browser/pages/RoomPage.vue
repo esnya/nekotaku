@@ -1,140 +1,39 @@
 <template lang="pug">
-  .app(v-if="room && members && !notFound")
-    v-toolbar.primary.app-bar(dark fixed)
-      img(src="/img/nekokoro32.png")
-      v-toolbar-title
-        v-layout(row)
-          v-avatar.mr-1(v-if="room && room.isLocked" size="24px")
-            v-icon(dark) lock_outline
-          div {{room && room.title}}
-      v-spacer
-      room-menu.mr-0
-    transition(name="neko-slide")
-      main
-        chat-tab(:members="members" :room="room" v-show="roomTab === '0'")
-        memo-list(v-show="roomTab === '1'")
-        character-tab(
-          :room="room"
-          v-show="roomTab === '2'"
-        )
-        map-tab(v-show="roomTab === '3'")
-        dice-panel
-        v-bottom-nav(
-          color="white"
-          :active.sync="roomTab"
-          :class="{ 'no-shadow': roomTab !== '1' || roomTab !== '2' }"
-          :fixed="true"
-          :value="true"
-        )
-          v-btn(flat color="primary" value="0")
-            span チャット
-            v-icon mdi-forum
-          v-btn(flat color="primary" value="1")
-            span 共有メモ
-            v-icon mdi-note-multiple
-          v-btn(flat color="primary" value="2")
-            span キャラクター
-            v-icon mdi-account-multiple
-          v-btn(flat color="primary" value="3")
-            span マップ
-            v-icon mdi-map-marker-radius
-  not-found(v-else-if="notFound")
-  loading(v-else)
+  room-container(v-if="!notFound")
+  not-found(v-else)
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import * as Routes from '../routes';
-import { IntervalTimer } from '../utilities/timer';
-import { mapGetters } from 'vuex';
-import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
-import ChatTab from '@/browser/moleculers/ChatTab.vue';
-import DicePanel from '@/browser/moleculers/DicePanel.vue';
-import Loading from '@/browser/atoms/Loading.vue';
-import MapTab from '@/browser/moleculers/MapTab.vue';
-import MemoList from '@/browser/components/MemoList.vue';
-import NotFound from '@/browser/moleculers/NotFound.vue';
-import NotFoundError from '@/browser/backend/NotFoundError';
-import RoomMenu from '@/browser/components/RoomMenu.vue';
+import RoomContainer from '@/browser/moleculers/RoomContainer.vue';
+import memberDAO from '@/browser/dao/memberDAO';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import config from '../config';
-import debounce from 'lodash/debounce';
-import run from '@/browser/utilities/task';
-import sessionStorage from '@/browser/wrappers/sessionStorage';
-
-const saveRoomTab = debounce((roomId, roomTab) => {
-  sessionStorage.setItem(`nekotaku:${roomId}:roomTab`, roomTab);
-}, 1000);
+import NotFoundError from '@/browser/backend/NotFoundError';
+import NotFound from '@/browser/moleculers/NotFound.vue';
+import { RoomPassword } from '@/browser/routes';
 
 @Component({
   components: {
-    CharacterTab,
-    ChatTab,
-    DicePanel,
-    Loading,
-    MapTab,
-    MemoList,
-    RoomMenu,
     NotFound,
+    RoomContainer,
   },
 })
 export default class RoomPage extends Vue {
-  @BindAsList(memberDAO) members!: Member[];
-  @BindAsObject(roomDAO) room!: Room | null;
-  
-  drawer: boolean = false;
-  roomTab: string = '0';
-  prevRoomTab:string = '0';
-  timer: any = null;
   notFound: boolean = false;
-  
-  get title() {
-    return this.room ? `${this.room.title} - ${config.title}` : config.title;
-  }
 
-  async updateMember() {
-    const {
-      name,
-      color,
-    } = this.chatControl;
-    await this.$models.members.update(this.roomId, { name, color });
-  }
-
-  @Watch('room')
-  room({ id }) {
-    document.title = this.title;
-
-    const roomTab = sessionStorage.getItem(`nekotaku:${id}:roomTab`);
-    if (roomTab) this.roomTab = roomTab;
-  }
-
-  @Watch('roomTab')
-  roomTab(roomTab, oldValue) {
-    this.prevRoomTab = oldValue;
-
-    saveRoomTab(this.roomId, roomTab);
-  }
-
-  created() {
-    run(async () => {
-      try {
-        await this.updateMember();
-        await this.bindModels();
-        this.width = window.innerWidth;
-        this.timer = new IntervalTimer(() => this.updateMember(), 5 * 1000);
-      } catch (e) {
-        if (e instanceof UnauthorizedError) this.$router.push({ name: Routes.RoomPassword.name });
-        else if (e instanceof NotFoundError) this.notFound = true;
-        else {
-          console.error(e);
-          this.$router.push({ name: Routes.Lobby.name });
-        }
+  async created() {
+    try {
+      await memberDAO.update({
+        name: 'ななしさん',
+        color: '#000000',
+      });
+    } catch (e) {
+      if (e instanceof UnauthorizedError) this.$router.push({ name: RoomPassword.name });
+      else if (e instanceof NotFoundError) this.notFound = true;
+      else {
+        alert(e.toString());
       }
-    });
-  }
-
-  destroyed() {
-    if (this.timer) this.timer.stop();
+    }
   }
 }
 </script>

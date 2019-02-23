@@ -23,7 +23,7 @@ export default {
     },
     remove() {
       run(async () => {
-        await this.$models.room.remove(this.roomId);
+        await roomDAO.remove();
         this.close();
         this.$router.push({ name: Routes.Lobby.name });
       });

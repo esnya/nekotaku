@@ -21,7 +21,8 @@
     main
       v-container(fluid :grid-list-md="true")
         room-list(:rooms="rooms")
-      room-create-dialog
+        add-fab(@click="rcOpen = true")
+    room-create-dialog(v-model="rcOpen")
     changelog-dialog(v-model="cdOpen")
     feedback-dialog(v-model="fdOpen")
 </template>
@@ -30,16 +31,18 @@
 import * as Routes from '@/browser/routes';
 import { BindAsList } from '../decorators/dao';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import AddFab from '@/browser/atoms/AddFab.vue';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import Room, { RoomAdd } from '@/models/Room';
-import RoomCreateDialog from '@/browser/components/RoomCreateDialog.vue';
+import RoomCreateDialog from '@/browser/moleculers/RoomCreateDialog.vue';
 import RoomList from '@/browser/moleculers/RoomList.vue';
 import roomDAO from '../dao/roomDAO';
 import config from '../config';
 
 @Component({
   components: {
+    AddFab,
     ChangelogDialog,
     FeedbackDialog,
     RoomCreateDialog,
@@ -48,8 +51,10 @@ import config from '../config';
 })
 export default class LobbyPage extends Vue {
   @BindAsList(roomDAO, { reverse: true }) rooms!: Room[];
+
   cdOpen: boolean = false;
   fdOpen: boolean = false;
+  rcOpen: boolean = false;
 
   get title() {
     return config.title;

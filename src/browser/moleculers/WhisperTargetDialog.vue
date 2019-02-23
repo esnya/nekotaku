@@ -1,43 +1,40 @@
 <template lang="pug">
-  bottom-dialog(:value="value" @input="onInput")
+  bottom-dialog(:value="value" @input="$emit('input', $event)")
     v-layout(align-end)
       whisper-target-select(
         :members="members"
-        :value="whisperTargets"
-        @input="updateWhisperTargets"
+        :value="to"
+        @input="setTo"
       )
       clear-icon-button(@click="updateWhisperTargets(null)")
 </template>
 
-<script>
-import { mapGetters, mapMutations } from 'vuex';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import ClearIconButton from '@/browser/atoms/ClearIconButton.vue';
 import WhisperTargetSelect from '@/browser/atoms/WhisperTargetSelect.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
+import chatStore from '@/browser/store/chatStore';
+import Member from '@/models/Member';
 
-export default {
-  mixins: [modelWrapper(Boolean, true)],
+@Component({
   components: {
     ClearIconButton,
     BottomDialog,
     WhisperTargetSelect,
   },
-  computed: {
-    ...mapGetters([
-      'whisperTargets',
-    ]),
-  },
-  methods: {
-    ...mapMutations([
-      'updateWhisperTargets',
-    ]),
-  },
-  props: {
-    members: {
-      required: true,
-      type: Object,
-    },
-  },
-};
+})
+export default class WhisperTargetDialog extends Vue {
+  @Prop({ required: true }) value!: boolean;
+  @Prop({ required: true }) members!: Member[];
+
+  get to(): string[] | null {
+    return chatStore.to;
+  }
+
+  setTo(to: string[] | null) {
+    chatStore.to = to;
+  }
+}
 </script>

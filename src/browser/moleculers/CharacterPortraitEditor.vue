@@ -101,6 +101,9 @@ export default {
 
       this.face = value;
     },
+    created() {
+      throw new Error('ToDo');
+    },
   },
   props: {
     character: {

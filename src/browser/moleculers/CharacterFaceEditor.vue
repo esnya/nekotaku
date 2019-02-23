@@ -34,7 +34,7 @@ export default {
         character,
         face,
       } = this;
-      this.$models.characters.updatePortrait(roomId, character.id, face, file);
+      throw new Error('ToDo');
     },
     clear() {
       const {
@@ -42,8 +42,8 @@ export default {
         character,
         face,
       } = this;
-      this.$models.characters.removePortrait(roomId, character.id, face);
       this.$emit('clear');
+      throw new Error('ToDo');
     },
   },
   props: {
@@ -55,8 +55,6 @@ export default {
       required: true,
       type: String,
     },
-  },
-  props: {
     room: {
       required: true,
       type: Object,

@@ -48,7 +48,7 @@ export default {
   }),
   methods: {
     deleteCharacter() {
-      this.$models.characters.remove(this.roomId, this.character.id);
+      characterDAO.remove(this.character.id);
     },
   },
   props: {

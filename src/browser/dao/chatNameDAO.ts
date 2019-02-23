@@ -6,7 +6,7 @@ import backend from '../backend';
 export class ChatNameDAO
   extends RoomPrivateChildDAO<ChatNameAdd, ChatNameUpdate, ChatName> {
   getCollectionName(): string {
-    return 'chat-name';
+    return 'chat-names';
   }
 
   read(value: Model): ChatName {

@@ -43,6 +43,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import { InitialText, parseText, toText } from '../utilities/memo';
+import messageDAO from '@/browser/dao/messageDAO';
+import memoDAO from '@/browser/dao/memoDAO';
 
 function byLine(text) {
   if (typeof text !== 'string') return text;
@@ -84,8 +86,7 @@ export default {
           title,
         } = this.memo;
 
-        this.$models.messages.push(
-          this.roomId,
+        messageDAO.add(
           {
             name,
             title,
@@ -99,10 +100,10 @@ export default {
     },
     async update() {
       const data = parseText(this.memoText);
-      await this.$models.memos.update(this.roomId, this.memo.id, data);
+      await memoDAO.update(data, this.memo.id);
     },
     async remove() {
-      await this.$models.memos.remove(this.roomId, this.memo.id);
+      await memoDAO.remove(this.memo.id);
     },
   },
   watch: {

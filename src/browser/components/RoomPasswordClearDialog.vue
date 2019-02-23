@@ -17,7 +17,7 @@ export default {
   methods: {
     async clear() {
       this.close();
-      await this.$models.room.update(this.roomId, { password: null });
+      await roomDAO.update({ password: null });
     },
     close() {
       this.$emit('input', false);

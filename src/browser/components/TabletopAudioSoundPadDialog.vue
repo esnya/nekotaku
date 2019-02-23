@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     onInput(value) {
-      this.$models.room.update(this.room.id, { taspdUrl: value });
+      roomDAO.update({ taspdUrl: value });
     },
   },
   props: {

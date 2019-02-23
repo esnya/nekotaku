@@ -30,6 +30,7 @@ interface MapStyleUpdate {
 }
 
 interface State {
+  chatLimit: number;
   chatMessage: string | null;
   chatNameId: string | null;
   chatTo: string[] | null,
@@ -42,6 +43,7 @@ interface State {
 }
 
 const initialState: State = {
+  chatLimit: 100,
   chatMessage: null,
   chatNameId: null,
   chatTo: null,

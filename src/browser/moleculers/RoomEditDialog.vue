@@ -6,6 +6,7 @@
 <script>
 import RoomEditForm from '@/browser/moleculers/RoomEditForm.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
+import roomDAO from '@/browser/dao/roomDAO';
 
 export default {
   components: {
@@ -14,7 +15,7 @@ export default {
   },
   methods: {
     onUpdateRoom(value) {
-      this.$models.room.update(this.roomId, value);
+      roomDAO.update(value);
     },
   },
   props: {

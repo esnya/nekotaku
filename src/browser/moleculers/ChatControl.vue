@@ -52,7 +52,7 @@ export default {
         dice,
       } = this.room;
 
-      this.$models.messages.push(this.roomId, {
+      messageDAO.add({
         channel,
         body,
         color,

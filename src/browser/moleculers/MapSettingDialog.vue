@@ -16,6 +16,7 @@ import ImageEditor from '@/browser/moleculers/ImageEditor.vue';
 import MapGridCheckbox from '@/browser/atoms/MapGridCheckbox.vue';
 import MapSizeInput from '@/browser/atoms/MapSizeInput.vue';
 import SimpleDialog from '@/browser/moleculers/SimpleDialog.vue';
+import roomDAO from '@/browser/dao/roomDAO';
 
 function field(key) {
   return {
@@ -23,7 +24,7 @@ function field(key) {
       return this.map[key];
     },
     set(value) {
-      this.$models.map.update(this.roomId, { [key]: value });
+      roomDAO.update({ [key]: value });
     },
   };
 }
@@ -36,16 +37,16 @@ export default {
     SimpleDialog,
   },
   computed: {
-    height: field('height'),
-    grid: field('grid'),
-    width: field('width'),
+    height: field('mapHeight'),
+    grid: field('mapGrid'),
+    width: field('mapWidth'),
   },
   methods: {
     async clearBackgroundImage() {
-      await this.$models.map.removeBackgroundImage(this.roomId);
+      throw new Error('ToDo');
     },
     async updateBackgroundImage(file) {
-      await this.$models.map.updateBackgroundImage(this.roomId, file);
+      throw new Error('ToDo');
     },
   },
   props: {

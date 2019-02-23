@@ -68,6 +68,7 @@
     "vue-youtube": "^1.3.0",
     "vuetify": "^1.3.0",
     "vuex": "^3.0.1",
+    "vuex-class-modules": "^1.0.0",
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
@@ -109,7 +110,7 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.3.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "firebase-mock": "^2.2.10",
-    "firebase-tools": "^6.3.1",
+    "firebase-tools": "^6.4.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jsdom": "^13.1.0",
     "jsdom-global": "^3.0.2",

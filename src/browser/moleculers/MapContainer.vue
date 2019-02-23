@@ -65,9 +65,6 @@ export default {
   },
   mounted() {
     this.$controller = new MapController(
-      this.$store,
-      this.$models,
-      this.roomId,
       this.$refs.container,
     );
   },

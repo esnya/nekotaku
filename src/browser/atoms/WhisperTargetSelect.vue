@@ -6,26 +6,21 @@
     label="秘話設定"
     :items="items"
     :value="value"
-    @input="onInput"
+    @input="$emit('input', $event)"
   )
 </template>
 
-<script>
-import map from 'lodash/map';
-import modelWrapper from '@/browser/mixins/modelWrapper';
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import Member from '@/models/Member';
 
-export default {
-  mixins: [modelWrapper(Array, false)],
-  computed: {
-    items() {
-      return map(this.members, v => v.name).filter(a => a);
-    },
-  },
-  props: {
-    members: {
-      required: true,
-      type: Object,
-    },
-  },
-};
+@Component
+export default class WhisperTargetSelect extends Vue {
+  @Prop() value: string[] | null = null;
+  @Prop({ required: true }) members!: Member[];
+
+  get items(): string[] {
+    return this.members.map(member => member.name);
+  }
+}
 </script>

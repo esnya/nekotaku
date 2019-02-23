@@ -21,7 +21,8 @@ import CollectionPath from './CollectionPath';
 import PathElement from './PathElement';
 import Model from '@/models/Model';
 import Unsubscribe from './Unsubscribe';
-import { async } from '../utilities/memory';
+import Room from '@/models/Room';
+import { concatItemId } from '../dao/utilities';
 
 function getParentPath(path: string): string | null {
   return path.replace(/\/?[^/]+$/, '') || null;
@@ -143,6 +144,10 @@ function v2filter(value: any): Model {
     updatedAt,
     isLocked: password ? true : undefined,
   };
+}
+
+function v2getObjectPath(path: PathElement[]): string {
+  return path.map(e => e.id).join('/');
 }
 
 export default class StubBackend implements Backend {
@@ -323,19 +328,129 @@ export default class StubBackend implements Backend {
     }
   }
 
-  /* v2 */
+  /* v2 Utilities */
   private v2eventBus = new EventEmitter();
+  private v2data: { [collection: string]: { [key: string]: {} } } = {
+    'chat-names': {},
+    members: {},
+    memos: {},
+    messages: {},
+    rooms: {
+      '-room01': {
+        id: '-room01',
+        channels: ['メイン', '雑談'],
+        characterAttributes: ['HP', 'MP'],
+        dice: 'SwordWorld2_0',
+        title: '卓01',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      '-room02': {
+        id: '-room02',
+        channels: ['メイン', '雑談'],
+        characterAttributes: ['HP', 'SAN'],
+        dice: 'Cthulhu7th',
+        title: '卓02',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    },
+  };
 
+  v2dataInsert<T extends Timestamp>(
+    collection: string,
+    collectionObjectPath: string,
+    value: T,
+  ): string {
+    if (!(collection in this.v2data)) throw new Error(`Invalid collection name: ${collection}`);
+
+    const id = shortid();
+    const objectPath = [collectionObjectPath, id].filter(a => a).join('/');
+    this.v2data[collection][objectPath] = {
+      id,
+      ...value,
+    };
+    return id;
+  }
+
+  v2dataUpdate<T extends { updatedAt: Date }>(
+    collection: string,
+    objectId: string,
+    id: string,
+    value: T,
+  ): void {
+    if (!(collection in this.v2data)) throw new Error(`Invalid collection name: ${collection}`);
+
+    const oldValue = this.v2data[collection][objectId];
+    this.v2data[collection][objectId] = {
+      ...oldValue,
+      ...value,
+      id,
+    };
+  }
+
+  v2dataFind(collection: string, collectionObjectPath: string): any[] {
+    if (!(collection in this.v2data)) throw new Error(`Invalid collection name: ${collection}`);
+
+    return Object.keys(this.v2data[collection])
+      .filter(objectId => objectId.match(new RegExp(`^${collectionObjectPath}`)))
+      .map(objectId => this.v2data[collection][objectId]);
+  }
+
+  v2dataFindOne(collection: string, objectPath: string): any {
+    if (!(collection in this.v2data)) throw new Error(`Invalid collection name: ${collection}`);
+
+    return this.v2data[collection][objectPath] || null;
+  }
+
+  /* v2 API */
   async v2getUserId(): Promise<string> {
     return UserId;
   }
 
   async v2add<T extends Timestamp>(path: CollectionPath, value: T): Promise<string> {
-    throw new Error('ToDo');
+    log.info('add', { path, value });
+
+    const {
+      parentPath,
+      collection,
+    } = path;
+    if (parentPath.length !== 0) throw new Error('ToDo');
+
+    const collectionObjectPath = v2getObjectPath(parentPath);
+
+    const id = this.v2dataInsert(collection, collectionObjectPath, value);
+
+    setTimeout(() => {
+      const objectPath = v2getObjectPath(concatItemId(path, id));
+      const addedValue = this.v2dataFindOne(collection, objectPath);
+      this.v2eventBus.emit(`${collection}:added`, addedValue);
+      this.v2eventBus.emit(`${collection}:${id}:value`, addedValue);
+    });
+
+    log.info('data', this.v2data);
+
+    return id;
   }
 
   async v2update<T extends { updatedAt: Date }>(path: PathElement[], value: T): Promise<void> {
-    throw new Error('ToDo');
+    log.info('update', { path, value });
+
+    const {
+      collection,
+      id,
+    } = path[path.length - 1];
+    const objectPath = v2getObjectPath(path);
+
+    this.v2dataUpdate(collection, objectPath, id, value);
+
+    setTimeout(() => {
+      const updatedValue = this.v2dataFindOne(collection, objectPath);
+      this.v2eventBus.emit(`${collection}:changed`, updatedValue);
+      this.v2eventBus.emit(`${collection}:${id}:value`, updatedValue);
+    });
+
+    log.info('data', this.v2data);
   }
 
   async v2remove(path: PathElement[]): Promise<void> {
@@ -351,12 +466,19 @@ export default class StubBackend implements Backend {
     log.info('subscribeChild', { path });
 
     const {
+      parentPath,
       collection,
     } = path;
 
     this.v2eventBus.on(`${collection}:added`, value => onAdded(v2filter(value)));
     this.v2eventBus.on(`${collection}:changed`, value => onChanged(v2filter(value)));
     this.v2eventBus.on(`${collection}:removed`, onRemoved);
+
+    setTimeout(() => {
+      const collectionObjectPath = v2getObjectPath(parentPath);
+      const items = this.v2dataFind(collection, collectionObjectPath);
+      items.forEach((item: any) => onAdded(v2filter(item)));
+    });
 
     return async () => {
       this.v2eventBus.off(`${collection}:added`, onAdded);
@@ -369,6 +491,22 @@ export default class StubBackend implements Backend {
     path: PathElement[],
     onValue: (value: Model | null) => void,
   ): Promise<Unsubscribe> {
-    throw new Error('ToDo');
+    log.info('subscribeValue', { path });
+
+    const {
+      collection,
+      id,
+    } = path[path.length - 1];
+
+    this.v2eventBus.on(`${collection}:${id}:value`, value => onValue(v2filter(value)));
+
+    setTimeout(() => {
+      const value = this.v2dataFindOne(collection, v2getObjectPath(path));
+      onValue(v2filter(value));
+    });
+
+    return async () => {
+      this.v2eventBus.off(`${collection}:${id}:value`, value => onValue(v2filter(value)));
+    };
   }
 }

@@ -46,7 +46,7 @@ export default {
 
       const { password } = this;
       this.close();
-      await this.$models.room.update(this.roomId, { password });
+      await roomDAO.update({ password });
     },
   },
   props: {

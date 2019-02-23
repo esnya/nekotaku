@@ -45,7 +45,7 @@ export default {
         character,
       } = this;
 
-      this.$models.characters.update(roomId, character.id, value);
+      characterDAO.update(value, character.id);
     },
     updateAttribute(index, value) {
       this.update({

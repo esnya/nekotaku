@@ -23,6 +23,7 @@ import CharacterAttributeInput from '@/browser/atoms/CharacterAttributeInput.vue
 import CharacterInitiativeInput from '@/browser/atoms/CharacterInitiativeInput.vue';
 import CharacterNameInput from '@/browser/atoms/CharacterNameInput.vue';
 import modelWrapper from '@/browser/mixins/modelWrapper';
+import characterDAO from '@/browser/dao/characterDAO';
 
 export default {
   mixins: [
@@ -52,15 +53,13 @@ export default {
         name,
       } = this;
 
-      this.$models.characters.push(
-        this.room.id,
+      characterDAO.add(
         {
-          x: 0.5,
-          y: 0.5,
-          z: Date.now(),
           attributes,
           initiative,
           name,
+          x: 0.5,
+          y: 0.5,
         },
       );
 

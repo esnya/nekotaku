@@ -8,7 +8,10 @@ interface ListOptions {
   reverse?: boolean;
 }
 
-function bind(subscribe: (component: any, propertyKey: string) => Promise<Unsubscribe>) {
+function bind<T>(
+  subscribe: (component: any, propertyKey: string) => Promise<Unsubscribe>,
+  initialize: () => T,
+) {
   return (prototype: any, propertyKey: string) => {
     const unsubscribeKey = Symbol('unsubscribe');
 
@@ -16,7 +19,7 @@ function bind(subscribe: (component: any, propertyKey: string) => Promise<Unsubs
     const originalDestroyed = prototype.destroyed;
     Object.defineProperties(prototype, {
       [propertyKey]: {
-        value: [],
+        value: initialize(),
       },
       created: {
         async value(): Promise<void> {
@@ -25,6 +28,7 @@ function bind(subscribe: (component: any, propertyKey: string) => Promise<Unsubs
             if (result instanceof Promise) await result;
           }
 
+          this[propertyKey] = initialize();
           this[unsubscribeKey] = await subscribe(this, propertyKey);
         },
       },
@@ -54,7 +58,7 @@ export function BindAsList<CollectionKey, ItemKey, Add, Update, Value extends Mo
       component[propertyKey] = component[propertyKey].filter((item: Value) => item.id !== id);
     },
     typeof component.getCollectionKey === 'function' ? component.getCollectionKey() : null,
-  ));
+  ), () => []);
 }
 
 export function BindAsObject<CollectionKey, ItemKey, Add, Update, Value extends Model>(
@@ -65,5 +69,5 @@ export function BindAsObject<CollectionKey, ItemKey, Add, Update, Value extends 
       component[propertyKey] = value;
     },
     typeof component.getItemKey === 'function' ? component.getItemKey() : null,
-  ));
+  ), () => null);
 }

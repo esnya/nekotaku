@@ -2,6 +2,9 @@
   v-tooltip
     v-btn(
       fab
+      fixed
+      bottom
+      right
       color="primary"
       slot="activator"
       @click="$emit('click', $event)"
