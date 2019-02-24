@@ -109,7 +109,13 @@ https://nekotaku.nekometer.info
   $ node index.js
   ```
 
-### E. Docker Compose
+### E. Docker
+```
+$ docker-run -d mongo --name nekotaku-db
+$ docker-run -d nekometer/nekotaku --name nekotaku -p 8080:8080 --link nekotaku-db:db
+```
+
+### F. Docker Compose
 1. Build Docker Image.
   ```
   $ docker-compose build

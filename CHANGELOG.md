@@ -1,5 +1,9 @@
 # 更新履歴
 
+## [Unreleased]
+### その他
+- Docker Hub に登録したよ！ nekometer/nekotaku を pull してね！
+
 ## [1.11.2] - 2019-02-22
 ### 修正
 - 画像がアップロードできない（iOS） #60
