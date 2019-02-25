@@ -7,6 +7,7 @@
 /lib
 /node_modules
 /public/assets
+/tests/e2e/videos
 /*.log
 /data/db
 *.swp
