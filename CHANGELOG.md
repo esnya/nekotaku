@@ -1,6 +1,9 @@
 # 更新履歴
 
 ## [Unreleased]
+### 修正
+- Socketバックエンドモードでロビーに卓が表示されない問題を修正
+
 ### その他
 - Docker Hub に登録したよ！ nekometer/nekotaku を pull してね！
 
