@@ -111,8 +111,8 @@ https://nekotaku.nekometer.info
 
 ### E. Docker
 ```
-$ docker-run -d mongo --name nekotaku-db
-$ docker-run -d nekometer/nekotaku --name nekotaku -p 8080:8080 --link nekotaku-db:db
+$ docker run -d --name nekotaku-db mongo
+$ docker run -d --name nekotaku -p 8080:8080 --link nekotaku-db:db nekometer/nekotaku
 ```
 
 ### F. Docker Compose
