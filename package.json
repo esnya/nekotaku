@@ -3,27 +3,25 @@
   "version": "1.11.2",
   "private": true,
   "description": "ねこ卓：モバイルフレンドリーなオンラインセッション支援ツール",
-  "repository": "https://github.com/ukatama/nekotaku.git",
-  "license": "MIT",
   "author": "ukatama <dev.ukatama@gmail.com>",
-  "main": "index.js",
   "scripts": {
+    "serve": "vue-cli-service serve",
     "build": "run-s build:*",
+    "test": "run-s test:*",
+    "lint": "vue-cli-service lint",
     "build:browser": "vue-cli-service build",
     "build:server": "tsc --build src/server/tsconfig.json",
     "ci:before_deploy": "run-s ci:before_deploy:*",
     "ci:before_deploy:1": "node scripts/genFirebaseConfig.js > config/config.json",
     "ci:before_deploy:2": "cross-env NODE_ENV=production npm run build",
-    "ci:script": "run-s lint test:unit build",
+    "ci:script": "run-s lint test build",
     "clean": "rimraf dist",
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test:unit src/browser/components src/browser/backends src/browser/mixins src/browser/models src/browser/store src/browser/utilities",
     "firebase:deploy": "firebase deploy",
-    "lint": "vue-cli-service lint",
-    "serve": "vue-cli-service serve",
     "socket": "run-p socket:* watch:*",
     "socket:run": "ts-node-dev --project src/server/tsconfig.json src/server",
     "start": "npm run serve",
-    "test": "run-s test:*",
+    "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit -r ./tests/unit/setup.js --timeout 10000 tests/unit",
     "version": "update-changelog && git add CHANGELOG.md",
     "watch": "run-p watch:*",
@@ -91,7 +89,7 @@
     "@types/uuid": "^3.4.4",
     "@types/yargs": "^12.0.9",
     "@vue/cli-plugin-babel": "^3.1.1",
-    "@vue/cli-plugin-e2e-cypress": "^3.1.1",
+    "@vue/cli-plugin-e2e-cypress": "^3.4.1",
     "@vue/cli-plugin-eslint": "^3.1.1",
     "@vue/cli-plugin-pwa": "^3.1.1",
     "@vue/cli-plugin-typescript": "^3.4.0",
@@ -133,11 +131,14 @@
     "vue-template-compiler": "^2.5.22",
     "webpack": "^4.28.2"
   },
+  "license": "MIT",
+  "main": "index.js",
   "nyc": {
     "exclude": [
       "dist/**/*",
       "tests/**/*",
       "*.js"
     ]
-  }
+  },
+  "repository": "https://github.com/ukatama/nekotaku.git"
 }

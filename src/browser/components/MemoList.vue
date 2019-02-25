@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-container.pt-5.pb-5
+  v-container.pt-5.pb-5.neko-memo-tab
     v-layout.row.wrap.pb-5
       v-flex.pa-2(xs12 sm6 v-for="memo in memos" :key="memo.id")
         memo-list-item(

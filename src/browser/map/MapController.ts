@@ -8,10 +8,7 @@ import Entity from './Entity';
 
 function on(event: string, callback: (e: MouseEvent | TouchEvent) => void) {
   const wrappedCallback = (e: Event) => {
-    if (!(e instanceof MouseEvent || e instanceof TouchEvent)) {
-      throw new Error('Invalid event type');
-    }
-    callback(e);
+    callback(e as MouseEvent | TouchEvent);
   }
 
   window.addEventListener(event, wrappedCallback);

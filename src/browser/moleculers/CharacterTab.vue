@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  .neko-charcter-tab
     character-table(
       :characters="characters"
       :character-attribute-names="room.characterAttributes || []"

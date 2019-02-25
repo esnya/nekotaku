@@ -1,6 +1,6 @@
 <template lang="pug">
   v-dialog(v-model="open")
-    v-card(v-scroll="'y'")
+    v-card.neko-welcome-message-dialog(v-scroll="'y'")
       v-card-title
         span.headline {{welcomeMessage.title}}
       v-card-text.pb-0
