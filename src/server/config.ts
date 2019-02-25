@@ -1,8 +1,7 @@
 import fs from 'fs';
-import path from 'path';
+import args from './args';
 
-const configPath = path.join(__dirname, '../../config/server.json');
-const json = fs.readFileSync(configPath).toString();
+const json = fs.readFileSync(args.config).toString();
 const config = JSON.parse(json);
 
 export default config;
