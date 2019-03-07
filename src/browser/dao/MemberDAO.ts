@@ -16,7 +16,7 @@ export default class MemberDAO extends ObjectDAO<Members, Member> {
   }
 
   async getPath(): Promise<string> {
-    const uid = backend.getUID();
+    const uid = await backend.getUID();
     return `${this.getName()}/${this.roomId}/${uid}`;
   }
 
