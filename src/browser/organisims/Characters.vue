@@ -1,5 +1,5 @@
 <template lang="pug">
-  .neko-charcter-tab
+  .neko-charcter-tab(v-if="room")
     character-table(
       :characters="characters"
       :character-attribute-names="room.characterAttributes || []"
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
+import { bindAsList, bindAsObject } from '@/browser/models';
 import AddFab from '@/browser/atoms/AddFab.vue';
 import CharacterAddingDialog from '@/browser/moleculers/CharacterAddingDialog.vue';
 import CharacterTable from '@/browser/moleculers/CharacterTable.vue';

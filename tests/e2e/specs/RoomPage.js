@@ -7,14 +7,14 @@ describe('RoomPage', () => {
   });
 
   it('should sends new message', () => {
-    cy.contains('button', 'チャット').click();
+    cy.contains('.neko-room-bottom-nav a', 'チャット').click();
     cy.get('.neko-bottom-toolbar textarea').type('Test Message With Cypress');
     cy.contains('.neko-bottom-toolbar i', 'send').click();
     cy.contains('.v-card div', 'Test Message With Cypress');
   });
 
   it('should creates new character', () => {
-    cy.contains('button', 'キャラクター').click();
+    cy.contains('.neko-room-bottom-nav a', 'キャラクター').click();
     cy.contains('.neko-charcter-tab button', 'add').click();
     cy.get('input[aria-label="キャラクター名"]').first().type('でいびっど');
     cy.get('input[aria-label="HP"]').first().type('10/10');

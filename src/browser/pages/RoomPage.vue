@@ -1,43 +1,10 @@
 <template lang="pug">
-  .app(v-if="room && members && !notFound")
-    v-toolbar.primary.app-bar(dark fixed)
-      img(src="/img/nekokoro32.png")
-      v-toolbar-title
-        v-layout(row)
-          v-avatar.mr-1(v-if="room && room.isLocked" size="24px")
-            v-icon(dark) lock_outline
-          div {{room && room.title}}
-      v-spacer
-      room-menu.mr-0
-    transition(name="neko-slide")
-      main
-        chat-tab(:members="members" :room="room" v-show="roomTab === '0'")
-        memo-list(v-show="roomTab === '1'")
-        character-tab(
-          :room="room"
-          v-show="roomTab === '2'"
-        )
-        map-tab(v-show="roomTab === '3'")
-        dice-panel
-        v-bottom-nav(
-          color="white"
-          :active.sync="roomTab"
-          :class="{ 'no-shadow': roomTab !== '1' || roomTab !== '2' }"
-          :fixed="true"
-          :value="true"
-        )
-          v-btn(flat color="primary" value="0")
-            span チャット
-            v-icon mdi-forum
-          v-btn(flat color="primary" value="1")
-            span 共有メモ
-            v-icon mdi-note-multiple
-          v-btn(flat color="primary" value="2")
-            span キャラクター
-            v-icon mdi-account-multiple
-          v-btn(flat color="primary" value="3")
-            span マップ
-            v-icon mdi-map-marker-radius
+  .room-page.app(v-if="room && members && !notFound")
+    room-app-bar
+    main
+      router-view(:room="room")
+      dice-panel
+    room-bottom-nav
   not-found(v-else-if="notFound")
   loading(v-else)
 </template>
@@ -47,15 +14,13 @@ import * as Routes from '../routes';
 import { IntervalTimer } from '../utilities/timer';
 import { bindAsObject } from '@/browser/models';
 import { mapGetters } from 'vuex';
-import CharacterTab from '@/browser/moleculers/CharacterTab.vue';
-import ChatTab from '@/browser/moleculers/ChatTab.vue';
+import RoomAppBar from '@/browser/moleculers/RoomAppBar.vue';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
-import MapTab from '@/browser/moleculers/MapTab.vue';
-import MemoList from '@/browser/components/MemoList.vue';
 import NotFound from '@/browser/moleculers/NotFound.vue';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import RoomMenu from '@/browser/components/RoomMenu.vue';
+import RoomBottomNav from '@/browser/moleculers/RoomBottomNav.vue';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import config from '../config';
 import debounce from 'lodash/debounce';
@@ -72,14 +37,12 @@ export default {
     bindAsObject('room', false),
   ],
   components: {
-    CharacterTab,
-    ChatTab,
     DicePanel,
     Loading,
-    MapTab,
-    MemoList,
-    RoomMenu,
     NotFound,
+    RoomAppBar,
+    RoomBottomNav,
+    RoomMenu,
   },
   data() {
     return {

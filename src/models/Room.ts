@@ -5,6 +5,7 @@ export default interface Room extends ObjectDataType {
   characterAttributes: string[];
   dice: string;
   title: string;
+  isLocked?: boolean;
 }
 
 export interface RoomAddData {

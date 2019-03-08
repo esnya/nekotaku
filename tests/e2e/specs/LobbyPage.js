@@ -14,7 +14,7 @@ describe('LobbyPage', () => {
     cy.visit('/');
     cy.contains('.neko-welcome-message-dialog button', '閉じる').click();
     cy.contains('button', '参加').click();
-    cy.url().should('eq', 'http://localhost:8080/-room03');
+    cy.url().should('eq', 'http://localhost:8080/-room03/chat');
   });
 
   it('should creates and visit new room', () => {

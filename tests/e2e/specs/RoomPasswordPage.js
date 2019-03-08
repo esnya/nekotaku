@@ -34,6 +34,6 @@ describe('RoomPasswordPage', () => {
     cy.contains('button', '閉じる').click();
     cy.get('input[type="password"]').type('pass');
     cy.contains('button', '参加').click();
-    cy.url().should('eq', 'http://localhost:8080/-room01');
+    cy.url().should('eq', 'http://localhost:8080/-room01/chat');
   });
 });

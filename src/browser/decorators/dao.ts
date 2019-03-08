@@ -56,14 +56,14 @@ export class ListWrapper<
   }
 }
 
-const wrapperKey = Symbol('Wrapper');
-const unsubscribeKey = Symbol('Unsubscribe');
-
 function bind<T>(
   createWrapper: (parent: Vue, propertyKey: string) => Wrapper<T>,
   subscribe: boolean,
 ) {
   return (target: any, propertyKey: string) => {
+    const wrapperKey = Symbol('Wrapper');
+    const unsubscribeKey = Symbol('Unsubscribe');
+
     const { created, destroyed } = target;
 
     Object.defineProperty(target, propertyKey, {
@@ -72,6 +72,7 @@ function bind<T>(
     });
 
     Object.defineProperty(target, 'created', {
+      configurable: true,
       enumerable: true,
       writable: false,
       value() {
@@ -101,6 +102,9 @@ function bind<T>(
     });
 
     Object.defineProperty(target, 'destroyed', {
+      configurable: true,
+      enumerable: true,
+      writable: false,
       value() {
         if (destroyed) destroyed.call(this);
         if (subscribe) this[unsubscribeKey]();
