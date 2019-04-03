@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-bottom-sheet(
+  v-bottom-sheet.neko-bottom-dialog(
     :value="value"
     @input="onInput"
   )
@@ -45,3 +45,9 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus" scoped>
+.neko-bottom-dialog
+  overflow-y auto
+  --webkit-overflow-scrolling touch
+</style>
