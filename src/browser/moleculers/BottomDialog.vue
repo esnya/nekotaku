@@ -1,17 +1,17 @@
 <template lang="pug">
-  v-bottom-sheet.neko-bottom-dialog(
+  v-bottom-sheet(
     :value="value"
     @input="onInput"
   )
-    v-card
-      v-card-title(v-if="title")
+    v-card.neko-bottom-dialog-card
+      v-card-title.neko-bottom-dialog-title(v-if="title")
         div.headline {{title}}
         v-spacer
         close-button(@click="onInput(false)")
-      v-layout(v-else)
+      v-layout.neko-bottom-dialog-title(v-else)
         v-spacer
         close-button(@click="onInput(false)")
-      v-card-text(v-if="container")
+      v-card-text.neko-bottom-dialog-content(v-if="container")
         slot
       slot(v-else)
 </template>
@@ -47,7 +47,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.neko-bottom-dialog
+.neko-bottom-dialog-card
+  max-height 90vh
   overflow-y auto
   --webkit-overflow-scrolling touch
 </style>
