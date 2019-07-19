@@ -11,6 +11,7 @@ import {
   Watch,
 } from 'vue-property-decorator';
 import SimpleDialog from './SimpleDialog.vue';
+import { getInfo, Info } from '../utilities/bcdice';
 
 @Component({
   components: {
@@ -21,33 +22,16 @@ export default class DiceHelpDialog extends Vue {
   @Prop({ required: true }) private dice!: string;
   @Prop({ required: true }) private value!: boolean;
 
-  gameName: string | null = null;
-  helpMessage: string | null = null;
+  get info(): Info | null {
+    return getInfo(this.dice) || null;
+  }
+
+  get gameName(): string | null {
+    return this.info ? this.info.gameName : this.dice;
+  }
 
   get lines(): string[] {
-    const {
-      helpMessage,
-    } = this;
-    if (!helpMessage) return [];
-
-    return helpMessage.split(/\n/g);
-  }
-
-  private async updateDice(): Promise<void> {
-    const { getDiceBotDescByFilename, getHelpMessage } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
-    const desc = getDiceBotDescByFilename(this.dice);
-    this.gameName = desc ? desc.gameName : this.dice;
-
-    this.helpMessage = await getHelpMessage(this.dice);
-  }
-
-  @Watch('dice')
-  private onDiceChanged() {
-    this.updateDice();
-  }
-
-  private created() {
-    this.updateDice();
+    return this.info ? this.info.info.split(/\n/g) : [];
   }
 }
 </script>

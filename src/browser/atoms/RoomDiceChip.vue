@@ -11,26 +11,18 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
+import { getInfo, Info } from '../utilities/bcdice';
 
 @Component
 export default class RoomDiceChip extends Vue {
   @Prop({ required: true }) private dice!: string;
 
-  gameName: string | null = null;
-
-  private async updateGameTitle(): Promise<void> {
-    const { getDiceBotDescByFilename } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
-    const desc = getDiceBotDescByFilename(this.dice);
-    this.gameName = desc ? desc.gameName : this.dice;
+  get info(): Info | null {
+    return getInfo(this.dice) || null;
   }
 
-  @Watch('dice')
-  private onDiceChanged(): void {
-    this.updateGameTitle();
-  }
-
-  private created(): void {
-    this.updateGameTitle();
+  get gameName(): string | null {
+    return this.info && this.info.gameName;
   }
 }
 </script>

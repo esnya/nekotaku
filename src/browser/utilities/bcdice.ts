@@ -1,50 +1,20 @@
-import BCDice, { DiceBotLoader, DiceBotResolver } from 'bcdice-js';
+import BCDice, { Info } from 'bcdice';
 
-DiceBotResolver.setCustomLoader(filename => import(/* webpackChunkName: "dicebot" */ `bcdice-js/lib/diceBot/${filename}`), true);
+export { Info } from 'bcdice';
 
-interface DiceBotDesc {
-  filename: string;
-  gameType: string;
-  gameName: string;
+export const { infoList } = BCDice;
+
+export function getInfo(gameType: string): Info | undefined {
+  return BCDice.infoList.find(i => i.gameType === gameType);
 }
 
-const DiceBotDescs: DiceBotDesc[] = [
-  // { filename: 'DiceBot', gameType: 'DiceBot', gameName: 'ダイスボット' },
-  ...DiceBotLoader
-    .collectDiceBotDescriptions()
-    .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName })),
-];
-
-export function getDiceBotDescs(): DiceBotDesc[] {
-  return DiceBotDescs;
-}
-
-export function getDiceBotDescByFilename(filename: string): DiceBotDesc | undefined {
-  return DiceBotDescs.find(d => d.filename === filename);
-}
-
-export async function getHelpMessage(dice: string) {
-  const diceBot = await DiceBotLoader.loadUnknownGame(dice);
-  return diceBot && diceBot.getHelpMessage();
-}
-
-const bcdice = new BCDice();
-let currentDice: string | null = null;
-
-export async function executeDice(line: string, dice: string) {
-  if (currentDice !== dice) {
-    currentDice = dice;
-    await bcdice.setGameByTitle(dice);
+export async function roll(input: string, gameType: string): Promise<[string, number[][] | null]> {
+  try {
+    await import(`bcdice/lib/diceBot/${gameType}`);
+  } catch (e) {
+    console.error(e);
   }
 
-  bcdice.setCollectRandResult(true);
-  bcdice.setMessage(line);
-
-  const [result, secret] = bcdice.diceCommand();
-
-  return {
-    result,
-    secret,
-    diceResults: bcdice.getRandResults(),
-  };
+  const bcdice = new BCDice();
+  return bcdice.roll(input, gameType);
 }

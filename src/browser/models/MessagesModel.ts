@@ -1,5 +1,6 @@
 import Backend from '@/browser/backend/Backend';
 import ListModel from '@/browser/models/ListModel';
+import { getInfo, roll } from '../utilities/bcdice';
 
 export interface MessageNode {
   type: string;
@@ -9,27 +10,23 @@ export interface MessageNode {
 async function parseBody(body: string | MessageNode[], dice?: string): Promise<MessageNode[]> {
   if (typeof body !== 'string') return body;
   if (dice) {
-    const {
-      executeDice,
-      getDiceBotDescByFilename,
-    } = await import(/* webpackChunkName: "bcdice" */ '@/browser/utilities/bcdice');
-
-    const diceBotDesc = getDiceBotDescByFilename(dice);
-
-    const {
+    const [
       result,
       diceResults,
-    } = await executeDice(body, dice);
+    ] = await roll(body, dice || 'DiceBot');
+
+    const info = getInfo(dice || 'DiceBot');
+    const gameName = info && info.gameName;
 
     const textNodes = body.split(/\n/g).map(text => ({ type: 'text', text }));
-    const diceResultNodes = result === '1'
-      ? []
-      : [{
+    const diceResultNodes = result
+      ? [{
         type: 'dice',
-        dice: diceBotDesc ? diceBotDesc.gameType : dice,
+        dice: gameName || dice,
         text: result.replace(/^: /, ''),
         diceResults,
-      }];
+      }]
+      : [];
 
     return [
       ...textNodes,

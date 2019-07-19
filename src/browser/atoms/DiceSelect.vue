@@ -2,11 +2,9 @@
   v-autocomplete(
     required
     name="dice"
-    item-text="gameName"
-    item-value="filename"
     label="ダイスの種類"
     :error-messages="errors.collect('dice')"
-    :items="diceBotDescs"
+    :items="items"
     :menu-props="{ zIndex:10000 }"
     :value="value"
     @input="$emit('input', $event)"
@@ -14,25 +12,26 @@
   )
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      diceBotDescs: [],
-    };
-  },
-  async created() {
-    const { getDiceBotDescs } = await import(/* webpackChunkName: "bcdice" */'../utilities/bcdice');
-    this.diceBotDescs = getDiceBotDescs();
-  },
-  props: {
-    value: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
-};
+<script lang="ts">
+import {
+  Component,
+  Prop,
+  Vue,
+  Watch,
+} from 'vue-property-decorator';
+import { infoList } from '../utilities/bcdice';
+
+@Component
+export default class DiceSelect extends Vue {
+  @Prop({ required: false, type: String }) value?: string;
+
+  get items(): { text: string, value: string}[] {
+    return [
+      { text: '標準ダイスボット', value: 'DiceBot' },
+      ...infoList.map(i => ({ text: i.gameName, value: i.gameType })),
+    ];
+  }
+}
 </script>
 
 <style lang="stylus">
