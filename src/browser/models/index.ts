@@ -1,3 +1,6 @@
+import mapValues from 'lodash/mapValues';
+import shortid from 'shortid';
+import Vue from 'vue';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants//ObjectEvent';
 import CharactersModel from '@/browser/models/CharactersModel';
@@ -10,10 +13,7 @@ import PasswordsModel from '@/browser/models/PasswordsModel';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import ShapesModel from '@/browser/models/ShapesModel';
-import Vue from 'vue';
 import backend from '@/browser/backend';
-import mapValues from 'lodash/mapValues';
-import shortid from 'shortid';
 
 const Models = {
   characters: CharactersModel,
@@ -32,7 +32,7 @@ const models = mapValues(Models, Model => new Model(backend));
 export default models;
 
 function bind(
-  name: string,
+  name: keyof typeof Models,
   autoBind: boolean,
   init: () => any,
   callback: (event: string, data: { id: string }) => void,
@@ -53,7 +53,7 @@ function bind(
       const binder = async () => {
         this[unsubscribeKey] = await models[name].subscribe(
           this.roomId || null,
-          (event, data) => callback.call(this, event, data),
+          (event: string, data: any) => callback.call(this, event, data),
         );
       };
       if (autoBind) await binder();
@@ -71,7 +71,7 @@ function bind(
 }
 
 export function bindAsList(
-  name: string,
+  name: keyof typeof Models,
   isReversed: boolean = false,
   autoBind: boolean = true,
 ) {
@@ -101,7 +101,7 @@ export function bindAsList(
   );
 }
 
-export function bindAsObject(name: string, autoBind: boolean = true) {
+export function bindAsObject(name: keyof typeof Models, autoBind: boolean = true) {
   return bind(
     name,
     autoBind,
