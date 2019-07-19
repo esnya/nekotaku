@@ -1,6 +1,6 @@
+import defaultsDeep from 'lodash/defaultsDeep';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import Model, { filter } from '@/browser/models/Model';
-import defaultsDeep from 'lodash/defaultsDeep';
 
 export default class ObjectModel extends Model {
   async subscribe(

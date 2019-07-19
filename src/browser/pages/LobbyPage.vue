@@ -28,9 +28,9 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import * as Routes from '@/browser/routes';
 import { BindAsList } from '../decorators/dao';
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import ChangelogDialog from '@/browser/moleculers/ChangelogDialog.vue';
 import FeedbackDialog from '@/browser/moleculers/FeedbackDialog.vue';
 import Loading from '@/browser/atoms/Loading.vue';

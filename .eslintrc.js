@@ -26,6 +26,7 @@ module.exports = {
     'lines-between-class-members': off,
     'no-restricted-imports': [warn, { paths: ['lodash', 'models'] }],
     // 'sort-imports-es6-autofix/sort-imports-es6': error,
+    'import/no-extraneous-dependencies': warn, // ToDo
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

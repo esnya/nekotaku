@@ -1,15 +1,15 @@
 import * as firebasemock from 'firebase-mock';
 import { spy } from 'sinon';
+import EventEmitter, { ListenerFn } from 'eventemitter3';
+import browserLogger from 'loglevel';
 import Backend from '@/browser/backend/Backend';
 import Client from '@/server/Client';
 import Datastore from '@/server/Datastore';
-import EventEmitter, { ListenerFn } from 'eventemitter3';
 import FirebaseBackend from '@/browser/backend/FirebaseBackend';
 import RoomModel from '@/browser/models/RoomModel';
 import RoomsModel from '@/browser/models/RoomsModel';
 import SocketBackend from '@/browser/backend/SocketBackend';
 import StubBackend from '@/browser/backend/StubBackend';
-import browserLogger from 'loglevel';
 import config from '@/browser/config';
 import serverConfig from '@/server/config';
 

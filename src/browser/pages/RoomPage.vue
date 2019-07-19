@@ -10,10 +10,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import debounce from 'lodash/debounce';
 import * as Routes from '../routes';
 import { IntervalTimer } from '../utilities/timer';
 import { bindAsObject } from '@/browser/models';
-import { mapGetters } from 'vuex';
 import RoomAppBar from '@/browser/moleculers/RoomAppBar.vue';
 import DicePanel from '@/browser/moleculers/DicePanel.vue';
 import Loading from '@/browser/atoms/Loading.vue';
@@ -23,7 +24,6 @@ import RoomMenu from '@/browser/components/RoomMenu.vue';
 import RoomBottomNav from '@/browser/moleculers/RoomBottomNav.vue';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
 import config from '../config';
-import debounce from 'lodash/debounce';
 import run from '@/browser/utilities/task';
 import sessionStorage from '@/browser/wrappers/sessionStorage';
 

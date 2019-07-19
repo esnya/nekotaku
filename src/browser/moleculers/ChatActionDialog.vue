@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import { mapGetters } from 'vuex';
+import { bindAsList } from '@/browser/models';
 import BottomDialog from '@/browser/moleculers/BottomDialog.vue';
 import ChatConfigurationDialog from '@/browser/moleculers/ChatConfigurationDialog.vue';
 import ChatConfigurationTile from '@/browser/atoms/ChatConfigurationTile.vue';

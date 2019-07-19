@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
-import * as Routes from '@/browser/routes';
 import { Component, Vue } from 'vue-property-decorator';
+import * as Routes from '@/browser/routes';
 import PasswordDAO from '@/browser/dao/PasswordDAO';
 
 @Component

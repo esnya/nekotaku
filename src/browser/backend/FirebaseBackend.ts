@@ -4,13 +4,13 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import * as firebase from 'firebase/app';
-import Backend from '@/browser/backend/Backend';
 import EventEmitter from 'eventemitter3';
+import map from 'lodash/map';
+import pickBy from 'lodash/pickBy';
+import Backend from '@/browser/backend/Backend';
 import FirebaseBackendOptions from '@/browser/backend/FirebaseBackendOptions';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import map from 'lodash/map';
-import pickBy from 'lodash/pickBy';
 
 function reader(snapshot: firebase.database.DataSnapshot | null): {} | null {
   if (!snapshot) return null;

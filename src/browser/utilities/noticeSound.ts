@@ -1,5 +1,5 @@
-import memory from '@/browser/utilities/memory';
 import window from 'global/window';
+import memory from '@/browser/utilities/memory';
 
 const getContext: () => AudioContext | null = memory(() => {
   const AudioContext = window.AudioContext || window.webkitAudioContext;

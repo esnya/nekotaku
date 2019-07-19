@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import { bindAsList } from '@/browser/models';
 import { mapState } from 'vuex';
+import { bindAsList } from '@/browser/models';
 import MapBackground from '@/browser/atoms/MapBackground.vue';
 import MapCharacterLayer from '@/browser/moleculers/MapCharacterLayer.vue';
 import MapController from '@/browser/map/MapController';

@@ -1,18 +1,18 @@
 
 
+import EventEmitter from 'eventemitter3';
+import io from 'socket.io-client';
+import shortid from 'shortid';
+import uuidv4 from 'uuid/v4';
 import * as ErrorCode from '@/constants/ErrorCode';
 import * as ListEvent from '@/constants/ListEvent';
 import * as ObjectEvent from '@/constants/ObjectEvent';
 import * as SocketEvents from '@/constants/SocketEvents';
 import Backend from '@/browser/backend/Backend';
-import EventEmitter from 'eventemitter3';
 import NotFoundError from '@/browser/backend/NotFoundError';
 import SocketBackendOptions from '@/browser/backend/SocketBackendOptions';
 import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import io from 'socket.io-client';
 import localStorage from '@/browser/wrappers/localStorage';
-import shortid from 'shortid';
-import uuidv4 from 'uuid/v4';
 
 const UIDKey = 'nekotaku:socketbackend:uid';
 function getUID() {

@@ -1,10 +1,10 @@
-import * as ListEvent from '@/constants/ListEvent';
-import { forEachBackend, removeRoom } from './utilities';
 import { spy } from 'sinon';
-import Backend from '@/browser/backend/Backend';
-import RoomsModel from '@/browser/models/RoomsModel';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
+import * as ListEvent from '@/constants/ListEvent';
+import { forEachBackend, removeRoom } from './utilities';
+import Backend from '@/browser/backend/Backend';
+import RoomsModel from '@/browser/models/RoomsModel';
 
 chai.use(sinonChai);
 

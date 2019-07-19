@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import * as Routes from '../routes';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import * as Routes from '../routes';
 import JoinButton from '@/browser/atoms/JoinButton.vue';
 import Room from '@/models/Room';
 import RoomInfoList from '@/browser/moleculers/RoomInfoList.vue';

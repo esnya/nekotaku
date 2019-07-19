@@ -11,8 +11,8 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import ChatPaletteTile from '@/browser/atoms/ChatPaletteItemTile.vue';
 import _ from 'lodash';
+import ChatPaletteTile from '@/browser/atoms/ChatPaletteItemTile.vue';
 
 export default {
   components: {

@@ -1,13 +1,6 @@
 /* eslint no-console: off, class-methods-use-this: off */
 
-import * as ListEvent from '@/constants/ListEvent';
-import * as ObjectEvent from '@/constants/ObjectEvent';
-import Backend from '@/browser/backend/Backend';
 import EventEmitter from 'eventemitter3';
-import NotFoundError from '@/browser/backend/NotFoundError';
-import StubData from '@/browser/constants/StubData';
-import UnauthorizedError from '@/browser/backend/UnauthorizedError';
-import checkRule from '@/utilities/rule';
 import forEach from 'lodash/forEach';
 import fromPairs from 'lodash/fromPairs';
 import get from 'lodash/get';
@@ -16,6 +9,13 @@ import map from 'lodash/map';
 import set from 'lodash/set';
 import shortid from 'shortid';
 import values from 'lodash/values';
+import checkRule from '@/utilities/rule';
+import UnauthorizedError from '@/browser/backend/UnauthorizedError';
+import StubData from '@/browser/constants/StubData';
+import NotFoundError from '@/browser/backend/NotFoundError';
+import Backend from '@/browser/backend/Backend';
+import * as ObjectEvent from '@/constants/ObjectEvent';
+import * as ListEvent from '@/constants/ListEvent';
 
 function getParentPath(path: string): string | null {
   return path.replace(/\/?[^/]+$/, '') || null;
