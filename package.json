@@ -15,7 +15,7 @@
     "ci:before_deploy": "run-s ci:before_deploy:*",
     "ci:before_deploy:1": "node scripts/genFirebaseConfig.js > config/config.json",
     "ci:before_deploy:2": "cross-env NODE_ENV=production npm run build",
-    "ci:script": "run-s lint test build",
+    "ci:script": "run-s lint test:unit build",
     "clean": "rimraf dist",
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test:unit src/browser/components src/browser/backends src/browser/mixins src/browser/models src/browser/store src/browser/utilities",
     "firebase:deploy": "firebase deploy",
