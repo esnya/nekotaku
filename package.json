@@ -41,7 +41,7 @@
     "lodash": "^4.17.21",
     "log4js": "^6.4.0",
     "loglevel": "^1.6.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.2.7",
     "mz": "^2.7.0",
     "register-service-worker": "^1.0.0",
