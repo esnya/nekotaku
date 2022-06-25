@@ -108,7 +108,7 @@
     "firebase-mock": "^2.2.10",
     "firebase-tools": "^7.1.1",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "jsdom-global": "^3.0.2",
     "mock-local-storage": "^1.1.7",
     "nodemon": "^1.18.9",
