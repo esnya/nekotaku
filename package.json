@@ -51,7 +51,7 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.2.0",
     "source-map-support": "^0.5.9",
-    "uuid": "^3.3.2",
+    "uuid": "^14.0.0",
     "vee-validate": "^2.1.4",
     "vue": "^2.5.17",
     "vue-analytics": "^5.16.0",
